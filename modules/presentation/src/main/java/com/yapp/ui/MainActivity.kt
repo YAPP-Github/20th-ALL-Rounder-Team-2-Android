@@ -1,4 +1,4 @@
-package com.yapp
+package com.yapp.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

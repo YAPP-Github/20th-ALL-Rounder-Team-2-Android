@@ -12,6 +12,7 @@ rootProject.name = "My Application"
 
 includeAll(
     "app",
+    "presentation",
 )
 
 fun includeAll(vararg names: String) {
