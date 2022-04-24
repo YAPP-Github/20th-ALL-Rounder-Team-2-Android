@@ -7,6 +7,7 @@ androidx-core = "1.7.0"
 androidx-lifecycle = "2.3.1"
 androidx-activity = "1.4.0"
 compose = "1.0.1"
+dagger = "2.41"
 
 junit = "4.13.2"
 
@@ -27,3 +28,8 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 
 junit4 = { module = "junit:junit", version.ref = "junit" }
+
+hilt-core = { module = "com.google.dagger:hilt-core", version.ref = "dagger" }
+hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
