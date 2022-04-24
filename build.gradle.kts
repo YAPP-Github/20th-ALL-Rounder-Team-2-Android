@@ -17,6 +17,6 @@ subprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+val clean by tasks.registering(Delete::class) {
+    delete(rootProject.buildDir)
 }
