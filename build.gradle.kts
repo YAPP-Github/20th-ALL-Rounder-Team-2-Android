@@ -7,6 +7,7 @@ buildscript {
     dependencies {
         classpath(libs.android.gradle)
         classpath(libs.kotlin)
+        classpath(libs.hilt.gradle)
     }
 }
 
@@ -17,6 +18,6 @@ subprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+val clean by tasks.registering(Delete::class) {
+    delete(rootProject.buildDir)
 }
