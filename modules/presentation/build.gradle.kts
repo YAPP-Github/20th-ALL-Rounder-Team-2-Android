@@ -32,6 +32,9 @@ android {
 }
 
 dependencies {
+    // TODO: domain 모듈 추가하면서 제거해야 함
+    implementation(project(":data"))
+
     implementation(libs.androidx.core.ktx)
 
     implementation(libs.androidx.compose.ui.core)
