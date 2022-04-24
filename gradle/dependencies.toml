@@ -1,0 +1,29 @@
+[versions]
+kotlin = "1.5.21"
+coroutines = "1.6.1"
+
+android-gradle = "7.1.2"
+androidx-core = "1.7.0"
+androidx-lifecycle = "2.3.1"
+androidx-activity = "1.4.0"
+compose = "1.0.1"
+
+junit = "4.13.2"
+
+[libraries]
+kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+
+android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android.gradle" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx.lifecycle" }
+
+androidx-compose-ui-core = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+androidx-compose-ui-tooling-core = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+
+junit4 = { module = "junit:junit", version.ref = "junit" }
