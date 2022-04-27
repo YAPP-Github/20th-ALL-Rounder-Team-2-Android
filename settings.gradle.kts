@@ -15,6 +15,7 @@ includeAll(
     "presentation",
     "data",
     "domain",
+    "remote",
 )
 
 fun includeAll(vararg names: String) {
