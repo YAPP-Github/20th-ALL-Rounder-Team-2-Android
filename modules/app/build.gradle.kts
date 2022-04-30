@@ -9,7 +9,7 @@ android {
     compileSdk = Versions.COMPILE_SDK
 
     defaultConfig {
-        applicationId = "com.yapp"
+        applicationId = "kr.co.yapp.merang"
 
         minSdk = Versions.MIN_SDK
         targetSdk = Versions.TARGET_SDK
