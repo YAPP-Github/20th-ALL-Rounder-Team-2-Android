@@ -1,7 +1,7 @@
 package com.yapp.data.di
 
-import com.yapp.data.repo.UserRepository
 import com.yapp.data.repo.UserRepositoryImpl
+import com.yapp.domain.repo.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
