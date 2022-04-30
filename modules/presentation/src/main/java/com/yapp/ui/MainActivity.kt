@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.yapp.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,7 +40,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NameField(nameState: NameState) {
-    when(nameState) {
+    when (nameState) {
         NameState.Loading -> CircularProgressIndicator()
         NameState.Error -> Text("이름을 가져올 수 없습니다")
         is NameState.Success -> Text(nameState.name)
