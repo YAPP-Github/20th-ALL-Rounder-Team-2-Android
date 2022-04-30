@@ -14,12 +14,16 @@ class MainViewModel @Inject constructor(
     private val getNameUseCase: GetNameUseCase
 ) : ViewModel() {
 
-    private val _name = MutableStateFlow("")
+    private val _name: MutableStateFlow<NameState> = MutableStateFlow(NameState.Loading)
     val name = _name.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _name.value = getNameUseCase()
+            _name.value = NameState.Loading
+
+            val result = getNameUseCase()
+                .onSuccess { _name.value = NameState.Success(it) }
+                .onFailure { _name.value = NameState.Error }
         }
     }
 }
