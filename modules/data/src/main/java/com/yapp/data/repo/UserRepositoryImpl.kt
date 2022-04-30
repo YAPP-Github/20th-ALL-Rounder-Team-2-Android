@@ -10,13 +10,11 @@ internal class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource
 ) : UserRepository {
 
-    override suspend fun getName(): Result<String> = runCatching {
-        val name = userLocalDataSource.getName().getOrThrow()
-
-        return if (name == null) {
-            userRemoteDataSource.getName()
-        } else {
-            Result.success(name)
+    override suspend fun getName(): Result<String> {
+        val name = userLocalDataSource.getName().mapCatching {
+            it ?: userRemoteDataSource.getName().getOrThrow()
         }
+
+        return name
     }
 }
