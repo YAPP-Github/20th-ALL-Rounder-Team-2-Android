@@ -17,6 +17,12 @@ android {
         versionName = Versions.VERSION_NAME
     }
 
+    signingConfigs {
+        debug {
+            storeFile = file("$rootDir/settings/debug.keystore")
+        }
+    }
+
     buildTypes {
         debug {
             isDebuggable = true
