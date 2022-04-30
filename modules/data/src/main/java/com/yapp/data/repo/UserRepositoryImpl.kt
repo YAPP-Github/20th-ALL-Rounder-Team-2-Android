@@ -10,16 +10,10 @@ internal class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource
 ) : UserRepository {
 
-    // Remote 에서는 항상 이름을 가져올 수 있다고 가정
-    override suspend fun getName(): String {
-        return getNameFromLocal() ?: getNameFromRemote()
-    }
+    override suspend fun getName(): Result<String> {
+        val name = userLocalDataSource.getName()
 
-    private suspend fun getNameFromLocal(): String? {
-        return userLocalDataSource.getName().getOrThrow()
-    }
-
-    private suspend fun getNameFromRemote(): String {
-        return userRemoteDataSource.getName().getOrThrow()
+        return if(name.isFailure) userRemoteDataSource.getName()
+        else name
     }
 }

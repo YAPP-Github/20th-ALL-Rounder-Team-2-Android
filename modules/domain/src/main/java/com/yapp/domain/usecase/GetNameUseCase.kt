@@ -7,7 +7,7 @@ class GetNameUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
     
-    suspend operator fun invoke(): String {
+    suspend operator fun invoke(): Result<String> {
         return userRepository.getName()
     }
 }
