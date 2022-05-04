@@ -1,4 +1,4 @@
-package kr.co.yapp.merang
+package kr.co.yapp.knowlly
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -1,8 +1,7 @@
-package kr.co.yapp.merang
-
-import org.junit.Test
+package kr.co.yapp.knowlly.local
 
 import org.junit.Assert.*
+import org.junit.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).

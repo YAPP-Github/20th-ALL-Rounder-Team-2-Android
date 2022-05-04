@@ -1,4 +1,4 @@
-package kr.co.yapp.merang.ui
+package kr.co.yapp.knowlly.ui
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

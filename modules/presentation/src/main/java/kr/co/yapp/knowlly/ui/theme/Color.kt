@@ -1,4 +1,4 @@
-package kr.co.yapp.merang.ui.theme
+package kr.co.yapp.knowlly.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
