@@ -1,4 +1,4 @@
-package kr.co.yapp.merang.data.repo
+package kr.co.yapp.knowlly.data.repo
 
 import javax.inject.Inject
 

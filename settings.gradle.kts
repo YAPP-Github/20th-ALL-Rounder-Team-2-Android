@@ -8,7 +8,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My Application"
+rootProject.name = "Knowlly"
 
 includeAll(
     "app",

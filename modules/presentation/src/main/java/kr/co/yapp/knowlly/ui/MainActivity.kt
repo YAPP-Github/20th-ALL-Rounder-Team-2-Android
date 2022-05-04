@@ -1,4 +1,4 @@
-package kr.co.yapp.merang.ui
+package kr.co.yapp.knowlly.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,8 +13,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import kr.co.yapp.merang.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kr.co.yapp.knowlly.ui.theme.MyApplicationTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

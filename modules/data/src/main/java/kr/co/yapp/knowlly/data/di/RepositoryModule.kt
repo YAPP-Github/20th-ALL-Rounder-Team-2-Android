@@ -1,11 +1,11 @@
-package kr.co.yapp.merang.data.di
+package kr.co.yapp.knowlly.data.di
 
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kr.co.yapp.merang.data.repo.UserRepository
-import kr.co.yapp.merang.data.repo.UserRepositoryImpl
+import kr.co.yapp.knowlly.data.repo.UserRepository
+import kr.co.yapp.knowlly.data.repo.UserRepositoryImpl
 import javax.inject.Singleton
 
 @Module
