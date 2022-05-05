@@ -11,10 +11,26 @@ buildscript {
     }
 }
 
-subprojects {
+plugins {
+    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
+}
+
+allprojects {
+    apply {
+        plugin("org.jlleitschuh.gradle.ktlint")
+    }
     repositories {
         google()
         mavenCentral()
+    }
+    afterEvaluate {
+        ktlint {
+            verbose.set(true)
+
+            if (isAndroidProject) {
+                android.set(true)
+            }
+        }
     }
 }
 
