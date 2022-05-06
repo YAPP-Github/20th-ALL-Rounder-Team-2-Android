@@ -1,6 +1,4 @@
-package kr.co.yapp.knowlly
-
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import org.junit.jupiter.api.Test
 
 class ExampleUnitTest {
@@ -12,6 +10,6 @@ class ExampleUnitTest {
 
         // then
         val expected = 4
-        assertThat(actual).isEqualTo(expected)
+        Truth.assertThat(actual).isEqualTo(expected)
     }
 }
