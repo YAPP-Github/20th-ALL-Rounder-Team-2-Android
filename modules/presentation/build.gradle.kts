@@ -42,6 +42,7 @@ dependencies {
     implementation(project(Modules.DOMAIN))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
 
     implementation(libs.androidx.compose.ui.core)
     implementation(libs.androidx.compose.material)
