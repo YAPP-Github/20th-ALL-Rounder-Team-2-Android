@@ -29,6 +29,13 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
+
+    testOptions {
+        unitTests.all { options -> options.useJUnitPlatform() }
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -48,6 +55,10 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     testImplementation(libs.junit4)
+    testImplementation(libs.bundles.junit5)
+    testImplementation(libs.truth)
+    testImplementation(libs.mockk.core)
+    testImplementation(libs.coroutines.test)
 
     debugImplementation(libs.androidx.compose.ui.tooling.core)
 }
