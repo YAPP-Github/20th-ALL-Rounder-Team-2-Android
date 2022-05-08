@@ -26,13 +26,22 @@ android {
     buildTypes {
         debug {
             isDebuggable = true
+            applicationIdSuffix = ".debug"
         }
         release {
+            isDebuggable = false
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        create("staging") {
+            initWith(release)
+            isDebuggable = true
+            matchingFallbacks += "release"
+            applicationIdSuffix = ".staging"
         }
     }
     compileOptions {
