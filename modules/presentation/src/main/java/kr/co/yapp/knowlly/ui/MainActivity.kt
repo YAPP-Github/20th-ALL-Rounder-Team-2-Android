@@ -13,10 +13,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import dagger.hilt.android.AndroidEntryPoint
-import kr.co.yapp.knowlly.ui.theme.MyApplicationTheme
+import kr.co.yapp.knowlly.ui.theme.KnowllyTheme
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
@@ -24,8 +22,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
+            KnowllyTheme {
                 val name by viewModel.name.collectAsState()
 
                 Surface(
@@ -47,7 +44,7 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MyApplicationTheme {
+    KnowllyTheme {
         Greeting("Android")
     }
 }

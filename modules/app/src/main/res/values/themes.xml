@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MyApplication" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/purple_700</item>
+    <style name="Theme.Knowlly" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/white</item>
+    </style>
+
+    <style name="Theme.Knowlly.Splash" parent="Theme.Knowlly">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
     </style>
 </resources>
