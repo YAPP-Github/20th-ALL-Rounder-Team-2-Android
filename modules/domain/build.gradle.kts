@@ -14,4 +14,5 @@ dependencies {
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.truth)
     testImplementation(libs.mockk.core)
+    testImplementation(libs.coroutines.test)
 }
