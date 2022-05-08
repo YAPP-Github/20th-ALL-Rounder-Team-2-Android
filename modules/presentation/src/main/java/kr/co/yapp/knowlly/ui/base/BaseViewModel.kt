@@ -11,6 +11,8 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseViewModel : ViewModel() {
 
+    protected val TAG get() = this::class.java.simpleName
+
     protected fun launch(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
