@@ -2,7 +2,7 @@ package kr.co.yapp.knowlly.remote.api
 
 import okhttp3.OkHttpClient
 
-internal fun createOkhttpClient(interceptors: Interceptors): OkHttpClient =
+internal fun createOkHttpClient(interceptors: Interceptors): OkHttpClient =
     OkHttpClient.Builder()
         .addInterceptors(interceptors)
         .build()

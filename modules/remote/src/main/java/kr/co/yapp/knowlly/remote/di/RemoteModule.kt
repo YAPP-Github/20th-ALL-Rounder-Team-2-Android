@@ -8,7 +8,7 @@ import kr.co.yapp.knowlly.remote.api.ApiService
 import kr.co.yapp.knowlly.remote.api.BaseUrl
 import kr.co.yapp.knowlly.remote.api.Interceptors
 import kr.co.yapp.knowlly.remote.api.baseUrl
-import kr.co.yapp.knowlly.remote.api.createOkhttpClient
+import kr.co.yapp.knowlly.remote.api.createOkHttpClient
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -23,7 +23,7 @@ internal object RemoteModule {
         interceptors: Interceptors,
     ) = Retrofit.Builder()
         .baseUrl(baseUrl)
-        .client(createOkhttpClient(interceptors))
+        .client(createOkHttpClient(interceptors))
         .build()
         .create(ApiService::class.java)
 }
