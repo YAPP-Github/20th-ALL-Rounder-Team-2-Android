@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
 
     implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.activity.compose)
 
     implementation(libs.hilt.android)
