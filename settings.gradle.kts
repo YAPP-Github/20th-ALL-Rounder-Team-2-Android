@@ -16,7 +16,8 @@ includeAll(
     "data",
     "domain",
     "remote",
-    "local"
+    "local",
+    "log",
 )
 
 fun includeAll(vararg names: String) {

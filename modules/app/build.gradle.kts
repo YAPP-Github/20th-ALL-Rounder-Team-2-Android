@@ -64,6 +64,7 @@ dependencies {
     implementation(project(Modules.DATA))
     implementation(project(Modules.LOCAL))
     implementation(project(Modules.REMOTE))
+    implementation(project(Modules.LOG))
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
