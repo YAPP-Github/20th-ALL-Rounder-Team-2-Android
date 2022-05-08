@@ -2,6 +2,6 @@
 <resources>
 
     <style name="Theme.Knowlly.Splash" parent="Theme.Knowlly">
-        <item name="android:windowSplashScreenBackground">@color/teal_700</item>
+        <item name="android:windowSplashScreenBackground">@color/white</item>
     </style>
 </resources>
