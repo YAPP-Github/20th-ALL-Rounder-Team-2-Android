@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kr.co.yapp.knowlly.remote.api.ApiService
 import kr.co.yapp.knowlly.remote.api.BaseUrl
 import kr.co.yapp.knowlly.remote.api.Interceptors
 import kr.co.yapp.knowlly.remote.api.baseUrl
@@ -17,11 +18,12 @@ internal object RemoteModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(
+    fun provideApiService(
         baseUrl: BaseUrl,
         interceptors: Interceptors,
-    ): Retrofit = Retrofit.Builder()
+    ) = Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(createOkhttpClient(interceptors))
         .build()
+        .create(ApiService::class.java)
 }

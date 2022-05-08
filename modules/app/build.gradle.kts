@@ -68,7 +68,5 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
-    compileOnly(libs.retrofit.core)
-    compileOnly(libs.okhttp.core)
     compileOnly(libs.okhttp.logging.interceptor)
 }
