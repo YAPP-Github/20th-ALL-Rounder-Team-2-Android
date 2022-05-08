@@ -62,6 +62,7 @@ dependencies {
     implementation(project(Modules.PRESENTATION))
     implementation(project(Modules.DOMAIN))
     implementation(project(Modules.DATA))
+    implementation(project(Modules.LOCAL))
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
