@@ -32,6 +32,8 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 
+javax-inject = "javax.inject:javax.inject:1"
+
 # Test
 junit4 = { module = "junit:junit", version.ref = "junit" }
 junit5-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
