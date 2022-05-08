@@ -1,10 +1,11 @@
 package kr.co.yapp.knowlly.di
 
-import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kr.co.yapp.knowlly.BuildConfig
+import kr.co.yapp.knowlly.log.Logger
 import kr.co.yapp.knowlly.remote.api.BaseUrl
 import kr.co.yapp.knowlly.remote.api.Interceptors
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,8 +19,10 @@ internal object AppModule {
 
     @Provides
     fun provideInterceptors(): Interceptors {
-        val logger = HttpLoggingInterceptor.Logger {
-            Log.d("OkHttp", it)
+        val logger = HttpLoggingInterceptor.Logger { message ->
+            if (BuildConfig.DEBUG) {
+                Logger.d("OkHttp", message)
+            }
         }
         val loggingInterceptor = HttpLoggingInterceptor(logger)
         return Interceptors(loggingInterceptor)
