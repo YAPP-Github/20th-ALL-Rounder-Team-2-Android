@@ -63,7 +63,12 @@ dependencies {
     implementation(project(Modules.DOMAIN))
     implementation(project(Modules.DATA))
     implementation(project(Modules.LOCAL))
+    implementation(project(Modules.REMOTE))
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    compileOnly(libs.retrofit.core)
+    compileOnly(libs.okhttp.core)
+    compileOnly(libs.okhttp.logging.interceptor)
 }
