@@ -7,10 +7,10 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor() : BaseViewModel() {
 
-    fun login(platform: LoginPlatform.Type) {
-        when (platform) {
-            LoginPlatform.Type.GOOGLE -> {}
-            LoginPlatform.Type.KAKAO -> {}
+    fun login(type: LoginType) {
+        when (type) {
+            LoginType.GOOGLE -> {}
+            LoginType.KAKAO -> {}
         }
     }
 }

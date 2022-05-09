@@ -1,13 +1,12 @@
 package kr.co.yapp.knowlly.ui.login
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,36 +21,37 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel()) {
 }
 
 @Composable
-fun LoginScreen(onLogin: (LoginPlatform.Type) -> Unit) {
+fun LoginScreen(onLogin: (LoginType) -> Unit) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        LoginButton(onClick = onLogin)
+        val context = LocalContext.current
+
+        Button(
+            onClick = {
+                onLogin(LoginType.GOOGLE)
+                moveToMainActivity(context)
+            }
+        ) {
+            Text("구글 로그인")
+        }
+        Button(
+            onClick = {
+                onLogin(LoginType.KAKAO)
+                moveToMainActivity(context)
+            }
+        ) {
+            Text("카카오 로그인")
+        }
     }
 }
 
-@Composable
-fun LoginButton(onClick: (LoginPlatform.Type) -> Unit) {
-    val context = LocalContext.current
-
-    LazyColumn(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        items(LoginPlatform.loginButtonStyle) {
-            Button(onClick = {
-                onClick(it.first)
-
-                val intent = Intent(context, MainActivity::class.java)
-                TaskStackBuilder
-                    .create(context)
-                    .addNextIntentWithParentStack(intent)
-                    .startActivities()
-            }) {
-                Text(text = it.second.text, color = it.second.textColor)
-            }
-        }
-    }
+fun moveToMainActivity(context: Context) {
+    val intent = Intent(context, MainActivity::class.java)
+    TaskStackBuilder
+        .create(context)
+        .addNextIntentWithParentStack(intent)
+        .startActivities()
 }
