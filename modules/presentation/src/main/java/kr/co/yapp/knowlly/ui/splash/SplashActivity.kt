@@ -18,19 +18,21 @@ class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val isLoggedIn = viewModel.isLoggedInState.value
-
         lifecycleScope.launchWhenCreated {
             delay(1500)
 
-            val nextActivity = when (isLoggedIn) {
-                LoggedInState.AlreadyLoggedIn -> MainActivity::class.java
-                LoggedInState.NeedToLogin -> LoginActivity::class.java
+            viewModel.isLoggedInState.collect {
+                val nextActivity = when (it) {
+                    SplashUiState.AlreadyLoggedIn -> MainActivity::class.java
+                    SplashUiState.NeedToLogin -> LoginActivity::class.java
+                    SplashUiState.Checking -> null
+                }
+                if (nextActivity != null) {
+                    val intent = Intent(this@SplashActivity, nextActivity)
+                    startActivity(intent)
+                    finish()
+                }
             }
-
-            val intent = Intent(this@SplashActivity, nextActivity)
-            startActivity(intent)
-            finish()
         }
     }
 }
