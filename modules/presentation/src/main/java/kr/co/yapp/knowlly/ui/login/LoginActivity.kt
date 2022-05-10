@@ -1,5 +1,7 @@
 package kr.co.yapp.knowlly.ui.login
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,6 +15,14 @@ class LoginActivity : ComponentActivity() {
             KnowllyTheme {
                 LoginScreen()
             }
+        }
+    }
+
+    companion object {
+
+        fun startActivity(context: Context) {
+            val intent = Intent(context, LoginActivity::class.java)
+            context.startActivity(intent)
         }
     }
 }

@@ -10,25 +10,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val isLoggedInUseCase: IsLoggedInUseCase
+    isLoggedInUseCase: IsLoggedInUseCase
 ) : BaseViewModel() {
 
     private val _state = MutableStateFlow<SplashUiState>(SplashUiState.Unspecified)
     val state: StateFlow<SplashUiState> = _state.asStateFlow()
 
     init {
-        checkLogin()
-    }
-
-    private fun checkLogin() {
         launch {
-            val result = isLoggedInUseCase()
-            result
-                .onSuccess {
-                    _state.value =
-                        if (it) SplashUiState.AlreadyLoggedIn else SplashUiState.NeedToLogin
-                }
-                .onFailure { handleException(it) }
+            val isLoggedIn = isLoggedInUseCase().getOrThrow()
+            if (isLoggedIn) {
+                _state.value = SplashUiState.AlreadyLoggedIn
+            } else {
+                _state.value = SplashUiState.NeedToLogin
+            }
         }
     }
 }
