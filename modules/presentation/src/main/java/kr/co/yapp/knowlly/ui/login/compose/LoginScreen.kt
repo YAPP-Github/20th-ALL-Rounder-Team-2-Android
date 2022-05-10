@@ -24,12 +24,12 @@ fun LoginScreen(onLogin: (LoginTypeModel) -> Unit) {
         modifier = Modifier.fillMaxSize()
     ) {
         Button(
-            onClick = { onLogin(LoginTypeModel.GOOGLE) }
+            onClick = { onLogin(LoginTypeModel.Google) }
         ) {
             Text("구글 로그인")
         }
         Button(
-            onClick = { onLogin(LoginTypeModel.KAKAO) }
+            onClick = { onLogin(LoginTypeModel.Kakao) }
         ) {
             Text("카카오 로그인")
         }
