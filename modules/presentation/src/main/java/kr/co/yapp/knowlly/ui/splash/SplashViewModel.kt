@@ -13,7 +13,7 @@ class SplashViewModel @Inject constructor(
     private val isLoggedInUseCase: IsLoggedInUseCase
 ) : BaseViewModel() {
 
-    private val _state = MutableStateFlow<SplashUiState>(SplashUiState.Checking)
+    private val _state = MutableStateFlow<SplashUiState>(SplashUiState.Unspecified)
     val state: StateFlow<SplashUiState> = _state.asStateFlow()
 
     init {

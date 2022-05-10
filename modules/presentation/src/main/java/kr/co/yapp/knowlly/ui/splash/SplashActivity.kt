@@ -25,7 +25,7 @@ class SplashActivity : ComponentActivity() {
                 val nextActivity = when (it) {
                     SplashUiState.AlreadyLoggedIn -> MainActivity::class.java
                     SplashUiState.NeedToLogin -> LoginActivity::class.java
-                    SplashUiState.Checking -> null
+                    SplashUiState.Unspecified -> null
                 }
                 if (nextActivity != null) {
                     val intent = Intent(this@SplashActivity, nextActivity)
