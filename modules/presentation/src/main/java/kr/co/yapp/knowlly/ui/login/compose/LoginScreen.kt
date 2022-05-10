@@ -8,7 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import kr.co.yapp.knowlly.ui.login.LoginType
+import kr.co.yapp.knowlly.ui.model.LoginTypeModel
 import kr.co.yapp.knowlly.ui.login.LoginViewModel
 
 @Composable
@@ -17,19 +17,19 @@ fun LoginScreen(viewModel: LoginViewModel) {
 }
 
 @Composable
-fun LoginScreen(onLogin: (LoginType) -> Unit) {
+fun LoginScreen(onLogin: (LoginTypeModel) -> Unit) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
         Button(
-            onClick = { onLogin(LoginType.GOOGLE) }
+            onClick = { onLogin(LoginTypeModel.GOOGLE) }
         ) {
             Text("구글 로그인")
         }
         Button(
-            onClick = { onLogin(LoginType.KAKAO) }
+            onClick = { onLogin(LoginTypeModel.KAKAO) }
         ) {
             Text("카카오 로그인")
         }
