@@ -21,7 +21,7 @@ class SplashActivity : ComponentActivity() {
         lifecycleScope.launchWhenCreated {
             delay(1500)
 
-            viewModel.isLoggedInState.collect {
+            viewModel.state.collect {
                 val nextActivity = when (it) {
                     SplashUiState.AlreadyLoggedIn -> MainActivity::class.java
                     SplashUiState.NeedToLogin -> LoginActivity::class.java
