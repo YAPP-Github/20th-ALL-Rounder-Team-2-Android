@@ -1,4 +1,4 @@
-package kr.co.yapp.knowlly.ui.login
+package kr.co.yapp.knowlly.ui.login.compose
 
 import android.content.Context
 import android.content.Intent
@@ -14,6 +14,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.TaskStackBuilder
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kr.co.yapp.knowlly.ui.MainActivity
+import kr.co.yapp.knowlly.ui.login.LoginType
+import kr.co.yapp.knowlly.ui.login.LoginViewModel
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = viewModel()) {

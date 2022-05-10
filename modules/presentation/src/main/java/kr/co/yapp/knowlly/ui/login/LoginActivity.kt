@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import kr.co.yapp.knowlly.ui.login.compose.LoginScreen
 import kr.co.yapp.knowlly.ui.theme.KnowllyTheme
 
 class LoginActivity : ComponentActivity() {
