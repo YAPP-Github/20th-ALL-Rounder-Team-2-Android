@@ -1,12 +1,12 @@
 package kr.co.yapp.knowlly.ui.splash
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kr.co.yapp.knowlly.ui.MainActivity
 import kr.co.yapp.knowlly.ui.login.LoginActivity
 
@@ -18,21 +18,29 @@ class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launchWhenCreated {
-            delay(1500)
-
-            viewModel.isLoggedInState.collect {
-                val nextActivity = when (it) {
-                    SplashUiState.AlreadyLoggedIn -> MainActivity::class.java
-                    SplashUiState.NeedToLogin -> LoginActivity::class.java
-                    SplashUiState.Checking -> null
-                }
-                if (nextActivity != null) {
-                    val intent = Intent(this@SplashActivity, nextActivity)
-                    startActivity(intent)
-                    finish()
-                }
-            }
+        lifecycleScope.launch {
+            delay(SPLASH_TIME_MILLIS)
+            viewModel.state.collect { state -> handleState(state) }
         }
+    }
+
+    private fun handleState(state: SplashUiState) = when (state) {
+        SplashUiState.AlreadyLoggedIn -> startMainActivity()
+        SplashUiState.NeedToLogin -> startLoginActivity()
+        SplashUiState.Unspecified -> Unit /* no-op */
+    }
+
+    private fun startMainActivity() {
+        MainActivity.startActivity(this)
+        finish()
+    }
+
+    private fun startLoginActivity() {
+        LoginActivity.startActivity(this)
+        finish()
+    }
+
+    companion object {
+        private const val SPLASH_TIME_MILLIS = 1_500L
     }
 }
