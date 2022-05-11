@@ -1,7 +1,7 @@
 package kr.co.yapp.knowlly.ui.transition
 
 import android.app.Activity
-import com.yapp.ui.R
+import kr.co.yapp.knowlly.ui.R
 
 /**
  * ref) https://github.com/HeroTransitions/Hero
