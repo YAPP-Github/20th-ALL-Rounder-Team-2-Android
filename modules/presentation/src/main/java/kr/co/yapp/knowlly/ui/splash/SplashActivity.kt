@@ -1,17 +1,17 @@
 package kr.co.yapp.knowlly.ui.splash
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.co.yapp.knowlly.ui.MainActivity
+import kr.co.yapp.knowlly.ui.base.BaseActivity
 import kr.co.yapp.knowlly.ui.login.LoginActivity
 
 @AndroidEntryPoint
-class SplashActivity : ComponentActivity() {
+class SplashActivity : BaseActivity() {
 
     private val viewModel: SplashViewModel by viewModels()
 
