@@ -6,6 +6,7 @@ import kr.co.yapp.knowlly.ui.transition.ActivityTransition
 
 abstract class BaseActivity : ComponentActivity() {
 
+    protected inline val TAG get() = this::class.java.simpleName
     protected open val activityTransition = ActivityTransition.Push
 
     override fun onCreate(savedInstanceState: Bundle?) {
