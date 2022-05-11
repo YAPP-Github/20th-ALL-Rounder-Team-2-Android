@@ -3,7 +3,6 @@ package kr.co.yapp.knowlly.ui.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -12,11 +11,12 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kr.co.yapp.knowlly.ui.MainActivity
+import kr.co.yapp.knowlly.ui.base.BaseActivity
 import kr.co.yapp.knowlly.ui.login.compose.LoginScreen
 import kr.co.yapp.knowlly.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
-class LoginActivity : ComponentActivity() {
+class LoginActivity : BaseActivity() {
 
     private val viewModel: LoginViewModel by viewModels()
 

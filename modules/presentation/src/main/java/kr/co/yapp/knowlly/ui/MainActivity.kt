@@ -3,7 +3,6 @@ package kr.co.yapp.knowlly.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,9 +14,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import kr.co.yapp.knowlly.ui.base.BaseActivity
 import kr.co.yapp.knowlly.ui.theme.KnowllyTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : BaseActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
