@@ -8,7 +8,7 @@ class GetCategoryList @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) {
 
-    suspend operator fun invoke(): Result<List<Category>> {
+    suspend operator fun invoke(): List<Category> {
         return categoryRepository.getCategoryList()
     }
 }

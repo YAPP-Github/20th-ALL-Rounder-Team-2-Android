@@ -7,8 +7,8 @@ import kr.co.yapp.knowlly.domain.repo.CategoryRepository
 
 internal class CategoryRepositoryImpl : CategoryRepository {
 
-    override suspend fun getCategoryList(): Result<List<Category>> {
-        return Result.success(categoryList.map { it.toDomain() })
+    override suspend fun getCategoryList(): List<Category> {
+        return categoryList.map { it.toDomain() }
     }
 
     companion object {
