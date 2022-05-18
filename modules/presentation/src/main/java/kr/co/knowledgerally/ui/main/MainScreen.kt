@@ -60,8 +60,7 @@ private fun MainNavigationBar(
 ) {
     NavigationBar(tonalElevation = 0.dp) {
         TOP_LEVEL_DESTINATIONS.forEach { destination ->
-            val selected =
-                currentDestination?.hierarchy?.any { it.route == destination.route } == true
+            val selected = destination in currentDestination
 
             NavigationBarItem(
                 selected = selected,
@@ -70,6 +69,13 @@ private fun MainNavigationBar(
             )
         }
     }
+}
+
+private operator fun NavDestination?.contains(destination: MainDestination): Boolean {
+    if (this == null) {
+        return false
+    }
+    return hierarchy.any { it.route == destination.route }
 }
 
 @Composable
