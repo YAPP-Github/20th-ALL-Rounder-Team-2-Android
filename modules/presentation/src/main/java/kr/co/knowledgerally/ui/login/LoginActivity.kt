@@ -10,9 +10,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kr.co.knowledgerally.ui.MainActivity
-import kr.co.knowledgerally.ui.base.BaseActivity
-import kr.co.knowledgerally.ui.login.compose.LoginScreen
+import kr.co.knowledgerally.ui.main.MainActivity
+import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint

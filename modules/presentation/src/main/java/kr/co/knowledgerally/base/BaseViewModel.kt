@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.base
+package kr.co.knowledgerally.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

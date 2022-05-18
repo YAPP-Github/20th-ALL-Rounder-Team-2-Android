@@ -1,20 +1,18 @@
-package kr.co.knowledgerally.ui
+package kr.co.knowledgerally.ui.main
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import kr.co.knowledgerally.ui.base.BaseActivity
-import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.ui.KnowllyApp
 
 class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            KnowllyTheme {
-
-            }
+            KnowllyApp()
         }
     }
 

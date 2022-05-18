@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.transition
+package kr.co.knowledgerally.base
 
 import android.app.Activity
 import kr.co.knowledgerally.ui.R
