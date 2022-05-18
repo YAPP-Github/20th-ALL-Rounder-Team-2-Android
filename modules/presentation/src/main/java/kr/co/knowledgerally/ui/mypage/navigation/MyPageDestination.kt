@@ -9,7 +9,7 @@ object MyPageDestination : NavigationDestination {
     override val route: String = "mypage"
 }
 
-fun NavGraphBuilder.mypageGraph() {
+fun NavGraphBuilder.myPageGraph() {
     composable(MyPageDestination.route) {
         MyPageScreen()
     }

@@ -9,7 +9,7 @@ import kr.co.knowledgerally.ui.coach.navigation.coachGraph
 import kr.co.knowledgerally.ui.home.navigation.HomeDestination
 import kr.co.knowledgerally.ui.home.navigation.homeGraph
 import kr.co.knowledgerally.ui.lesson.navigation.lessonGraph
-import kr.co.knowledgerally.ui.mypage.navigation.mypageGraph
+import kr.co.knowledgerally.ui.mypage.navigation.myPageGraph
 
 @Composable
 fun MainNavHost(
@@ -26,6 +26,6 @@ fun MainNavHost(
         homeGraph()
         lessonGraph()
         coachGraph()
-        mypageGraph()
+        myPageGraph()
     }
 }
