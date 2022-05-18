@@ -6,7 +6,7 @@ import kr.co.knowledgerally.navigation.NavigationDestination
 import kr.co.knowledgerally.ui.home.HomeScreen
 
 object HomeDestination : NavigationDestination {
-    override val route: String = "route"
+    override val route: String = "home"
 }
 
 fun NavGraphBuilder.homeGraph() {
