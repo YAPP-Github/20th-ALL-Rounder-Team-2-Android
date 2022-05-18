@@ -26,7 +26,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kr.co.knowledgerally.ui.main.navigation.MainDestination
 import kr.co.knowledgerally.ui.main.navigation.MainNavHost
-import kr.co.knowledgerally.ui.main.navigation.TOP_LEVEL_DESTINATIONS
 import kr.co.knowledgerally.ui.main.navigation.rememberMainNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,7 +58,7 @@ private fun MainNavigationBar(
     onNavigate: (MainDestination) -> Unit,
 ) {
     NavigationBar(tonalElevation = 0.dp) {
-        TOP_LEVEL_DESTINATIONS.forEach { destination ->
+        MainDestination.values().forEach { destination ->
             val selected = destination in currentDestination
 
             NavigationBarItem(

@@ -17,36 +17,34 @@ import kr.co.knowledgerally.ui.home.navigation.HomeDestination
 import kr.co.knowledgerally.ui.lesson.navigation.LessonDestination
 import kr.co.knowledgerally.ui.mypage.navigation.MyPageDestination
 
-data class MainDestination(
+enum class MainDestination(
     val route: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
     @StringRes val iconTextResId: Int,
-)
-
-val TOP_LEVEL_DESTINATIONS = listOf(
-    MainDestination(
+) {
+    Home(
         route = HomeDestination.route,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
         iconTextResId = R.string.home,
     ),
-    MainDestination(
+    Lesson(
         route = LessonDestination.route,
         selectedIcon = Icons.Filled.List,
         unselectedIcon = Icons.Outlined.List,
         iconTextResId = R.string.lesson,
     ),
-    MainDestination(
+    Coach(
         route = CoachDestination.route,
         selectedIcon = Icons.Filled.MailOutline,
         unselectedIcon = Icons.Outlined.MailOutline,
         iconTextResId = R.string.coach,
     ),
-    MainDestination(
+    MyPage(
         route = MyPageDestination.route,
         selectedIcon = Icons.Filled.Person,
         unselectedIcon = Icons.Outlined.Person,
         iconTextResId = R.string.mypage,
-    ),
-)
+    )
+}
