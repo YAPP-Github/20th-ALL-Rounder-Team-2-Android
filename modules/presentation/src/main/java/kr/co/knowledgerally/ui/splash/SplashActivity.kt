@@ -6,8 +6,8 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kr.co.knowledgerally.ui.MainActivity
-import kr.co.knowledgerally.ui.base.BaseActivity
+import kr.co.knowledgerally.ui.main.MainActivity
+import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.login.LoginActivity
 
 @AndroidEntryPoint

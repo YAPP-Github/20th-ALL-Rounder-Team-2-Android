@@ -1,8 +1,7 @@
-package kr.co.knowledgerally.ui.base
+package kr.co.knowledgerally.base
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import kr.co.knowledgerally.ui.transition.ActivityTransition
 
 abstract class BaseActivity : ComponentActivity() {
 

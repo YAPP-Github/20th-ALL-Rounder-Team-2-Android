@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.model
+package kr.co.knowledgerally.model
 
 enum class LoginTypeModel {
     Google, Kakao

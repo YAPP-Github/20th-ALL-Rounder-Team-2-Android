@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.co.knowledgerally.domain.usecase.IsLoggedInUseCase
-import kr.co.knowledgerally.ui.base.BaseViewModel
+import kr.co.knowledgerally.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
