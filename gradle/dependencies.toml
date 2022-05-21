@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.6.20"
+kotlin = "1.6.21"
 coroutines = "1.6.1"
 
 android-gradle = "7.1.2"
@@ -8,8 +8,8 @@ androidx-lifecycle = "2.4.1"
 androidx-activity = "1.4.0"
 androidx-preference = "1.2.0"
 androidx-navigation = "2.4.2"
-compose = "1.2.0-alpha08"
-material3 = "1.0.0-alpha10"
+compose = "1.2.0-beta02"
+material3 = "1.0.0-alpha12"
 dagger = "2.41"
 
 okhttp = "4.9.3"
@@ -39,6 +39,7 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+androidx-customview-poolingcontainer = { module = "androidx.customview:customview-poolingcontainer", version = "1.0.0-beta01" }
 
 javax-inject = "javax.inject:javax.inject:1"
 

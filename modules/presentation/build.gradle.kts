@@ -47,7 +47,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.core)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.navigation)
 
     implementation(libs.androidx.lifecycle.runtime)
@@ -63,5 +62,7 @@ dependencies {
     testImplementation(libs.mockk.core)
     testImplementation(libs.coroutines.test)
 
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.customview.poolingcontainer)
     debugImplementation(libs.androidx.compose.ui.tooling.core)
 }
