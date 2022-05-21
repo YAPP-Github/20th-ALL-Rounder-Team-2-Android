@@ -20,6 +20,10 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    - name: Access KAKAO_API_KEY
+      env:
+        KAKAO_API_KEY: $
+      run: echo KAKAO_API_KEY=\"$KAKAO_API_KEY\" > ./local.properties
     - name: Unit Test
       run: ./gradlew :presentation:testDebugUnitTest :domain:test
     - name: AssembleDebug with Gradle
