@@ -13,9 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
-private val BUTTON_RADIUS = 10.dp
-private val BUTTON_HEIGHT = 56.dp
-
 @Composable
 fun KnowllyFilledButton(
     text: String,
@@ -23,23 +20,16 @@ fun KnowllyFilledButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    val buttonColors = ButtonDefaults.buttonColors(
-        containerColor = KnowllyTheme.colors.primaryDark,
-        contentColor = KnowllyTheme.colors.grayFF,
-        disabledContainerColor = KnowllyTheme.colors.grayDD,
-        disabledContentColor = KnowllyTheme.colors.grayFF
-    )
-
     Button(
-        modifier = modifier.height(BUTTON_HEIGHT),
-        shape = RoundedCornerShape(BUTTON_RADIUS),
         onClick = onClick,
+        modifier = modifier.height(KnowllyButtonDefaults.ButtonHeight),
         enabled = enabled,
-        colors = buttonColors
+        shape = KnowllyButtonDefaults.ButtonShape,
+        colors = KnowllyButtonDefaults.filledButtonColors,
     ) {
         Text(
             text = text,
-            style = KnowllyTheme.typography.button1,
+            style = KnowllyButtonDefaults.textStyle,
         )
     }
 }
@@ -50,24 +40,47 @@ fun KnowllyOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val colors = ButtonDefaults.outlinedButtonColors(
-        contentColor = KnowllyTheme.colors.primaryDark,
-    )
-    val border = ButtonDefaults.outlinedButtonBorder.copy(
-        brush = SolidColor(KnowllyTheme.colors.primaryDark)
-    )
     OutlinedButton(
-        modifier = modifier.height(BUTTON_HEIGHT),
-        shape = RoundedCornerShape(BUTTON_RADIUS),
-        colors = colors,
-        border = border,
-        onClick = onClick
+        onClick = onClick,
+        modifier = modifier.height(KnowllyButtonDefaults.ButtonHeight),
+        shape = KnowllyButtonDefaults.ButtonShape,
+        border = KnowllyButtonDefaults.outlinedButtonBorder,
+        colors = KnowllyButtonDefaults.outlinedButtonColors,
     ) {
         Text(
             text = text,
-            style = KnowllyTheme.typography.button1,
+            style = KnowllyButtonDefaults.textStyle,
         )
     }
+}
+
+object KnowllyButtonDefaults {
+    val ButtonHeight = 56.dp
+    val ButtonShape = RoundedCornerShape(10.dp)
+    val textStyle
+        @Composable
+        get() = KnowllyTheme.typography.button1
+
+    val filledButtonColors
+        @Composable
+        get() = ButtonDefaults.buttonColors(
+            containerColor = KnowllyTheme.colors.primaryDark,
+            contentColor = KnowllyTheme.colors.grayFF,
+            disabledContainerColor = KnowllyTheme.colors.grayDD,
+            disabledContentColor = KnowllyTheme.colors.grayFF
+        )
+
+    val outlinedButtonColors
+        @Composable
+        get() = ButtonDefaults.outlinedButtonColors(
+            contentColor = KnowllyTheme.colors.primaryDark,
+        )
+
+    val outlinedButtonBorder
+        @Composable
+        get() = ButtonDefaults.outlinedButtonBorder.copy(
+            brush = SolidColor(KnowllyTheme.colors.primaryDark)
+        )
 }
 
 @Preview("Enabled")
