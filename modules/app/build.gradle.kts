@@ -1,4 +1,4 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import org.jetbrains.kotlin.konan.properties.loadProperties
 
 plugins {
     id("com.android.application")
@@ -6,6 +6,10 @@ plugins {
     kotlin("android")
     kotlin("kapt")
 }
+
+val path = "${rootProject.projectDir.absolutePath}/local.properties"
+val properties = loadProperties(path)
+val KAKAO_API_KEY: String by properties
 
 android {
     compileSdk = Versions.COMPILE_SDK
@@ -18,14 +22,8 @@ android {
         versionCode = Versions.VERSION_CODE
         versionName = Versions.VERSION_NAME
 
-        buildConfigField(
-            "String",
-            "KAKAO_API_KEY",
-            gradleLocalProperties(rootDir).getProperty("kakao_api_key")
-        )
-
-        manifestPlaceholders["KAKAO_API_KEY"] =
-            gradleLocalProperties(rootDir).getProperty("kakao_api_key")
+        buildConfigField("String", "KAKAO_API_KEY", KAKAO_API_KEY)
+        manifestPlaceholders["KAKAO_API_KEY"] = KAKAO_API_KEY
     }
 
     signingConfigs {
