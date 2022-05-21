@@ -10,8 +10,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.model.LoginTypeModel
+import kr.co.knowledgerally.model.SocialUserInfo
+import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
@@ -28,7 +30,7 @@ class LoginActivity : BaseActivity() {
 
     private fun setContent() = setContent {
         KnowllyTheme {
-            LoginScreen(viewModel)
+            LoginScreen(viewModel, this::socialLogin)
         }
     }
 
@@ -37,6 +39,13 @@ class LoginActivity : BaseActivity() {
             .filter { it }
             .onEach { startMainActivity() }
             .launchIn(lifecycleScope)
+    }
+
+    private fun socialLogin(type: LoginTypeModel): Result<SocialUserInfo?> {
+        return when (type) {
+            LoginTypeModel.Kakao -> LoginSdk(this).kakaoLogin()
+            LoginTypeModel.Google -> LoginSdk(this).googleLogin()
+        }
     }
 
     private fun startMainActivity() {

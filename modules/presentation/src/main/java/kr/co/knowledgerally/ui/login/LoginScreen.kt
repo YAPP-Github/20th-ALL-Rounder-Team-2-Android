@@ -10,16 +10,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.model.LoginTypeModel
+import kr.co.knowledgerally.model.SocialUserInfo
 import kr.co.knowledgerally.ui.component.KnowllyFilledButton
 import kr.co.knowledgerally.ui.component.KnowllyOutlinedButton
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
-    LoginScreen(onLogin = viewModel::login)
+fun LoginScreen(
+    viewModel: LoginViewModel,
+    onSocialLogin: (LoginTypeModel) -> Result<SocialUserInfo?>,
+) {
+    LoginScreen(
+        onServiceLogin = viewModel::login,
+        onSocialLogin = onSocialLogin
+    )
 }
 
 @Composable
-fun LoginScreen(onLogin: (LoginTypeModel) -> Unit) {
+fun LoginScreen(
+    onServiceLogin: (SocialUserInfo?) -> Unit,
+    onSocialLogin: (LoginTypeModel) -> Result<SocialUserInfo?>
+) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -27,18 +37,22 @@ fun LoginScreen(onLogin: (LoginTypeModel) -> Unit) {
     ) {
         KnowllyFilledButton(
             text = "구글 로그인",
-            onClick = { onLogin(LoginTypeModel.Google) }
+            onClick = { }
         )
         Spacer(modifier = Modifier.height(8.dp))
         KnowllyFilledButton(
             text = "구글 로그인",
-            onClick = { onLogin(LoginTypeModel.Google) },
+            onClick = { },
             enabled = false
         )
         Spacer(modifier = Modifier.height(8.dp))
         KnowllyOutlinedButton(
             text = "카카오 로그인",
-            onClick = { onLogin(LoginTypeModel.Kakao) }
+            onClick = {
+                onSocialLogin(LoginTypeModel.Kakao)
+                    .onSuccess { onServiceLogin(it) }
+                    .onFailure { /* 카카오에 로그인할 수 없습니다 */ }
+            }
         )
     }
 }
