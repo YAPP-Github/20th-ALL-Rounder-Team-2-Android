@@ -2,13 +2,16 @@ package kr.co.knowledgerally.ui.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.model.LoginTypeModel
+import kr.co.knowledgerally.ui.component.KnowllyFilledButton
+import kr.co.knowledgerally.ui.component.KnowllyOutlinedButton
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel) {
@@ -22,15 +25,20 @@ fun LoginScreen(onLogin: (LoginTypeModel) -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        Button(
+        KnowllyFilledButton(
+            text = "구글 로그인",
             onClick = { onLogin(LoginTypeModel.Google) }
-        ) {
-            Text("구글 로그인")
-        }
-        Button(
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        KnowllyFilledButton(
+            text = "구글 로그인",
+            onClick = { onLogin(LoginTypeModel.Google) },
+            enabled = false
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        KnowllyOutlinedButton(
+            text = "카카오 로그인",
             onClick = { onLogin(LoginTypeModel.Kakao) }
-        ) {
-            Text("카카오 로그인")
-        }
+        )
     }
 }
