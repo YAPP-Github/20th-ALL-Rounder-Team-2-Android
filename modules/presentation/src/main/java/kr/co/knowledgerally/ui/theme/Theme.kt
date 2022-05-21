@@ -1,47 +1,44 @@
 package kr.co.knowledgerally.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-
-private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
-)
-
-private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
-)
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 
 @Composable
 fun KnowllyTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    colors: KnowllyColors = KnowllyTheme.colors,
+    typography: KnowllyTypography = KnowllyTheme.typography,
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
+    val rememberedColors = remember {
+        // Explicitly creating a new object here so we don't mutate the initial [colors]
+        // provided, and overwrite the values set in it.
+        colors.copy()
     }
 
-    MaterialTheme(
-        colors = colors,
-        typography = Typography,
-        shapes = Shapes,
-        content = content
-    )
+    CompositionLocalProvider(
+        LocalColors provides rememberedColors,
+        LocalTypography provides typography,
+    ) {
+        MaterialTheme(
+            colors = MaterialColors,
+            shapes = MaterialShapes,
+            content = content
+        )
+    }
+}
+
+object KnowllyTheme {
+
+    val colors: KnowllyColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalColors.current
+
+    val typography: KnowllyTypography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTypography.current
 }
