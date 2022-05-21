@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
@@ -15,6 +17,15 @@ android {
         targetSdk = Versions.TARGET_SDK
         versionCode = Versions.VERSION_CODE
         versionName = Versions.VERSION_NAME
+
+        buildConfigField(
+            "String",
+            "KAKAO_API_KEY",
+            gradleLocalProperties(rootDir).getProperty("kakao_api_key")
+        )
+
+        manifestPlaceholders["KAKAO_API_KEY"] =
+            gradleLocalProperties(rootDir).getProperty("kakao_api_key")
     }
 
     signingConfigs {
@@ -65,6 +76,8 @@ dependencies {
     implementation(project(Modules.LOCAL))
     implementation(project(Modules.REMOTE))
     implementation(project(Modules.LOG))
+
+    implementation(libs.kakao.user)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

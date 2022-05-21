@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kr.co.knowledgerally">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -19,6 +21,22 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Kakao login redirection -->
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao${KAKAO_API_KEY}" />
             </intent-filter>
         </activity>
 
