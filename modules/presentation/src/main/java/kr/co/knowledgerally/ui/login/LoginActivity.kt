@@ -10,8 +10,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
@@ -28,13 +28,13 @@ class LoginActivity : BaseActivity() {
 
     private fun setContent() = setContent {
         KnowllyTheme {
-            LoginScreen(viewModel)
+            LoginScreen(viewModel = viewModel)
         }
     }
 
     private fun observeViewModel() {
-        viewModel.isLoggedIn
-            .filter { it }
+        viewModel.state
+            .filter { it is LoginState.Success }
             .onEach { startMainActivity() }
             .launchIn(lifecycleScope)
     }

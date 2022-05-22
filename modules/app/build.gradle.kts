@@ -1,9 +1,15 @@
+import org.jetbrains.kotlin.konan.properties.loadProperties
+
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
     kotlin("android")
     kotlin("kapt")
 }
+
+val path = "${rootProject.projectDir.absolutePath}/local.properties"
+val properties = loadProperties(path)
+val KAKAO_API_KEY: String by properties
 
 android {
     compileSdk = Versions.COMPILE_SDK
@@ -15,6 +21,9 @@ android {
         targetSdk = Versions.TARGET_SDK
         versionCode = Versions.VERSION_CODE
         versionName = Versions.VERSION_NAME
+
+        buildConfigField("String", "KAKAO_API_KEY", KAKAO_API_KEY)
+        manifestPlaceholders["KAKAO_API_KEY"] = KAKAO_API_KEY
     }
 
     signingConfigs {
@@ -65,6 +74,8 @@ dependencies {
     implementation(project(Modules.LOCAL))
     implementation(project(Modules.REMOTE))
     implementation(project(Modules.LOG))
+
+    implementation(libs.kakao.user)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
