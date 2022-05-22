@@ -10,12 +10,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.feature.kakao.KakaoLogin
 import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity() {
+
+    @Inject
+    lateinit var kakaoLogin: KakaoLogin
 
     private val viewModel: LoginViewModel by viewModels()
 
@@ -28,8 +34,16 @@ class LoginActivity : BaseActivity() {
 
     private fun setContent() = setContent {
         KnowllyTheme {
-            LoginScreen(viewModel = viewModel)
+            LoginScreen(
+                onLogin = { requestKakaoLogin() }
+            )
         }
+    }
+
+    private fun requestKakaoLogin() = lifecycleScope.launch {
+        kakaoLogin.login(this@LoginActivity)
+            .onSuccess { viewModel.login(it.value) }
+            .onFailure { /* no-op */ }
     }
 
     private fun observeViewModel() {
