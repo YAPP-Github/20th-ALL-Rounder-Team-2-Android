@@ -53,8 +53,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.activity.compose)
     
-    implementation(libs.kakao.user)
-
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
