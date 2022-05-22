@@ -6,37 +6,36 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import kr.co.knowledgerally.model.LoginTypeModel
-import kr.co.knowledgerally.model.SocialUserInfo
+import androidx.compose.ui.platform.LocalContext
+import kr.co.knowledgerally.model.KakaoProfile
 import kr.co.knowledgerally.ui.component.KnowllyOutlinedButton
 
 @Composable
-fun LoginScreen(
-    viewModel: LoginViewModel,
-    onSocialLogin: (LoginTypeModel) -> Result<SocialUserInfo?>,
-) {
+fun LoginScreen(viewModel: LoginViewModel) {
     LoginScreen(
-        onServiceLogin = viewModel::login,
-        onSocialLogin = onSocialLogin
+        onLogin = viewModel::login,
+        onFailToLogin = viewModel::failToLogin
     )
 }
 
 @Composable
 fun LoginScreen(
-    onServiceLogin: (SocialUserInfo?) -> Unit,
-    onSocialLogin: (LoginTypeModel) -> Result<SocialUserInfo?>
+    onLogin: (KakaoProfile?) -> Unit,
+    onFailToLogin: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
+        val context = LocalContext.current
+
         KnowllyOutlinedButton(
             text = "카카오 로그인",
             onClick = {
-                onSocialLogin(LoginTypeModel.Kakao)
-                    .onSuccess { onServiceLogin(it) }
-                    .onFailure { /* 카카오에 로그인할 수 없습니다 */ }
+                KakaoSdk.kakaoLogin(context)
+                    .onSuccess { onLogin(it) }
+                    .onFailure { onFailToLogin() }
             }
         )
     }
