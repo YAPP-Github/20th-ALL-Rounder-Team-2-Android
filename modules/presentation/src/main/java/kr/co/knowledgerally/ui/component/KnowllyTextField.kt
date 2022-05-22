@@ -13,10 +13,7 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.VisualTransformation
@@ -26,8 +23,9 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun KnowllyTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    text: String = "",
     hint: String = "",
     enabled: Boolean = true,
     isError: Boolean = false,
@@ -38,13 +36,12 @@ fun KnowllyTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
-    var value by remember(text) { mutableStateOf(text) }
     val colors = KnowllyTextFieldDefaults.colors
-
+    
     @OptIn(ExperimentalMaterial3Api::class)
     BasicTextField(
         value = value,
-        onValueChange = { value = it },
+        onValueChange = onValueChange,
         modifier = modifier,
         enabled = enabled,
         textStyle = KnowllyTheme.typography.body1,
@@ -135,7 +132,10 @@ object KnowllyTextFieldDefaults {
 @Composable
 private fun KnowllyTextFieldPreview() {
     KnowllyTheme {
-        KnowllyTextField(text = "텍스트")
+        KnowllyTextField(
+            value = "텍스트",
+            onValueChange = { }
+        )
     }
 }
 
@@ -143,7 +143,11 @@ private fun KnowllyTextFieldPreview() {
 @Composable
 private fun KnowllyTextFieldPreviewHint() {
     KnowllyTheme {
-        KnowllyTextField(text = "", hint = "Hint")
+        KnowllyTextField(
+            value = "",
+            onValueChange = { },
+            hint = "Hint"
+        )
     }
 }
 
@@ -151,7 +155,11 @@ private fun KnowllyTextFieldPreviewHint() {
 @Composable
 private fun KnowllyTextFieldPreviewError() {
     KnowllyTheme {
-        KnowllyTextField(text = "텍스트", isError = true)
+        KnowllyTextField(
+            value = "텍스트",
+            onValueChange = { },
+            isError = true
+        )
     }
 }
 
@@ -159,6 +167,10 @@ private fun KnowllyTextFieldPreviewError() {
 @Composable
 private fun KnowllyTextFieldPreviewMultiline() {
     KnowllyTheme {
-        KnowllyTextField(text = "텍스트\n텍스트", singleLine = false)
+        KnowllyTextField(
+            value = "텍스트\n텍스트",
+            onValueChange = { },
+            singleLine = false
+        )
     }
 }
