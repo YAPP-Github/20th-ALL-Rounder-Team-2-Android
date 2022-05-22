@@ -22,7 +22,7 @@ android {
         versionCode = Versions.VERSION_CODE
         versionName = Versions.VERSION_NAME
 
-        buildConfigField("String", "KAKAO_API_KEY", KAKAO_API_KEY)
+        buildConfigField("String", "KAKAO_API_KEY", "\"${KAKAO_API_KEY}\"")
         manifestPlaceholders["KAKAO_API_KEY"] = KAKAO_API_KEY
     }
 
