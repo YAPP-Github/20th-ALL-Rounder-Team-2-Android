@@ -45,7 +45,7 @@ object KakaoSdk {
             kakaoAccountLogin(context, kakaoAccountLoginCallback)
         }
 
-        return result
+        return result // FIXME: UI에서 항상 초깃값인 Result.Success(null)을 반환하는 버그
     }
 
     private fun kakaoTalkLogin(context: Context, callback: (OAuthToken?, Throwable?) -> Unit) {
