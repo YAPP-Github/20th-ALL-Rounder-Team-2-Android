@@ -75,6 +75,8 @@ dependencies {
     implementation(project(Modules.REMOTE))
     implementation(project(Modules.LOG))
 
+    implementation(libs.coroutines.android)
+
     implementation(libs.kakao.user)
 
     implementation(libs.hilt.android)
