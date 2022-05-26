@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun KnowllyFilledButton(
+fun KnowllyContainedButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -25,7 +25,7 @@ fun KnowllyFilledButton(
         modifier = modifier.height(KnowllyButtonDefaults.ButtonHeight),
         enabled = enabled,
         shape = KnowllyButtonDefaults.ButtonShape,
-        colors = KnowllyButtonDefaults.filledButtonColors,
+        colors = KnowllyButtonDefaults.containedButtonColors,
     ) {
         Text(
             text = text,
@@ -61,12 +61,12 @@ object KnowllyButtonDefaults {
         @Composable
         get() = KnowllyTheme.typography.button1
 
-    val filledButtonColors
+    val containedButtonColors
         @Composable
         get() = ButtonDefaults.buttonColors(
-            containerColor = KnowllyTheme.colors.primaryDark,
+            containerColor = KnowllyTheme.colors.primary,
             contentColor = KnowllyTheme.colors.grayFF,
-            disabledContainerColor = KnowllyTheme.colors.grayDD,
+            disabledContainerColor = KnowllyTheme.colors.primary.copy(alpha = 0.6f),
             disabledContentColor = KnowllyTheme.colors.grayFF
         )
 
@@ -85,9 +85,9 @@ object KnowllyButtonDefaults {
 
 @Preview("Enabled")
 @Composable
-fun KnowllyFilledButtonPreviewEnabled() {
+fun KnowllyContainedButtonPreviewEnabled() {
     KnowllyTheme {
-        KnowllyFilledButton(
+        KnowllyContainedButton(
             text = "버튼",
             onClick = { },
             enabled = true,
@@ -99,7 +99,7 @@ fun KnowllyFilledButtonPreviewEnabled() {
 @Composable
 fun KnowllyFilledButtonPreviewDisabled() {
     KnowllyTheme {
-        KnowllyFilledButton(
+        KnowllyContainedButton(
             text = "버튼",
             onClick = { },
             enabled = false,
