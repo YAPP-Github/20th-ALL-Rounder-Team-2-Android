@@ -63,15 +63,15 @@ private val Typography = KnowllyTypography(
     subtitle4 = TextStyle(
         fontFamily = Suit,
         fontSize = 14.sp,
-        fontWeight = FontWeight.Medium,
-        lineHeight = 19.sp,
+        fontWeight = FontWeight.SemiBold,
+        lineHeight = 20.sp,
         letterSpacing = (-0.25).sp
     ),
     body1 = TextStyle(
         fontFamily = Suit,
         fontSize = 14.sp,
         fontWeight = FontWeight.Normal,
-        lineHeight = 20.sp,
+        lineHeight = 19.sp,
         letterSpacing = (-0.25).sp
     ),
     body2 = TextStyle(
@@ -89,7 +89,7 @@ private val Typography = KnowllyTypography(
     ),
     button2 = TextStyle(
         fontFamily = Suit,
-        fontSize = 10.sp,
+        fontSize = 12.sp,
         fontWeight = FontWeight.Medium,
         lineHeight = 16.sp,
     ),
