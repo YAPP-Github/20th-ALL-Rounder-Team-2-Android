@@ -122,9 +122,9 @@ private fun KnowllyTextFieldLabel(
 
 @Immutable
 object KnowllyTextFieldDefaults {
-    private val BorderThickness = 0.6.dp
+    private val BorderThickness = 1.dp
     private val ContentPadding = 12.dp
-    private val TextFieldShape = RoundedCornerShape(5.dp)
+    private val TextFieldShape = RoundedCornerShape(8.dp)
 
     val colors
         @Composable
