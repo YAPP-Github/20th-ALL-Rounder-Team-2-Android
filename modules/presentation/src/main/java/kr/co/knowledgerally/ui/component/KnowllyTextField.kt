@@ -37,7 +37,7 @@ fun KnowllyTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val colors = KnowllyTextFieldDefaults.colors
-    
+
     @OptIn(ExperimentalMaterial3Api::class)
     BasicTextField(
         value = value,
@@ -76,13 +76,13 @@ object KnowllyTextFieldDefaults {
     val colors
         @Composable
         get() = TextFieldDefaults.outlinedTextFieldColors(
-            placeholderColor = KnowllyTheme.colors.gray8F,
-            textColor = KnowllyTheme.colors.gray00,
-            unfocusedBorderColor = KnowllyTheme.colors.grayCC,
-            focusedBorderColor = KnowllyTheme.colors.primaryDark,
+            placeholderColor = KnowllyTheme.colors.grayCC,
+            textColor = KnowllyTheme.colors.gray44,
+            unfocusedBorderColor = KnowllyTheme.colors.grayDD,
+            focusedBorderColor = KnowllyTheme.colors.positive,
             errorBorderColor = KnowllyTheme.colors.error,
             errorCursorColor = KnowllyTheme.colors.error,
-            cursorColor = KnowllyTheme.colors.gray00,
+            cursorColor = KnowllyTheme.colors.positive,
         )
 
     @Composable
