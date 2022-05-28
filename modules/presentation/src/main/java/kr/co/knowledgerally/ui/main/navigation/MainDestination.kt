@@ -19,32 +19,32 @@ import kr.co.knowledgerally.ui.mypage.navigation.MyPageDestination
 
 enum class MainDestination(
     val route: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
+    val activeIconRes: Int,
+    val inactiveIconRes: Int,
     @StringRes val iconTextResId: Int,
 ) {
     Home(
         route = HomeDestination.route,
-        selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.Home,
+        activeIconRes = R.drawable.ic_home_active,
+        inactiveIconRes = R.drawable.ic_home_inactive,
         iconTextResId = R.string.home,
     ),
     Lesson(
         route = LessonDestination.route,
-        selectedIcon = Icons.Filled.List,
-        unselectedIcon = Icons.Outlined.List,
+        activeIconRes = R.drawable.ic_player_active,
+        inactiveIconRes = R.drawable.ic_player_inactive,
         iconTextResId = R.string.lesson,
     ),
     Coach(
         route = CoachDestination.route,
-        selectedIcon = Icons.Filled.MailOutline,
-        unselectedIcon = Icons.Outlined.MailOutline,
+        activeIconRes = R.drawable.ic_coach_active,
+        inactiveIconRes = R.drawable.ic_coach_inactive,
         iconTextResId = R.string.coach,
     ),
     MyPage(
         route = MyPageDestination.route,
-        selectedIcon = Icons.Filled.Person,
-        unselectedIcon = Icons.Outlined.Person,
+        activeIconRes = R.drawable.ic_mypage_active,
+        inactiveIconRes = R.drawable.ic_mypage_inactive,
         iconTextResId = R.string.mypage,
     )
 }

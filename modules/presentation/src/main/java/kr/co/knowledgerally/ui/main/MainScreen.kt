@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -98,12 +99,12 @@ private fun RowScope.NavigationBarItem(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val imageVector = if (selected) {
-                destination.selectedIcon
+            val iconRes = if (selected) {
+                destination.activeIconRes
             } else {
-                destination.unselectedIcon
+                destination.inactiveIconRes
             }
-            Icon(imageVector = imageVector, contentDescription = null)
+            Icon(painter = painterResource(id = iconRes), contentDescription = null)
             Spacer(modifier = modifier.height(4.dp))
             Text(text = stringResource(id = destination.iconTextResId))
         }
