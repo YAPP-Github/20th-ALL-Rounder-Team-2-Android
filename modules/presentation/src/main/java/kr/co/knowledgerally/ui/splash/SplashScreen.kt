@@ -13,17 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun SplashScreen() {
-    val systemUiController: SystemUiController = rememberSystemUiController()
-    systemUiController.setStatusBarColor(KnowllyTheme.colors.primaryDark)
-    systemUiController.isNavigationBarVisible = false
-
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,6 +23,10 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val systemUiController: SystemUiController = rememberSystemUiController()
+            systemUiController.setStatusBarColor(KnowllyTheme.colors.primaryDark)
+            systemUiController.isNavigationBarVisible = false
+
             KnowllyTheme {
                 SplashScreen()
             }
