@@ -35,14 +35,14 @@ fun SplashScreen() {
             painter = painterResource(id = R.drawable.ic_logo),
             tint = KnowllyTheme.colors.grayFF,
             contentDescription = null,
-            modifier = Modifier.size(width = 65.dp, height = 64.dp)
+            modifier = Modifier.size(width = 64.dp, height = 64.dp)
         )
-        Spacer(Modifier.height(23.dp))
+        Spacer(Modifier.height(24.dp))
         Icon(
             painter = painterResource(id = R.drawable.ic_logo_text),
             tint = KnowllyTheme.colors.grayFF,
             contentDescription = null,
-            modifier = Modifier.size(width = 128.dp, height = 35.dp)
+            modifier = Modifier.size(width = 128.dp, height = 36.dp)
         )
     }
 }
