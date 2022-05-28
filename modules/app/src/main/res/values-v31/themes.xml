@@ -2,6 +2,8 @@
 <resources>
 
     <style name="Theme.Knowlly.Splash" parent="Theme.Knowlly">
-        <item name="android:windowSplashScreenBackground">@color/white</item>
+        <item name="android:windowSplashScreenBackground">@color/primaryDark</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_none</item>
+        <item name="android:windowSplashScreenAnimationDuration">0</item>
     </style>
 </resources>

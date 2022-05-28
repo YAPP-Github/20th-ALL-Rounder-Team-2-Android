@@ -1,14 +1,18 @@
 package kr.co.knowledgerally.ui.splash
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.login.LoginActivity
+import kr.co.knowledgerally.ui.main.MainActivity
+import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
 class SplashActivity : BaseActivity() {
@@ -17,6 +21,16 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContent {
+            val systemUiController: SystemUiController = rememberSystemUiController()
+            systemUiController.setStatusBarColor(KnowllyTheme.colors.primaryDark)
+            systemUiController.isNavigationBarVisible = false
+
+            KnowllyTheme {
+                SplashScreen()
+            }
+        }
 
         lifecycleScope.launch {
             delay(SPLASH_TIME_MILLIS)
@@ -41,6 +55,6 @@ class SplashActivity : BaseActivity() {
     }
 
     companion object {
-        private const val SPLASH_TIME_MILLIS = 1_500L
+        private const val SPLASH_TIME_MILLIS = 2_000L
     }
 }

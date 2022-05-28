@@ -12,6 +12,8 @@ compose = "1.2.0-beta02"
 material3 = "1.0.0-alpha12"
 dagger = "2.41"
 
+accompanist = "0.24.9-beta"
+
 okhttp = "4.9.3"
 retrofit = "2.9.0"
 
@@ -42,6 +44,8 @@ androidx-compose-material = { module = "androidx.compose.material:material", ver
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 androidx-customview-poolingcontainer = { module = "androidx.customview:customview-poolingcontainer", version = "1.0.0-beta01" }
+
+google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
 javax-inject = "javax.inject:javax.inject:1"
 
