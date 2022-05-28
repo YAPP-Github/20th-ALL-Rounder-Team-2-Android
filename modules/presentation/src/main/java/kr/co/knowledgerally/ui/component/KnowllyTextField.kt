@@ -2,12 +2,13 @@ package kr.co.knowledgerally.ui.component
 
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -19,7 +20,6 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -79,14 +79,20 @@ fun KnowllyTextField(
             }
         )
 
-        val labelColor by colors.labelColor(enabled, isError, interactionSource)
-        KnowllyTextFieldLabel(
-            modifier = Modifier.padding(top = 2.dp),
-            label = label,
-            color = labelColor,
-            length = value.length,
-            maxLength = maxLength
-        )
+        val showLabel = label.isNotBlank()
+        val showMaxLength = maxLength != Int.MAX_VALUE
+        if (showLabel || showMaxLength) {
+            Spacer(modifier = modifier.height(2.dp))
+            KnowllyTextFieldLabel(
+                modifier = modifier.fillMaxWidth(),
+                label = label,
+                showLabel = showLabel,
+                color = colors.labelColor(enabled, isError, interactionSource).value,
+                length = value.length,
+                maxLength = maxLength,
+                showMaxLength = showMaxLength,
+            )
+        }
     }
 }
 
@@ -94,12 +100,17 @@ fun KnowllyTextField(
 private fun KnowllyTextFieldLabel(
     modifier: Modifier = Modifier,
     label: String,
+    showLabel: Boolean,
     color: Color,
     length: Int,
-    maxLength: Int
+    maxLength: Int,
+    showMaxLength: Boolean,
 ) {
-    Row(modifier = modifier) {
-        if (label.isNotBlank()) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.End
+    ) {
+        if (showLabel) {
             Text(
                 text = label,
                 modifier = Modifier.weight(1f),
@@ -107,10 +118,10 @@ private fun KnowllyTextFieldLabel(
                 color = color,
             )
         }
-
-        Spacer(modifier = Modifier.width(10.dp))
-
-        if (maxLength != Int.MAX_VALUE) {
+        if (showLabel && showMaxLength) {
+            Spacer(modifier = Modifier.width(10.dp))
+        }
+        if (showMaxLength) {
             Text(
                 text = "${length}/${maxLength}",
                 style = KnowllyTheme.typography.body2,
@@ -123,7 +134,7 @@ private fun KnowllyTextFieldLabel(
 @Immutable
 object KnowllyTextFieldDefaults {
     private val BorderThickness = 1.dp
-    private val ContentPadding = 12.dp
+    private val ContentPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp)
     private val TextFieldShape = RoundedCornerShape(8.dp)
 
     val colors
@@ -178,7 +189,7 @@ object KnowllyTextFieldDefaults {
             },
             enabled = enabled,
             interactionSource = interactionSource,
-            contentPadding = PaddingValues(ContentPadding),
+            contentPadding = ContentPadding,
             visualTransformation = visualTransformation
         )
     }
@@ -239,6 +250,18 @@ private fun KnowllyTextFieldLabelPreview() {
             value = "텍스트",
             onValueChange = { },
             label = "message",
+            maxLength = 10,
+        )
+    }
+}
+
+@Preview("Label only max length")
+@Composable
+private fun KnowllyTextFieldLabelPreviewOnlyMaxLength() {
+    KnowllyTheme {
+        KnowllyTextField(
+            value = "텍스트",
+            onValueChange = { },
             maxLength = 10,
         )
     }
