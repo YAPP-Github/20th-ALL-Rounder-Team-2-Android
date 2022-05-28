@@ -97,7 +97,7 @@ fun KnowllyContainedButtonPreviewEnabled() {
 
 @Preview("Disabled")
 @Composable
-fun KnowllyFilledButtonPreviewDisabled() {
+fun KnowllyContainedButtonPreviewDisabled() {
     KnowllyTheme {
         KnowllyContainedButton(
             text = "버튼",
