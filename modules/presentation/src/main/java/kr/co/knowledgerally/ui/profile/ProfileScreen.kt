@@ -61,12 +61,8 @@ private fun ProfileScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            VerticalSpacer(height = 56.dp)
-            Text(
-                text = stringResource(id = R.string.profile_title),
-                modifier = Modifier.padding(top = 8.dp),
-                style = KnowllyTheme.typography.headline4,
-            )
+            VerticalSpacer(height = 64.dp)
+            ProfileTitle(text = stringResource(id = R.string.profile_title))
             VerticalSpacer(height = 36.dp)
 
             Box(
@@ -97,12 +93,9 @@ private fun ProfileScreen(
             }
 
             VerticalSpacer(height = 16.dp)
-            Text(
-                text = stringResource(id = R.string.profile_name),
-                style = KnowllyTheme.typography.headline4
-            )
-            VerticalSpacer(height = 12.dp)
 
+            ProfileTitle(text = stringResource(id = R.string.profile_name))
+            VerticalSpacer(height = 12.dp)
             KnowllyTextField(
                 value = nameState.text,
                 onValueChange = onNameChange,
@@ -115,12 +108,9 @@ private fun ProfileScreen(
             )
 
             VerticalSpacer(height = 20.dp)
-            Text(
-                text = stringResource(id = R.string.profile_introduction),
-                style = KnowllyTheme.typography.headline4
-            )
-            VerticalSpacer(height = 12.dp)
 
+            ProfileTitle(text = stringResource(id = R.string.profile_introduction))
+            VerticalSpacer(height = 12.dp)
             KnowllyTextField(
                 value = introductionState.text,
                 onValueChange = onIntroductionChange,
@@ -146,6 +136,11 @@ private fun ProfileScreen(
             enabled = uploadEnabled
         )
     }
+}
+
+@Composable
+private fun ProfileTitle(text: String) {
+    Text(text = text, style = KnowllyTheme.typography.headline4)
 }
 
 @Preview(showBackground = true)
