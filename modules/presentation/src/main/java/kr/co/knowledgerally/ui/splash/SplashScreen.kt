@@ -44,7 +44,7 @@ fun SplashScreen() {
 
 @Preview
 @Composable
-fun SplashScreenPreview() {
+private fun SplashScreenPreview() {
     KnowllyTheme {
         SplashScreen()
     }
