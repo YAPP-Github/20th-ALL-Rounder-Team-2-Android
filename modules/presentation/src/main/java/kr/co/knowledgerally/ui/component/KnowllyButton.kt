@@ -66,7 +66,7 @@ object KnowllyButtonDefaults {
         get() = ButtonDefaults.buttonColors(
             containerColor = KnowllyTheme.colors.primary,
             contentColor = KnowllyTheme.colors.grayFF,
-            disabledContainerColor = KnowllyTheme.colors.primary,
+            disabledContainerColor = KnowllyTheme.colors.grayDD,
             disabledContentColor = KnowllyTheme.colors.grayFF
         )
 
@@ -85,7 +85,7 @@ object KnowllyButtonDefaults {
 
 @Preview("Enabled")
 @Composable
-fun KnowllyContainedButtonPreviewEnabled() {
+private fun KnowllyContainedButtonPreviewEnabled() {
     KnowllyTheme {
         KnowllyContainedButton(
             text = "버튼",
@@ -97,7 +97,7 @@ fun KnowllyContainedButtonPreviewEnabled() {
 
 @Preview("Disabled")
 @Composable
-fun KnowllyContainedButtonPreviewDisabled() {
+private fun KnowllyContainedButtonPreviewDisabled() {
     KnowllyTheme {
         KnowllyContainedButton(
             text = "버튼",
@@ -109,7 +109,7 @@ fun KnowllyContainedButtonPreviewDisabled() {
 
 @Preview
 @Composable
-fun KnowllyOutlinedButtonPreview() {
+private fun KnowllyOutlinedButtonPreview() {
     KnowllyTheme {
         KnowllyOutlinedButton(
             text = "버튼",
