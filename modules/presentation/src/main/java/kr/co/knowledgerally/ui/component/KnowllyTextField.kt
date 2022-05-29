@@ -88,7 +88,7 @@ fun KnowllyTextField(
         if (helperTextEnabled || counterEnabled) {
             VerticalSpacer(height = 2.dp)
             KnowllyTextFieldHelper(
-                modifier = modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 helperText = helperText,
                 helperTextEnabled = helperTextEnabled,
                 color = colors.labelColor(enabled, isError, interactionSource).value,
