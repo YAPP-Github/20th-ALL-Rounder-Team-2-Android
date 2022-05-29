@@ -60,39 +60,16 @@ private fun ProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
+                .padding(top = 64.dp)
         ) {
-            VerticalSpacer(height = 64.dp)
             ProfileTitle(text = stringResource(id = R.string.profile_title))
-            VerticalSpacer(height = 36.dp)
 
-            Box(
+            ProfileImage(
                 modifier = Modifier
+                    .padding(top = 36.dp, bottom = 16.dp)
                     .size(156.dp)
-                    .align(Alignment.CenterHorizontally),
-                contentAlignment = Alignment.Center,
-            ) {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(CircleShape)
-                        .clickable { /* TODO */ },
-                    color = KnowllyTheme.colors.grayCC,
-                ) {
-                    // TODO: Image
-                }
-                Surface(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .size(36.dp),
-                    border = BorderStroke(1.dp, KnowllyTheme.colors.grayFF),
-                    color = KnowllyTheme.colors.gray8F,
-                    shape = CircleShape
-                ) {
-                    // TODO: Icon
-                }
-            }
-
-            VerticalSpacer(height = 16.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
 
             ProfileTitle(text = stringResource(id = R.string.profile_name))
             VerticalSpacer(height = 12.dp)
@@ -141,6 +118,36 @@ private fun ProfileScreen(
 @Composable
 private fun ProfileTitle(text: String) {
     Text(text = text, style = KnowllyTheme.typography.headline4)
+}
+
+@Composable
+private fun ProfileImage(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+                .clickable { /* TODO */ },
+            color = KnowllyTheme.colors.grayCC,
+        ) {
+            // TODO: Image
+        }
+        Surface(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .size(36.dp),
+            border = BorderStroke(1.dp, KnowllyTheme.colors.grayFF),
+            color = KnowllyTheme.colors.gray8F,
+            shape = CircleShape
+        ) {
+            // TODO: Icon
+        }
+    }
 }
 
 @Preview(showBackground = true)
