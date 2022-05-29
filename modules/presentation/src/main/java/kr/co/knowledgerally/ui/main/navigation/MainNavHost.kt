@@ -8,7 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import kr.co.knowledgerally.ui.coach.navigation.coachGraph
 import kr.co.knowledgerally.ui.home.navigation.HomeDestination
 import kr.co.knowledgerally.ui.home.navigation.homeGraph
-import kr.co.knowledgerally.ui.lesson.navigation.lessonGraph
+import kr.co.knowledgerally.ui.player.navigation.playerGraph
 import kr.co.knowledgerally.ui.mypage.navigation.myPageGraph
 
 @Composable
@@ -24,7 +24,7 @@ fun MainNavHost(
         modifier = modifier
     ) {
         homeGraph()
-        lessonGraph()
+        playerGraph()
         coachGraph()
         myPageGraph()
     }
