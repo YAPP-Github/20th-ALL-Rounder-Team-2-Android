@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.ui.theme
 
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -21,6 +22,7 @@ fun KnowllyTheme(
     CompositionLocalProvider(
         LocalColors provides rememberedColors,
         LocalTypography provides typography,
+        LocalContentColor provides colors.gray00
     ) {
         MaterialTheme(
             colors = MaterialColors,
