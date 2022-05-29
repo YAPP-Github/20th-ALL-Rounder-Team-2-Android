@@ -14,6 +14,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +28,10 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel) {
+    val name by viewModel.name.collectAsState()
+    val introduction by viewModel.introduction.collectAsState()
+    val buttonEnabled = name.isNotBlank && introduction.isNotBlank
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -76,12 +82,13 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
             VerticalSpacer(height = 12.dp)
 
             KnowllyTextField(
-                value = "",
-                onValueChange = { },
+                value = name.text,
+                onValueChange = { viewModel.updateName(it) },
                 placeHolderText = "이름을 입력하세요",
+                singleLine = true,
                 helperText = "message",
                 helperTextEnabled = true,
-                counterMaxLength = 10,
+                counterMaxLength = name.maxLength,
                 counterEnabled = true,
             )
 
@@ -90,14 +97,14 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
             VerticalSpacer(height = 12.dp)
 
             KnowllyTextField(
-                value = "",
-                onValueChange = { },
+                value = introduction.text,
+                onValueChange = { viewModel.updateIntroduction(it) },
                 placeHolderText = "자기소개를 자세히 기록해주세요",
                 helperText = "message",
                 singleLine = false,
-                counterMaxLength = 100,
+                counterMaxLength = introduction.maxLength,
                 counterEnabled = true,
-                minHeight = 180.dp
+                minHeight = 180.dp,
             )
 
             // Button Size + Button Padding
@@ -106,11 +113,12 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
 
         KnowllyContainedButton(
             text = "완료",
-            onClick = { /*TODO*/ },
+            onClick = { viewModel.uploadProfile() },
             modifier = Modifier
                 .padding(bottom = 24.dp, top = 20.dp)
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter)
+                .align(Alignment.BottomCenter),
+            enabled = buttonEnabled
         )
     }
 }
