@@ -3,10 +3,10 @@ package kr.co.knowledgerally.ui.notification
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.usecase.GetNotificationUseCase
 import kr.co.knowledgerally.ui.model.toPresentation
 import javax.inject.Inject
@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
     private val getNotificationUseCase: GetNotificationUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
     var state by mutableStateOf<NotificationUiState>(NotificationUiState.Loading)
         private set
