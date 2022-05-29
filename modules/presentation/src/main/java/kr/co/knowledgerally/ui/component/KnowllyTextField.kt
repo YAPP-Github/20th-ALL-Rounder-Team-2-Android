@@ -34,7 +34,7 @@ fun KnowllyTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeHolderText: String = "",
+    placeholder: String = "",
     helperTextEnabled: Boolean = false,
     helperText: String = "",
     counterEnabled: Boolean = false,
@@ -79,7 +79,7 @@ fun KnowllyTextField(
                     singleLine = singleLine,
                     visualTransformation = visualTransformation,
                     interactionSource = interactionSource,
-                    placeholder = placeHolderText,
+                    placeholder = placeholder,
                     colors = colors,
                 )
             }
@@ -219,7 +219,7 @@ private fun KnowllyTextFieldPreviewHint() {
         KnowllyTextField(
             value = "",
             onValueChange = { },
-            placeHolderText = "Hint"
+            placeholder = "Hint"
         )
     }
 }

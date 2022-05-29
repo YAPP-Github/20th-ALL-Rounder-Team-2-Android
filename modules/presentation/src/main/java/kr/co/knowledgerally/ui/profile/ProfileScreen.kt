@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
@@ -63,42 +64,18 @@ private fun ProfileScreen(
                 .padding(top = 64.dp)
         ) {
             ProfileTitle(text = stringResource(id = R.string.profile_title))
-
             ProfileImage(
                 modifier = Modifier
                     .padding(top = 36.dp, bottom = 16.dp)
                     .size(156.dp)
                     .align(Alignment.CenterHorizontally)
             )
-
-            ProfileTitle(text = stringResource(id = R.string.profile_name))
-            VerticalSpacer(height = 12.dp)
-            KnowllyTextField(
-                value = nameState.text,
-                onValueChange = onNameChange,
-                placeHolderText = stringResource(id = R.string.profile_name_hint),
-                singleLine = true,
-                helperText = "message",
-                helperTextEnabled = true,
-                counterMaxLength = nameState.maxLength,
-                counterEnabled = true,
+            ProfileTextFields(
+                nameState = nameState,
+                onNameChange = onNameChange,
+                introductionState = introductionState,
+                onIntroductionChange = onIntroductionChange
             )
-
-            VerticalSpacer(height = 20.dp)
-
-            ProfileTitle(text = stringResource(id = R.string.profile_introduction))
-            VerticalSpacer(height = 12.dp)
-            KnowllyTextField(
-                value = introductionState.text,
-                onValueChange = onIntroductionChange,
-                placeHolderText = stringResource(id = R.string.profile_introduction_hint),
-                helperText = "message",
-                singleLine = false,
-                counterMaxLength = introductionState.maxLength,
-                counterEnabled = true,
-                minHeight = 180.dp,
-            )
-
             // Button Size + Button Padding
             VerticalSpacer(height = 90.dp)
         }
@@ -148,6 +125,62 @@ private fun ProfileImage(
             // TODO: Icon
         }
     }
+}
+
+@Composable
+private fun ProfileTextFields(
+    nameState: TextUiState,
+    onNameChange: (String) -> Unit,
+    introductionState: TextUiState,
+    onIntroductionChange: (String) -> Unit,
+) {
+    ProfileTextField(
+        title = stringResource(id = R.string.profile_name),
+        value = nameState.text,
+        onValueChange = onNameChange,
+        maxLength = nameState.maxLength,
+        placeholder = stringResource(id = R.string.profile_name_hint),
+        helperText = "message",
+        singleLine = true,
+    )
+
+    VerticalSpacer(height = 20.dp)
+
+    ProfileTextField(
+        title = stringResource(id = R.string.profile_introduction),
+        value = introductionState.text,
+        onValueChange = onIntroductionChange,
+        maxLength = introductionState.maxLength,
+        placeholder = stringResource(id = R.string.profile_introduction_hint),
+        singleLine = false,
+        minHeight = 180.dp,
+    )
+}
+
+@Composable
+private fun ProfileTextField(
+    title: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    maxLength: Int,
+    placeholder: String,
+    singleLine: Boolean,
+    helperText: String = "",
+    minHeight: Dp = Dp.Unspecified,
+) {
+    ProfileTitle(text = title)
+    VerticalSpacer(height = 12.dp)
+    KnowllyTextField(
+        value = value,
+        onValueChange = onValueChange,
+        placeholder = placeholder,
+        singleLine = singleLine,
+        helperText = helperText,
+        helperTextEnabled = helperText.isNotBlank(),
+        counterMaxLength = maxLength,
+        counterEnabled = true,
+        minHeight = minHeight
+    )
 }
 
 @Preview(showBackground = true)
