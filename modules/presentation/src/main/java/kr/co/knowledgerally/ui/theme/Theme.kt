@@ -1,5 +1,7 @@
 package kr.co.knowledgerally.ui.theme
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -19,10 +21,12 @@ fun KnowllyTheme(
         colors.copy()
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     CompositionLocalProvider(
         LocalColors provides rememberedColors,
         LocalTypography provides typography,
-        LocalContentColor provides colors.gray00
+        LocalContentColor provides colors.gray00,
+        LocalOverScrollConfiguration provides null
     ) {
         MaterialTheme(
             colors = MaterialColors,
