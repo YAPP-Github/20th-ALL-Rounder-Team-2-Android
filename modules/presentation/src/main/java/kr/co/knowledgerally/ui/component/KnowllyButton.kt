@@ -66,7 +66,7 @@ object KnowllyButtonDefaults {
         get() = ButtonDefaults.buttonColors(
             containerColor = KnowllyTheme.colors.primary,
             contentColor = KnowllyTheme.colors.grayFF,
-            disabledContainerColor = KnowllyTheme.colors.primary,
+            disabledContainerColor = KnowllyTheme.colors.grayDD,
             disabledContentColor = KnowllyTheme.colors.grayFF
         )
 
