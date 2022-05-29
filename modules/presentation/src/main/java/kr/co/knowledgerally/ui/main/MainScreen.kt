@@ -1,17 +1,17 @@
 package kr.co.knowledgerally.ui.main
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -28,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import kr.co.knowledgerally.ui.main.navigation.MainDestination
 import kr.co.knowledgerally.ui.main.navigation.MainNavHost
 import kr.co.knowledgerally.ui.main.navigation.rememberMainNavigation
+import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +45,7 @@ fun MainScreen() {
         bottomBar = {
             MainNavigationBar(
                 currentDestination = currentDestination,
-                onNavigate = { navigation.navigateTo(it) }
+                onNavigate = { navigation.navigateTo(it) },
             )
         },
     ) { padding ->
@@ -58,15 +61,21 @@ private fun MainNavigationBar(
     currentDestination: NavDestination?,
     onNavigate: (MainDestination) -> Unit,
 ) {
-    NavigationBar(tonalElevation = 0.dp) {
-        MainDestination.values().forEach { destination ->
-            val selected = destination in currentDestination
+    Column(Modifier.fillMaxWidth()) {
+        Divider(
+            thickness = 1.dp,
+            color = KnowllyTheme.colors.grayEF
+        )
+        Row(modifier = Modifier.height(NavigationBarHeight)) {
+            MainDestination.values().forEach { destination ->
+                val selected = destination in currentDestination
 
-            NavigationBarItem(
-                selected = selected,
-                destination = destination,
-                onClick = { onNavigate(destination) }
-            )
+                NavigationBarItem(
+                    selected = selected,
+                    destination = destination,
+                    onClick = { onNavigate(destination) }
+                )
+            }
         }
     }
 }
@@ -85,28 +94,37 @@ private fun RowScope.NavigationBarItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    val color = if (selected) KnowllyTheme.colors.primaryDark else KnowllyTheme.colors.gray8F
+    val iconRes = if (selected) destination.activeIconResId else destination.inactiveIconResId
+    Column(
         modifier = modifier
-            .fillMaxHeight()
+            .fillMaxSize()
+            .weight(1f)
             .selectable(
                 selected = selected,
                 onClick = onClick,
-            )
-            .weight(1f),
-        contentAlignment = Alignment.Center,
+            ),
+        verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            val iconRes = if (selected) {
-                destination.activeIconRes
-            } else {
-                destination.inactiveIconRes
-            }
-            Icon(painter = painterResource(id = iconRes), contentDescription = null)
-            Spacer(modifier = modifier.height(4.dp))
-            Text(text = stringResource(id = destination.iconTextResId))
-        }
+        Icon(painterResource(id = iconRes), contentDescription = null, tint = color)
+        Text(
+            text = stringResource(id = destination.iconTextResId),
+            style = KnowllyTheme.typography.caption,
+            color = color
+        )
+    }
+}
+
+private val NavigationBarHeight: Dp = 56.dp
+
+@Preview
+@Composable
+fun MainNavigationBarPreview() {
+    KnowllyTheme {
+        MainNavigationBar(
+            currentDestination = null,
+            onNavigate = { }
+        )
     }
 }
