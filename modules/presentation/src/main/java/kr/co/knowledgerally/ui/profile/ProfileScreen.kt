@@ -31,16 +31,16 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel) {
-    val name by viewModel.name.collectAsState()
-    val introduction by viewModel.introduction.collectAsState()
-    val uploadEnabled by viewModel.canUpload.collectAsState()
+    val nameState by viewModel.name.collectAsState()
+    val introductionState by viewModel.introduction.collectAsState()
+    val canUpload by viewModel.canUpload.collectAsState()
 
     ProfileScreen(
-        nameState = name,
+        nameState = nameState,
         onNameChange = viewModel::updateName,
-        introductionState = introduction,
+        introductionState = introductionState,
         onIntroductionChange = viewModel::updateIntroduction,
-        uploadEnabled = uploadEnabled,
+        canUpload = canUpload,
         onUpload = viewModel::uploadProfile,
         modifier = Modifier.fillMaxSize()
     )
@@ -52,7 +52,7 @@ private fun ProfileScreen(
     onNameChange: (String) -> Unit,
     introductionState: TextUiState,
     onIntroductionChange: (String) -> Unit,
-    uploadEnabled: Boolean,
+    canUpload: Boolean,
     onUpload: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -64,18 +64,36 @@ private fun ProfileScreen(
                 .padding(top = 64.dp)
         ) {
             ProfileTitle(text = stringResource(id = R.string.profile_title))
+
             ProfileImage(
                 modifier = Modifier
                     .padding(top = 36.dp, bottom = 16.dp)
                     .size(156.dp)
                     .align(Alignment.CenterHorizontally)
             )
-            ProfileTextFields(
-                nameState = nameState,
-                onNameChange = onNameChange,
-                introductionState = introductionState,
-                onIntroductionChange = onIntroductionChange
+
+            ProfileSubtitle(text = stringResource(id = R.string.profile_name))
+            ProfileTextField(
+                value = nameState.text,
+                onValueChange = onNameChange,
+                maxLength = nameState.maxLength,
+                placeholder = stringResource(id = R.string.profile_name_hint),
+                singleLine = true,
+                helperText = "message",
             )
+
+            VerticalSpacer(height = 20.dp)
+
+            ProfileSubtitle(text = stringResource(id = R.string.profile_introduction))
+            ProfileTextField(
+                value = introductionState.text,
+                onValueChange = onIntroductionChange,
+                maxLength = introductionState.maxLength,
+                placeholder = stringResource(id = R.string.profile_introduction_hint),
+                singleLine = false,
+                minHeight = 180.dp,
+            )
+
             // Button Size + Button Padding
             VerticalSpacer(height = 90.dp)
         }
@@ -83,7 +101,7 @@ private fun ProfileScreen(
         ProfileUploadButton(
             modifier = Modifier.align(Alignment.BottomCenter),
             onClick = onUpload,
-            enabled = uploadEnabled
+            enabled = canUpload
         )
     }
 }
@@ -91,6 +109,11 @@ private fun ProfileScreen(
 @Composable
 private fun ProfileTitle(text: String) {
     Text(text = text, style = KnowllyTheme.typography.headline4)
+}
+
+@Composable
+private fun ProfileSubtitle(text: String) {
+    Text(text = text, style = KnowllyTheme.typography.subtitle1)
 }
 
 @Composable
@@ -124,51 +147,20 @@ private fun ProfileImage(
 }
 
 @Composable
-private fun ProfileTextFields(
-    nameState: TextUiState,
-    onNameChange: (String) -> Unit,
-    introductionState: TextUiState,
-    onIntroductionChange: (String) -> Unit,
-) {
-    ProfileTextField(
-        title = stringResource(id = R.string.profile_name),
-        value = nameState.text,
-        onValueChange = onNameChange,
-        maxLength = nameState.maxLength,
-        placeholder = stringResource(id = R.string.profile_name_hint),
-        helperText = "message",
-        singleLine = true,
-    )
-
-    VerticalSpacer(height = 20.dp)
-
-    ProfileTextField(
-        title = stringResource(id = R.string.profile_introduction),
-        value = introductionState.text,
-        onValueChange = onIntroductionChange,
-        maxLength = introductionState.maxLength,
-        placeholder = stringResource(id = R.string.profile_introduction_hint),
-        singleLine = false,
-        minHeight = 180.dp,
-    )
-}
-
-@Composable
 private fun ProfileTextField(
-    title: String,
     value: String,
     onValueChange: (String) -> Unit,
     maxLength: Int,
     placeholder: String,
     singleLine: Boolean,
+    modifier: Modifier = Modifier,
     helperText: String = "",
     minHeight: Dp = Dp.Unspecified,
 ) {
-    ProfileTitle(text = title)
-    VerticalSpacer(height = 12.dp)
     KnowllyTextField(
         value = value,
         onValueChange = onValueChange,
+        modifier = modifier.padding(top = 12.dp),
         placeholder = placeholder,
         singleLine = singleLine,
         helperText = helperText,
@@ -204,7 +196,7 @@ private fun ProfileScreenPreview() {
             onNameChange = { },
             introductionState = TextUiState.default(100),
             onIntroductionChange = { },
-            uploadEnabled = true,
+            canUpload = true,
             onUpload = { },
         )
     }
