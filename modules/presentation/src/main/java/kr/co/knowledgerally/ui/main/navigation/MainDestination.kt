@@ -7,6 +7,8 @@ import kr.co.knowledgerally.ui.home.navigation.HomeDestination
 import kr.co.knowledgerally.ui.lesson.navigation.LessonDestination
 import kr.co.knowledgerally.ui.mypage.navigation.MyPageDestination
 
+private const val NO_ROUTE = "no_route"
+
 enum class MainDestination(
     val route: String,
     val activeIconResId: Int,
@@ -25,6 +27,12 @@ enum class MainDestination(
         inactiveIconResId = R.drawable.ic_player_inactive,
         iconTextResId = R.string.lesson,
     ),
+    Register(
+        route = NO_ROUTE,
+        activeIconResId = R.drawable.ic_addclass_inactive,
+        inactiveIconResId = R.drawable.ic_addclass_inactive,
+        iconTextResId = R.string.register_class
+    ),
     Coach(
         route = CoachDestination.route,
         activeIconResId = R.drawable.ic_coach_active,
@@ -36,5 +44,7 @@ enum class MainDestination(
         activeIconResId = R.drawable.ic_mypage_active,
         inactiveIconResId = R.drawable.ic_mypage_inactive,
         iconTextResId = R.string.mypage,
-    )
+    );
+
+    val hasRoute: Boolean get() = route != NO_ROUTE
 }

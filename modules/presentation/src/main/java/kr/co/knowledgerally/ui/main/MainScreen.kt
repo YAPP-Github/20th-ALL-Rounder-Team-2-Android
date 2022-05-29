@@ -34,7 +34,9 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    onRegister: () -> Unit,
+) {
     val navController = rememberNavController()
     val navigation = rememberMainNavigation(navController)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -45,7 +47,12 @@ fun MainScreen() {
         bottomBar = {
             MainNavigationBar(
                 currentDestination = currentDestination,
-                onNavigate = { navigation.navigateTo(it) },
+                onNavigate = {
+                    when (it) {
+                        MainDestination.Register -> onRegister()
+                        else -> navigation.navigateTo(it)
+                    }
+                },
             )
         },
     ) { padding ->
@@ -67,6 +74,7 @@ private fun MainNavigationBar(
             color = KnowllyTheme.colors.grayEF
         )
         Row(modifier = Modifier.height(NavigationBarHeight)) {
+
             MainDestination.values().forEach { destination ->
                 val selected = destination in currentDestination
 
