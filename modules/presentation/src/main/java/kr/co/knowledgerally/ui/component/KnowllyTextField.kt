@@ -45,6 +45,7 @@ fun KnowllyTextField(
     singleLine: Boolean = false,
     maxLines: Int = Int.MAX_VALUE,
     minHeight: Dp = Dp.Unspecified,
+    maxHeight: Dp = minHeight,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
@@ -58,7 +59,7 @@ fun KnowllyTextField(
             onValueChange = onValueChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = minHeight),
+                .heightIn(min = minHeight, max = maxHeight),
             enabled = enabled,
             textStyle = KnowllyTheme.typography.body1,
             cursorBrush = SolidColor(colors.cursorColor(isError).value),
