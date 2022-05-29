@@ -4,6 +4,7 @@
     <style name="Theme.Knowlly" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
     <style name="Theme.Knowlly.Splash" parent="Theme.Knowlly">
