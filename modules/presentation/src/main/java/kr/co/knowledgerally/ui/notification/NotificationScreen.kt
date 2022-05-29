@@ -42,6 +42,7 @@ fun NotificationScreen(
 ) {
     Scaffold(
         topBar = {
+            // 임시 TopAppBar
             TopAppBar(
                 backgroundColor = KnowllyTheme.colors.grayFF,
                 elevation = 0.dp,
@@ -83,7 +84,7 @@ fun NotificationList(
     onClickItem: () -> Unit
 ) {
     LazyColumn(
-        contentPadding = PaddingValues(start = 24.dp, top = 0.dp, end = 24.dp, bottom = 24.dp)
+        contentPadding = PaddingValues(horizontal = 24.dp)
     ) {
         items(list) { notification ->
             NotificationListItem(notification, onClickItem)
