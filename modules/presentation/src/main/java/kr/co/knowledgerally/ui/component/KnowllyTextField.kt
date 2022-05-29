@@ -6,10 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -26,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -34,15 +33,18 @@ fun KnowllyTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    hint: String = "",
-    label: String = "",
+    placeHolderText: String = "",
+    helperTextEnabled: Boolean = false,
+    helperText: String = "",
+    counterEnabled: Boolean = false,
+    counterMaxLength: Int = 0,
     enabled: Boolean = true,
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     singleLine: Boolean = false,
     maxLines: Int = Int.MAX_VALUE,
-    maxLength: Int = Int.MAX_VALUE,
+    minHeight: Dp = Dp.Unspecified,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
@@ -54,7 +56,9 @@ fun KnowllyTextField(
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = minHeight),
             enabled = enabled,
             textStyle = KnowllyTheme.typography.body1,
             cursorBrush = SolidColor(colors.cursorColor(isError).value),
@@ -73,57 +77,55 @@ fun KnowllyTextField(
                     singleLine = singleLine,
                     visualTransformation = visualTransformation,
                     interactionSource = interactionSource,
-                    placeholder = hint,
+                    placeholder = placeHolderText,
                     colors = colors,
                 )
             }
         )
 
-        val showLabel = label.isNotBlank()
-        val showMaxLength = maxLength != Int.MAX_VALUE
-        if (showLabel || showMaxLength) {
-            Spacer(modifier = modifier.height(2.dp))
-            KnowllyTextFieldLabel(
+        if (helperTextEnabled || counterEnabled) {
+            VerticalSpacer(height = 2.dp)
+            KnowllyTextFieldHelper(
                 modifier = modifier.fillMaxWidth(),
-                label = label,
-                showLabel = showLabel,
+                helperText = helperText,
+                helperTextEnabled = helperTextEnabled,
                 color = colors.labelColor(enabled, isError, interactionSource).value,
-                length = value.length,
-                maxLength = maxLength,
-                showMaxLength = showMaxLength,
+                counterLength = value.length,
+                counterMaxLength = counterMaxLength,
+                counterEnabled = counterEnabled,
             )
         }
     }
 }
 
 @Composable
-private fun KnowllyTextFieldLabel(
+private fun KnowllyTextFieldHelper(
     modifier: Modifier = Modifier,
-    label: String,
-    showLabel: Boolean,
     color: Color,
-    length: Int,
-    maxLength: Int,
-    showMaxLength: Boolean,
+    helperTextEnabled: Boolean,
+    helperText: String,
+    counterEnabled: Boolean,
+    counterLength: Int,
+    counterMaxLength: Int,
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.End
     ) {
-        if (showLabel) {
+        if (helperTextEnabled) {
             Text(
-                text = label,
+                text = helperText,
                 modifier = Modifier.weight(1f),
                 style = KnowllyTheme.typography.body2,
                 color = color,
             )
         }
-        if (showLabel && showMaxLength) {
-            Spacer(modifier = Modifier.width(10.dp))
+        if (helperTextEnabled && counterEnabled) {
+            HorizontalSpacer(width = 10.dp)
         }
-        if (showMaxLength) {
+        if (counterEnabled) {
             Text(
-                text = "${length}/${maxLength}",
+                text = "${counterLength}/${counterMaxLength}",
                 style = KnowllyTheme.typography.body2,
                 color = color,
             )
@@ -213,7 +215,7 @@ private fun KnowllyTextFieldPreviewHint() {
         KnowllyTextField(
             value = "",
             onValueChange = { },
-            hint = "Hint"
+            placeHolderText = "Hint"
         )
     }
 }
@@ -242,41 +244,28 @@ private fun KnowllyTextFieldPreviewMultiline() {
     }
 }
 
-@Preview("Label")
+@Preview("HelperText")
 @Composable
-private fun KnowllyTextFieldLabelPreview() {
+private fun KnowllyTextFieldPreviewHelperText() {
     KnowllyTheme {
         KnowllyTextField(
             value = "텍스트",
             onValueChange = { },
-            label = "message",
-            maxLength = 10,
+            helperText = "message",
+            helperTextEnabled = true,
         )
     }
 }
 
-@Preview("Label only max length")
+@Preview("Counter")
 @Composable
-private fun KnowllyTextFieldLabelPreviewOnlyMaxLength() {
+private fun KnowllyTextFieldPreviewCounter() {
     KnowllyTheme {
         KnowllyTextField(
             value = "텍스트",
             onValueChange = { },
-            maxLength = 10,
-        )
-    }
-}
-
-@Preview("Label with Error")
-@Composable
-private fun KnowllyTextFieldLabelPreviewError() {
-    KnowllyTheme {
-        KnowllyTextField(
-            value = "텍스트",
-            onValueChange = { },
-            label = "message",
-            isError = true,
-            maxLength = 10,
+            counterMaxLength = 10,
+            counterEnabled = true,
         )
     }
 }
