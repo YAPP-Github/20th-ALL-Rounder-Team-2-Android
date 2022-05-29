@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -116,7 +117,9 @@ private fun KnowllyTextFieldHelper(
         if (helperTextEnabled) {
             Text(
                 text = helperText,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .weight(1f),
                 style = KnowllyTheme.typography.body2,
                 color = color,
             )
