@@ -22,6 +22,8 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -34,7 +36,9 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun NotificationScreen(viewModel: NotificationViewModel) {
-    NotificationScreen(state = viewModel.state, onClickItem = { })
+    val state by viewModel.state.collectAsState()
+    
+    NotificationScreen(state = state, onClickItem = { })
 }
 
 @Composable

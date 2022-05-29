@@ -1,10 +1,10 @@
 package kr.co.knowledgerally.ui.notification
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.usecase.GetNotificationUseCase
@@ -16,15 +16,15 @@ class NotificationViewModel @Inject constructor(
     private val getNotificationUseCase: GetNotificationUseCase
 ) : BaseViewModel() {
 
-    var state by mutableStateOf<NotificationUiState>(NotificationUiState.Loading)
-        private set
+    private val _state = MutableStateFlow<NotificationUiState>(NotificationUiState.Loading)
+    val state: StateFlow<NotificationUiState> = _state.asStateFlow()
 
     init {
         fetchNotificationList()
     }
 
     private fun fetchNotificationList() {
-        state = NotificationUiState.Loading
+        _state.value = NotificationUiState.Loading
         viewModelScope.launch {
             val result = getNotificationUseCase()
             result
@@ -32,11 +32,11 @@ class NotificationViewModel @Inject constructor(
                     it.map { notification -> notification.toPresentation() }
                 }
                 .onSuccess {
-                    state =
+                    _state.value =
                         if (it.isNotEmpty()) NotificationUiState.Success(it)
                         else NotificationUiState.Empty
                 }
-                .onFailure { state = NotificationUiState.Failure }
+                .onFailure { _state.value = NotificationUiState.Failure }
         }
     }
 }
