@@ -39,7 +39,7 @@ private val Typography = KnowllyTypography(
         fontFamily = Suit,
         fontSize = 20.sp,
         fontWeight = FontWeight.Bold,
-        lineHeight = 34.sp,
+        lineHeight = 30.sp,
     ),
     subtitle1 = TextStyle(
         fontFamily = Suit,
