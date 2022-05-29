@@ -146,7 +146,7 @@ fun FailNotification() {
 
 @Preview
 @Composable
-fun NotificationScreenPreview() {
+private fun NotificationScreenPreview() {
     val tempNotificationList = listOf(
         NotificationModel(
             id = 0,
