@@ -1,9 +1,13 @@
 package kr.co.knowledgerally.ui.profile
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
 import javax.inject.Inject
@@ -16,6 +20,11 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
 
     private val _introduction = MutableStateFlow(TextUiState.default(INTRODUCTION_MAX_LENGTH))
     val introduction: StateFlow<TextUiState> = _introduction.asStateFlow()
+
+    val canUpload: StateFlow<Boolean> = combine(name, introduction) { name, introduction ->
+        name.isNotBlank && introduction.isNotBlank
+    }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     fun updateName(name: String) {
         _name.update { it.update(name) }

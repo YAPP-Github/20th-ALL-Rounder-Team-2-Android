@@ -19,8 +19,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyTextField
 import kr.co.knowledgerally.ui.component.VerticalSpacer
@@ -30,13 +32,30 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 fun ProfileScreen(viewModel: ProfileViewModel) {
     val name by viewModel.name.collectAsState()
     val introduction by viewModel.introduction.collectAsState()
-    val buttonEnabled = name.isNotBlank && introduction.isNotBlank
+    val uploadEnabled by viewModel.canUpload.collectAsState()
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp)
-    ) {
+    ProfileScreen(
+        nameState = name,
+        onNameChange = viewModel::updateName,
+        introductionState = introduction,
+        onIntroductionChange = viewModel::updateIntroduction,
+        uploadEnabled = uploadEnabled,
+        onUpload = viewModel::uploadProfile,
+        modifier = Modifier.fillMaxSize()
+    )
+}
+
+@Composable
+private fun ProfileScreen(
+    nameState: TextUiState,
+    onNameChange: (String) -> Unit,
+    introductionState: TextUiState,
+    onIntroductionChange: (String) -> Unit,
+    uploadEnabled: Boolean,
+    onUpload: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(modifier = modifier.padding(horizontal = 24.dp)) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -44,7 +63,7 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
         ) {
             VerticalSpacer(height = 56.dp)
             Text(
-                text = "프로필을 설정해주세요.",
+                text = stringResource(id = R.string.profile_title),
                 modifier = Modifier.padding(top = 8.dp),
                 style = KnowllyTheme.typography.headline4,
             )
@@ -78,31 +97,37 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
             }
 
             VerticalSpacer(height = 16.dp)
-            Text(text = "이름", style = KnowllyTheme.typography.headline4)
+            Text(
+                text = stringResource(id = R.string.profile_name),
+                style = KnowllyTheme.typography.headline4
+            )
             VerticalSpacer(height = 12.dp)
 
             KnowllyTextField(
-                value = name.text,
-                onValueChange = { viewModel.updateName(it) },
-                placeHolderText = "이름을 입력하세요",
+                value = nameState.text,
+                onValueChange = onNameChange,
+                placeHolderText = stringResource(id = R.string.profile_name_hint),
                 singleLine = true,
                 helperText = "message",
                 helperTextEnabled = true,
-                counterMaxLength = name.maxLength,
+                counterMaxLength = nameState.maxLength,
                 counterEnabled = true,
             )
 
             VerticalSpacer(height = 20.dp)
-            Text(text = "자기소개", style = KnowllyTheme.typography.headline4)
+            Text(
+                text = stringResource(id = R.string.profile_introduction),
+                style = KnowllyTheme.typography.headline4
+            )
             VerticalSpacer(height = 12.dp)
 
             KnowllyTextField(
-                value = introduction.text,
-                onValueChange = { viewModel.updateIntroduction(it) },
-                placeHolderText = "자기소개를 자세히 기록해주세요",
+                value = introductionState.text,
+                onValueChange = onIntroductionChange,
+                placeHolderText = stringResource(id = R.string.profile_introduction_hint),
                 helperText = "message",
                 singleLine = false,
-                counterMaxLength = introduction.maxLength,
+                counterMaxLength = introductionState.maxLength,
                 counterEnabled = true,
                 minHeight = 180.dp,
             )
@@ -112,13 +137,13 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
         }
 
         KnowllyContainedButton(
-            text = "완료",
-            onClick = { viewModel.uploadProfile() },
+            text = stringResource(id = R.string.profile_upload),
+            onClick = onUpload,
             modifier = Modifier
                 .padding(bottom = 24.dp, top = 20.dp)
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
-            enabled = buttonEnabled
+            enabled = uploadEnabled
         )
     }
 }
@@ -127,6 +152,13 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
 @Composable
 private fun ProfileScreenPreview() {
     KnowllyTheme {
-        ProfileScreen(viewModel = ProfileViewModel())
+        ProfileScreen(
+            nameState = TextUiState.default(10),
+            onNameChange = { },
+            introductionState = TextUiState.default(100),
+            onIntroductionChange = { },
+            uploadEnabled = true,
+            onUpload = { },
+        )
     }
 }
