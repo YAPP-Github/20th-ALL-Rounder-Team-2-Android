@@ -27,6 +27,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.co.knowledgerally.ui.component.HorizontalSpacer
+import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.model.NotificationModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -49,7 +51,7 @@ fun NotificationScreen(
                 contentPadding = PaddingValues(12.dp)
             ) {
                 Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.Black)
-                Spacer(Modifier.width(16.dp))
+                HorizontalSpacer(16.dp)
                 Text("알림", style = KnowllyTheme.typography.subtitle1.copy(Color.Black))
             }
         }
@@ -89,7 +91,7 @@ fun NotificationList(
         items(list) { notification ->
             NotificationListItem(notification, onClickItem)
             Divider(color = KnowllyTheme.colors.grayEF)
-            Spacer(Modifier.height(24.dp))
+            VerticalSpacer(24.dp)
         }
     }
 }
@@ -119,9 +121,9 @@ fun NotificationListItem(
         Spacer(Modifier.width(32.dp))
         Column {
             Text(notification.date, style = KnowllyTheme.typography.body1)
-            Spacer(Modifier.height(12.dp))
+            VerticalSpacer(12.dp)
             Text(notification.text, style = KnowllyTheme.typography.subtitle3)
-            Spacer(Modifier.height(2.dp))
+            VerticalSpacer(2.dp)
             Text(
                 "${notification.lessonName} | ${notification.opponentName}",
                 style = KnowllyTheme.typography.body2.copy(color = KnowllyTheme.colors.gray8F)
