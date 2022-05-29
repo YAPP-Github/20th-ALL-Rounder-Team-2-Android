@@ -22,19 +22,20 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContent {
-            val systemUiController: SystemUiController = rememberSystemUiController()
-            systemUiController.setStatusBarColor(KnowllyTheme.colors.primaryDark)
-            systemUiController.isNavigationBarVisible = false
-
-            KnowllyTheme {
-                SplashScreen()
-            }
-        }
+        setContent()
 
         lifecycleScope.launch {
             delay(SPLASH_TIME_MILLIS)
             viewModel.state.collect { state -> handleState(state) }
+        }
+    }
+
+    private fun setContent() = setContent {
+        val systemUiController: SystemUiController = rememberSystemUiController()
+        systemUiController.setStatusBarColor(KnowllyTheme.colors.primaryDark)
+
+        KnowllyTheme {
+            SplashScreen()
         }
     }
 
