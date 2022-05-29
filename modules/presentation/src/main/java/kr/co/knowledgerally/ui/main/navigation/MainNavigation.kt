@@ -6,9 +6,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
-class MainNavigation(private val navController: NavHostController) {
+class MainNavigation(
+    private val navController: NavHostController,
+) {
 
     fun navigateTo(destination: MainDestination) {
+        if (!destination.hasRoute) {
+            return
+        }
         navController.navigate(destination.route) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
@@ -21,5 +26,5 @@ class MainNavigation(private val navController: NavHostController) {
 
 @Composable
 fun rememberMainNavigation(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
 ) = remember(navController) { MainNavigation(navController) }

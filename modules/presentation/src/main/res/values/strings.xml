@@ -1,6 +1,7 @@
 <resources>
-    <string name="home">홈</string>
-    <string name="lesson">수강 클래스</string>
-    <string name="coach">운영 클래스</string>
-    <string name="mypage">마이 페이지</string>
+    <string name="nav_home">홈</string>
+    <string name="nav_player">수강 클래스</string>
+    <string name="nav_register">클래스 등록</string>
+    <string name="nav_coach">운영 클래스</string>
+    <string name="nav_mypage">마이 페이지</string>
 </resources>

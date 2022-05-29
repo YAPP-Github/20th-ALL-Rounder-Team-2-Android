@@ -11,11 +11,18 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             KnowllyTheme {
-                MainScreen()
+                MainScreen(
+                    onRegister = ::startRegisterActivity
+                )
             }
         }
+    }
+
+    private fun startRegisterActivity() {
+        // TODO: 클래스 등록 화면 시작
     }
 
     companion object {
