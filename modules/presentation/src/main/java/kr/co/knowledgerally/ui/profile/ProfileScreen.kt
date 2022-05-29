@@ -80,13 +80,9 @@ private fun ProfileScreen(
             VerticalSpacer(height = 90.dp)
         }
 
-        KnowllyContainedButton(
-            text = stringResource(id = R.string.profile_upload),
+        ProfileUploadButton(
+            modifier = Modifier.align(Alignment.BottomCenter),
             onClick = onUpload,
-            modifier = Modifier
-                .padding(bottom = 24.dp, top = 20.dp)
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
             enabled = uploadEnabled
         )
     }
@@ -180,6 +176,22 @@ private fun ProfileTextField(
         counterMaxLength = maxLength,
         counterEnabled = true,
         minHeight = minHeight
+    )
+}
+
+@Composable
+private fun ProfileUploadButton(
+    modifier: Modifier = Modifier,
+    enabled: Boolean,
+    onClick: () -> Unit,
+) {
+    KnowllyContainedButton(
+        text = stringResource(id = R.string.profile_upload),
+        onClick = onClick,
+        modifier = modifier
+            .padding(bottom = 24.dp, top = 20.dp)
+            .fillMaxWidth(),
+        enabled = enabled
     )
 }
 
