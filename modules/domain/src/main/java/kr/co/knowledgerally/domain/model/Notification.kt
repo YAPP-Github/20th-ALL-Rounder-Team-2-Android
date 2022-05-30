@@ -1,11 +1,15 @@
 package kr.co.knowledgerally.domain.model
 
-// FIXME: 임시 모델로써 백엔드와 상의 필요
+import java.time.LocalDate
+
 data class Notification(
     val id: Long,
     val text: String,
-    val lessonName: String,
+    val lessonTitle: String,
     val opponentName: String,
-    val date: String,
-    val type: String // "Coach" or "Player"
-)
+    val date: LocalDate,
+    val type: Type
+) {
+
+    enum class Type { Coach, Player }
+}

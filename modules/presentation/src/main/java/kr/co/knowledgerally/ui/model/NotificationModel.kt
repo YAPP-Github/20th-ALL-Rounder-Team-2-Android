@@ -2,37 +2,38 @@ package kr.co.knowledgerally.ui.model
 
 import kr.co.knowledgerally.domain.model.Notification
 import kr.co.knowledgerally.ui.R
+import java.time.format.DateTimeFormatter
 
 data class NotificationModel(
     val id: Long,
     val text: String,
-    val lessonName: String,
+    val lessonTitle: String,
     val opponentName: String,
     val date: String,
     val type: Type
 ) {
 
     val title = when (type) {
-        NotificationModel.Type.Coach -> "운영 클래스"
-        NotificationModel.Type.Player -> "수강 클래스"
+        Type.Coach -> R.string.notification_coach
+        Type.Player -> R.string.notification_player
     }
 
     val iconRes = when (type) {
-        NotificationModel.Type.Coach -> R.drawable.ic_logo
-        NotificationModel.Type.Player -> R.drawable.ic_logo
+        Type.Coach -> R.drawable.ic_logo
+        Type.Player -> R.drawable.ic_logo
     }
 
-    enum class Type { Coach, Player, /* ... */ }
+    enum class Type { Coach, Player }
 }
 
 fun Notification.toPresentation(): NotificationModel = NotificationModel(
     id = id,
     text = text,
-    lessonName = lessonName,
+    lessonTitle = lessonTitle,
     opponentName = opponentName,
-    date = date,
+    date = date.format(DateTimeFormatter.ofPattern("MM.dd")),
     type = when (type) {
-        "Coach" -> NotificationModel.Type.Coach
-        else -> NotificationModel.Type.Player
+        Notification.Type.Coach -> NotificationModel.Type.Coach
+        Notification.Type.Player -> NotificationModel.Type.Player
     }
 )
