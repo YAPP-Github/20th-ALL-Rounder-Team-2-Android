@@ -38,13 +38,16 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 fun NotificationScreen(viewModel: NotificationViewModel) {
     val state by viewModel.state.collectAsState()
 
-    NotificationScreen(state = state, onClickItem = { })
+    NotificationScreen(
+        state = state,
+        onNotificationClick = {}
+    )
 }
 
 @Composable
 fun NotificationScreen(
     state: NotificationUiState,
-    onClickItem: () -> Unit
+    onNotificationClick: (NotificationModel) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -68,7 +71,7 @@ fun NotificationScreen(
             when (state) {
                 is NotificationUiState.Success -> NotificationList(
                     list = state.list,
-                    onClickItem = onClickItem
+                    onNotificationClick = onNotificationClick
                 )
                 NotificationUiState.Loading -> {
                     LoadingNotification()
@@ -87,13 +90,13 @@ fun NotificationScreen(
 @Composable
 fun NotificationList(
     list: List<NotificationModel>,
-    onClickItem: () -> Unit
+    onNotificationClick: (NotificationModel) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 24.dp)
     ) {
         items(list) { notification ->
-            NotificationListItem(notification, onClickItem)
+            NotificationListItem(notification, onNotificationClick)
             Divider(color = KnowllyTheme.colors.grayEF)
             VerticalSpacer(24.dp)
         }
@@ -103,7 +106,7 @@ fun NotificationList(
 @Composable
 fun NotificationListItem(
     notification: NotificationModel,
-    onClick: () -> Unit
+    onNotificationClick: (NotificationModel) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -211,7 +214,7 @@ private fun NotificationScreenPreview() {
     KnowllyTheme {
         NotificationScreen(
             state = NotificationUiState.Success(tempNotificationList),
-            onClickItem = {}
+            onNotificationClick = {}
         )
     }
 }
