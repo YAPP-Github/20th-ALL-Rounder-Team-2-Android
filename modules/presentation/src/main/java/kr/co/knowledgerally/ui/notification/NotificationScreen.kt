@@ -4,13 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
@@ -30,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.model.NotificationModel
@@ -38,7 +37,7 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun NotificationScreen(viewModel: NotificationViewModel) {
     val state by viewModel.state.collectAsState()
-    
+
     NotificationScreen(state = state, onClickItem = { })
 }
 
@@ -57,7 +56,7 @@ fun NotificationScreen(
             ) {
                 Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.Black)
                 HorizontalSpacer(16.dp)
-                Text("알림", style = KnowllyTheme.typography.subtitle1.copy(Color.Black))
+                Text(text = "알림", style = KnowllyTheme.typography.subtitle1.copy(Color.Black))
             }
         }
     ) { innerPadding ->
@@ -106,35 +105,70 @@ fun NotificationListItem(
     notification: NotificationModel,
     onClick: () -> Unit
 ) {
-
     Row(
         modifier = Modifier
             .height(84.dp)
             .fillMaxWidth()
     ) {
         Column {
-            Text(stringResource(id = notification.title), style = KnowllyTheme.typography.subtitle4)
-            Icon(
-                painter = painterResource(id = notification.iconRes),
-                contentDescription = null,
-                tint = Color.LightGray, // temporary
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(48.dp, 48.dp)
-            )
+            NotificationTitle(text = stringResource(id = notification.title))
+            NotificationIcon(type = notification.type)
         }
-        Spacer(Modifier.width(32.dp))
+        HorizontalSpacer(32.dp)
         Column {
-            Text(notification.date, style = KnowllyTheme.typography.body1)
+            NotificationDate(text = notification.date)
             VerticalSpacer(12.dp)
-            Text(notification.text, style = KnowllyTheme.typography.subtitle3)
+            NotificationText(text = notification.text)
             VerticalSpacer(2.dp)
-            Text(
-                "${notification.lessonTitle} | ${notification.opponentName}",
-                style = KnowllyTheme.typography.body2.copy(color = KnowllyTheme.colors.gray8F)
+            NotificationInfo(
+                lessonTitle = notification.lessonTitle,
+                opponentName = notification.opponentName
             )
         }
     }
+}
+
+@Composable
+fun NotificationTitle(text: String) {
+    Text(
+        text = text,
+        style = KnowllyTheme.typography.subtitle4
+    )
+}
+
+@Composable
+fun NotificationIcon(type: NotificationModel.Type) {
+    Icon(
+        painter = painterResource(
+            id = when (type) {
+                NotificationModel.Type.Coach -> R.drawable.ic_logo
+                NotificationModel.Type.Player -> R.drawable.ic_logo
+            }
+        ),
+        contentDescription = null,
+        tint = Color.LightGray, // temporary
+        modifier = Modifier
+            .padding(8.dp)
+            .size(48.dp)
+    )
+}
+
+@Composable
+fun NotificationDate(text: String) {
+    Text(text = text, style = KnowllyTheme.typography.body1)
+}
+
+@Composable
+fun NotificationText(text: String) {
+    Text(text = text, style = KnowllyTheme.typography.subtitle3)
+}
+
+@Composable
+fun NotificationInfo(lessonTitle: String, opponentName: String) {
+    Text(
+        text = "$lessonTitle | $opponentName",
+        style = KnowllyTheme.typography.body2.copy(color = KnowllyTheme.colors.gray8F)
+    )
 }
 
 @Composable
@@ -144,12 +178,12 @@ fun LoadingNotification() {
 
 @Composable
 fun EmptyNotification() {
-    Text("아직 알림이 없습니다")
+    Text(text = "아직 알림이 없습니다")
 }
 
 @Composable
 fun FailNotification() {
-    Text("네트워크에 연결할 수 없습니다")
+    Text(text = "네트워크에 연결할 수 없습니다")
 }
 
 @Preview
@@ -177,6 +211,7 @@ private fun NotificationScreenPreview() {
     KnowllyTheme {
         NotificationScreen(
             state = NotificationUiState.Success(tempNotificationList),
-            onClickItem = {})
+            onClickItem = {}
+        )
     }
 }

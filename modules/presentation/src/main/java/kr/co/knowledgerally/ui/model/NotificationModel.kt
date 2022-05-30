@@ -18,11 +18,6 @@ data class NotificationModel(
         Type.Player -> R.string.notification_player
     }
 
-    val iconRes = when (type) {
-        Type.Coach -> R.drawable.ic_logo
-        Type.Player -> R.drawable.ic_logo
-    }
-
     enum class Type { Coach, Player }
 }
 
