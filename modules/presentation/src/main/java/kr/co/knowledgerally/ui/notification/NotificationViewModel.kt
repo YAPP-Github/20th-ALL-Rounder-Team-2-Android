@@ -1,11 +1,9 @@
 package kr.co.knowledgerally.ui.notification
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.usecase.GetNotificationListUseCase
 import kr.co.knowledgerally.ui.model.toPresentation
@@ -25,7 +23,7 @@ class NotificationViewModel @Inject constructor(
 
     private fun fetchNotificationList() {
         _state.value = NotificationUiState.Loading
-        viewModelScope.launch {
+        launch {
             val result = getNotificationListUseCase()
             result
                 .mapCatching {
@@ -33,8 +31,11 @@ class NotificationViewModel @Inject constructor(
                 }
                 .onSuccess {
                     _state.value =
-                        if (it.isNotEmpty()) NotificationUiState.Success(it)
-                        else NotificationUiState.Empty
+                        if (it.isNotEmpty()) {
+                            NotificationUiState.Success(it)
+                        } else {
+                            NotificationUiState.Empty
+                        }
                 }
                 .onFailure { _state.value = NotificationUiState.Failure }
         }
