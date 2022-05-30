@@ -26,6 +26,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +45,73 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
+    val state by viewModel.state.collectAsState()
 
+    MyPageScreen(
+        state = state,
+        onNotificationEnabledChange = { viewModel.updateNotificationEnabled(it) },
+        navigateToNotification = { },
+        navigateToProfile = { },
+        navigateToTermsOfService = { },
+        logout = { viewModel.logout() },
+        withdrawal = { viewModel.withdrawal() },
+    )
+}
+
+@Composable
+private fun MyPageScreen(
+    state: MyPageUiState,
+    onNotificationEnabledChange: (Boolean) -> Unit,
+    navigateToNotification: () -> Unit,
+    navigateToProfile: () -> Unit,
+    navigateToTermsOfService: () -> Unit,
+    logout: () -> Unit,
+    withdrawal: () -> Unit,
+) {
+    when (state) {
+        MyPageUiState.Loading -> MyPageScreen(
+            notificationEnabled = false,
+            onNotificationEnabledChange = { },
+            navigateToNotification = { },
+            versionName = "",
+            userName = "",
+            remainingBallCount = 0,
+            isCoach = false,
+            navigateToProfile = { },
+            navigateToTermsOfService = { },
+            logout = { },
+            withdrawal = { },
+        )
+        is MyPageUiState.Success -> MyPageScreen(
+            notificationEnabled = state.notificationEnabled,
+            onNotificationEnabledChange = onNotificationEnabledChange,
+            navigateToNotification = navigateToNotification,
+            versionName = state.versionName,
+            userName = state.userName,
+            remainingBallCount = state.remainingBallCount,
+            isCoach = state.isCoach,
+            navigateToProfile = navigateToProfile,
+            navigateToTermsOfService = navigateToTermsOfService,
+            logout = logout,
+            withdrawal = withdrawal,
+        )
+    }
+}
+
+@Composable
+private fun MyPageScreen(
+    notificationEnabled: Boolean,
+    onNotificationEnabledChange: (Boolean) -> Unit,
+    navigateToNotification: () -> Unit,
+    versionName: String,
+    userName: String,
+    remainingBallCount: Int,
+    isCoach: Boolean,
+    navigateToProfile: () -> Unit,
+    navigateToTermsOfService: () -> Unit,
+    logout: () -> Unit,
+    withdrawal: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -80,7 +148,10 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
                         contentDescription = null
                     )
                     HorizontalSpacer(width = 4.dp)
-                    Text(text = "1", style = KnowllyTheme.typography.subtitle4)
+                    Text(
+                        text = remainingBallCount.toString(),
+                        style = KnowllyTheme.typography.subtitle4
+                    )
                 }
 
                 Box(
@@ -98,7 +169,7 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
                     .padding(start = 16.dp, end = 24.dp)
                     .size(32.dp)
                     .clip(CircleShape)
-                    .clickable { /* TODO */ }
+                    .clickable { navigateToNotification() }
                     .padding(4.dp)
             )
         }
@@ -126,7 +197,7 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = "유지민", style = KnowllyTheme.typography.subtitle1)
+                Text(text = userName, style = KnowllyTheme.typography.subtitle1)
 
                 Row(modifier = Modifier.padding(top = 4.dp)) {
                     ContainedBadge(
@@ -134,17 +205,19 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
                         contentColor = KnowllyTheme.colors.primaryDark,
                         backgroundColor = KnowllyTheme.colors.primary.copy(alpha = 0.1f)
                     )
-                    ContainedBadge(
-                        text = "코치",
-                        contentColor = KnowllyTheme.colors.secondaryLimeDark,
-                        backgroundColor = KnowllyTheme.colors.secondary.copy(alpha = 0.2f),
-                        modifier = Modifier.padding(start = 4.dp)
-                    )
+                    if (isCoach) {
+                        ContainedBadge(
+                            text = "코치",
+                            contentColor = KnowllyTheme.colors.secondaryLimeDark,
+                            backgroundColor = KnowllyTheme.colors.secondary.copy(alpha = 0.2f),
+                            modifier = Modifier.padding(start = 4.dp)
+                        )
+                    }
                 }
 
                 KnowllyContainedButton(
                     text = "프로필 보기 / 수정",
-                    onClick = { /*TODO*/ },
+                    onClick = navigateToProfile,
                     modifier = Modifier
                         .padding(top = 16.dp)
                         .height(40.dp)
@@ -159,15 +232,19 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
             color = KnowllyTheme.colors.grayEF
         )
 
-        Row(modifier = Modifier.padding(vertical = 20.dp, horizontal = 24.dp)) {
+        Row(
+            modifier = Modifier.padding(vertical = 20.dp, horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Text(
                 text = "알림 허용",
                 style = KnowllyTheme.typography.subtitle4,
                 modifier = Modifier.weight(1f)
             )
             Switch(
-                checked = false,
-                onCheckedChange = null,
+                modifier = Modifier.size(32.dp, 20.dp),
+                checked = notificationEnabled,
+                onCheckedChange = onNotificationEnabledChange,
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = KnowllyTheme.colors.primaryDark,
                     checkedTrackAlpha = 0.38f,
@@ -177,6 +254,7 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
                 )
             )
         }
+
         Divider(
             modifier = Modifier
                 .padding(horizontal = 24.dp)
@@ -191,7 +269,7 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
                 modifier = Modifier.weight(1f)
             )
             Text(
-                text = "1.2.3",
+                text = versionName,
                 style = KnowllyTheme.typography.body1,
             )
         }
@@ -202,7 +280,10 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
             color = KnowllyTheme.colors.grayEF
         )
 
-        Row(modifier = Modifier.padding(vertical = 20.dp, horizontal = 24.dp)) {
+        Row(modifier = Modifier
+            .clickable { navigateToTermsOfService() }
+            .padding(vertical = 20.dp, horizontal = 24.dp)
+        ) {
             Text(
                 text = "서비스 이용약관 및 정책",
                 style = KnowllyTheme.typography.subtitle4,
@@ -216,7 +297,10 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
             color = KnowllyTheme.colors.grayEF
         )
 
-        Row(modifier = Modifier.padding(vertical = 20.dp, horizontal = 24.dp)) {
+        Row(modifier = Modifier
+            .clickable { logout() }
+            .padding(vertical = 20.dp, horizontal = 24.dp)
+        ) {
             Text(
                 text = "로그아웃",
                 style = KnowllyTheme.typography.subtitle4,
@@ -230,7 +314,10 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
             color = KnowllyTheme.colors.grayEF
         )
 
-        Row(modifier = Modifier.padding(vertical = 20.dp, horizontal = 24.dp)) {
+        Row(modifier = Modifier
+            .clickable { withdrawal() }
+            .padding(vertical = 20.dp, horizontal = 24.dp)
+        ) {
             Text(
                 text = "회원 탈퇴",
                 style = KnowllyTheme.typography.subtitle4,
@@ -250,6 +337,14 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
 @Composable
 private fun MyPageScreenPreview() {
     KnowllyTheme {
-        MyPageScreen(MyPageViewModel())
+        MyPageScreen(
+            state = MyPageUiState.Loading,
+            onNotificationEnabledChange = { },
+            navigateToNotification = { },
+            navigateToProfile = { },
+            navigateToTermsOfService = { },
+            logout = { },
+            withdrawal = { },
+        )
     }
 }
