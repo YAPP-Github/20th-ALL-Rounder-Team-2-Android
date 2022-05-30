@@ -1,6 +1,6 @@
 package kr.co.knowledgerally.ui.notification
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,14 +14,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -49,40 +48,44 @@ fun NotificationScreen(
     state: NotificationUiState,
     onNotificationClick: (NotificationModel) -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            // 임시 TopAppBar
-            TopAppBar(
-                backgroundColor = KnowllyTheme.colors.grayFF,
-                elevation = 0.dp,
-                contentPadding = PaddingValues(12.dp)
-            ) {
-                Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.Black)
-                HorizontalSpacer(16.dp)
-                Text(text = "알림", style = KnowllyTheme.typography.subtitle1.copy(Color.Black))
-            }
-        }
-    ) { innerPadding ->
-        Box(
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        Row(
             modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxWidth()
+                .height(56.dp)
+                .padding(horizontal = 28.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            when (state) {
-                is NotificationUiState.Success -> NotificationList(
-                    list = state.list,
-                    onNotificationClick = onNotificationClick
-                )
-                NotificationUiState.Loading -> {
-                    LoadingNotification()
-                }
-                NotificationUiState.Empty -> {
-                    EmptyNotification()
-                }
-                NotificationUiState.Failure -> {
-                    FailNotification()
-                }
-            }
+            Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.Black)
+            HorizontalSpacer(16.dp)
+            Text(text = "알림", style = KnowllyTheme.typography.subtitle1.copy(Color.Black))
+        }
+        NotificationContent(state = state, onNotificationClick = onNotificationClick)
+    }
+}
+
+@Composable
+fun NotificationContent(
+    state: NotificationUiState,
+    onNotificationClick: (NotificationModel) -> Unit
+) {
+    when (state) {
+        is NotificationUiState.Success -> NotificationList(
+            list = state.list,
+            onNotificationClick = onNotificationClick
+        )
+        NotificationUiState.Loading -> {
+            LoadingNotification()
+        }
+        NotificationUiState.Empty -> {
+            EmptyNotification()
+        }
+        NotificationUiState.Failure -> {
+            FailNotification()
         }
     }
 }
