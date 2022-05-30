@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseViewModel
-import kr.co.knowledgerally.domain.usecase.GetNotificationUseCase
+import kr.co.knowledgerally.domain.usecase.GetNotificationListUseCase
 import kr.co.knowledgerally.ui.model.toPresentation
 import javax.inject.Inject
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
-    private val getNotificationUseCase: GetNotificationUseCase
+    private val getNotificationListUseCase: GetNotificationListUseCase
 ) : BaseViewModel() {
 
     private val _state = MutableStateFlow<NotificationUiState>(NotificationUiState.Loading)
@@ -26,7 +26,7 @@ class NotificationViewModel @Inject constructor(
     private fun fetchNotificationList() {
         _state.value = NotificationUiState.Loading
         viewModelScope.launch {
-            val result = getNotificationUseCase()
+            val result = getNotificationListUseCase()
             result
                 .mapCatching {
                     it.map { notification -> notification.toPresentation() }
