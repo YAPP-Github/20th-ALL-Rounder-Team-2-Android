@@ -58,7 +58,7 @@ fun NotificationScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)
-                .padding(horizontal = 28.dp, vertical = 12.dp),
+                .padding(horizontal = 24.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.Black)
@@ -139,7 +139,8 @@ fun NotificationListItem(
 fun NotificationTitle(text: String) {
     Text(
         text = text,
-        style = KnowllyTheme.typography.subtitle4
+        style = KnowllyTheme.typography.subtitle4,
+        modifier = Modifier.padding(horizontal = 8.dp)
     )
 }
 
