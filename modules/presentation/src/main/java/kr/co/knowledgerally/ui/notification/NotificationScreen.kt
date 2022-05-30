@@ -1,6 +1,7 @@
 package kr.co.knowledgerally.ui.notification
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -96,12 +97,12 @@ fun NotificationList(
     onNotificationClick: (NotificationModel) -> Unit
 ) {
     LazyColumn(
-        contentPadding = PaddingValues(horizontal = 24.dp)
+        contentPadding = PaddingValues(start = 24.dp, top = 12.dp, end = 24.dp, bottom = 0.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(list) { notification ->
             NotificationListItem(notification, onNotificationClick)
             Divider(color = KnowllyTheme.colors.grayEF)
-            VerticalSpacer(24.dp)
         }
     }
 }
