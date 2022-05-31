@@ -11,4 +11,7 @@
     <string name="profile_introduction">자기소개</string>
     <string name="profile_introduction_hint">자기소개를 자세히 기록해주세요</string>
     <string name="profile_upload">완료</string>
+
+    <string name="ball_my">내 볼</string>
+    <string name="ball_help">볼은 언제 적립받고 어떻게 사용하나요?</string>
 </resources>
