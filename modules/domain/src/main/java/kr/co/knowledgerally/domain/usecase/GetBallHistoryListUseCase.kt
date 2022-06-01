@@ -8,5 +8,5 @@ class GetBallHistoryListUseCase @Inject constructor(
     private val ballRepository: BallRepository
 ) {
 
-    suspend operator fun invoke(): Result<List<BallHistory>> = ballRepository.getBallHistoryList()
+    suspend operator fun invoke(): Result<List<BallHistory>> = ballRepository.getBallHistories()
 }

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.usecase.GetBallHistoryListUseCase
 import kr.co.knowledgerally.domain.usecase.GetBallUseCase
-import kr.co.knowledgerally.ui.model.BallModel
+import kr.co.knowledgerally.ui.model.BallCountModel
 import kr.co.knowledgerally.ui.model.toPresentation
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class BallViewModel @Inject constructor(
     private val getBallHistoryListUseCase: GetBallHistoryListUseCase
 ) : BaseViewModel() {
 
-    private val _ball = MutableStateFlow(BallModel(""))
+    private val _ball = MutableStateFlow(BallCountModel(""))
     val ball = _ball.asStateFlow()
 
     private val _state = MutableStateFlow<BallUiState>(BallUiState.Loading)

@@ -1,11 +1,11 @@
 package kr.co.knowledgerally.domain.repo
 
-import kr.co.knowledgerally.domain.model.Ball
+import kr.co.knowledgerally.domain.model.BallCount
 import kr.co.knowledgerally.domain.model.BallHistory
 
 interface BallRepository {
 
-    suspend fun getBall(): Result<Ball>
+    suspend fun getBall(): Result<BallCount>
 
-    suspend fun getBallHistoryList(): Result<List<BallHistory>>
+    suspend fun getBallHistories(): Result<List<BallHistory>>
 }
