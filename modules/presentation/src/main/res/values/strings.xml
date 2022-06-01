@@ -13,5 +13,6 @@
     <string name="profile_upload">완료</string>
 
     <string name="ball_my">내 볼</string>
-    <string name="ball_help">볼은 언제 적립받고 어떻게 사용하나요?</string>
+    <string name="ball_banner">볼은 언제 적립받고 어떻게 사용하나요?</string>
+    <string name="ball_count">개</string>
 </resources>

@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.VerticalSpacer
+import kr.co.knowledgerally.ui.model.BallCountModel
 import kr.co.knowledgerally.ui.model.BallHistoryModel
-import kr.co.knowledgerally.ui.model.BallModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
@@ -47,27 +47,19 @@ fun BallScreen(viewModel: BallViewModel) {
 }
 
 @Composable
-fun BallScreen(ball: BallModel, state: BallUiState) {
+fun BallScreen(ball: BallCountModel, state: BallUiState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 24.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.Black)
-        }
+        BallTopAppBar()
         Column(
             modifier = Modifier.padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 0.dp)
         ) {
             MyBall(ball)
             VerticalSpacer(height = 24.dp)
-            BallHelp()
+            BallBanner()
             VerticalSpacer(height = 48.dp)
             BallHistoryContent(state = state)
         }
@@ -75,7 +67,20 @@ fun BallScreen(ball: BallModel, state: BallUiState) {
 }
 
 @Composable
-fun MyBall(ball: BallModel) {
+fun BallTopAppBar() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .padding(horizontal = 24.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.Black)
+    }
+}
+
+@Composable
+fun MyBall(ball: BallCountModel) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -91,13 +96,16 @@ fun MyBall(ball: BallModel) {
                 modifier = Modifier.size(24.dp)
             )
             HorizontalSpacer(width = 8.dp)
-            Text(text = "${ball.value}개", style = KnowllyTheme.typography.headline4)
+            Text(
+                text = ball.value + stringResource(id = R.string.ball_count),
+                style = KnowllyTheme.typography.headline4
+            )
         }
     }
 }
 
 @Composable
-fun BallHelp() {
+fun BallBanner() {
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = KnowllyTheme.colors.grayF7,
@@ -123,7 +131,7 @@ fun BallHelp() {
                 )
                 HorizontalSpacer(width = 4.dp)
                 Text(
-                    text = stringResource(R.string.ball_help),
+                    text = stringResource(R.string.ball_banner),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )
@@ -226,7 +234,7 @@ private fun BallScreenPreview() {
 
     KnowllyTheme {
         BallScreen(
-            ball = BallModel("1"),
+            ball = BallCountModel("1"),
             state = BallUiState.Success(tempBallHistoryList)
         )
     }
