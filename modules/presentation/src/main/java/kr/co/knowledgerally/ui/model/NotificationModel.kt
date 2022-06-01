@@ -13,7 +13,7 @@ data class NotificationModel(
     val type: Type
 ) {
 
-    val title = when (type) {
+    val titleRes = when (type) {
         Type.Coach -> R.string.notification_coach
         Type.Player -> R.string.notification_player
     }

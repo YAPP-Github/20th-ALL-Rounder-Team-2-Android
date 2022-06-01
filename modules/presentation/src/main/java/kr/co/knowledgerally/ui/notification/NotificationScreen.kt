@@ -118,7 +118,7 @@ fun NotificationListItem(
             .fillMaxWidth()
     ) {
         Column {
-            NotificationTitle(text = stringResource(id = notification.title))
+            NotificationTitle(text = stringResource(id = notification.titleRes))
             NotificationIcon(type = notification.type)
         }
         HorizontalSpacer(32.dp)
@@ -127,7 +127,7 @@ fun NotificationListItem(
             VerticalSpacer(12.dp)
             NotificationText(text = notification.text)
             VerticalSpacer(2.dp)
-            NotificationInfo(
+            NotificationSubtext(
                 lessonTitle = notification.lessonTitle,
                 opponentName = notification.opponentName
             )
@@ -172,7 +172,7 @@ fun NotificationText(text: String) {
 }
 
 @Composable
-fun NotificationInfo(lessonTitle: String, opponentName: String) {
+fun NotificationSubtext(lessonTitle: String, opponentName: String) {
     Text(
         text = "$lessonTitle | $opponentName",
         style = KnowllyTheme.typography.body2.copy(color = KnowllyTheme.colors.gray8F)
