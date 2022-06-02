@@ -15,4 +15,7 @@
     <string name="ball_my">내 볼</string>
     <string name="ball_banner">볼은 언제 적립받고 어떻게 사용하나요?</string>
     <string name="ball_count">개</string>
+
+    <string name="notification_coach">운영 클래스</string>
+    <string name="notification_player">수강 클래스</string>
 </resources>
