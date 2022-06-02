@@ -37,6 +37,7 @@ import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.model.BallCountModel
 import kr.co.knowledgerally.ui.model.BallHistoryModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import kotlin.math.abs
 
 @Composable
 fun BallScreen(viewModel: BallViewModel) {
@@ -177,10 +178,7 @@ fun BallHistoryList(
 fun BallHistoryListItem(
     history: BallHistoryModel
 ) {
-    val sign = when (history.type) {
-        BallHistoryModel.Type.Plus -> "+"
-        BallHistoryModel.Type.Minus -> "-"
-    }
+    val sign = if (history.delta > 0) "+" else "-"
 
     Row(
         modifier = Modifier
@@ -199,7 +197,7 @@ fun BallHistoryListItem(
             )
         }
         Text(
-            text = "$sign ${history.count}개",
+            text = "$sign ${abs(history.delta)}개",
             style = KnowllyTheme.typography.subtitle1
         )
     }
@@ -213,22 +211,19 @@ private fun BallScreenPreview() {
             title = "클래스 운영",
             subtitle = "프랑스어",
             date = "05.09",
-            type = BallHistoryModel.Type.Plus,
-            count = 1
+            delta = 1
         ),
         BallHistoryModel(
             title = "클래스 수강",
             subtitle = "요리 원데이 클래스",
             date = "05.09",
-            type = BallHistoryModel.Type.Minus,
-            count = 1
+            delta = -1
         ),
         BallHistoryModel(
             title = "첫 가입 축하 볼",
             subtitle = "첫 가입 축하 볼",
             date = "05.08",
-            type = BallHistoryModel.Type.Plus,
-            count = 1
+            delta = 1
         )
     )
 
