@@ -34,15 +34,13 @@ class LoginActivity : BaseActivity() {
 
     private fun setContent() = setContent {
         KnowllyTheme {
-            LoginScreen(
-                onLogin = { requestKakaoLogin() }
-            )
+            LoginScreen(onLogin = { requestKakaoLogin() })
         }
     }
 
     private fun requestKakaoLogin() = lifecycleScope.launch {
         kakaoLogin.login(this@LoginActivity)
-            .onSuccess { viewModel.login(it.value) }
+            .onSuccess { viewModel.login(it) }
             .onFailure { /* no-op */ }
     }
 
