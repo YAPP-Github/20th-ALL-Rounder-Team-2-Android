@@ -153,7 +153,7 @@ fun BallBanner() {
 fun BallHistoryContent(state: BallUiState) {
     when (state) {
         is BallUiState.Success -> {
-            BallHistoryList(list = state.list)
+            BallHistoryList(histories = state.histories)
         }
         BallUiState.Loading -> {}
         BallUiState.Empty -> {}
@@ -163,11 +163,11 @@ fun BallHistoryContent(state: BallUiState) {
 
 @Composable
 fun BallHistoryList(
-    list: List<BallHistoryModel>
+    histories: List<BallHistoryModel>
 ) {
     LazyColumn {
         item { Divider(color = KnowllyTheme.colors.grayEF) }
-        items(list) {
+        items(histories) {
             BallHistoryListItem(history = it)
             Divider(color = KnowllyTheme.colors.grayEF)
         }
@@ -197,7 +197,7 @@ fun BallHistoryListItem(
             )
         }
         Text(
-            text = "$sign ${abs(history.delta)}개",
+            text = "$sign ${abs(history.delta)}" + stringResource(id = R.string.ball_count),
             style = KnowllyTheme.typography.subtitle1
         )
     }
