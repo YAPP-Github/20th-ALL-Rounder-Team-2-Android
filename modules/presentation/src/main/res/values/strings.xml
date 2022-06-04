@@ -15,6 +15,9 @@
     <string name="profile_introduction_hint">자기소개를 자세히 기록해주세요</string>
     <string name="profile_upload">완료</string>
 
+    <string name="notification_coach">운영 클래스</string>
+    <string name="notification_player">수강 클래스</string>
+
     <string name="mypage_show_more_profile">프로필 더 보기</string>
     <string name="mypage_allow_notification">알림 허용</string>
     <string name="mypage_app_version_info">앱 버전 정보</string>
