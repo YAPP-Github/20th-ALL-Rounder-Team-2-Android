@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kr.co.knowledgerally.BuildConfig
+import kr.co.knowledgerally.domain.model.VersionName
 import kr.co.knowledgerally.log.Logger
 import kr.co.knowledgerally.remote.api.BaseUrl
 import kr.co.knowledgerally.remote.api.Interceptors
@@ -24,4 +26,7 @@ internal object AppModule {
         val loggingInterceptor = HttpLoggingInterceptor(logger)
         return Interceptors(loggingInterceptor)
     }
+
+    @Provides
+    fun provideVersionName() = VersionName(BuildConfig.VERSION_NAME)
 }

@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.ui.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -73,7 +74,11 @@ private fun MainNavigationBar(
             thickness = 1.dp,
             color = KnowllyTheme.colors.grayEF
         )
-        Row(modifier = Modifier.height(NavigationBarHeight)) {
+        Row(
+            modifier = Modifier
+                .height(NavigationBarHeight)
+                .background(KnowllyTheme.colors.grayFF)
+        ) {
 
             MainDestination.values().forEach { destination ->
                 val selected = destination in currentDestination
@@ -126,7 +131,7 @@ private fun RowScope.NavigationBarItem(
 
 private val NavigationBarHeight: Dp = 56.dp
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun MainNavigationBarPreview() {
     KnowllyTheme {

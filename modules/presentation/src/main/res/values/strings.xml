@@ -1,4 +1,7 @@
 <resources>
+    <string name="player">플레이어</string>
+    <string name="coach">코치</string>
+
     <string name="nav_home">홈</string>
     <string name="nav_player">수강 클래스</string>
     <string name="nav_register">클래스 등록</string>
@@ -14,4 +17,11 @@
 
     <string name="notification_coach">운영 클래스</string>
     <string name="notification_player">수강 클래스</string>
+
+    <string name="mypage_show_more_profile">프로필 더 보기</string>
+    <string name="mypage_allow_notification">알림 허용</string>
+    <string name="mypage_app_version_info">앱 버전 정보</string>
+    <string name="mypage_terms_of_service_and_policy">서비스 이용약관 및 정책</string>
+    <string name="mypage_logout">로그아웃</string>
+    <string name="mypage_withdrawal">회원탈퇴</string>
 </resources>

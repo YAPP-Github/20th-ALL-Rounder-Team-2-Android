@@ -71,7 +71,7 @@ private val Typography = KnowllyTypography(
         fontFamily = Suit,
         fontSize = 14.sp,
         fontWeight = FontWeight.Normal,
-        lineHeight = 19.sp,
+        lineHeight = 20.sp,
         letterSpacing = (-0.25).sp
     ),
     body2 = TextStyle(
