@@ -297,7 +297,8 @@ private fun MyPageItem(
     Row(
         modifier = modifier
             .then(clickableModifier)
-            .padding(vertical = 20.dp, horizontal = 24.dp)
+            .padding(vertical = 20.dp, horizontal = 24.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = text,
