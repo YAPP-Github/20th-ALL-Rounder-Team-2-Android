@@ -178,7 +178,7 @@ fun BallHistoryList(
 fun BallHistoryListItem(
     history: BallHistoryModel
 ) {
-    val sign = if (history.delta > 0) "+" else "-"
+    val sign = if (history.changedBallCount > 0) "+" else "-"
 
     Row(
         modifier = Modifier
@@ -197,7 +197,7 @@ fun BallHistoryListItem(
             )
         }
         Text(
-            text = "$sign ${abs(history.delta)}" + stringResource(id = R.string.ball_count),
+            text = "$sign ${abs(history.changedBallCount)}" + stringResource(id = R.string.ball_count),
             style = KnowllyTheme.typography.subtitle1
         )
     }
@@ -211,19 +211,19 @@ private fun BallScreenPreview() {
             title = "클래스 운영",
             subtitle = "프랑스어",
             date = "05.09",
-            delta = 1
+            changedBallCount = 1
         ),
         BallHistoryModel(
             title = "클래스 수강",
             subtitle = "요리 원데이 클래스",
             date = "05.09",
-            delta = -1
+            changedBallCount = -1
         ),
         BallHistoryModel(
             title = "첫 가입 축하 볼",
             subtitle = "첫 가입 축하 볼",
             date = "05.08",
-            delta = 1
+            changedBallCount = 1
         )
     )
 

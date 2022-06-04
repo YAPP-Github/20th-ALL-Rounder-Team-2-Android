@@ -6,5 +6,5 @@ data class BallHistory(
     val title: String,
     val subtitle: String,
     val date: LocalDate,
-    val delta: Int
+    val changedBallCount: Int
 )

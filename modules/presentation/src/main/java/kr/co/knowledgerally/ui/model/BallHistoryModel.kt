@@ -7,12 +7,12 @@ data class BallHistoryModel(
     val title: String,
     val subtitle: String,
     val date: String,
-    val delta: Int
+    val changedBallCount: Int
 )
 
 fun BallHistory.toPresentation(): BallHistoryModel = BallHistoryModel(
     title = title,
     subtitle = subtitle,
     date = date.format(DateTimeFormatter.ofPattern("MM.dd")),
-    delta = delta
+    changedBallCount = changedBallCount
 )
