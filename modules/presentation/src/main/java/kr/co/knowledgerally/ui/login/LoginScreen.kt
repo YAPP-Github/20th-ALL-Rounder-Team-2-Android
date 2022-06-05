@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.ui.login
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -22,7 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
@@ -35,14 +40,11 @@ fun LoginScreen(onLogin: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Surface(
+        LoginGraphic(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
-            color = KnowllyTheme.colors.grayEF
-        ) {
-            // 일러스트
-        }
+                .weight(1f)
+        )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -50,15 +52,34 @@ fun LoginScreen(onLogin: () -> Unit) {
                 .background(color = KnowllyTheme.colors.grayFF)
                 .fillMaxWidth()
                 .height(192.dp)
-                .padding(start = 24.dp, top = 60.dp, end = 24.dp, bottom = 44.dp)
+                .padding(start = 24.dp, top = 60.dp, end = 24.dp, bottom = 48.dp)
         ) {
             KakaoLoginButton(onClick = onLogin)
             VerticalSpacer(height = 24.dp)
-            Text(
-                text = stringResource(R.string.login_agreement),
-                style = KnowllyTheme.typography.caption,
-                color = KnowllyTheme.colors.gray8F,
-                textAlign = TextAlign.Center
+            LoginAgreement()
+        }
+    }
+}
+
+@Composable
+fun LoginGraphic(modifier: Modifier = Modifier) {
+    Surface(
+        color = KnowllyTheme.colors.primaryLight,
+        modifier = modifier
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.img_login_title),
+                contentDescription = null,
+                modifier = Modifier.padding(vertical = 36.dp)
+            )
+            Image(
+                painter = painterResource(id = R.drawable.img_login_illustration),
+                contentDescription = null
             )
         }
     }
@@ -96,6 +117,42 @@ fun KakaoLoginButton(onClick: () -> Unit) {
 
 @Composable
 fun LoginAgreement() {
+    val policyString = stringResource(id = R.string.login_policy)
+    val termString = stringResource(id = R.string.login_term)
+    val agreementString = stringResource(id = R.string.login_agreement)
+
+    val policyStringRange = IntRange(
+        agreementString.indexOf(policyString),
+        agreementString.indexOf(policyString) + policyString.length
+    )
+    val termStringRange = IntRange(
+        agreementString.indexOf(termString),
+        agreementString.indexOf(termString) + termString.length
+    )
+
+    ClickableText(
+        text = buildAnnotatedString {
+            append(agreementString)
+            addStyle(
+                style = SpanStyle(textDecoration = TextDecoration.Underline),
+                start = policyStringRange.first,
+                end = policyStringRange.last
+            )
+            addStyle(
+                style = SpanStyle(textDecoration = TextDecoration.Underline),
+                start = termStringRange.first,
+                end = termStringRange.last
+            )
+        },
+        style = KnowllyTheme.typography.caption.copy(color = KnowllyTheme.colors.gray8F),
+        onClick = { position ->
+            when (position) {
+                in policyStringRange -> {}
+                in termStringRange -> {}
+                else -> {}
+            }
+        }
+    )
 }
 
 @Preview

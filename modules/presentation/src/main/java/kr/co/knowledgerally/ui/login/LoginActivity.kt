@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -33,6 +35,9 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun setContent() = setContent {
+        val systemUiController: SystemUiController = rememberSystemUiController()
+        systemUiController.setStatusBarColor(KnowllyTheme.colors.primaryLight)
+
         KnowllyTheme {
             LoginScreen(onLogin = { requestKakaoLogin() })
         }
