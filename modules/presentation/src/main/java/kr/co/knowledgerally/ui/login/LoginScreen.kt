@@ -133,22 +133,23 @@ fun LoginAgreement() {
     ClickableText(
         text = buildAnnotatedString {
             append(agreementString)
-            addStyle(
-                style = SpanStyle(textDecoration = TextDecoration.Underline),
-                start = policyStringRange.first,
-                end = policyStringRange.last
-            )
-            addStyle(
-                style = SpanStyle(textDecoration = TextDecoration.Underline),
-                start = termStringRange.first,
-                end = termStringRange.last
-            )
+            listOf(policyStringRange, termStringRange).forEach {
+                addStyle(
+                    style = SpanStyle(textDecoration = TextDecoration.Underline),
+                    start = it.first,
+                    end = it.last
+                )
+            }
         },
         style = KnowllyTheme.typography.caption.copy(color = KnowllyTheme.colors.gray8F),
         onClick = { position ->
             when (position) {
-                in policyStringRange -> {}
-                in termStringRange -> {}
+                in policyStringRange -> {
+                    /* 개인정보 처리방침 클릭 */
+                }
+                in termStringRange -> {
+                    /* 이용약관 클릭 */
+                }
                 else -> {}
             }
         }
