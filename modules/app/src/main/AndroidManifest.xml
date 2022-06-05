@@ -45,6 +45,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.signup.SignUpActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.profile.ProfileActivity"
             android:screenOrientation="portrait" />
 
