@@ -1,6 +1,10 @@
 package kr.co.knowledgerally.ui.profile
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,18 +15,24 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyTextField
@@ -31,11 +41,20 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel) {
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val launcher = rememberLauncherForActivityResult(GetContent()) { uri ->
+        if (uri != null) {
+            imageUri = uri
+        }
+    }
+
     val nameState by viewModel.name.collectAsState()
     val introductionState by viewModel.introduction.collectAsState()
     val canUpload by viewModel.canUpload.collectAsState()
 
     ProfileScreen(
+        imageUri = imageUri,
+        onImageClick = { launcher.launch("image/*") },
         nameState = nameState,
         onNameChange = viewModel::updateName,
         introductionState = introductionState,
@@ -48,13 +67,15 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
 
 @Composable
 private fun ProfileScreen(
+    modifier: Modifier = Modifier,
+    imageUri: Uri? = null,
+    onImageClick: () -> Unit,
     nameState: TextUiState,
     onNameChange: (String) -> Unit,
     introductionState: TextUiState,
     onIntroductionChange: (String) -> Unit,
     canUpload: Boolean,
     onUpload: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.padding(horizontal = 24.dp)) {
         Column(
@@ -66,10 +87,12 @@ private fun ProfileScreen(
             ProfileTitle(text = stringResource(id = R.string.profile_title))
 
             ProfileImage(
+                imageUri = imageUri,
+                onClick = onImageClick,
                 modifier = Modifier
                     .padding(top = 36.dp, bottom = 16.dp)
-                    .size(156.dp)
-                    .align(Alignment.CenterHorizontally)
+                    .size(108.dp)
+                    .align(Alignment.CenterHorizontally),
             )
 
             ProfileSubtitle(text = stringResource(id = R.string.profile_name))
@@ -118,30 +141,52 @@ private fun ProfileSubtitle(text: String) {
 
 @Composable
 private fun ProfileImage(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    imageUri: Uri? = null,
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
         Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(CircleShape)
-                .clickable { /* TODO */ },
+            modifier = Modifier.fillMaxSize(),
             color = KnowllyTheme.colors.grayCC,
+            shape = CircleShape,
         ) {
-            // TODO: Image
+            Box(
+                modifier = Modifier
+                    .size(108.dp)
+                    .clickable { onClick() })
+            {
+                Image(
+                    painter = painterResource(id = R.drawable.img_profile_placeholder),
+                    contentDescription = null
+                )
+                AsyncImage(
+                    model = imageUri,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                )
+            }
         }
+
         Surface(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .size(36.dp),
+            shape = CircleShape,
+            color = KnowllyTheme.colors.gray00,
             border = BorderStroke(1.dp, KnowllyTheme.colors.grayFF),
-            color = KnowllyTheme.colors.gray8F,
-            shape = CircleShape
+            modifier = Modifier
+                .size(36.dp)
+                .align(Alignment.BottomEnd)
         ) {
-            // TODO: Icon
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add_a_photo),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = KnowllyTheme.colors.grayFF
+                )
+            }
         }
     }
 }
@@ -192,6 +237,8 @@ private fun ProfileUploadButton(
 private fun ProfileScreenPreview() {
     KnowllyTheme {
         ProfileScreen(
+            imageUri = null,
+            onImageClick = { },
             nameState = TextUiState.default(10),
             onNameChange = { },
             introductionState = TextUiState.default(100),
