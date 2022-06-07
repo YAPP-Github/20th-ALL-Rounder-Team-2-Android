@@ -8,12 +8,12 @@
     <string name="nav_coach">운영 클래스</string>
     <string name="nav_mypage">마이 페이지</string>
 
-    <string name="profile_title">프로필을 설정해주세요.</string>
+    <string name="profile_title">프로필 작성</string>
     <string name="profile_name">이름</string>
-    <string name="profile_name_hint">이름을 입력하세요</string>
+    <string name="profile_name_hint">이름을 적어주세요</string>
     <string name="profile_introduction">자기소개</string>
-    <string name="profile_introduction_hint">자기소개를 자세히 기록해주세요</string>
-    <string name="profile_upload">완료</string>
+    <string name="profile_introduction_hint"> 관심 분야, 취미 등을 포함해 소개를 작성해 주세요.</string>
+    <string name="profile_upload">작성 완료하기</string>
 
     <string name="ball_my">내 볼</string>
     <string name="ball_banner">볼은 언제 적립받고 어떻게 사용하나요?</string>
