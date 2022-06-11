@@ -14,8 +14,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material3.IconButton
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,8 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
-import kr.co.knowledgerally.ui.component.HorizontalSpacer
-import kr.co.knowledgerally.ui.component.KnowllyCheckBox
+import kr.co.knowledgerally.ui.component.KnowllyCheckBoxTile
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.signup.SignUpViewModel
@@ -114,18 +112,14 @@ fun AllAcception(
     areAllAccepted: Boolean,
     onAllClick: (Boolean) -> Unit,
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    KnowllyCheckBoxTile(
+        checked = areAllAccepted,
+        onCheckedChanged = onAllClick,
+        text = stringResource(R.string.signup_accept_all),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp, horizontal = 0.dp)
-    ) {
-        KnowllyCheckBox(checked = areAllAccepted, onCheckedChanged = onAllClick)
-        Text(
-            text = stringResource(R.string.signup_accept_all),
-            style = KnowllyTheme.typography.subtitle4
-        )
-    }
+            .padding(vertical = 12.dp)
+    )
 }
 
 @Composable
@@ -133,23 +127,22 @@ fun TermsAcception(
     isTermsAccepted: Boolean,
     onTermsClick: (Boolean) -> Unit,
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    KnowllyCheckBoxTile(
+        checked = isTermsAccepted,
+        onCheckedChanged = onTermsClick,
+        text = stringResource(R.string.signup_accept_terms),
+        actionIcon = {
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+        },
+        onActionTap = {},
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 12.dp)
-    ) {
-        KnowllyCheckBox(checked = isTermsAccepted, onCheckedChanged = onTermsClick)
-        Text(
-            text = stringResource(R.string.signup_accept_terms),
-            style = KnowllyTheme.typography.subtitle4
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        IconButton(onClick = {}) {
-            Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)
-        }
-        HorizontalSpacer(width = 8.dp)
-    }
+    )
 }
 
 @Composable
@@ -157,22 +150,20 @@ fun PolicyAcception(
     isPolicyAccepted: Boolean,
     onPolicyClick: (Boolean) -> Unit
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        KnowllyCheckBox(checked = isPolicyAccepted, onCheckedChanged = onPolicyClick)
-        Text(
-            text = stringResource(R.string.signup_accept_policy),
-            style = KnowllyTheme.typography.subtitle4
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        IconButton(onClick = {}) {
-            Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)
-        }
-        HorizontalSpacer(width = 8.dp)
-    }
+    KnowllyCheckBoxTile(
+        checked = isPolicyAccepted,
+        onCheckedChanged = onPolicyClick,
+        text = stringResource(R.string.signup_accept_policy),
+        actionIcon = {
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+        },
+        onActionTap = {},
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Composable
@@ -181,25 +172,12 @@ fun NotificationAcception(
     onNotificationClick: (Boolean) -> Unit
 ) {
     Column {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            KnowllyCheckBox(
-                checked = isNotificationAccepted,
-                onCheckedChanged = onNotificationClick
-            )
-            Text(
-                text = stringResource(R.string.signup_accept_notice),
-                style = KnowllyTheme.typography.subtitle4
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = {}) {
-                Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)
-            }
-            HorizontalSpacer(width = 8.dp)
-        }
+        KnowllyCheckBoxTile(
+            checked = isNotificationAccepted,
+            onCheckedChanged = onNotificationClick,
+            text = stringResource(R.string.signup_accept_notice),
+            modifier = Modifier.fillMaxWidth()
+        )
         Text(
             text = stringResource(R.string.signup_help_notice),
             style = KnowllyTheme.typography.caption,
