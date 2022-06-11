@@ -7,5 +7,5 @@ class IsWelcomeShownUseCase @Inject constructor(
     private val appMetaRepository: AppMetaRepository
 ) {
 
-    suspend fun invoke(): Result<Boolean> = appMetaRepository.isWelcomeShown()
+    suspend operator fun invoke(): Result<Boolean> = appMetaRepository.isWelcomeShown()
 }
