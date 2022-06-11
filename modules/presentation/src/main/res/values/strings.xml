@@ -10,9 +10,11 @@
 
     <string name="profile_title">프로필 작성</string>
     <string name="profile_name">이름</string>
-    <string name="profile_name_hint">이름을 적어주세요</string>
+    <string name="profile_name_hint">한글, 영문, 숫자 10자까지 입력할 수 있어요.</string>
+    <string name="profile_name_helper_text">이름을 입력해주세요</string>
     <string name="profile_introduction">자기소개</string>
     <string name="profile_introduction_hint"> 관심 분야, 취미 등을 포함해 소개를 작성해 주세요.</string>
+    <string name="profile_introduction_helper_text">소개를 입력해주세요</string>
     <string name="profile_upload">작성 완료하기</string>
 
     <string name="ball_my">내 볼</string>

@@ -1,8 +1,7 @@
 package kr.co.knowledgerally.ui.profile
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts.GetContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -19,13 +18,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,42 +36,30 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel) {
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
-    val launcher = rememberLauncherForActivityResult(GetContent()) { uri ->
-        if (uri != null) {
-            imageUri = uri
+    val profileState = rememberProfileState()
+
+    ProfileContent(
+        profileState = profileState,
+        onSubmit = {
+            viewModel.submitProfile(
+                name = profileState.nameState.text,
+                introduction = profileState.introductionState.text,
+                imageUri = profileState.imageState.uri.toString()
+            )
         }
-    }
-
-    val nameState by viewModel.name.collectAsState()
-    val introductionState by viewModel.introduction.collectAsState()
-    val canUpload by viewModel.canUpload.collectAsState()
-
-    ProfileScreen(
-        imageUri = imageUri,
-        onImageClick = { launcher.launch("image/*") },
-        nameState = nameState,
-        onNameChange = viewModel::updateName,
-        introductionState = introductionState,
-        onIntroductionChange = viewModel::updateIntroduction,
-        canUpload = canUpload,
-        onUpload = viewModel::uploadProfile,
-        modifier = Modifier.fillMaxSize()
     )
 }
 
 @Composable
-private fun ProfileScreen(
+private fun ProfileContent(
     modifier: Modifier = Modifier,
-    imageUri: Uri? = null,
-    onImageClick: () -> Unit,
-    nameState: TextUiState,
-    onNameChange: (String) -> Unit,
-    introductionState: TextUiState,
-    onIntroductionChange: (String) -> Unit,
-    canUpload: Boolean,
-    onUpload: () -> Unit,
+    profileState: ProfileState,
+    onSubmit: () -> Unit,
 ) {
+    val nameState = profileState.nameState
+    val introductionState = profileState.introductionState
+    val imageState = profileState.imageState
+
     Box(modifier = modifier.padding(horizontal = 24.dp)) {
         Column(
             modifier = Modifier
@@ -87,32 +70,30 @@ private fun ProfileScreen(
             ProfileTitle(text = stringResource(id = R.string.profile_title))
 
             ProfileImage(
-                imageUri = imageUri,
-                onClick = onImageClick,
                 modifier = Modifier
                     .padding(top = 36.dp, bottom = 16.dp)
                     .size(108.dp)
                     .align(Alignment.CenterHorizontally),
+                imageState = imageState,
             )
 
             ProfileSubtitle(text = stringResource(id = R.string.profile_name))
             ProfileTextField(
-                value = nameState.text,
-                onValueChange = onNameChange,
-                maxLength = nameState.maxLength,
+                state = nameState,
+                maxLength = NameState.MAX_LENGTH,
                 placeholder = stringResource(id = R.string.profile_name_hint),
+                helperText = stringResource(id = R.string.profile_name_helper_text),
                 singleLine = true,
-                helperText = "message",
             )
 
             VerticalSpacer(height = 20.dp)
 
             ProfileSubtitle(text = stringResource(id = R.string.profile_introduction))
             ProfileTextField(
-                value = introductionState.text,
-                onValueChange = onIntroductionChange,
-                maxLength = introductionState.maxLength,
+                state = introductionState,
+                maxLength = IntroductionState.MAX_LENGTH,
                 placeholder = stringResource(id = R.string.profile_introduction_hint),
+                helperText = stringResource(id = R.string.profile_introduction_helper_text),
                 singleLine = false,
                 minHeight = 180.dp,
             )
@@ -123,8 +104,8 @@ private fun ProfileScreen(
 
         ProfileUploadButton(
             modifier = Modifier.align(Alignment.BottomCenter),
-            onClick = onUpload,
-            enabled = canUpload
+            onClick = onSubmit,
+            enabled = profileState.isValid
         )
     }
 }
@@ -142,9 +123,17 @@ private fun ProfileSubtitle(text: String) {
 @Composable
 private fun ProfileImage(
     modifier: Modifier = Modifier,
-    imageUri: Uri? = null,
-    onClick: () -> Unit,
+    imageState: ImageState,
 ) {
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            if (uri != null) {
+                imageState.uri = uri
+            }
+        },
+    )
+
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
@@ -157,14 +146,14 @@ private fun ProfileImage(
             Box(
                 modifier = Modifier
                     .size(108.dp)
-                    .clickable { onClick() })
+                    .clickable { launcher.launch("image/*") })
             {
                 Image(
                     painter = painterResource(id = R.drawable.img_profile_placeholder),
                     contentDescription = null
                 )
                 AsyncImage(
-                    model = imageUri,
+                    model = imageState.uri,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                 )
@@ -193,26 +182,29 @@ private fun ProfileImage(
 
 @Composable
 private fun ProfileTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
+    state: TextFieldState,
     maxLength: Int,
     placeholder: String,
     singleLine: Boolean,
+    helperText: String,
     modifier: Modifier = Modifier,
-    helperText: String = "",
     minHeight: Dp = Dp.Unspecified,
 ) {
+    val isError = state.isError
     KnowllyTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = modifier.padding(top = 12.dp),
+        value = state.text,
+        onValueChange = { state.text = it },
+        modifier = modifier
+            .padding(top = 12.dp)
+            .onFocusChanged { state.onFocusChange(it.isFocused) },
         placeholder = placeholder,
         singleLine = singleLine,
+        isError = isError,
         helperText = helperText,
-        helperTextEnabled = helperText.isNotBlank(),
+        helperTextEnabled = isError,
         counterMaxLength = maxLength,
         counterEnabled = true,
-        minHeight = minHeight
+        minHeight = minHeight,
     )
 }
 
@@ -236,15 +228,9 @@ private fun ProfileUploadButton(
 @Composable
 private fun ProfileScreenPreview() {
     KnowllyTheme {
-        ProfileScreen(
-            imageUri = null,
-            onImageClick = { },
-            nameState = TextUiState.default(10),
-            onNameChange = { },
-            introductionState = TextUiState.default(100),
-            onIntroductionChange = { },
-            canUpload = true,
-            onUpload = { },
+        ProfileContent(
+            profileState = rememberProfileState(),
+            onSubmit = { },
         )
     }
 }
