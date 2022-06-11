@@ -11,11 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,15 +33,16 @@ import kr.co.knowledgerally.ui.main.navigation.MainNavHost
 import kr.co.knowledgerally.ui.main.navigation.rememberMainNavigation
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
+    viewModel: MainViewModel,
     onRegister: () -> Unit,
 ) {
     val navController = rememberNavController()
     val navigation = rememberMainNavigation(navController)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+    val showWelcome by viewModel.showWelcome.collectAsState()
 
     Scaffold(
         modifier = Modifier,
@@ -61,6 +62,10 @@ fun MainScreen(
             navController = navController,
             modifier = Modifier.padding(padding),
         )
+    }
+
+    if (showWelcome) {
+        WelcomeDialog(onDismiss = { viewModel.shownWelcome() })
     }
 }
 

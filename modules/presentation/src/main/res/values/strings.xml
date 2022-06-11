@@ -56,4 +56,7 @@
     <string name="mypage_logout">로그아웃</string>
     <string name="mypage_withdrawal">회원탈퇴</string>
 
+    <string name="dialog_welcome_title">널리 나누며 성장하는 곳,\n널리에 오신걸 환영합니다.</string>
+    <string name="dialog_welcome_button">시작하기</string>
+
 </resources>
