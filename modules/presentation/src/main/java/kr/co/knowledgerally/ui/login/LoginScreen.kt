@@ -56,7 +56,7 @@ fun LoginScreen(onLogin: () -> Unit, navigateToTerms: () -> Unit, navigateToPoli
         ) {
             KakaoLoginButton(onClick = onLogin)
             VerticalSpacer(height = 24.dp)
-            LoginAgreement(navigateToTerms = navigateToTerms, navigateToPolicy = navigateToPolicy)
+            LoginAcceptation(navigateToTerms = navigateToTerms, navigateToPolicy = navigateToPolicy)
         }
     }
 }
@@ -116,23 +116,23 @@ fun KakaoLoginButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun LoginAgreement(navigateToTerms: () -> Unit, navigateToPolicy: () -> Unit) {
+fun LoginAcceptation(navigateToTerms: () -> Unit, navigateToPolicy: () -> Unit) {
     val policyString = stringResource(id = R.string.login_policy)
     val termsString = stringResource(id = R.string.login_terms)
-    val acceptionString = stringResource(id = R.string.login_acception)
+    val acceptationString = stringResource(id = R.string.login_acceptation)
 
     val policyStringRange = IntRange(
-        acceptionString.indexOf(policyString),
-        acceptionString.indexOf(policyString) + policyString.length
+        acceptationString.indexOf(policyString),
+        acceptationString.indexOf(policyString) + policyString.length
     )
     val termsStringRange = IntRange(
-        acceptionString.indexOf(termsString),
-        acceptionString.indexOf(termsString) + termsString.length
+        acceptationString.indexOf(termsString),
+        acceptationString.indexOf(termsString) + termsString.length
     )
 
     ClickableText(
         text = buildAnnotatedString {
-            append(acceptionString)
+            append(acceptationString)
             listOf(policyStringRange, termsStringRange).forEach {
                 addStyle(
                     style = SpanStyle(textDecoration = TextDecoration.Underline),

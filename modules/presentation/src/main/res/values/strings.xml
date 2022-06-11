@@ -35,9 +35,9 @@
     <string name="login_kakao">카카오 로그인</string>
     <string name="login_policy">개인정보 처리방침</string>
     <string name="login_terms">이용약관</string>
-    <string name="login_acception">계정 생성 시 널리의 개인정보 처리방침 및 이용약관에 동의하게 됩니다.</string>
+    <string name="login_acceptation">계정 생성 시 널리의 개인정보 처리방침 및 이용약관에 동의하게 됩니다.</string>
 
-    <string name="signup_acception">회원가입 약관 동의</string>
+    <string name="signup_acceptation">회원가입 약관 동의</string>
     <string name="signup_accept_all">약관 전체 동의</string>
     <string name="signup_accept_terms">(필수) 서비스 약관 동의</string>
     <string name="signup_accept_policy">(필수) 개인 정보 처리 방침 동의</string>

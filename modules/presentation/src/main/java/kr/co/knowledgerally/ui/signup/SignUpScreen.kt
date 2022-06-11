@@ -120,7 +120,7 @@ fun SignUpTopAppBar() {
 @Composable
 fun SignUpTitle() {
     Text(
-        text = stringResource(R.string.signup_acception),
+        text = stringResource(R.string.signup_acceptation),
         style = KnowllyTheme.typography.headline3,
     )
 }
