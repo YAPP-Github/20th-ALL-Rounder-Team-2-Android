@@ -118,22 +118,22 @@ fun KakaoLoginButton(onClick: () -> Unit) {
 @Composable
 fun LoginAgreement(onShowTerms: () -> Unit, onShowPolicy: () -> Unit) {
     val policyString = stringResource(id = R.string.login_policy)
-    val termString = stringResource(id = R.string.login_term)
-    val agreementString = stringResource(id = R.string.login_agreement)
+    val termsString = stringResource(id = R.string.login_terms)
+    val acceptionString = stringResource(id = R.string.login_acception)
 
     val policyStringRange = IntRange(
-        agreementString.indexOf(policyString),
-        agreementString.indexOf(policyString) + policyString.length
+        acceptionString.indexOf(policyString),
+        acceptionString.indexOf(policyString) + policyString.length
     )
-    val termStringRange = IntRange(
-        agreementString.indexOf(termString),
-        agreementString.indexOf(termString) + termString.length
+    val termsStringRange = IntRange(
+        acceptionString.indexOf(termsString),
+        acceptionString.indexOf(termsString) + termsString.length
     )
 
     ClickableText(
         text = buildAnnotatedString {
-            append(agreementString)
-            listOf(policyStringRange, termStringRange).forEach {
+            append(acceptionString)
+            listOf(policyStringRange, termsStringRange).forEach {
                 addStyle(
                     style = SpanStyle(textDecoration = TextDecoration.Underline),
                     start = it.first,
@@ -147,7 +147,7 @@ fun LoginAgreement(onShowTerms: () -> Unit, onShowPolicy: () -> Unit) {
             in policyStringRange -> {
                 onShowPolicy()
             }
-            in termStringRange -> {
+            in termsStringRange -> {
                 onShowTerms()
             }
             else -> {}
