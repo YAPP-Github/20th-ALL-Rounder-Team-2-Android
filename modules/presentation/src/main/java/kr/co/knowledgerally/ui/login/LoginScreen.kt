@@ -36,7 +36,7 @@ import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun LoginScreen(onLogin: () -> Unit, onShowTerms: () -> Unit, onShowPolicy: () -> Unit) {
+fun LoginScreen(onLogin: () -> Unit, navigateToTerms: () -> Unit, navigateToPolicy: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -56,7 +56,7 @@ fun LoginScreen(onLogin: () -> Unit, onShowTerms: () -> Unit, onShowPolicy: () -
         ) {
             KakaoLoginButton(onClick = onLogin)
             VerticalSpacer(height = 24.dp)
-            LoginAgreement(onShowTerms = onShowTerms, onShowPolicy = onShowPolicy)
+            LoginAgreement(navigateToTerms = navigateToTerms, navigateToPolicy = navigateToPolicy)
         }
     }
 }
@@ -116,7 +116,7 @@ fun KakaoLoginButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun LoginAgreement(onShowTerms: () -> Unit, onShowPolicy: () -> Unit) {
+fun LoginAgreement(navigateToTerms: () -> Unit, navigateToPolicy: () -> Unit) {
     val policyString = stringResource(id = R.string.login_policy)
     val termsString = stringResource(id = R.string.login_terms)
     val acceptionString = stringResource(id = R.string.login_acception)
@@ -145,10 +145,10 @@ fun LoginAgreement(onShowTerms: () -> Unit, onShowPolicy: () -> Unit) {
     ) { position ->
         when (position) {
             in policyStringRange -> {
-                onShowPolicy()
+                navigateToPolicy()
             }
             in termsStringRange -> {
-                onShowTerms()
+                navigateToTerms()
             }
             else -> {}
         }
@@ -159,6 +159,6 @@ fun LoginAgreement(onShowTerms: () -> Unit, onShowPolicy: () -> Unit) {
 @Composable
 private fun LoginScreenPreview() {
     KnowllyTheme {
-        LoginScreen(onLogin = {}, onShowTerms = {}, onShowPolicy = {})
+        LoginScreen(onLogin = {}, navigateToTerms = {}, navigateToPolicy = {})
     }
 }

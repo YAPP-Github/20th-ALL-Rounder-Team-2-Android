@@ -30,7 +30,11 @@ import kr.co.knowledgerally.ui.signup.SignUpViewModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun SignUpScreen(viewModel: SignUpViewModel, onShowTerms: () -> Unit, onShowPolicy: () -> Unit) {
+fun SignUpScreen(
+    viewModel: SignUpViewModel,
+    navigateToTerms: () -> Unit,
+    navigateToPolicy: () -> Unit
+) {
     SignUpScreen(
         areAllAccepted = viewModel.areAllAccepted.value,
         isTermsAccepted = viewModel.isTermsAccepted.value,
@@ -40,8 +44,8 @@ fun SignUpScreen(viewModel: SignUpViewModel, onShowTerms: () -> Unit, onShowPoli
         onTermsClick = viewModel::setTerms,
         onPolicyClick = viewModel::setPolicy,
         onNotificationClick = viewModel::setNotification,
-        onShowTerms = onShowTerms,
-        onShowPolicy = onShowPolicy
+        navigateToTerms = navigateToTerms,
+        navigateToPolicy = navigateToPolicy
     )
 }
 
@@ -55,8 +59,8 @@ fun SignUpScreen(
     onTermsClick: (Boolean) -> Unit,
     onPolicyClick: (Boolean) -> Unit,
     onNotificationClick: (Boolean) -> Unit,
-    onShowTerms: () -> Unit,
-    onShowPolicy: () -> Unit
+    navigateToTerms: () -> Unit,
+    navigateToPolicy: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -78,12 +82,12 @@ fun SignUpScreen(
             TermsAcception(
                 isTermsAccepted = isTermsAccepted,
                 onTermsClick = onTermsClick,
-                onShowTerms = onShowTerms
+                onShowTerms = navigateToTerms
             )
             PolicyAcception(
                 isPolicyAccepted = isPolicyAccepted,
                 onPolicyClick = onPolicyClick,
-                onShowPolicy = onShowPolicy
+                onShowPolicy = navigateToPolicy
             )
             NotificationAcception(
                 isNotificationAccepted = isNotificationAccepted,
@@ -223,8 +227,8 @@ private fun SignUpScreemPreview() {
             onTermsClick = {},
             onPolicyClick = {},
             onNotificationClick = {},
-            onShowTerms = {},
-            onShowPolicy = {}
+            navigateToTerms = {},
+            navigateToPolicy = {}
         )
     }
 }

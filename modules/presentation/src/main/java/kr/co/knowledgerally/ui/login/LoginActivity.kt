@@ -44,8 +44,8 @@ class LoginActivity : BaseActivity() {
         KnowllyTheme {
             LoginScreen(
                 onLogin = { requestKakaoLogin() },
-                onShowTerms = { startTermsActivity() },
-                onShowPolicy = { startPolicyActivity() }
+                navigateToTerms = { startTermsActivity() },
+                navigateToPolicy = { startPolicyActivity() }
             )
         }
     }

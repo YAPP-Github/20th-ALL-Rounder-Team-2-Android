@@ -24,8 +24,8 @@ class SignUpActivity : BaseActivity() {
             KnowllyTheme {
                 SignUpScreen(
                     viewModel = viewModel,
-                    onShowTerms = { startTermsActivity() },
-                    onShowPolicy = { startPolicyActivity() }
+                    navigateToTerms = { startTermsActivity() },
+                    navigateToPolicy = { startPolicyActivity() }
                 )
             }
         }
