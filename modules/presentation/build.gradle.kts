@@ -23,7 +23,8 @@ android {
     kotlinOptions {
         freeCompilerArgs += listOf(
             "-Xopt-in=kotlin.RequiresOptIn",
-            "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
+            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
         )
         jvmTarget = "1.8"
     }
