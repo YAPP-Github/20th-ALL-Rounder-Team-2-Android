@@ -59,6 +59,8 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    implementation(libs.coil.compose)
+
     testImplementation(libs.junit4)
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.truth)

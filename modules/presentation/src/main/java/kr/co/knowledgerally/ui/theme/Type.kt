@@ -31,7 +31,7 @@ private val Typography = KnowllyTypography(
     ),
     headline3 = TextStyle(
         fontFamily = Suit,
-        fontSize = 24.sp,
+        fontSize = 22.sp,
         fontWeight = FontWeight.Bold,
         lineHeight = 34.sp,
     ),
