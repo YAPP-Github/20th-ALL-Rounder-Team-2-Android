@@ -1,12 +1,20 @@
 package kr.co.knowledgerally.ui.component
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,27 +37,30 @@ fun KnowllyCheckBox(
 }
 
 @Composable
-fun KnowllyCheckBoxTile(
+fun KnowllyCheckBoxText(
     checked: Boolean,
     onCheckedChanged: ((Boolean) -> Unit)?,
     text: String,
-    actionIcon: (@Composable () -> Unit)? = null,
-    onActionTap: (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    actionIcon: (@Composable () -> Unit) = { Box(modifier = Modifier.size(20.dp)) },
+    onActionTap: (() -> Unit) = {},
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
+        modifier = Modifier.fillMaxWidth()
     ) {
-        KnowllyCheckBox(checked = checked, onCheckedChanged = onCheckedChanged)
+        CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+            KnowllyCheckBox(
+                checked = checked,
+                onCheckedChanged = onCheckedChanged
+            )
+        }
+        HorizontalSpacer(width = 8.dp)
         Text(
             text = text,
             style = KnowllyTheme.typography.subtitle4
         )
-        if (actionIcon != null && onActionTap != null) {
-            Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = onActionTap, content = actionIcon)
-        }
+        Spacer(modifier = Modifier.weight(1f))
+        IconButton(onClick = onActionTap, content = actionIcon)
         HorizontalSpacer(width = 8.dp)
     }
 }
@@ -67,5 +78,25 @@ private fun KnowllyCheckBoxPreviewChecked() {
 private fun KnowllyCheckBoxPreviewUnchecked() {
     KnowllyTheme {
         KnowllyCheckBox(checked = false, onCheckedChanged = {})
+    }
+}
+
+@Preview
+@Composable
+private fun KnowllyCheckBoxTextPreview() {
+    KnowllyTheme {
+        KnowllyCheckBoxText(
+            checked = true,
+            onCheckedChanged = { },
+            text = "KnowllyCheckBoxTextPreview",
+            actionIcon = {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+            },
+            onActionTap = { }
+        )
     }
 }

@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
-import kr.co.knowledgerally.ui.component.KnowllyCheckBoxTile
+import kr.co.knowledgerally.ui.component.KnowllyCheckBoxText
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.signup.SignUpViewModel
@@ -66,12 +66,15 @@ fun SignUpScreen(
         SignUpTopAppBar()
         Column(
             modifier = Modifier
-                .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 24.dp)
+                .padding(start = 24.dp, top = 12.dp, end = 24.dp, bottom = 24.dp)
         ) {
-            SignUpTitle(modifier = Modifier.padding(horizontal = 12.dp))
-            VerticalSpacer(24.dp)
+            SignUpTitle()
+            VerticalSpacer(20.dp)
             AllAcception(areAllAccepted = areAllAccepted, onAllClick = onAllClick)
-            Divider(modifier = Modifier.padding(horizontal = 12.dp))
+            Divider(
+                color = KnowllyTheme.colors.grayDD,
+                modifier = Modifier.padding(vertical = 12.dp)
+            )
             TermsAcception(
                 isTermsAccepted = isTermsAccepted,
                 onTermsClick = onTermsClick,
@@ -111,11 +114,10 @@ fun SignUpTopAppBar() {
 }
 
 @Composable
-fun SignUpTitle(modifier: Modifier = Modifier) {
+fun SignUpTitle() {
     Text(
         text = stringResource(R.string.signup_acception),
         style = KnowllyTheme.typography.headline3,
-        modifier = modifier
     )
 }
 
@@ -124,13 +126,10 @@ fun AllAcception(
     areAllAccepted: Boolean,
     onAllClick: (Boolean) -> Unit,
 ) {
-    KnowllyCheckBoxTile(
+    KnowllyCheckBoxText(
         checked = areAllAccepted,
         onCheckedChanged = onAllClick,
-        text = stringResource(R.string.signup_accept_all),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp)
+        text = stringResource(R.string.signup_accept_all)
     )
 }
 
@@ -140,7 +139,7 @@ fun TermsAcception(
     onTermsClick: (Boolean) -> Unit,
     onShowTerms: () -> Unit
 ) {
-    KnowllyCheckBoxTile(
+    KnowllyCheckBoxText(
         checked = isTermsAccepted,
         onCheckedChanged = onTermsClick,
         text = stringResource(R.string.signup_accept_terms),
@@ -151,10 +150,7 @@ fun TermsAcception(
                 modifier = Modifier.size(20.dp)
             )
         },
-        onActionTap = onShowTerms,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 12.dp)
+        onActionTap = onShowTerms
     )
 }
 
@@ -164,7 +160,7 @@ fun PolicyAcception(
     onPolicyClick: (Boolean) -> Unit,
     onShowPolicy: () -> Unit
 ) {
-    KnowllyCheckBoxTile(
+    KnowllyCheckBoxText(
         checked = isPolicyAccepted,
         onCheckedChanged = onPolicyClick,
         text = stringResource(R.string.signup_accept_policy),
@@ -175,8 +171,7 @@ fun PolicyAcception(
                 modifier = Modifier.size(20.dp)
             )
         },
-        onActionTap = onShowPolicy,
-        modifier = Modifier.fillMaxWidth()
+        onActionTap = onShowPolicy
     )
 }
 
@@ -186,17 +181,16 @@ fun NotificationAcception(
     onNotificationClick: (Boolean) -> Unit
 ) {
     Column {
-        KnowllyCheckBoxTile(
+        KnowllyCheckBoxText(
             checked = isNotificationAccepted,
             onCheckedChanged = onNotificationClick,
-            text = stringResource(R.string.signup_accept_notice),
-            modifier = Modifier.fillMaxWidth()
+            text = stringResource(R.string.signup_accept_notice)
         )
         Text(
             text = stringResource(R.string.signup_help_notice),
             style = KnowllyTheme.typography.caption,
             color = KnowllyTheme.colors.gray6B,
-            modifier = Modifier.padding(start = 48.dp)
+            modifier = Modifier.padding(start = 36.dp)
         )
     }
 }
