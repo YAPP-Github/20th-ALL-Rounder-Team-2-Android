@@ -1,36 +1,32 @@
-package kr.co.knowledgerally.ui.main
+package kr.co.knowledgerally.ui.ball
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity() {
+class BallActivity : BaseActivity() {
+
+    private val viewModel: BallViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             KnowllyTheme {
-                MainScreen(
-                    onRegister = ::startRegisterActivity
-                )
+                BallScreen(viewModel = viewModel)
             }
         }
     }
 
-    private fun startRegisterActivity() {
-        // TODO: 클래스 등록 화면 시작
-    }
-
     companion object {
-
         fun startActivity(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
+            val intent = Intent(context, BallActivity::class.java)
             context.startActivity(intent)
         }
     }

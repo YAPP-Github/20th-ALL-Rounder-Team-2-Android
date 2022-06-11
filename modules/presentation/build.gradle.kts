@@ -21,7 +21,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs += listOf(
+            "-Xopt-in=kotlin.RequiresOptIn",
+            "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
+        )
         jvmTarget = "1.8"
     }
     buildFeatures {
@@ -54,9 +57,12 @@ dependencies {
     implementation(libs.androidx.activity.compose)
 
     implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    implementation(libs.coil.compose)
 
     testImplementation(libs.junit4)
     testImplementation(libs.bundles.junit5)

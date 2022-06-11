@@ -65,7 +65,15 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.ball.BallActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.main.MainActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.register.RegisterActivity"
             android:screenOrientation="portrait" />
 
     </application>
