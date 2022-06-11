@@ -119,14 +119,11 @@ fun LoginAcceptation(navigateToTerms: () -> Unit, navigateToPolicy: () -> Unit) 
     val termsString = stringResource(id = R.string.login_terms)
     val acceptationString = stringResource(id = R.string.login_acceptation)
 
-    val policyStringRange = IntRange(
-        acceptationString.indexOf(policyString),
-        acceptationString.indexOf(policyString) + policyString.length
-    )
-    val termsStringRange = IntRange(
-        acceptationString.indexOf(termsString),
-        acceptationString.indexOf(termsString) + termsString.length
-    )
+    val policyStringIndex = acceptationString.indexOf(policyString)
+    val termsStringIndex = acceptationString.indexOf(termsString)
+
+    val policyStringRange = policyStringIndex.rangeTo(policyStringIndex + policyString.length)
+    val termsStringRange = termsStringIndex.rangeTo(termsStringIndex + termsString.length)
 
     ClickableText(
         text = buildAnnotatedString {
