@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -34,6 +35,7 @@ fun KnowllyTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    textStyle: TextStyle = KnowllyTheme.typography.body1,
     placeholder: String = "",
     helperTextEnabled: Boolean = false,
     helperText: String = "",
@@ -62,7 +64,7 @@ fun KnowllyTextField(
                 .fillMaxWidth()
                 .heightIn(min = minHeight, max = maxHeight),
             enabled = enabled,
-            textStyle = KnowllyTheme.typography.body1,
+            textStyle = textStyle,
             cursorBrush = SolidColor(colors.cursorColor(isError).value),
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
@@ -80,6 +82,7 @@ fun KnowllyTextField(
                     visualTransformation = visualTransformation,
                     interactionSource = interactionSource,
                     placeholder = placeholder,
+                    placeholderTextStyle = textStyle,
                     colors = colors,
                 )
             }
@@ -98,6 +101,86 @@ fun KnowllyTextField(
             )
         }
     }
+}
+
+@Composable
+fun KnowllySinglelineTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholder: String = "",
+    helperTextEnabled: Boolean = false,
+    helperText: String = "",
+    counterEnabled: Boolean = false,
+    counterMaxLength: Int = 0,
+    enabled: Boolean = true,
+    isError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    KnowllyTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        textStyle = KnowllyTheme.typography.body2,
+        placeholder = placeholder,
+        helperTextEnabled = helperTextEnabled,
+        helperText = helperText,
+        counterEnabled = counterEnabled,
+        counterMaxLength = counterMaxLength,
+        enabled = enabled,
+        isError = isError,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        singleLine = true,
+        visualTransformation = visualTransformation,
+        interactionSource = interactionSource
+    )
+}
+
+@Composable
+fun KnowllyMultilineTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholder: String = "",
+    helperTextEnabled: Boolean = false,
+    helperText: String = "",
+    counterEnabled: Boolean = false,
+    counterMaxLength: Int = 0,
+    enabled: Boolean = true,
+    isError: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    maxLines: Int = Int.MAX_VALUE,
+    minHeight: Dp = Dp.Unspecified,
+    maxHeight: Dp = minHeight,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    KnowllyTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        textStyle = KnowllyTheme.typography.body2,
+        placeholder = placeholder,
+        helperTextEnabled = helperTextEnabled,
+        helperText = helperText,
+        counterEnabled = counterEnabled,
+        counterMaxLength = counterMaxLength,
+        enabled = enabled,
+        isError = isError,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        singleLine = false,
+        maxLines = maxLines,
+        minHeight = minHeight,
+        maxHeight = maxHeight,
+        visualTransformation = visualTransformation,
+        interactionSource = interactionSource
+    )
 }
 
 @Composable
@@ -169,6 +252,7 @@ object KnowllyTextFieldDefaults {
         interactionSource: InteractionSource,
         isError: Boolean,
         placeholder: String,
+        placeholderTextStyle: TextStyle,
         colors: TextFieldColors,
     ) {
         TextFieldDefaults.OutlinedTextFieldDecorationBox(
@@ -176,7 +260,7 @@ object KnowllyTextFieldDefaults {
             innerTextField = innerTextField,
             placeholder = {
                 if (value.isEmpty()) {
-                    Text(text = placeholder, style = KnowllyTheme.typography.body1)
+                    Text(text = placeholder, style = placeholderTextStyle)
                 }
             },
             singleLine = singleLine,
