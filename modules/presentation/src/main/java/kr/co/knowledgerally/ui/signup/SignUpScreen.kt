@@ -102,7 +102,7 @@ fun SignUpTopAppBar() {
 fun SignUpTitle(modifier: Modifier = Modifier) {
     Text(
         text = stringResource(R.string.signup_acception),
-        style = KnowllyTheme.typography.headline4,
+        style = KnowllyTheme.typography.headline3,
         modifier = modifier
     )
 }
