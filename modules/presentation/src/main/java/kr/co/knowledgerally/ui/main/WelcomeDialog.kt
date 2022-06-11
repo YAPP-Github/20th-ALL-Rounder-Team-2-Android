@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -65,7 +66,9 @@ private fun WelcomeDialogContent(onDismiss: () -> Unit) {
                 KnowllyContainedButton(
                     text = stringResource(id = R.string.dialog_welcome_button),
                     onClick = { onDismiss() },
-                    modifier = Modifier.padding(vertical = 24.dp)
+                    modifier = Modifier
+                        .padding(vertical = 24.dp)
+                        .width(156.dp)
                 )
             }
         }
