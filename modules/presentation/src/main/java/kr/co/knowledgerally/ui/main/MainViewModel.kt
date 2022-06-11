@@ -6,11 +6,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.usecase.IsWelcomeShownUseCase
+import kr.co.knowledgerally.domain.usecase.ShownWelcomeUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val isWelcomeShownUseCase: IsWelcomeShownUseCase,
+    private val shownWelcomeUseCase: ShownWelcomeUseCase,
 ) : BaseViewModel() {
 
     private val _showWelcome = MutableStateFlow(false)
@@ -20,6 +22,16 @@ class MainViewModel @Inject constructor(
         launch {
             isWelcomeShownUseCase()
                 .onSuccess { _showWelcome.value = !it }
+        }
+    }
+
+    fun shownWelcome() {
+        if (!showWelcome.value) {
+            return
+        }
+        launch {
+            shownWelcomeUseCase()
+                .onSuccess { _showWelcome.value = false }
         }
     }
 }
