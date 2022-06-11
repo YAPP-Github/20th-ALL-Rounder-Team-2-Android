@@ -4,12 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.ui.register.RegisterActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +21,7 @@ class MainActivity : BaseActivity() {
         setContent {
             KnowllyTheme {
                 MainScreen(
+                    viewModel = viewModel,
                     onRegister = ::startRegisterActivity
                 )
             }
@@ -24,7 +29,8 @@ class MainActivity : BaseActivity() {
     }
 
     private fun startRegisterActivity() {
-        // TODO: 클래스 등록 화면 시작
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
     }
 
     companion object {
