@@ -52,7 +52,7 @@ class LoginActivity : BaseActivity() {
 
     private fun requestKakaoLogin() = lifecycleScope.launch {
         kakaoLogin.login(this@LoginActivity)
-            .onSuccess { viewModel.login(it) }
+            .onSuccess { viewModel.login(it.value) }
             .onFailure { /* no-op */ }
     }
 
