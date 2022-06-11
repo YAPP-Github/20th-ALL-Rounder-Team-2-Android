@@ -69,13 +69,12 @@ fun LoginGraphic(modifier: Modifier = Modifier) {
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy(36.dp, Alignment.CenterVertically),
             modifier = Modifier.padding(horizontal = 24.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.img_login_title),
-                contentDescription = null,
-                modifier = Modifier.padding(vertical = 36.dp)
+                contentDescription = null
             )
             Image(
                 painter = painterResource(id = R.drawable.img_login_illustration),
