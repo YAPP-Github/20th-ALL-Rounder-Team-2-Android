@@ -10,7 +10,7 @@
 
     <string name="category_select">카테고리 선택</string>
     <string name="category_service_planning">서비스 기획</string>
-    <string name="category_design">서비스 기획</string>
+    <string name="category_design">디자인</string>
     <string name="category_develop">개발</string>
     <string name="category_marketing">마케팅</string>
     <string name="category_language">외국어</string>
