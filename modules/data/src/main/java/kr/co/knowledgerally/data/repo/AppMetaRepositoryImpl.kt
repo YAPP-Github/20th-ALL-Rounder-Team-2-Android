@@ -10,4 +10,7 @@ internal class AppMetaRepositoryImpl @Inject constructor(
 
     override suspend fun isWelcomeShown(): Result<Boolean> =
         appMetaLocalDataSource.isWelcomeShown()
+
+    override suspend fun shownWelcome(): Result<Unit> =
+        appMetaLocalDataSource.shownWelcome()
 }
