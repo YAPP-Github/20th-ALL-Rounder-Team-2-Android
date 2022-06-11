@@ -17,7 +17,7 @@ class RegisterActivity : BaseActivity() {
 
         setContent {
             KnowllyTheme {
-
+                RegisterScreen(viewModel = viewModel)
             }
         }
     }
