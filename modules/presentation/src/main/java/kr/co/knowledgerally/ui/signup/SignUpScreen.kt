@@ -216,7 +216,7 @@ fun SignUpButton(
 
 @Preview
 @Composable
-private fun SignUpScreemPreview() {
+private fun SignUpScreenPreview() {
     KnowllyTheme {
         SignUpScreen(
             areAllAccepted = true,
