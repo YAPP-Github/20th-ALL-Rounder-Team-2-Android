@@ -30,7 +30,7 @@ import kr.co.knowledgerally.ui.signup.SignUpViewModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun SignUpScreen(viewModel: SignUpViewModel) {
+fun SignUpScreen(viewModel: SignUpViewModel, onShowTerms: () -> Unit, onShowPolicy: () -> Unit) {
     SignUpScreen(
         areAllAccepted = viewModel.areAllAccepted.value,
         isTermsAccepted = viewModel.isTermsAccepted.value,
@@ -39,7 +39,9 @@ fun SignUpScreen(viewModel: SignUpViewModel) {
         onAllClick = viewModel::setAll,
         onTermsClick = viewModel::setTerms,
         onPolicyClick = viewModel::setPolicy,
-        onNotificationClick = viewModel::setNotification
+        onNotificationClick = viewModel::setNotification,
+        onShowTerms = onShowTerms,
+        onShowPolicy = onShowPolicy
     )
 }
 
@@ -53,6 +55,8 @@ fun SignUpScreen(
     onTermsClick: (Boolean) -> Unit,
     onPolicyClick: (Boolean) -> Unit,
     onNotificationClick: (Boolean) -> Unit,
+    onShowTerms: () -> Unit,
+    onShowPolicy: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -68,8 +72,16 @@ fun SignUpScreen(
             VerticalSpacer(24.dp)
             AllAcception(areAllAccepted = areAllAccepted, onAllClick = onAllClick)
             Divider(modifier = Modifier.padding(horizontal = 12.dp))
-            TermsAcception(isTermsAccepted = isTermsAccepted, onTermsClick = onTermsClick)
-            PolicyAcception(isPolicyAccepted = isPolicyAccepted, onPolicyClick = onPolicyClick)
+            TermsAcception(
+                isTermsAccepted = isTermsAccepted,
+                onTermsClick = onTermsClick,
+                onShowTerms = onShowTerms
+            )
+            PolicyAcception(
+                isPolicyAccepted = isPolicyAccepted,
+                onPolicyClick = onPolicyClick,
+                onShowPolicy = onShowPolicy
+            )
             NotificationAcception(
                 isNotificationAccepted = isNotificationAccepted,
                 onNotificationClick = onNotificationClick
@@ -126,6 +138,7 @@ fun AllAcception(
 fun TermsAcception(
     isTermsAccepted: Boolean,
     onTermsClick: (Boolean) -> Unit,
+    onShowTerms: () -> Unit
 ) {
     KnowllyCheckBoxTile(
         checked = isTermsAccepted,
@@ -138,7 +151,7 @@ fun TermsAcception(
                 modifier = Modifier.size(20.dp)
             )
         },
-        onActionTap = {},
+        onActionTap = onShowTerms,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 12.dp)
@@ -148,7 +161,8 @@ fun TermsAcception(
 @Composable
 fun PolicyAcception(
     isPolicyAccepted: Boolean,
-    onPolicyClick: (Boolean) -> Unit
+    onPolicyClick: (Boolean) -> Unit,
+    onShowPolicy: () -> Unit
 ) {
     KnowllyCheckBoxTile(
         checked = isPolicyAccepted,
@@ -161,7 +175,7 @@ fun PolicyAcception(
                 modifier = Modifier.size(20.dp)
             )
         },
-        onActionTap = {},
+        onActionTap = onShowPolicy,
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -214,7 +228,9 @@ private fun SignUpScreemPreview() {
             onAllClick = {},
             onTermsClick = {},
             onPolicyClick = {},
-            onNotificationClick = {}
+            onNotificationClick = {},
+            onShowTerms = {},
+            onShowPolicy = {}
         )
     }
 }

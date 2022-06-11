@@ -36,7 +36,7 @@ import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun LoginScreen(onLogin: () -> Unit) {
+fun LoginScreen(onLogin: () -> Unit, onShowTerms: () -> Unit, onShowPolicy: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -56,7 +56,7 @@ fun LoginScreen(onLogin: () -> Unit) {
         ) {
             KakaoLoginButton(onClick = onLogin)
             VerticalSpacer(height = 24.dp)
-            LoginAgreement()
+            LoginAgreement(onShowTerms = onShowTerms, onShowPolicy = onShowPolicy)
         }
     }
 }
@@ -116,7 +116,7 @@ fun KakaoLoginButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun LoginAgreement() {
+fun LoginAgreement(onShowTerms: () -> Unit, onShowPolicy: () -> Unit) {
     val policyString = stringResource(id = R.string.login_policy)
     val termString = stringResource(id = R.string.login_term)
     val agreementString = stringResource(id = R.string.login_agreement)
@@ -141,25 +141,24 @@ fun LoginAgreement() {
                 )
             }
         },
-        style = KnowllyTheme.typography.caption.copy(color = KnowllyTheme.colors.gray8F),
-        onClick = { position ->
-            when (position) {
-                in policyStringRange -> {
-                    /* 개인정보 처리방침 클릭 */
-                }
-                in termStringRange -> {
-                    /* 이용약관 클릭 */
-                }
-                else -> {}
+        style = KnowllyTheme.typography.caption.copy(color = KnowllyTheme.colors.gray8F)
+    ) { position ->
+        when (position) {
+            in policyStringRange -> {
+                onShowPolicy()
             }
+            in termStringRange -> {
+                onShowTerms()
+            }
+            else -> {}
         }
-    )
+    }
 }
 
 @Preview
 @Composable
 private fun LoginScreenPreview() {
     KnowllyTheme {
-        LoginScreen(onLogin = {})
+        LoginScreen(onLogin = {}, onShowTerms = {}, onShowPolicy = {})
     }
 }
