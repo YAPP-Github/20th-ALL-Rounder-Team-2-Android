@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.login
+package kr.co.knowledgerally.ui.signup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,6 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyCheckBoxText
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.VerticalSpacer
-import kr.co.knowledgerally.ui.signup.SignUpViewModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
