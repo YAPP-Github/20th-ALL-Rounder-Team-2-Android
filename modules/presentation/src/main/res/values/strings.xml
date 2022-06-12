@@ -64,14 +64,13 @@
     <string name="coach_empty_description">코칭할 클래스를 처음으로 등록하면 볼 1개를 드려요!\n재능 교환은 시작이 반이랍니다 :)</string>
     <string name="coach_empty_button">클래스 등록하러 가기</string>
 
-    <string name="matching">매칭 중</string>
-    <string name="matching_class">매칭 대기중</string>
-    <string name="scheduled">예정된</string>
-    <string name="scheduled_class">예정된 클래스</string>
-    <string name="completed">완료된</string>
-    <string name="completed_class">완료된 클래스</string>
-
-    <string name="coach_matching_banner_text">플레이어가 매칭 신청을 기다리고 있어요! 매칭 신청이 들어온 클래스를 수락해 보세요!</string>
-    <string name="coach_scheduled_banner_text">매칭이 성사되었어요! 문의 사항이 있다면 플레이어의 연락처를 복사해 연락해주세요.</string>
-    <string name="coach_completed_banner_text">클래스 코칭은 어떠셨나요? 소중한 후기를 남겨주세요!</string>
+    <string name="coach_matching">매칭 중</string>
+    <string name="coach_matching_title">매칭 대기중</string>
+    <string name="coach_matching_banner">플레이어가 매칭 신청을 기다리고 있어요! 매칭 신청이 들어온 클래스를 수락해 보세요!</string>
+    <string name="coach_scheduled">예정된</string>
+    <string name="coach_scheduled_title">예정된 클래스</string>
+    <string name="coach_scheduled_banner">매칭이 성사되었어요! 문의 사항이 있다면 플레이어의 연락처를 복사해 연락해주세요.</string>
+    <string name="coach_completed">완료된</string>
+    <string name="coach_completed_title">완료된 클래스</string>
+    <string name="coach_completed_banner">클래스 코칭은 어떠셨나요? 소중한 후기를 남겨주세요!</string>
 </resources>

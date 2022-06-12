@@ -36,10 +36,10 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
-    onRegister: () -> Unit,
+    navigateToRegister: () -> Unit,
 ) {
     val navController = rememberNavController()
-    val navigation = rememberMainNavigation(navController, onRegister)
+    val navigation = rememberMainNavigation(navController, navigateToRegister)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val showWelcome by viewModel.showWelcome.collectAsState()

@@ -22,7 +22,7 @@ class MainActivity : BaseActivity() {
             KnowllyTheme {
                 MainScreen(
                     viewModel = viewModel,
-                    onRegister = ::startRegisterActivity
+                    navigateToRegister = ::startRegisterActivity
                 )
             }
         }
