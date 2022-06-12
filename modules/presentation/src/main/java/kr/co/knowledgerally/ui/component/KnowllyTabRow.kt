@@ -1,32 +1,25 @@
 package kr.co.knowledgerally.ui.component
 
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabPosition
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -37,80 +30,77 @@ fun KnowllyTabRow(
     onSelected: (tabIndex: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val density = LocalDensity.current
-    val tabWidths = remember {
-        val elements = Array(tabs.size) { 0.dp }
-        mutableStateListOf(*elements)
-    }
-    ScrollableTabRow(
-        selectedTabIndex = selectedTabIndex,
+    Row(
         modifier = modifier.height(TabHeight),
-        containerColor = Color.Unspecified,
-        contentColor = Color.Unspecified,
-        edgePadding = 0.dp,
-        indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
-                modifier = Modifier.tabIndicatorOffset(
-                    currentTabPosition = tabPositions[selectedTabIndex],
-                    tabWidth = tabWidths[selectedTabIndex]
-                ),
-                color = KnowllyTheme.colors.gray00
-            )
-        },
-        divider = { },
+        horizontalArrangement = Arrangement.spacedBy(TabItemPadding)
     ) {
         tabs.forEachIndexed { tabIndex, tab ->
-            Tab(
-                selected = selectedTabIndex == tabIndex,
-                onClick = { onSelected(tabIndex) },
-                modifier = modifier.fillMaxHeight(),
-                selectedContentColor = KnowllyTheme.colors.gray00,
-                unselectedContentColor = KnowllyTheme.colors.grayCC
-            ) {
-                Text(
-                    text = tab,
-                    style = KnowllyTheme.typography.subtitle2,
-                    onTextLayout = { textLayoutResult ->
-                        tabWidths[tabIndex] =
-                            with(density) { textLayoutResult.size.width.toDp() }
-                    }
-                )
+            val selected = selectedTabIndex == tabIndex
+            KnowllyTab(onClick = { onSelected(tabIndex) }) {
+                Text(text = tab, selected = selected)
+
+                if (selected) {
+                    Indicator()
+                }
             }
         }
     }
 }
 
-/**
- * ref) [androidx.compose.material3.TabRowDefaults.tabIndicatorOffset]
- * ref) https://medium.com/@sukhdip_sandhu/jetpack-compose-scrollabletabrow-indicator-matches-width-of-text-e79c0e5826fe
- */
-private fun Modifier.tabIndicatorOffset(
-    currentTabPosition: TabPosition,
-    tabWidth: Dp
-): Modifier = composed(
-    inspectorInfo = debugInspectorInfo {
-        name = "customTabIndicatorOffset"
-        value = currentTabPosition
-    }
+@Composable
+private fun KnowllyTab(
+    onClick: () -> Unit,
+    content: @Composable BoxScope.() -> Unit,
 ) {
-    val currentTabWidth by animateDpAsState(
-        targetValue = tabWidth,
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing)
+    Box(
+        modifier = Modifier
+            .width(IntrinsicSize.Max)
+            .fillMaxHeight()
+            .clickable(
+                onClick = onClick,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+            ),
+        content = content,
     )
-    val indicatorOffset by animateDpAsState(
-        targetValue = ((currentTabPosition.left + currentTabPosition.right - tabWidth) / 2),
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing)
+}
+
+@Composable
+private fun BoxScope.Text(
+    text: String,
+    selected: Boolean,
+) {
+    Text(
+        text = text,
+        modifier = Modifier
+            .wrapContentWidth()
+            .align(Alignment.Center),
+        style = KnowllyTheme.typography.subtitle2,
+        color = if (selected) {
+            KnowllyTheme.colors.gray44
+        } else {
+            KnowllyTheme.colors.grayCC
+        },
     )
-    fillMaxWidth()
-        .wrapContentSize(Alignment.BottomStart)
-        .offset(x = indicatorOffset)
-        .width(currentTabWidth)
+}
+
+@Composable
+private fun BoxScope.Indicator() {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(TabIndicatorHeight)
+            .background(KnowllyTheme.colors.gray00)
+            .align(Alignment.BottomCenter)
+    )
 }
 
 private val TabHeight = 48.dp
+private val TabItemPadding = 20.dp
+private val TabIndicatorHeight = 3.dp
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 194)
 private fun KnowllyTabRowPreview() {
     KnowllyTheme {
         KnowllyTabRow(
