@@ -56,7 +56,8 @@ fun KnowllyTabRow(
                 ),
                 color = KnowllyTheme.colors.gray00
             )
-        }
+        },
+        divider = { },
     ) {
         tabs.forEachIndexed { tabIndex, tab ->
             Tab(
