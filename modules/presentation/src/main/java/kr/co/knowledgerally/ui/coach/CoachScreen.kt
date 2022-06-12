@@ -15,6 +15,6 @@ fun CoachScreen(
     when (uiState) {
         CoachUiState.Loading -> Unit /* no-op */
         CoachUiState.Empty -> CoachEmpty(onRegister = onRegister)
-        CoachUiState.Running -> TODO()
+        CoachUiState.Running -> CoachRunning(state = uiState as CoachUiState.Running)
     }
 }
