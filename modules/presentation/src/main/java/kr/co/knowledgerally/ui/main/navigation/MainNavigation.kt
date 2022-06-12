@@ -7,13 +7,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 class MainNavigation(
-    private val navController: NavHostController,
+    val navController: NavHostController,
+    val onRegister: () -> Unit,
 ) {
 
     fun navigateTo(destination: MainDestination) {
-        if (!destination.hasRoute) {
-            return
+        when (destination) {
+            MainDestination.Register -> {
+                onRegister()
+                return
+            }
+            else -> Unit
         }
+
         navController.navigate(destination.route) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
@@ -27,4 +33,5 @@ class MainNavigation(
 @Composable
 fun rememberMainNavigation(
     navController: NavHostController = rememberNavController(),
-) = remember(navController) { MainNavigation(navController) }
+    onRegister: () -> Unit,
+) = remember(navController) { MainNavigation(navController, onRegister = onRegister) }

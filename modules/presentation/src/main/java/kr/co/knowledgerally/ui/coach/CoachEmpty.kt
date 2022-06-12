@@ -23,7 +23,7 @@ import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun CoachEmpty() {
+fun CoachEmpty(onRegister: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -55,7 +55,7 @@ fun CoachEmpty() {
         }
         KnowllyContainedButton(
             text = stringResource(id = R.string.coach_empty_button),
-            onClick = { /* TODO */ },
+            onClick = onRegister,
             modifier = Modifier
                 .padding(24.dp)
                 .fillMaxWidth()
@@ -75,6 +75,8 @@ private val ROOT_PADDING = PaddingValues(
 @Composable
 private fun CoachEmptyPreview() {
     KnowllyTheme {
-        CoachEmpty()
+        CoachEmpty(
+            onRegister = { },
+        )
     }
 }
