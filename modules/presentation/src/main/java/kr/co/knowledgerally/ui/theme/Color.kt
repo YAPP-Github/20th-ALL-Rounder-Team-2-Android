@@ -28,11 +28,11 @@ val Gray00 = Color(0xFF000000)
 val Red = Color(0xFFE72749)
 val Blue = Color(0xFF779DFF)
 
-val MaterialColors = androidx.compose.material.lightColors(
+val MaterialColors = androidx.compose.material3.lightColorScheme(
     primary = Orange,
-    primaryVariant = OrangeDark,
     secondary = Lime,
     error = Red,
+    background = GrayFF,
 )
 
 @Stable
@@ -71,7 +71,10 @@ class KnowllyColors(
         private set
     var secondaryIndigo: Color by mutableStateOf(secondaryIndigo, structuralEqualityPolicy())
         private set
-    var secondaryIndigoLight: Color by mutableStateOf(secondaryIndigoLight, structuralEqualityPolicy())
+    var secondaryIndigoLight: Color by mutableStateOf(
+        secondaryIndigoLight,
+        structuralEqualityPolicy()
+    )
         private set
     var grayFF: Color by mutableStateOf(grayFF, structuralEqualityPolicy())
         private set

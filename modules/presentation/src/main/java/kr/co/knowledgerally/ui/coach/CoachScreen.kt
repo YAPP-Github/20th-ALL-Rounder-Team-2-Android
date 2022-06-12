@@ -1,13 +1,20 @@
 package kr.co.knowledgerally.ui.coach
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun CoachScreen() {
-    Box(contentAlignment = Alignment.Center) {
-        Text(text = "운영 클래스")
+fun CoachScreen(
+    viewModel: CoachViewModel = hiltViewModel(),
+    onRegister: () -> Unit,
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    when (uiState) {
+        CoachUiState.Loading -> Unit /* no-op */
+        CoachUiState.Empty -> CoachEmpty(onRegister = onRegister)
+        CoachUiState.Running -> TODO()
     }
 }

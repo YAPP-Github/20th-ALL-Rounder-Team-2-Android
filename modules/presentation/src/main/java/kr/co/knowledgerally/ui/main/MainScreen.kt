@@ -39,7 +39,7 @@ fun MainScreen(
     onRegister: () -> Unit,
 ) {
     val navController = rememberNavController()
-    val navigation = rememberMainNavigation(navController)
+    val navigation = rememberMainNavigation(navController, onRegister)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val showWelcome by viewModel.showWelcome.collectAsState()
@@ -49,17 +49,12 @@ fun MainScreen(
         bottomBar = {
             MainNavigationBar(
                 currentDestination = currentDestination,
-                onNavigate = {
-                    when (it) {
-                        MainDestination.Register -> onRegister()
-                        else -> navigation.navigateTo(it)
-                    }
-                },
+                onNavigate = { navigation.navigateTo(it) },
             )
         },
     ) { padding ->
         MainNavHost(
-            navController = navController,
+            navigation = navigation,
             modifier = Modifier.padding(padding),
         )
     }

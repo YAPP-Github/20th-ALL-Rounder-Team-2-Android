@@ -9,8 +9,8 @@ object CoachDestination : NavigationDestination {
     override val route: String = "coach"
 }
 
-fun NavGraphBuilder.coachGraph() {
+fun NavGraphBuilder.coachGraph(onRegister: () -> Unit) {
     composable(CoachDestination.route) {
-        CoachScreen()
+        CoachScreen(onRegister = onRegister)
     }
 }

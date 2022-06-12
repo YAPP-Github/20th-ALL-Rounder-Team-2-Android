@@ -45,6 +45,4 @@ enum class MainDestination(
         inactiveIconResId = R.drawable.ic_mypage_inactive,
         iconTextResId = R.string.nav_mypage,
     );
-
-    val hasRoute: Boolean get() = route != NO_ROUTE
 }
