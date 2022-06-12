@@ -24,6 +24,12 @@ import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
+/**
+ * TODO
+ * 1. 가입하기 클릭 이벤트
+ * 2. 뒤로가기 클릭 이벤트
+ */
+
 @Composable
 fun SignUpScreen(
     viewModel: SignUpViewModel,
