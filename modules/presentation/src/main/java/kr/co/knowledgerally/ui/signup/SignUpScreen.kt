@@ -34,33 +34,24 @@ fun SignUpScreen(
     navigateToTerms: () -> Unit,
     navigateToPolicy: () -> Unit
 ) {
-    SignUpScreen(
-        areAllAccepted = viewModel.areAllAccepted.value,
-        isTermsAccepted = viewModel.isTermsAccepted.value,
-        isPolicyAccepted = viewModel.isPolicyAccepted.value,
-        isNotificationAccepted = viewModel.isNotificationAccepted.value,
-        onAllClick = viewModel::setAll,
-        onTermsClick = viewModel::setTerms,
-        onPolicyClick = viewModel::setPolicy,
-        onNotificationClick = viewModel::setNotification,
+    val signUpState = rememberSignUpState()
+    SignUpContent(
+        signUpState = signUpState,
         navigateToTerms = navigateToTerms,
-        navigateToPolicy = navigateToPolicy
+        navigateToPolicy = navigateToPolicy,
     )
 }
 
 @Composable
-fun SignUpScreen(
-    areAllAccepted: Boolean,
-    isTermsAccepted: Boolean,
-    isPolicyAccepted: Boolean,
-    isNotificationAccepted: Boolean,
-    onAllClick: (Boolean) -> Unit,
-    onTermsClick: (Boolean) -> Unit,
-    onPolicyClick: (Boolean) -> Unit,
-    onNotificationClick: (Boolean) -> Unit,
+fun SignUpContent(
+    signUpState: SignUpState,
     navigateToTerms: () -> Unit,
     navigateToPolicy: () -> Unit
 ) {
+    val termsState = signUpState.termsState
+    val policyState = signUpState.policyState
+    val notificationState = signUpState.notificationState
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,27 +64,33 @@ fun SignUpScreen(
         ) {
             SignUpTitle()
             VerticalSpacer(20.dp)
-            AllAcception(areAllAccepted = areAllAccepted, onAllClick = onAllClick)
+            AllAcception(
+                areAllAccepted = signUpState.isAllChecked.value,
+                onAllClick = { signUpState.toggleAll() }
+            )
             Divider(
                 color = KnowllyTheme.colors.grayDD,
                 modifier = Modifier.padding(vertical = 12.dp)
             )
             TermsAcception(
-                isTermsAccepted = isTermsAccepted,
-                onTermsClick = onTermsClick,
+                isTermsAccepted = termsState.isChecked,
+                onTermsClick = { termsState.toggle() },
                 onShowTerms = navigateToTerms
             )
             PolicyAcception(
-                isPolicyAccepted = isPolicyAccepted,
-                onPolicyClick = onPolicyClick,
+                isPolicyAccepted = policyState.isChecked,
+                onPolicyClick = { policyState.toggle() },
                 onShowPolicy = navigateToPolicy
             )
             NotificationAcception(
-                isNotificationAccepted = isNotificationAccepted,
-                onNotificationClick = onNotificationClick
+                isNotificationAccepted = notificationState.isChecked,
+                onNotificationClick = { notificationState.toggle() }
             )
             Spacer(modifier = Modifier.weight(1f))
-            SignUpButton(isTermsAccepted = isTermsAccepted, isPolicyAccepted = isPolicyAccepted)
+            SignUpButton(
+                isTermsAccepted = signUpState.isRequired,
+                isPolicyAccepted = signUpState.isRequired
+            )
         }
     }
 }
@@ -217,17 +214,10 @@ fun SignUpButton(
 @Composable
 private fun SignUpScreenPreview() {
     KnowllyTheme {
-        SignUpScreen(
-            areAllAccepted = true,
-            isTermsAccepted = true,
-            isPolicyAccepted = true,
-            isNotificationAccepted = false,
-            onAllClick = {},
-            onTermsClick = {},
-            onPolicyClick = {},
-            onNotificationClick = {},
-            navigateToTerms = {},
-            navigateToPolicy = {}
+        SignUpContent(
+            signUpState = rememberSignUpState(),
+            navigateToTerms = { },
+            navigateToPolicy = { }
         )
     }
 }
