@@ -1,9 +1,9 @@
 package kr.co.knowledgerally.ui.component
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -41,27 +41,35 @@ fun KnowllyCheckBoxText(
     checked: Boolean,
     onCheckedChanged: ((Boolean) -> Unit)?,
     text: String,
-    actionIcon: (@Composable () -> Unit) = { Box(modifier = Modifier.size(20.dp)) },
-    onActionTap: (() -> Unit) = {},
+    modifier: Modifier = Modifier,
+    actionIcon: (@Composable () -> Unit)? = null,
+    onActionTap: (() -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
             KnowllyCheckBox(
                 checked = checked,
                 onCheckedChanged = onCheckedChanged
             )
+            HorizontalSpacer(width = 8.dp)
+            Text(
+                text = text,
+                style = KnowllyTheme.typography.subtitle4
+            )
+            Spacer(modifier = Modifier.weight(1f))
+
+            if (actionIcon != null) {
+                IconButton(
+                    onClick = { onActionTap?.invoke() },
+                    content = actionIcon,
+                    modifier = Modifier.requiredSize(20.dp)
+                )
+            }
+            HorizontalSpacer(width = 8.dp)
         }
-        HorizontalSpacer(width = 8.dp)
-        Text(
-            text = text,
-            style = KnowllyTheme.typography.subtitle4
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        IconButton(onClick = onActionTap, content = actionIcon)
-        HorizontalSpacer(width = 8.dp)
     }
 }
 
