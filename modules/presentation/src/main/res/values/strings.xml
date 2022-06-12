@@ -59,4 +59,9 @@
     <string name="dialog_welcome_title">널리 나누며 성장하는 곳,\n널리에 오신걸 환영합니다.</string>
     <string name="dialog_welcome_button">시작하기</string>
 
+    <string name="coach_empty_title">코칭 클래스 등록하기</string>
+    <string name="coach_empty_subtitle">프로필 등록이 완료되었어요.\n이제는 코칭할 클래스를 등록해보세요!</string>
+    <string name="coach_empty_description">코칭할 클래스를 처음으로 등록하면 볼 1개를 드려요!\n재능 교환은 시작이 반이랍니다 :)</string>
+    <string name="coach_empty_button">클래스 등록하러 가기</string>
+
 </resources>
