@@ -8,13 +8,13 @@ import androidx.navigation.compose.rememberNavController
 
 class MainNavigation(
     val navController: NavHostController,
-    val onRegister: () -> Unit,
+    val navigateToRegister: () -> Unit,
 ) {
 
     fun navigateTo(destination: MainDestination) {
         when (destination) {
             MainDestination.Register -> {
-                onRegister()
+                navigateToRegister()
                 return
             }
             else -> Unit
@@ -33,5 +33,5 @@ class MainNavigation(
 @Composable
 fun rememberMainNavigation(
     navController: NavHostController = rememberNavController(),
-    onRegister: () -> Unit,
-) = remember(navController) { MainNavigation(navController, onRegister = onRegister) }
+    navigateToRegister: () -> Unit,
+) = remember(navController) { MainNavigation(navController, navigateToRegister = navigateToRegister) }

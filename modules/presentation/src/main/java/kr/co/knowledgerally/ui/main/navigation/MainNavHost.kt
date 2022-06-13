@@ -25,7 +25,7 @@ fun MainNavHost(
         playerGraph()
 
         coachGraph(
-            onRegister = { navigation.navigateTo(MainDestination.Register) }
+            navigateToRegister = { navigation.navigateTo(MainDestination.Register) }
         )
 
         myPageGraph()
