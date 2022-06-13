@@ -95,7 +95,7 @@ private fun KnowllyTopAppBarPreviewTitle() {
             onNavigationClick = {},
             actions = {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_logo_topappbar),
+                    painter = painterResource(id = R.drawable.ic_logo_home),
                     contentDescription = null,
                     modifier = Modifier.height(24.dp)
                 )
