@@ -48,7 +48,7 @@ fun CoachRoute(
         navigateToRegister = navigateToRegister,
         switchTab = viewModel::switchTab,
         navigateToApplicant = { classId ->
-            val intent = ApplicantActivity.getIntent(context)
+            val intent = ApplicantActivity.getIntent(context, classId)
             applicantLauncher.launch(intent)
         }
     )

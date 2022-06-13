@@ -25,8 +25,8 @@ class ApplicantActivity : BaseActivity() {
     }
 
     companion object {
-        fun getIntent(context: Context): Intent {
-            return Intent(context, ApplicantActivity::class.java)
-        }
+        fun getIntent(context: Context, classId: String): Intent =
+            Intent(context, ApplicantActivity::class.java)
+                .putExtra(ApplicantViewModel.KEY_CLASS_ID, classId)
     }
 }
