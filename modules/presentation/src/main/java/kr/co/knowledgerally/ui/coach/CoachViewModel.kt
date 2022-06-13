@@ -19,7 +19,16 @@ class CoachViewModel @Inject constructor() : BaseViewModel() {
     val tabState = _tabState.asStateFlow()
 
     val uiState: StateFlow<CoachUiState> = flow {
-        emit(CoachUiState.Success(emptyList(), emptyList(), emptyList()))
+        emit(
+            CoachUiState.Success(
+                matchingClasses = listOf(
+                    ClassUiState.Matching("프랑스어", emptyList()),
+                    ClassUiState.Matching("프랑스어", emptyList()),
+                ),
+                scheduledClasses = emptyList(),
+                completedClasses = emptyList()
+            )
+        )
     }.stateIn(viewModelScope, SharingStarted.Eagerly, CoachUiState.Loading)
 
     fun switchTab(newIndex: Int) {

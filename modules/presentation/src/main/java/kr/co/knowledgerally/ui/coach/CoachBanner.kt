@@ -15,11 +15,11 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
  * TODO: 배너 스타일 변경
  */
 @Composable
-fun CoachBanner(text: String) {
+fun CoachBanner(text: String, modifier: Modifier = Modifier) {
     Surface(
         shape = RoundedCornerShape(10.dp),
         color = Color(0xFFF5F5F5),
-        modifier = Modifier.padding(start = 24.dp, top = 12.dp, end = 24.dp),
+        modifier = modifier,
     ) {
         Text(
             text = text,

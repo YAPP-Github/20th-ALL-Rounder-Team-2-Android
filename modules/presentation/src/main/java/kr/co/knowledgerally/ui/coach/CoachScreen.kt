@@ -68,7 +68,7 @@ fun CoachContent(
         )
 
         when (tabState.currentIndex) {
-            INDEX_MATCHING -> MatchingTabContent()
+            INDEX_MATCHING -> MatchingTabContent(uiState.matchingClasses)
             INDEX_SCHEDULED -> ScheduledTabContent()
             INDEX_COMPLETED -> CompletedTabContent()
         }
