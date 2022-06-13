@@ -31,7 +31,10 @@ fun CoachRoute(
         uiState = uiState,
         tabState = tabState,
         navigateToRegister = navigateToRegister,
-        switchTab = viewModel::switchTab
+        switchTab = viewModel::switchTab,
+        navigateToApplicant = { classId ->
+            // TODO: 매칭 신청인 화면
+        }
     )
 }
 
@@ -40,6 +43,7 @@ fun CoachScreen(
     uiState: CoachUiState,
     tabState: CoachTabState,
     navigateToRegister: () -> Unit,
+    navigateToApplicant: (classId: String) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     when (uiState) {
@@ -48,7 +52,8 @@ fun CoachScreen(
         is CoachUiState.Success -> CoachContent(
             uiState = uiState,
             tabState = tabState,
-            switchTab = switchTab
+            switchTab = switchTab,
+            navigateToApplicant = navigateToApplicant
         )
     }
 }
@@ -57,6 +62,7 @@ fun CoachScreen(
 fun CoachContent(
     uiState: CoachUiState.Success,
     tabState: CoachTabState,
+    navigateToApplicant: (classId: String) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -68,7 +74,7 @@ fun CoachContent(
         )
 
         when (tabState.currentIndex) {
-            INDEX_MATCHING -> MatchingTabContent(uiState.matchingClasses)
+            INDEX_MATCHING -> MatchingTabContent(uiState.matchingClasses, navigateToApplicant)
             INDEX_SCHEDULED -> ScheduledTabContent()
             INDEX_COMPLETED -> CompletedTabContent()
         }
@@ -90,6 +96,7 @@ private fun CoachContentPreview() {
                 currentIndex = 0,
             ),
             switchTab = { },
+            navigateToApplicant = { },
         )
     }
 }

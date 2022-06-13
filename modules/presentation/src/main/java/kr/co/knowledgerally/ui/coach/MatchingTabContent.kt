@@ -26,7 +26,10 @@ import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun MatchingTabContent(uiState: List<ClassUiState.Matching>) {
+fun MatchingTabContent(
+    matchingList: List<ClassUiState.Matching>,
+    navigateToApplicant: (classId: String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,25 +43,26 @@ fun MatchingTabContent(uiState: List<ClassUiState.Matching>) {
         )
         CoachDivider(Modifier.padding(top = 24.dp))
 
-        uiState.forEach {
-            MatchingItem(uiState = it)
+        matchingList.forEach { matching ->
+            MatchingItem(matching = matching, navigateToApplicant = navigateToApplicant)
         }
     }
 }
 
 @Composable
 private fun MatchingItem(
-    uiState: ClassUiState.Matching
+    matching: ClassUiState.Matching,
+    navigateToApplicant: (classId: String) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         VerticalSpacer(height = 16.dp)
-        MatchingItemHeader(text = uiState.className)
+        MatchingItemHeader(text = matching.className)
         MatchingItemApplicant(
-            applicants = uiState.applicants,
-            onClick = { /* TODO */ },
+            applicants = matching.applicants,
+            onClick = { navigateToApplicant(matching.classId) },
             modifier = Modifier.padding(top = 8.dp)
         )
         VerticalSpacer(height = 16.dp)

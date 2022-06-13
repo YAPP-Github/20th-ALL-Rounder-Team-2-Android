@@ -22,8 +22,8 @@ class CoachViewModel @Inject constructor() : BaseViewModel() {
         emit(
             CoachUiState.Success(
                 matchingClasses = listOf(
-                    ClassUiState.Matching("프랑스어", emptyList()),
-                    ClassUiState.Matching("프랑스어", emptyList()),
+                    ClassUiState.Matching(classId = "0", "프랑스어", emptyList()),
+                    ClassUiState.Matching(classId = "1", "프랑스어", emptyList()),
                 ),
                 scheduledClasses = emptyList(),
                 completedClasses = emptyList()
