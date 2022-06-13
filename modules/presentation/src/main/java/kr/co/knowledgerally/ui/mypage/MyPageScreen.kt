@@ -117,10 +117,10 @@ private fun MyPageScreen(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        MyPageAppBar(
-            ballCount = ballCount,
-            navigateToNotification = navigateToNotification
-        )
+        // MyPageAppBar(
+        //     ballCount = ballCount,
+        //     navigateToNotification = navigateToNotification
+        // )
         MyPageProfile(
             userName = userName,
             isCoach = isCoach,

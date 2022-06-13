@@ -28,9 +28,15 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import kr.co.knowledgerally.ui.coach.navigation.CoachDestination
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
+import kr.co.knowledgerally.ui.home.navigation.HomeDestination
 import kr.co.knowledgerally.ui.main.navigation.MainDestination
 import kr.co.knowledgerally.ui.main.navigation.MainNavHost
 import kr.co.knowledgerally.ui.main.navigation.rememberMainNavigation
+import kr.co.knowledgerally.ui.mypage.MyPageTopAppBar
+import kr.co.knowledgerally.ui.mypage.navigation.MyPageDestination
+import kr.co.knowledgerally.ui.player.navigation.PlayerDestination
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
@@ -45,6 +51,23 @@ fun MainScreen(
     val showWelcome by viewModel.showWelcome.collectAsState()
 
     Scaffold(
+        topBar = {
+            when (currentDestination?.route) {
+                HomeDestination.route -> {
+                    KnowllyTopAppBar()
+                }
+                PlayerDestination.route -> {
+                    KnowllyTopAppBar()
+                }
+                CoachDestination.route -> {
+                    KnowllyTopAppBar()
+                }
+                MyPageDestination.route -> {
+                    MyPageTopAppBar(ballCount = 10)
+                }
+                else -> {}
+            }
+        },
         modifier = Modifier,
         bottomBar = {
             MainNavigationBar(
