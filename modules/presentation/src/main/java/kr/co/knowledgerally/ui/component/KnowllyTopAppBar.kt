@@ -30,7 +30,7 @@ private val TOP_APP_BAR_HEIGHT = 56.dp
 @Composable
 fun KnowllyTopAppBar(
     navigationType: NavigationType = NavigationType.Back,
-    onNagationClick: () -> Unit,
+    onNavigationClick: (() -> Unit) = {},
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     Row(
@@ -45,7 +45,7 @@ fun KnowllyTopAppBar(
         if (navigationType != NavigationType.None) {
             KnowllyTopAppBarNavigation(
                 navigationType = navigationType,
-                onNavigationClick = onNagationClick
+                onNavigationClick = onNavigationClick
             )
         }
         Row(
@@ -92,7 +92,7 @@ private fun KnowllyTopAppBarPreviewTitle() {
     KnowllyTheme {
         KnowllyTopAppBar(
             navigationType = NavigationType.None,
-            onNagationClick = {},
+            onNavigationClick = {},
             actions = {
                 Image(
                     painter = painterResource(id = R.drawable.ic_logo_topappbar),
@@ -117,7 +117,7 @@ private fun KnowllyTopAppBarPreviewNoTitle() {
     KnowllyTheme {
         KnowllyTopAppBar(
             navigationType = NavigationType.Close,
-            onNagationClick = {},
+            onNavigationClick = {},
         )
     }
 }
