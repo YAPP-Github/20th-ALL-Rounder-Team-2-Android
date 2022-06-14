@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.ui.notification
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -62,10 +63,17 @@ fun NotificationScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.Black)
-            HorizontalSpacer(16.dp)
-            Text(text = "알림", style = KnowllyTheme.typography.subtitle1.copy(Color.Black))
         }
-        NotificationContent(state = state, onNotificationClick = onNotificationClick)
+        Column(
+            modifier = Modifier.padding(start = 24.dp, top = 12.dp, end = 24.dp, bottom = 0.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.notification_notification),
+                style = KnowllyTheme.typography.headline3
+            )
+            VerticalSpacer(height = 36.dp)
+            NotificationContent(state = state, onNotificationClick = onNotificationClick)
+        }
     }
 }
 
@@ -83,7 +91,7 @@ fun NotificationContent(
             LoadingNotification()
         }
         NotificationUiState.Empty -> {
-            EmptyNotification()
+            EmptyNotification(modifier = Modifier.fillMaxSize())
         }
         NotificationUiState.Failure -> {
             FailNotification()
@@ -185,8 +193,23 @@ fun LoadingNotification() {
 }
 
 @Composable
-fun EmptyNotification() {
-    Text(text = "아직 알림이 없습니다")
+fun EmptyNotification(modifier: Modifier = Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.img_notification_empty),
+            contentDescription = null,
+            modifier = Modifier.padding(horizontal = 92.dp, vertical = 8.dp)
+        )
+        VerticalSpacer(height = 24.dp)
+        Text(
+            text = stringResource(R.string.notification_empty),
+            style = KnowllyTheme.typography.body1,
+            color = KnowllyTheme.colors.gray44
+        )
+    }
 }
 
 @Composable
@@ -219,6 +242,17 @@ private fun NotificationScreenPreview() {
     KnowllyTheme {
         NotificationScreen(
             state = NotificationUiState.Success(tempNotificationList),
+            onNotificationClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun NotificationScreenPreviewEmpty() {
+    KnowllyTheme {
+        NotificationScreen(
+            state = NotificationUiState.Empty,
             onNotificationClick = {}
         )
     }
