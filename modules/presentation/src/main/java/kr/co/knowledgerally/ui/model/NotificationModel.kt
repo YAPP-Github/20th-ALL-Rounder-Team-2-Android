@@ -26,7 +26,7 @@ fun Notification.toPresentation(): NotificationModel = NotificationModel(
     text = text,
     lessonTitle = lessonTitle,
     opponentName = opponentName,
-    date = date.format(DateTimeFormatter.ofPattern("MM.dd")),
+    date = date.format(DateTimeFormatter.ofPattern("M월 d일")),
     type = when (type) {
         Notification.Type.Coach -> NotificationModel.Type.Coach
         Notification.Type.Player -> NotificationModel.Type.Player
