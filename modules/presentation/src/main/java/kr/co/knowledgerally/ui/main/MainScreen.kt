@@ -43,6 +43,8 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 fun MainScreen(
     viewModel: MainViewModel,
     navigateToRegister: () -> Unit,
+    navigateToBall: () -> Unit,
+    navigateToNotification: () -> Unit,
 ) {
     val navController = rememberNavController()
     val navigation = rememberMainNavigation(navController, navigateToRegister)
@@ -59,8 +61,8 @@ fun MainScreen(
                         KnowllyTopAppBarLogo()
                         Spacer(modifier = Modifier.weight(1f))
                     }
-                    KnowllyTopAppBarBall(ballCount = 10)
-                    KnowllyTopAppBarNotification()
+                    KnowllyTopAppBarBall(ballCount = 10, onClick = navigateToBall)
+                    KnowllyTopAppBarNotification(onClick = navigateToNotification)
                 }
             )
         },

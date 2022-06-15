@@ -72,7 +72,8 @@ fun KnowllyTopAppBarLogo() {
 
 @Composable
 fun KnowllyTopAppBarBall(
-    ballCount: Int
+    ballCount: Int,
+    onClick: () -> Unit
 ) {
     Surface(
         shape = RoundedCornerShape(36.dp),
@@ -80,7 +81,7 @@ fun KnowllyTopAppBarBall(
         border = BorderStroke(width = 2.dp, color = KnowllyTheme.colors.grayEF),
         modifier = Modifier
             .clip(RoundedCornerShape(36.dp))
-            .clickable { }
+            .clickable { onClick() }
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
@@ -101,7 +102,9 @@ fun KnowllyTopAppBarBall(
 }
 
 @Composable
-fun KnowllyTopAppBarNotification() {
+fun KnowllyTopAppBarNotification(
+    onClick: () -> Unit
+) {
     Icon(
         painter = painterResource(id = R.drawable.ic_alarm),
         contentDescription = null,
@@ -109,7 +112,7 @@ fun KnowllyTopAppBarNotification() {
         modifier = Modifier
             .size(32.dp)
             .clip(CircleShape)
-            .clickable { }
+            .clickable { onClick() }
             .padding(4.dp)
     )
 }
