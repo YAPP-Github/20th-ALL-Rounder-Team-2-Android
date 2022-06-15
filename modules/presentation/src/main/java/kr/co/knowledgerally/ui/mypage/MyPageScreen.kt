@@ -1,13 +1,9 @@
 package kr.co.knowledgerally.ui.mypage
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,15 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.ContainedBadge
-import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -50,7 +42,6 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
     MyPageScreen(
         state = state,
         onNotificationEnabledChange = { viewModel.updateNotificationEnabled(it) },
-        navigateToNotification = { },
         navigateToProfile = { },
         navigateToTermsOfService = { },
         logout = { viewModel.logout() },
@@ -62,7 +53,6 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
 private fun MyPageScreen(
     state: MyPageUiState,
     onNotificationEnabledChange: (Boolean) -> Unit,
-    navigateToNotification: () -> Unit,
     navigateToProfile: () -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
@@ -72,10 +62,8 @@ private fun MyPageScreen(
         MyPageUiState.Loading -> MyPageScreen(
             notificationEnabled = false,
             onNotificationEnabledChange = { },
-            navigateToNotification = { },
             versionName = "",
             userName = "",
-            ballCount = 0,
             isCoach = false,
             navigateToProfile = { },
             navigateToTermsOfService = { },
@@ -85,10 +73,8 @@ private fun MyPageScreen(
         is MyPageUiState.Success -> MyPageScreen(
             notificationEnabled = state.notificationEnabled,
             onNotificationEnabledChange = onNotificationEnabledChange,
-            navigateToNotification = navigateToNotification,
             versionName = state.versionName,
             userName = state.userName,
-            ballCount = state.remainingBallCount,
             isCoach = state.isCoach,
             navigateToProfile = navigateToProfile,
             navigateToTermsOfService = navigateToTermsOfService,
@@ -102,10 +88,8 @@ private fun MyPageScreen(
 private fun MyPageScreen(
     notificationEnabled: Boolean,
     onNotificationEnabledChange: (Boolean) -> Unit,
-    navigateToNotification: () -> Unit,
     versionName: String,
     userName: String,
-    ballCount: Int,
     isCoach: Boolean,
     navigateToProfile: () -> Unit,
     navigateToTermsOfService: () -> Unit,
@@ -117,10 +101,6 @@ private fun MyPageScreen(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        // MyPageAppBar(
-        //     ballCount = ballCount,
-        //     navigateToNotification = navigateToNotification
-        // )
         MyPageProfile(
             userName = userName,
             isCoach = isCoach,
@@ -161,68 +141,6 @@ private fun MyPageScreen(
             text = stringResource(id = R.string.mypage_withdrawal),
             onClick = { withdrawal() },
             content = { MyPageIcon() }
-        )
-    }
-}
-
-@Composable
-private fun MyPageAppBar(
-    ballCount: Int,
-    navigateToNotification: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp),
-        horizontalArrangement = Arrangement.End,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Surface(
-            shape = RoundedCornerShape(36.dp),
-            border = BorderStroke(
-                width = 2.dp,
-                color = KnowllyTheme.colors.grayEF
-            ),
-            color = Color.Unspecified,
-            modifier = Modifier
-                .height(28.dp)
-                .width(IntrinsicSize.Min)
-                .clip(RoundedCornerShape(36.dp))
-        ) {
-            Row(
-                modifier = Modifier.padding(horizontal = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    modifier = Modifier.size(20.dp),
-                    painter = painterResource(id = R.drawable.ic_ball),
-                    tint = Color.Unspecified,
-                    contentDescription = null
-                )
-                HorizontalSpacer(width = 4.dp)
-                Text(
-                    text = ballCount.toString(),
-                    style = KnowllyTheme.typography.subtitle4
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(2.dp)
-                    .clickable { },
-            )
-        }
-        Icon(
-            painter = painterResource(id = R.drawable.ic_alarm),
-            contentDescription = null,
-            tint = KnowllyTheme.colors.gray00,
-            modifier = Modifier
-                .padding(start = 16.dp, end = 24.dp)
-                .size(32.dp)
-                .clip(CircleShape)
-                .clickable { navigateToNotification() }
-                .padding(4.dp)
         )
     }
 }
@@ -355,7 +273,6 @@ private fun MyPageScreenPreview() {
         MyPageScreen(
             state = MyPageUiState.Loading,
             onNotificationEnabledChange = { },
-            navigateToNotification = { },
             navigateToProfile = { },
             navigateToTermsOfService = { },
             logout = { },
