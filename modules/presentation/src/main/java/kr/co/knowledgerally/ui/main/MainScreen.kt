@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,15 +29,14 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import kr.co.knowledgerally.ui.coach.navigation.CoachDestination
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
-import kr.co.knowledgerally.ui.home.navigation.HomeDestination
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBarBall
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBarLogo
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBarNotification
+import kr.co.knowledgerally.ui.component.NavigationType
 import kr.co.knowledgerally.ui.main.navigation.MainDestination
 import kr.co.knowledgerally.ui.main.navigation.MainNavHost
 import kr.co.knowledgerally.ui.main.navigation.rememberMainNavigation
-import kr.co.knowledgerally.ui.mypage.MyPageTopAppBar
-import kr.co.knowledgerally.ui.mypage.navigation.MyPageDestination
-import kr.co.knowledgerally.ui.player.navigation.PlayerDestination
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
@@ -52,21 +52,17 @@ fun MainScreen(
 
     Scaffold(
         topBar = {
-            when (currentDestination?.route) {
-                HomeDestination.route -> {
-                    KnowllyTopAppBar()
+            KnowllyTopAppBar(
+                navigationType = NavigationType.None,
+                actions = {
+                    if (currentDestination?.route == MainDestination.Home.route) {
+                        KnowllyTopAppBarLogo()
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                    KnowllyTopAppBarBall(ballCount = 10)
+                    KnowllyTopAppBarNotification()
                 }
-                PlayerDestination.route -> {
-                    KnowllyTopAppBar()
-                }
-                CoachDestination.route -> {
-                    KnowllyTopAppBar()
-                }
-                MyPageDestination.route -> {
-                    MyPageTopAppBar(ballCount = 10)
-                }
-                else -> {}
-            }
+            )
         },
         modifier = Modifier,
         bottomBar = {
