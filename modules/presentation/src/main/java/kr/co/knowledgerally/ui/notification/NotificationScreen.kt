@@ -161,10 +161,19 @@ fun NotificationIcon(
         }
     }
 
+    val iconTint = when (notificationType) {
+        NotificationModel.Type.Coach -> {
+            KnowllyTheme.colors.secondary
+        }
+        NotificationModel.Type.Player -> {
+            KnowllyTheme.colors.primaryDark
+        }
+    }
+
     Icon(
         painter = painterResource(id = iconRes),
         contentDescription = null,
-        tint = KnowllyTheme.colors.primaryDark,
+        tint = iconTint,
         modifier = Modifier.size(24.dp)
     )
 }
@@ -186,7 +195,7 @@ fun NotificationText(
     notification: NotificationModel
 ) {
     Text(
-        text = "${notification.opponentName}님이 연락처를 남겼습니다. 변경사항이 있을 경우 연락해주세요.",
+        text = "임시 알림 내용입니다.", // TODO: 알림 유형 분류에 따른 텍스트 변경
         style = KnowllyTheme.typography.body1,
         color = KnowllyTheme.colors.gray44
     )
