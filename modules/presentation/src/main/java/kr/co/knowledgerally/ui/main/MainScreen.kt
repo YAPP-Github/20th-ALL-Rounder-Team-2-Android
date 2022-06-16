@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +29,11 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBarBall
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBarLogo
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBarNotification
+import kr.co.knowledgerally.ui.component.NavigationType
 import kr.co.knowledgerally.ui.main.navigation.MainDestination
 import kr.co.knowledgerally.ui.main.navigation.MainNavHost
 import kr.co.knowledgerally.ui.main.navigation.rememberMainNavigation
@@ -37,6 +43,8 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 fun MainScreen(
     viewModel: MainViewModel,
     navigateToRegister: () -> Unit,
+    navigateToBall: () -> Unit,
+    navigateToNotification: () -> Unit,
 ) {
     val navController = rememberNavController()
     val navigation = rememberMainNavigation(navController, navigateToRegister)
@@ -45,6 +53,19 @@ fun MainScreen(
     val showWelcome by viewModel.showWelcome.collectAsState()
 
     Scaffold(
+        topBar = {
+            KnowllyTopAppBar(
+                navigationType = NavigationType.None,
+                actions = {
+                    if (currentDestination?.route == MainDestination.Home.route) {
+                        KnowllyTopAppBarLogo()
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                    KnowllyTopAppBarBall(ballCount = 10, onClick = navigateToBall)
+                    KnowllyTopAppBarNotification(onClick = navigateToNotification)
+                }
+            )
+        },
         modifier = Modifier,
         bottomBar = {
             MainNavigationBar(
