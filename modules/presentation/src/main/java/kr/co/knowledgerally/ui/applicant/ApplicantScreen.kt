@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -30,6 +28,7 @@ import coil.compose.AsyncImage
 import kr.co.knowledgerally.domain.model.Applicant
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
+import kr.co.knowledgerally.ui.component.KnowllyLoading
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
@@ -58,36 +57,39 @@ fun ApplicantContent(
 ) {
     Column {
         KnowllyTopAppBar(onNavigationClick = onNavigationClick)
-        Text(
-            text = stringResource(id = R.string.applicant_title),
-            style = KnowllyTheme.typography.headline3,
-            modifier = Modifier.padding(start = 24.dp, top = 12.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.applicant_description),
-            modifier = Modifier
-                .padding(start = 24.dp, top = 4.dp, end = 24.dp)
-                .fillMaxWidth(),
-            style = KnowllyTheme.typography.body1,
-            color = KnowllyTheme.colors.gray8F,
-        )
+        ApplicantTitle()
+        ApplicantSubtitle()
+
         VerticalSpacer(height = 16.dp)
-        when (uiState) {
-            ApplicantUiState.Empty -> Unit
-            ApplicantUiState.Loading -> ApplicantLoading()
-            is ApplicantUiState.Applicants -> ApplicantItems(uiState.applicants, navigateToForm)
+        if (uiState is ApplicantUiState.Applicants) {
+            ApplicantItems(uiState.applicants, navigateToForm)
         }
+    }
+
+    if (uiState is ApplicantUiState.Loading) {
+        KnowllyLoading()
     }
 }
 
 @Composable
-private fun ApplicantLoading() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
+private fun ApplicantTitle() {
+    Text(
+        text = stringResource(id = R.string.applicant_title),
+        style = KnowllyTheme.typography.headline3,
+        modifier = Modifier.padding(start = 24.dp, top = 12.dp)
+    )
+}
+
+@Composable
+private fun ApplicantSubtitle() {
+    Text(
+        text = stringResource(id = R.string.applicant_description),
+        modifier = Modifier
+            .padding(start = 24.dp, top = 4.dp, end = 24.dp)
+            .fillMaxWidth(),
+        style = KnowllyTheme.typography.body1,
+        color = KnowllyTheme.colors.gray8F,
+    )
 }
 
 @Composable
