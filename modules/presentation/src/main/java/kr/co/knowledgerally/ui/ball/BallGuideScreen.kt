@@ -83,9 +83,9 @@ fun BallBannerList(
                 painter = painterResource(id = R.drawable.ic_ball),
                 contentDescription = null,
                 tint = Color.Unspecified,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(20.dp)
             )
-            HorizontalSpacer(width = 8.dp)
+            HorizontalSpacer(width = 4.dp)
             Text(text = caseText, style = KnowllyTheme.typography.subtitle1)
         }
         BallBannerDivider(modifier = Modifier.padding(vertical = 12.dp))
@@ -112,11 +112,16 @@ fun BallBannerListItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = text, style = KnowllyTheme.typography.subtitle2)
+            Text(
+                text = text,
+                style = KnowllyTheme.typography.subtitle2,
+                color = KnowllyTheme.colors.gray44
+            )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = "$sign ${abs(changedBallCount)}" + stringResource(id = R.string.ball_count),
-                style = KnowllyTheme.typography.subtitle2
+                style = KnowllyTheme.typography.subtitle2,
+                color = KnowllyTheme.colors.gray44
             )
         }
         if (subtext != null) {
