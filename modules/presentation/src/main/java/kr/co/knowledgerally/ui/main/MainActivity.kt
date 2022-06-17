@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.ui.ball.BallActivity
+import kr.co.knowledgerally.ui.notification.NotificationActivity
 import kr.co.knowledgerally.ui.register.RegisterActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -22,7 +24,9 @@ class MainActivity : BaseActivity() {
             KnowllyTheme {
                 MainScreen(
                     viewModel = viewModel,
-                    navigateToRegister = ::startRegisterActivity
+                    navigateToRegister = ::startRegisterActivity,
+                    navigateToBall = ::startBallActivity,
+                    navigateToNotification = ::startNotificationActivity
                 )
             }
         }
@@ -30,6 +34,16 @@ class MainActivity : BaseActivity() {
 
     private fun startRegisterActivity() {
         val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun startBallActivity() {
+        val intent = Intent(this, BallActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun startNotificationActivity() {
+        val intent = Intent(this, NotificationActivity::class.java)
         startActivity(intent)
     }
 

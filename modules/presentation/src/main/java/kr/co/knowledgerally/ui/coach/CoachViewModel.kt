@@ -38,4 +38,8 @@ class CoachViewModel @Inject constructor() : BaseViewModel() {
             }
         }
     }
+
+    fun refresh() {
+        // TODO
+    }
 }
