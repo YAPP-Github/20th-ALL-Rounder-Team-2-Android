@@ -19,10 +19,15 @@ class ApplicantActivity : BaseActivity() {
 
         setContent {
             KnowllyTheme {
-                ApplicantScreen()
+                ApplicantScreen(
+                    viewModel = viewModel,
+                    navigateUp = ::navigateUp
+                )
             }
         }
     }
+
+    private fun navigateUp() = finish()
 
     companion object {
         fun getIntent(context: Context, classId: String): Intent =
