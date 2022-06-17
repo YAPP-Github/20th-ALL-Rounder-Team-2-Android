@@ -14,9 +14,11 @@ class BallGuideActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            BallGuideScreen()
+            BallGuideScreen(navigateUp = ::navigateUp)
         }
     }
+
+    private fun navigateUp() = finish()
 
     companion object {
         fun startActivity(context: Context) {

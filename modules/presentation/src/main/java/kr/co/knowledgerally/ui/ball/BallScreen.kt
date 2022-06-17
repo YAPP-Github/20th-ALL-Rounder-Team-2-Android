@@ -1,7 +1,7 @@
 package kr.co.knowledgerally.ui.ball
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,7 +18,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
@@ -26,13 +25,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.model.BallCountModel
 import kr.co.knowledgerally.ui.model.BallHistoryModel
@@ -40,43 +40,43 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import kotlin.math.abs
 
 @Composable
-fun BallScreen(viewModel: BallViewModel) {
+fun BallScreen(
+    viewModel: BallViewModel,
+    navigateUp: () -> Unit,
+    navigateToGuide: () -> Unit
+) {
     val ball by viewModel.ball.collectAsState()
     val state by viewModel.state.collectAsState()
 
-    BallScreen(ball = ball, state = state)
+    BallScreen(
+        ball = ball,
+        state = state,
+        navigateUp = navigateUp,
+        navigateToGuide = navigateToGuide
+    )
 }
 
 @Composable
-fun BallScreen(ball: BallCountModel, state: BallUiState) {
+fun BallScreen(
+    ball: BallCountModel,
+    state: BallUiState,
+    navigateUp: () -> Unit,
+    navigateToGuide: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
     ) {
-        BallTopAppBar()
+        KnowllyTopAppBar(onNavigationClick = navigateUp)
         Column(
             modifier = Modifier.padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 0.dp)
         ) {
             MyBall(ball)
             VerticalSpacer(height = 24.dp)
-            BallBanner()
+            BallBanner(onClick = navigateToGuide)
             VerticalSpacer(height = 48.dp)
             BallHistoryContent(state = state)
         }
-    }
-}
-
-@Composable
-fun BallTopAppBar() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 24.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.Black)
     }
 }
 
@@ -106,10 +106,15 @@ fun MyBall(ball: BallCountModel) {
 }
 
 @Composable
-fun BallBanner() {
+fun BallBanner(
+    onClick: () -> Unit
+) {
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = KnowllyTheme.colors.grayF7,
+        modifier = Modifier
+            .clip(RoundedCornerShape(12.dp))
+            .clickable { onClick() }
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -128,7 +133,6 @@ fun BallBanner() {
                     tint = KnowllyTheme.colors.gray8F,
                     modifier = Modifier
                         .size(16.dp)
-
                 )
                 HorizontalSpacer(width = 4.dp)
                 Text(
@@ -203,7 +207,7 @@ fun BallHistoryListItem(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun BallScreenPreview() {
     val tempBallHistoryList = listOf(
@@ -230,7 +234,9 @@ private fun BallScreenPreview() {
     KnowllyTheme {
         BallScreen(
             ball = BallCountModel("1"),
-            state = BallUiState.Success(tempBallHistoryList)
+            state = BallUiState.Success(tempBallHistoryList),
+            navigateUp = {},
+            navigateToGuide = {}
         )
     }
 }

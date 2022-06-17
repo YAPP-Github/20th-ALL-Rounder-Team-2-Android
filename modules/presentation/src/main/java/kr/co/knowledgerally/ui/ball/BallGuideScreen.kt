@@ -28,9 +28,11 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import kotlin.math.abs
 
 @Composable
-fun BallGuideScreen() {
+fun BallGuideScreen(
+    navigateUp: () -> Unit
+) {
     Column {
-        KnowllyTopAppBar()
+        KnowllyTopAppBar(onNavigationClick = navigateUp)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -144,6 +146,6 @@ fun BallGuideDivider(modifier: Modifier = Modifier) {
 @Composable
 private fun KnowllyBallGuidePreview() {
     KnowllyTheme {
-        BallGuideScreen()
+        BallGuideScreen(navigateUp = {})
     }
 }

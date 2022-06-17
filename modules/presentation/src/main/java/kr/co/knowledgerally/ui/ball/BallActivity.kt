@@ -19,10 +19,18 @@ class BallActivity : BaseActivity() {
 
         setContent {
             KnowllyTheme {
-                BallScreen(viewModel = viewModel)
+                BallScreen(
+                    viewModel = viewModel,
+                    navigateUp = ::navigateUp,
+                    navigateToGuide = ::startBallGuideActivity
+                )
             }
         }
     }
+
+    private fun navigateUp() = finish()
+
+    private fun startBallGuideActivity() = BallGuideActivity.startActivity(this)
 
     companion object {
         fun startActivity(context: Context) {
