@@ -44,7 +44,7 @@ fun KnowllyTopAppBar(
             .fillMaxWidth()
             .height(TOP_APP_BAR_HEIGHT)
             .background(color = KnowllyTheme.colors.grayFF)
-            .padding(horizontal = 24.dp, vertical = 12.dp)
+            .padding(top = 12.dp, end = 12.dp, bottom = 12.dp)
     ) {
         if (navigationType != NavigationType.None) {
             KnowllyTopAppBarNavigation(
@@ -62,11 +62,11 @@ fun KnowllyTopAppBar(
 }
 
 @Composable
-fun KnowllyTopAppBarLogo() {
+fun KnowllyTopAppBarLogo(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = R.drawable.ic_logo_home),
         contentDescription = null,
-        modifier = Modifier.height(24.dp)
+        modifier = modifier.height(24.dp)
     )
 }
 
@@ -122,22 +122,17 @@ fun KnowllyTopAppBarNavigation(
     navigationType: NavigationType,
     onNavigationClick: () -> Unit
 ) {
-    val navigationIconRes =
-        if (navigationType == NavigationType.Back) {
-            R.drawable.ic_previous
-        } else {
-            R.drawable.ic_clear
-        }
-
-    Surface(
-        modifier = Modifier
-            .clip(shape = CircleShape)
-            .size(24.dp)
-            .clickable { onNavigationClick() }
-    ) {
+    IconButton(onClick = onNavigationClick, modifier = Modifier.padding(start = 12.dp)) {
         Icon(
-            painter = painterResource(id = navigationIconRes),
-            contentDescription = null
+            painter = painterResource(
+                id = if (navigationType == NavigationType.Back) {
+                    R.drawable.ic_previous
+                } else {
+                    R.drawable.ic_clear
+                }
+            ),
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
         )
     }
 }
