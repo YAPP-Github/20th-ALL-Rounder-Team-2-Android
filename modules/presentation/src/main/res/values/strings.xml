@@ -34,7 +34,7 @@
     <string name="ball_guide_receive_case_02">첫 클래스 등록 축하</string>
     <string name="ball_guide_receive_case_03">클래스 진행 1회</string>
     <string name="ball_guide_receive_case_03_sub">*클래스 종료 직후 지급</string>
-    <string name="ball_guide_toss">차감되는 경우</string>
+    <string name="ball_guide_toss">차감하는 경우</string>
     <string name="ball_guide_toss_case_01">클래스 수강 1회</string>
     <string name="ball_guide_toss_case_01_sub">*매칭 성공 직후 차감</string>
 
