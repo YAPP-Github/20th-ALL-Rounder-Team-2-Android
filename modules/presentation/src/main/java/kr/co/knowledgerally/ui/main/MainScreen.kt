@@ -58,7 +58,7 @@ fun MainScreen(
                 navigationType = NavigationType.None,
                 actions = {
                     if (currentDestination?.route == MainDestination.Home.route) {
-                        KnowllyTopAppBarLogo()
+                        KnowllyTopAppBarLogo(Modifier.padding(start = 24.dp))
                         Spacer(modifier = Modifier.weight(1f))
                     }
                     KnowllyTopAppBarBall(ballCount = 10, onClick = navigateToBall)
