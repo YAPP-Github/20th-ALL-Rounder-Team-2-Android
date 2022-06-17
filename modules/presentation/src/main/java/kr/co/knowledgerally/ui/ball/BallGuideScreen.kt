@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
@@ -35,22 +36,31 @@ fun BallBannerScreen() {
                 .fillMaxSize()
                 .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 0.dp)
         ) {
-            Text(text = "볼 지급 및 차감 안내", style = KnowllyTheme.typography.headline3)
+            Text(
+                text = stringResource(id = R.string.ball_guide),
+                style = KnowllyTheme.typography.headline3
+            )
             VerticalSpacer(height = 40.dp)
-            BallBannerList(caseText = "지급되는 경우") {
-                BallBannerListItem(text = "첫 가입 축하", changedBallCount = 1)
-                BallBannerListItem(text = "첫 클래스 등록 축하", changedBallCount = 1)
+            BallBannerList(caseText = stringResource(id = R.string.ball_guide_receive)) {
                 BallBannerListItem(
-                    text = "클래스 진행 1회",
-                    subtext = "*클래스 종료 직후 지급",
+                    text = stringResource(id = R.string.ball_guide_receive_case_01),
+                    changedBallCount = 1
+                )
+                BallBannerListItem(
+                    text = stringResource(id = R.string.ball_guide_receive_case_02),
+                    changedBallCount = 1
+                )
+                BallBannerListItem(
+                    text = stringResource(id = R.string.ball_guide_receive_case_03),
+                    subtext = stringResource(id = R.string.ball_guide_receive_case_03_sub),
                     changedBallCount = 1
                 )
             }
             VerticalSpacer(height = 24.dp)
-            BallBannerList(caseText = "차감되는 경우") {
+            BallBannerList(caseText = stringResource(id = R.string.ball_guide_toss)) {
                 BallBannerListItem(
-                    text = "클래스 수강 1회",
-                    subtext = "*매칭 성공 직후 차감",
+                    text = stringResource(id = R.string.ball_guide_toss_case_01),
+                    subtext = stringResource(id = R.string.ball_guide_toss_case_01_sub),
                     changedBallCount = -1
                 )
             }
@@ -105,7 +115,7 @@ fun BallBannerListItem(
             Text(text = text, style = KnowllyTheme.typography.subtitle2)
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = "$sign ${abs(changedBallCount)}개",
+                text = "$sign ${abs(changedBallCount)}" + stringResource(id = R.string.ball_count),
                 style = KnowllyTheme.typography.subtitle2
             )
         }
@@ -125,7 +135,7 @@ fun BallBannerDivider(modifier: Modifier = Modifier) {
     Divider(color = KnowllyTheme.colors.grayEF, modifier = modifier)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun KnowllyBallBannerPreview() {
     KnowllyTheme {

@@ -28,6 +28,15 @@
     <string name="ball_my">내 볼</string>
     <string name="ball_banner">볼은 언제 적립받고 어떻게 사용하나요?</string>
     <string name="ball_count">개</string>
+    <string name="ball_guide">볼 지급 및 차감 안내</string>
+    <string name="ball_guide_receive">지급되는 경우</string>
+    <string name="ball_guide_receive_case_01">첫 가입 축하</string>
+    <string name="ball_guide_receive_case_02">첫 클래스 등록 축하</string>
+    <string name="ball_guide_receive_case_03">클래스 진행 1회</string>
+    <string name="ball_guide_receive_case_03_sub">*클래스 종료 직후 지급</string>
+    <string name="ball_guide_toss">차감되는 경우</string>
+    <string name="ball_guide_toss_case_01">클래스 수강 1회</string>
+    <string name="ball_guide_toss_case_01_sub">*매칭 성공 직후 차감</string>
 
     <string name="notification_coach">운영 클래스</string>
     <string name="notification_player">수강 클래스</string>
