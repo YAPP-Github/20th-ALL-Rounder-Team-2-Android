@@ -78,4 +78,5 @@
 
     <string name="applicant_title">매칭 신청인</string>
     <string name="applicant_description">가장 먼저 신청한 플레이어부터 차례로 노출됩니다.</string>
+    <string name="applicant_form_shortcut">신청서 바로가기</string>
 </resources>

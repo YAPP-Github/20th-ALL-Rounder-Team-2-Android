@@ -21,7 +21,8 @@ class ApplicantActivity : BaseActivity() {
             KnowllyTheme {
                 ApplicantScreen(
                     viewModel = viewModel,
-                    navigateUp = ::navigateUp
+                    navigateUp = ::navigateUp,
+                    navigateToForm = { },
                 )
             }
         }
