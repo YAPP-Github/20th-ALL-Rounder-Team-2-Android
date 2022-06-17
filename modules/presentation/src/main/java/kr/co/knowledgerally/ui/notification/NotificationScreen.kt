@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -31,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.model.NotificationModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
@@ -38,11 +36,15 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun NotificationScreen(viewModel: NotificationViewModel) {
+fun NotificationScreen(
+    viewModel: NotificationViewModel,
+    navigateUp: () -> Unit
+) {
     val state by viewModel.state.collectAsState()
 
     NotificationScreen(
         state = state,
+        navigateUp = navigateUp,
         onNotificationClick = {}
     )
 }
@@ -50,6 +52,7 @@ fun NotificationScreen(viewModel: NotificationViewModel) {
 @Composable
 fun NotificationScreen(
     state: NotificationUiState,
+    navigateUp: () -> Unit,
     onNotificationClick: (NotificationModel) -> Unit
 ) {
     Column(
@@ -57,15 +60,7 @@ fun NotificationScreen(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 24.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.Black)
-        }
+        KnowllyTopAppBar(onNavigationClick = navigateUp)
         VerticalSpacer(height = 12.dp)
         Text(
             text = stringResource(R.string.notification_notification),
@@ -262,6 +257,7 @@ private fun NotificationScreenPreview() {
     KnowllyTheme {
         NotificationScreen(
             state = NotificationUiState.Success(tempNotificationList),
+            navigateUp = {},
             onNotificationClick = {}
         )
     }
@@ -273,6 +269,7 @@ private fun NotificationScreenPreviewEmpty() {
     KnowllyTheme {
         NotificationScreen(
             state = NotificationUiState.Empty,
+            navigateUp = {},
             onNotificationClick = {}
         )
     }
