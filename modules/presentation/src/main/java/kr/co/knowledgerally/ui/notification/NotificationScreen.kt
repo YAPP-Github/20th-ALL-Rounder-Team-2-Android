@@ -34,6 +34,8 @@ import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.model.NotificationModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun NotificationScreen(viewModel: NotificationViewModel) {
@@ -118,9 +120,11 @@ fun NotificationListItem(
     notification: NotificationModel,
     onNotificationClick: (NotificationModel) -> Unit
 ) {
+    val dateText =
+        notification.date.format(DateTimeFormatter.ofPattern(stringResource(id = R.string.notification_date_format)))
+
     Row(
         modifier = Modifier
-            .height(124.dp)
             .fillMaxWidth()
             .clickable { onNotificationClick(notification) }
             .padding(start = 24.dp, top = 20.dp, end = 24.dp, bottom = 12.dp)
@@ -136,7 +140,7 @@ fun NotificationListItem(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 NotificationTitle(notificationType = notification.type)
-                Text(text = notification.date, style = KnowllyTheme.typography.body1)
+                Text(text = dateText, style = KnowllyTheme.typography.body1)
             }
             NotificationText(notification = notification)
             Text(
@@ -242,7 +246,7 @@ private fun NotificationScreenPreview() {
             text = "여준님이 매칭을 수락했습니다.",
             lessonTitle = "윤영직의 안드로이드 교실",
             opponentName = "윤여준",
-            date = "5월 9일",
+            date = LocalDate.now(),
             type = NotificationModel.Type.Player
         ),
         NotificationModel(
@@ -250,7 +254,7 @@ private fun NotificationScreenPreview() {
             text = "새로운 매칭 신청을 확인해주세요.",
             lessonTitle = "클래스 제목",
             opponentName = "상대 유저 이름",
-            date = "5월 9일",
+            date = LocalDate.now(),
             type = NotificationModel.Type.Coach
         )
     )

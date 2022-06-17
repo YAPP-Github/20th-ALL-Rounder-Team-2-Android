@@ -33,6 +33,7 @@
     <string name="notification_empty">아직 알림이 없습니다</string>
     <string name="notification_coach">운영 클래스</string>
     <string name="notification_player">수강 클래스</string>
+    <string name="notification_date_format">M월 d일</string>
 
     <string name="login_kakao">카카오 로그인</string>
     <string name="login_policy">개인정보 처리방침</string>
