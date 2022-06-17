@@ -14,7 +14,7 @@ class BallGuideActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            BallBannerScreen()
+            BallGuideScreen()
         }
     }
 

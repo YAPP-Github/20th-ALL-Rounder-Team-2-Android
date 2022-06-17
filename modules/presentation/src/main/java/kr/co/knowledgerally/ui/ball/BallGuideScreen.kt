@@ -28,7 +28,7 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import kotlin.math.abs
 
 @Composable
-fun BallBannerScreen() {
+fun BallGuideScreen() {
     Column {
         KnowllyTopAppBar()
         Column(
@@ -41,24 +41,24 @@ fun BallBannerScreen() {
                 style = KnowllyTheme.typography.headline3
             )
             VerticalSpacer(height = 40.dp)
-            BallBannerList(caseText = stringResource(id = R.string.ball_guide_receive)) {
-                BallBannerListItem(
+            BallGuideList(caseText = stringResource(id = R.string.ball_guide_receive)) {
+                BallGuideListItem(
                     text = stringResource(id = R.string.ball_guide_receive_case_01),
                     changedBallCount = 1
                 )
-                BallBannerListItem(
+                BallGuideListItem(
                     text = stringResource(id = R.string.ball_guide_receive_case_02),
                     changedBallCount = 1
                 )
-                BallBannerListItem(
+                BallGuideListItem(
                     text = stringResource(id = R.string.ball_guide_receive_case_03),
                     subtext = stringResource(id = R.string.ball_guide_receive_case_03_sub),
                     changedBallCount = 1
                 )
             }
             VerticalSpacer(height = 24.dp)
-            BallBannerList(caseText = stringResource(id = R.string.ball_guide_toss)) {
-                BallBannerListItem(
+            BallGuideList(caseText = stringResource(id = R.string.ball_guide_toss)) {
+                BallGuideListItem(
                     text = stringResource(id = R.string.ball_guide_toss_case_01),
                     subtext = stringResource(id = R.string.ball_guide_toss_case_01_sub),
                     changedBallCount = -1
@@ -69,7 +69,7 @@ fun BallBannerScreen() {
 }
 
 @Composable
-fun BallBannerList(
+fun BallGuideList(
     caseText: String,
     caseList: @Composable ColumnScope.() -> Unit
 ) {
@@ -88,19 +88,19 @@ fun BallBannerList(
             HorizontalSpacer(width = 4.dp)
             Text(text = caseText, style = KnowllyTheme.typography.subtitle1)
         }
-        BallBannerDivider(modifier = Modifier.padding(vertical = 12.dp))
+        BallGuideDivider(modifier = Modifier.padding(vertical = 12.dp))
         VerticalSpacer(height = 4.dp)
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier.fillMaxWidth(),
             content = caseList
         )
-        BallBannerDivider(modifier = Modifier.padding(vertical = 16.dp))
+        BallGuideDivider(modifier = Modifier.padding(vertical = 16.dp))
     }
 }
 
 @Composable
-fun BallBannerListItem(
+fun BallGuideListItem(
     text: String,
     subtext: String? = null,
     changedBallCount: Int
@@ -136,14 +136,14 @@ fun BallBannerListItem(
 }
 
 @Composable
-fun BallBannerDivider(modifier: Modifier = Modifier) {
+fun BallGuideDivider(modifier: Modifier = Modifier) {
     Divider(color = KnowllyTheme.colors.grayEF, modifier = modifier)
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun KnowllyBallBannerPreview() {
+private fun KnowllyBallGuidePreview() {
     KnowllyTheme {
-        BallBannerScreen()
+        BallGuideScreen()
     }
 }
