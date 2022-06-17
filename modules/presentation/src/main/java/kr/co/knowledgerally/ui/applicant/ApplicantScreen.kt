@@ -152,13 +152,13 @@ private fun ApplicantItem(
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
             )
-
             KnowllyContainedButton(
                 text = stringResource(id = R.string.applicant_form_shortcut),
                 onClick = onClick,
                 modifier = Modifier
                     .padding(top = 16.dp)
-                    .height(32.dp)
+                    .height(32.dp),
+                textStyle = KnowllyTheme.typography.button2,
             )
 
         }
