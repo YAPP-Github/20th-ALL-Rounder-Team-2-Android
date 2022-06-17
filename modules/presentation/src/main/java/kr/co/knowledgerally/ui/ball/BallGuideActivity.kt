@@ -8,7 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.co.knowledgerally.base.BaseActivity
 
 @AndroidEntryPoint
-class BallBannerActivity : BaseActivity() {
+class BallGuideActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +20,7 @@ class BallBannerActivity : BaseActivity() {
 
     companion object {
         fun startActivity(context: Context) {
-            val intent = Intent(context, BallBannerActivity::class.java)
+            val intent = Intent(context, BallGuideActivity::class.java)
             context.startActivity(intent)
         }
     }

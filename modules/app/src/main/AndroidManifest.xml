@@ -69,7 +69,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.ball.BallBannerActivity"
+            android:name=".ui.ball.BallGuideActivity"
             android:screenOrientation="portrait" />
 
         <activity

@@ -1,6 +1,14 @@
 package kr.co.knowledgerally.ui.ball
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -24,7 +32,7 @@ fun BallBannerScreen() {
         KnowllyTopAppBar()
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 0.dp)
         ) {
             Text(text = "볼 지급 및 차감 안내", style = KnowllyTheme.typography.headline3)
@@ -70,14 +78,14 @@ fun BallBannerList(
             HorizontalSpacer(width = 8.dp)
             Text(text = caseText, style = KnowllyTheme.typography.subtitle1)
         }
-        Divider(modifier = Modifier.padding(vertical = 12.dp))
+        BallBannerDivider(modifier = Modifier.padding(vertical = 12.dp))
         VerticalSpacer(height = 4.dp)
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier.fillMaxWidth(),
             content = caseList
         )
-        Divider(modifier = Modifier.padding(vertical = 16.dp))
+        BallBannerDivider(modifier = Modifier.padding(vertical = 16.dp))
     }
 }
 
@@ -102,7 +110,7 @@ fun BallBannerListItem(
             )
         }
         if (subtext != null) {
-            VerticalSpacer(height = 4.dp)
+            VerticalSpacer(height = 8.dp)
             Text(
                 text = subtext,
                 style = KnowllyTheme.typography.caption,
@@ -110,6 +118,11 @@ fun BallBannerListItem(
             )
         }
     }
+}
+
+@Composable
+fun BallBannerDivider(modifier: Modifier = Modifier) {
+    Divider(color = KnowllyTheme.colors.grayEF, modifier = modifier)
 }
 
 @Preview
