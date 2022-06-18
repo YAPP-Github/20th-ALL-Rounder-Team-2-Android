@@ -19,10 +19,15 @@ class NotificationActivity : BaseActivity() {
 
         setContent {
             KnowllyTheme {
-                NotificationScreen(viewModel = viewModel)
+                NotificationScreen(
+                    viewModel = viewModel,
+                    navigateUp = ::navigateUp
+                )
             }
         }
     }
+
+    private fun navigateUp() = finish()
 
     companion object {
         fun startActivity(context: Context) {
