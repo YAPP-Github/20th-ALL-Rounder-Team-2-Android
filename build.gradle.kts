@@ -8,6 +8,7 @@ buildscript {
         classpath(libs.android.gradle)
         classpath(libs.kotlin)
         classpath(libs.hilt.gradle)
+        classpath(libs.google.secrets.gradle)
     }
 }
 
