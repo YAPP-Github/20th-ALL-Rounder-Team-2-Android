@@ -57,7 +57,7 @@ fun ScheduledTabContent(
         } else {
             scheduledList.forEachIndexed { index, scheduled ->
                 if (index == 0) {
-                    CoachDivider()
+                    CoachDivider(modifier = Modifier.padding(top = 24.dp))
                 }
                 ScheduledItem(scheduled = scheduled, copyToClipboard = copyTo::invoke)
                 CoachDivider()
