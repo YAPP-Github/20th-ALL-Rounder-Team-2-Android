@@ -25,7 +25,13 @@ class CoachViewModel @Inject constructor() : BaseViewModel() {
                     ClassUiState.Matching(classId = "0", "프랑스어", emptyList()),
                     ClassUiState.Matching(classId = "1", "프랑스어", emptyList()),
                 ),
-                scheduledClasses = emptyList(),
+                scheduledClasses = listOf(
+                    ClassUiState.Scheduled,
+                    ClassUiState.Scheduled,
+                    ClassUiState.Scheduled,
+                    ClassUiState.Scheduled,
+                    ClassUiState.Scheduled,
+                ),
                 completedClasses = emptyList()
             )
         )

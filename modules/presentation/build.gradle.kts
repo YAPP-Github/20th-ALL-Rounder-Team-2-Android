@@ -25,6 +25,7 @@ android {
             "-Xopt-in=kotlin.RequiresOptIn",
             "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
         )
         jvmTarget = "1.8"
     }

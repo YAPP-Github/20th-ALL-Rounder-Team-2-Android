@@ -33,6 +33,7 @@ val MaterialColors = androidx.compose.material3.lightColorScheme(
     secondary = Lime,
     error = Red,
     background = GrayFF,
+    surface = GrayFF,
 )
 
 @Stable

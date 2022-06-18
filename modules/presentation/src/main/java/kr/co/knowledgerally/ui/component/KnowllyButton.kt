@@ -32,10 +32,7 @@ fun KnowllyContainedButton(
         colors = KnowllyButtonDefaults.containedButtonColors,
         contentPadding = contentPadding,
     ) {
-        Text(
-            text = text,
-            style = textStyle,
-        )
+        Text(text = text, style = textStyle)
     }
 }
 
@@ -44,6 +41,8 @@ fun KnowllyOutlinedButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    textStyle: TextStyle = KnowllyButtonDefaults.textStyle,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp)
 ) {
     OutlinedButton(
         onClick = onClick,
@@ -51,11 +50,9 @@ fun KnowllyOutlinedButton(
         shape = KnowllyButtonDefaults.ButtonShape,
         border = KnowllyButtonDefaults.outlinedButtonBorder,
         colors = KnowllyButtonDefaults.outlinedButtonColors,
+        contentPadding = contentPadding,
     ) {
-        Text(
-            text = text,
-            style = KnowllyButtonDefaults.textStyle,
-        )
+        Text(text = text, style = textStyle)
     }
 }
 

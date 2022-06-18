@@ -64,7 +64,7 @@ fun CoachScreen(
 ) {
     when (uiState) {
         CoachUiState.Loading -> Unit /* no-op */
-        CoachUiState.Empty -> EmptyContent(navigateToRegister = navigateToRegister)
+        CoachUiState.Empty -> EmptyItem(navigateToRegister = navigateToRegister)
         is CoachUiState.Success -> CoachContent(
             uiState = uiState,
             tabState = tabState,
@@ -91,7 +91,7 @@ fun CoachContent(
 
         when (tabState.currentIndex) {
             INDEX_MATCHING -> MatchingTabContent(uiState.matchingClasses, navigateToApplicant)
-            INDEX_SCHEDULED -> ScheduledTabContent()
+            INDEX_SCHEDULED -> ScheduledTabContent(uiState.scheduledClasses)
             INDEX_COMPLETED -> CompletedTabContent()
         }
     }

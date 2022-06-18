@@ -2,6 +2,9 @@
     <string name="player">플레이어</string>
     <string name="coach">코치</string>
 
+    <string name="copy_kakao_id">카카오톡 ID 복사</string>
+    <string name="copied_kakao_id">카카오톡 ID가 복사되었습니다.</string>
+
     <string name="nav_home">홈</string>
     <string name="nav_player">수강 클래스</string>
     <string name="nav_register">클래스 등록</string>
@@ -87,6 +90,7 @@
     <string name="coach_completed_banner">클래스 코칭은 어떠셨나요? 소중한 후기를 남겨주세요!</string>
 
     <string name="coach_matching_applicant_fmt">매칭 신청인 (%d)</string>
+    <string name="coach_scheduled_empty">예정되어 있는 클래스가 없어요.\n새로운 클래스를 코칭하여 성장해 보세요!</string>
 
     <string name="applicant_title">매칭 신청인</string>
     <string name="applicant_description">가장 먼저 신청한 플레이어부터 차례로 노출됩니다.</string>
