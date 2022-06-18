@@ -75,7 +75,7 @@ private fun CompletedItem(
         OutlinedBadge(
             text = stringResource(id = R.string.coach_completed_ball_saved),
             modifier = Modifier
-                .padding(top = 16.dp)
+                .padding(top = 4.dp)
                 .align(Alignment.TopEnd),
             color = KnowllyTheme.colors.primaryDark,
             contentPadding = PaddingValues(start = 8.dp, top = 3.dp, end = 6.dp, bottom = 3.dp),
