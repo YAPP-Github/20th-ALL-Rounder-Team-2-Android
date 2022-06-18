@@ -1,7 +1,9 @@
-package kr.co.knowledgerally.ui.main.navigation
+package kr.co.knowledgerally.ui.main
 
-import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import kr.co.knowledgerally.ui.R
+import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 private const val NO_ROUTE = "no_route"
 private const val ROUTE_HOME = "home"
@@ -11,9 +13,9 @@ private const val ROUTE_MY_PAGE = "mypage"
 
 enum class MainDestination(
     val route: String,
-    val activeIconResId: Int,
-    val inactiveIconResId: Int,
-    @StringRes val iconTextResId: Int,
+    private val activeIconResId: Int,
+    private val inactiveIconResId: Int,
+    private val iconTextResId: Int,
 ) {
     Home(
         route = ROUTE_HOME,
@@ -45,4 +47,16 @@ enum class MainDestination(
         inactiveIconResId = R.drawable.ic_mypage_inactive,
         iconTextResId = R.string.nav_mypage,
     );
+
+    @Composable
+    fun text() = stringResource(id = iconTextResId)
+
+    @Composable
+    fun color(selected: Boolean) = if (selected) {
+        KnowllyTheme.colors.primaryDark
+    } else {
+        KnowllyTheme.colors.gray8F
+    }
+
+    fun icon(selected: Boolean) = if (selected) activeIconResId else inactiveIconResId
 }

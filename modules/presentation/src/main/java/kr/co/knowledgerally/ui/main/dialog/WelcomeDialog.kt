@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.main
+package kr.co.knowledgerally.ui.main.dialog
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

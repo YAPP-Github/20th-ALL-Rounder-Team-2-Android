@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.main.navigation
+package kr.co.knowledgerally.ui.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
