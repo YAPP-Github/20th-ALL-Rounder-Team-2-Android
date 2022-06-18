@@ -80,6 +80,7 @@ dependencies {
     implementation(project(Modules.LOG))
 
     implementation(libs.coroutines.android)
+    implementation(libs.material)
 
     implementation(libs.kakao.user)
 
