@@ -3,8 +3,8 @@ package kr.co.knowledgerally.ui.register
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -30,17 +30,30 @@ class RegisterActivity : BaseActivity() {
                 AnimatedNavHost(
                     navController = navController,
                     startDestination = RegisterDestination.Register.route,
-                    enterTransition = { EnterTransition.None },
-                    exitTransition = { ExitTransition.None },
+                    enterTransition = {
+                        slideInHorizontally { it }
+                    },
+                    exitTransition = {
+                        slideOutHorizontally { -it }
+                    },
+                    popEnterTransition = {
+                        slideInHorizontally { -it }
+                    },
+                    popExitTransition = {
+                        slideOutHorizontally { it }
+                    }
                 ) {
                     composable(RegisterDestination.Register.route) {
                         RegisterScreen(
+                            viewModel = viewModel,
                             navigateUp = { finish() },
-                            viewModel = viewModel
+                            navigateToSchedule = { navController.navigate(RegisterDestination.Schedule.route) }
                         )
                     }
                     composable(RegisterDestination.Schedule.route) {
-                        ScheduleScreen()
+                        ScheduleScreen(
+                            navigateUp = { navController.popBackStack() }
+                        )
                     }
                 }
             }

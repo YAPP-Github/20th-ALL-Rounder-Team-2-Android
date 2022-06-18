@@ -1,7 +1,9 @@
 package kr.co.knowledgerally.ui.register
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -34,7 +36,8 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    navigateToSchedule: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -57,7 +60,8 @@ fun RegisterScreen(
                 coroutineScope.launch {
                     sheetState.show()
                 }
-            }
+            },
+            navigateToSchedule = navigateToSchedule
         )
     }
 }
@@ -66,118 +70,127 @@ fun RegisterScreen(
 fun RegisterContent(
     navigateUp: () -> Unit,
     onCategorySelect: () -> Unit,
+    navigateToSchedule: () -> Unit,
 ) {
     Column {
         KnowllyTopAppBar(NavigationType.Close, onNavigationClick = navigateUp)
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            val modifier = Modifier.padding(horizontal = 24.dp)
+        Box(modifier = Modifier.fillMaxSize()) {
 
-            Row(modifier = modifier.padding(top = 12.dp)) {
-                PageIndicator(value = 1, isActive = true)
-                PageIndicator(
-                    value = 2,
-                    isActive = false,
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-            }
-            Text(
-                text = stringResource(id = R.string.register_title),
-                modifier = modifier.padding(top = 24.dp),
-                style = KnowllyTheme.typography.headline3,
-            )
-
-            Text(
-                text = stringResource(id = R.string.register_category),
-                modifier = modifier.padding(top = 40.dp),
-                style = KnowllyTheme.typography.subtitle2,
-                color = KnowllyTheme.colors.gray44,
-            )
-            KnowllyDropdown(
-                value = stringResource(id = R.string.register_category_placeholder),
-                onClick = onCategorySelect,
-                modifier = modifier.padding(top = 8.dp),
-                isSelected = false,
-            )
-
-            Text(
-                text = stringResource(id = R.string.register_name),
-                modifier = modifier.padding(top = 24.dp),
-                style = KnowllyTheme.typography.subtitle2,
-                color = KnowllyTheme.colors.gray44,
-            )
-            KnowllySinglelineTextField(
-                value = "",
-                onValueChange = { },
-                modifier = modifier.padding(top = 8.dp),
-                counterEnabled = true,
-                counterMaxLength = 20,
-                placeholder = stringResource(id = R.string.register_name_placeholder),
-            )
-
-            Text(
-                text = stringResource(id = R.string.register_introduction),
-                modifier = modifier.padding(top = 24.dp),
-                style = KnowllyTheme.typography.subtitle2,
-                color = KnowllyTheme.colors.gray44,
-            )
-            KnowllyMultilineTextField(
-                value = "",
-                onValueChange = { },
-                modifier = modifier.padding(top = 8.dp),
-                counterEnabled = true,
-                counterMaxLength = 500,
-                placeholder = stringResource(id = R.string.register_introduction_placeholder),
-                minHeight = 184.dp,
-            )
-            Row(
-                modifier = modifier.padding(top = 24.dp),
-                verticalAlignment = Alignment.CenterVertically,
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 104.dp)
             ) {
+                val modifier = Modifier.padding(horizontal = 24.dp)
+
+                Row(modifier = modifier.padding(top = 12.dp)) {
+                    PageIndicator(value = 1, isActive = true)
+                    PageIndicator(
+                        value = 2,
+                        isActive = false,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
                 Text(
-                    text = stringResource(id = R.string.register_tag),
+                    text = stringResource(id = R.string.register_title),
+                    modifier = modifier.padding(top = 24.dp),
+                    style = KnowllyTheme.typography.headline3,
+                )
+
+                Text(
+                    text = stringResource(id = R.string.register_category),
+                    modifier = modifier.padding(top = 40.dp),
                     style = KnowllyTheme.typography.subtitle2,
                     color = KnowllyTheme.colors.gray44,
                 )
-                Text(
-                    text = stringResource(id = R.string.register_tag_max_count),
-                    modifier = Modifier.padding(start = 4.dp),
-                    style = KnowllyTheme.typography.body2,
-                    color = KnowllyTheme.colors.gray44,
+                KnowllyDropdown(
+                    value = stringResource(id = R.string.register_category_placeholder),
+                    onClick = onCategorySelect,
+                    modifier = modifier.padding(top = 8.dp),
+                    isSelected = false,
                 )
-            }
-            KnowllySinglelineTextField(
-                value = "",
-                onValueChange = { },
-                modifier = modifier.padding(top = 8.dp),
-                helperTextEnabled = true,
-                helperText = stringResource(id = R.string.register_tag_helper_text),
-                placeholder = stringResource(id = R.string.register_tag_placeholder),
-            )
 
-            Row(
-                modifier = modifier.padding(top = 24.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
                 Text(
-                    text = stringResource(id = R.string.register_image),
+                    text = stringResource(id = R.string.register_name),
+                    modifier = modifier.padding(top = 24.dp),
                     style = KnowllyTheme.typography.subtitle2,
                     color = KnowllyTheme.colors.gray44,
                 )
+                KnowllySinglelineTextField(
+                    value = "",
+                    onValueChange = { },
+                    modifier = modifier.padding(top = 8.dp),
+                    counterEnabled = true,
+                    counterMaxLength = 20,
+                    placeholder = stringResource(id = R.string.register_name_placeholder),
+                )
+
                 Text(
-                    text = stringResource(id = R.string.register_image_optional),
-                    modifier = Modifier.padding(start = 4.dp),
-                    style = KnowllyTheme.typography.body2,
+                    text = stringResource(id = R.string.register_introduction),
+                    modifier = modifier.padding(top = 24.dp),
+                    style = KnowllyTheme.typography.subtitle2,
                     color = KnowllyTheme.colors.gray44,
                 )
+                KnowllyMultilineTextField(
+                    value = "",
+                    onValueChange = { },
+                    modifier = modifier.padding(top = 8.dp),
+                    counterEnabled = true,
+                    counterMaxLength = 500,
+                    placeholder = stringResource(id = R.string.register_introduction_placeholder),
+                    minHeight = 184.dp,
+                )
+                Row(
+                    modifier = modifier.padding(top = 24.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.register_tag),
+                        style = KnowllyTheme.typography.subtitle2,
+                        color = KnowllyTheme.colors.gray44,
+                    )
+                    Text(
+                        text = stringResource(id = R.string.register_tag_max_count),
+                        modifier = Modifier.padding(start = 4.dp),
+                        style = KnowllyTheme.typography.body2,
+                        color = KnowllyTheme.colors.gray44,
+                    )
+                }
+                KnowllySinglelineTextField(
+                    value = "",
+                    onValueChange = { },
+                    modifier = modifier.padding(top = 8.dp),
+                    helperTextEnabled = true,
+                    helperText = stringResource(id = R.string.register_tag_helper_text),
+                    placeholder = stringResource(id = R.string.register_tag_placeholder),
+                )
+
+                Row(
+                    modifier = modifier.padding(top = 24.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.register_image),
+                        style = KnowllyTheme.typography.subtitle2,
+                        color = KnowllyTheme.colors.gray44,
+                    )
+                    Text(
+                        text = stringResource(id = R.string.register_image_optional),
+                        modifier = Modifier.padding(start = 4.dp),
+                        style = KnowllyTheme.typography.body2,
+                        color = KnowllyTheme.colors.gray44,
+                    )
+                }
             }
 
             KnowllyContainedButton(
                 text = stringResource(id = R.string.next),
-                onClick = { /* TODO */ },
+                onClick = navigateToSchedule,
                 modifier = Modifier
-                    .padding(start = 16.dp, top = 24.dp, end = 16.dp, bottom = 24.dp)
-                    .fillMaxWidth(),
-                enabled = false,
+                    .padding(horizontal = 16.dp, vertical = 24.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
+                enabled = true,
             )
         }
     }
@@ -187,6 +200,10 @@ fun RegisterContent(
 @Composable
 fun RegisterScreenPreview() {
     KnowllyTheme {
-        RegisterScreen(viewModel = viewModel(), navigateUp = { })
+        RegisterScreen(
+            viewModel = viewModel(),
+            navigateUp = { },
+            navigateToSchedule = { },
+        )
     }
 }

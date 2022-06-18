@@ -6,6 +6,7 @@
     <string name="copied_kakao_id">카카오톡 ID가 복사되었습니다.</string>
 
     <string name="next">다음</string>
+    <string name="do_register">등록하기</string>
 
     <string name="nav_home">홈</string>
     <string name="nav_player">수강 클래스</string>
@@ -114,4 +115,8 @@
     <string name="register_tag_max_count">(최대 5개)</string>
     <string name="register_image">클래스 사진</string>
     <string name="register_image_optional">(선택)</string>
+
+    <string name="register_schedule_title">클래스 일정 등록하기</string>
+    <string name="register_schedule_description">편한 일정을 등록해주세요.7개까지 등록할 수 있어요. \n가능한 일정이 많을수록 매칭률이 올라가요!</string>
+    <string name="register_schedule_add_schedule">일정 추가</string>
 </resources>
