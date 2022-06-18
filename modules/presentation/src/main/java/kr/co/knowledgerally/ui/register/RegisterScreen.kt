@@ -134,6 +134,7 @@ fun RegisterContent(
                 )
                 Text(
                     text = stringResource(id = R.string.register_tag_max_count),
+                    modifier = Modifier.padding(start = 4.dp),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray44,
                 )
@@ -158,6 +159,7 @@ fun RegisterContent(
                 )
                 Text(
                     text = stringResource(id = R.string.register_image_optional),
+                    modifier = Modifier.padding(start = 4.dp),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray44,
                 )
