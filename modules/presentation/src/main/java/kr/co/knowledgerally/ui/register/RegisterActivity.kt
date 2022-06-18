@@ -11,6 +11,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.knowledgerally.base.ActivityTransition
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.ui.schedule.ScheduleActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
@@ -52,11 +53,18 @@ class RegisterActivity : BaseActivity() {
                     }
                     composable(RegisterDestination.Schedule.route) {
                         ScheduleScreen(
-                            navigateUp = { navController.popBackStack() }
+                            navigateUp = { navController.popBackStack() },
+                            navigateToSchedule = ::navigateToSchedule,
                         )
                     }
                 }
             }
         }
+    }
+
+    private fun navigateToSchedule() {
+        // TODO: StartActivityForResult
+        val intent = ScheduleActivity.getIntent(this)
+        startActivity(intent)
     }
 }

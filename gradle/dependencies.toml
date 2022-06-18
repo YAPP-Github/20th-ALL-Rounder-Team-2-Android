@@ -10,6 +10,7 @@ androidx-preference = "1.2.0"
 androidx-navigation = "2.4.2"
 
 compose = "1.2.0-beta02"
+material = "1.6.1"
 material3 = "1.0.0-alpha12"
 dagger = "2.41"
 coil = "2.1.0"
@@ -51,6 +52,8 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 google-accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
+
+material = { module = "com.google.android.material:material", version.ref = "material" }
 
 javax-inject = "javax.inject:javax.inject:1"
 

@@ -67,6 +67,7 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     implementation(libs.coil.compose)
+    implementation(libs.material)
 
     testImplementation(libs.junit4)
     testImplementation(libs.bundles.junit5)
