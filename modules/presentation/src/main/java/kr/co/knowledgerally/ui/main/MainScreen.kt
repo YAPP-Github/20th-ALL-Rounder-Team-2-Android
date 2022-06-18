@@ -67,10 +67,9 @@ fun MainScreen(
             KnowllyTopAppBar(
                 navigationType = NavigationType.None,
                 actions = {
-                    if (currentDestination?.route == MainDestination.Home.route) {
-                        Logo(Modifier.padding(start = 24.dp))
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
+                    val visible = currentDestination?.route == MainDestination.Home.route
+                    Logo(Modifier.padding(start = 24.dp), visible = visible)
+                    Spacer(modifier = Modifier.weight(1f))
                     BallIcon(ballCount = 10, onClick = navigateToBall)
                     NotificationIcon(onClick = navigateToNotification)
                 }
