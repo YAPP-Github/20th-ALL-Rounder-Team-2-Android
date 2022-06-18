@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.register.navigation
+package kr.co.knowledgerally.ui.register
 
 enum class RegisterDestination(
     val route: String,

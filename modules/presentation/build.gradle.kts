@@ -26,6 +26,7 @@ android {
             "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
+            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
         )
         jvmTarget = "1.8"
     }
@@ -59,6 +60,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
 
     implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.google.accompanist.navigation.animation)
     implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.hilt.android)
