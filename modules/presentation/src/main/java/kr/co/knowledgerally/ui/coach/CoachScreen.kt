@@ -92,7 +92,7 @@ fun CoachContent(
         when (tabState.currentIndex) {
             INDEX_MATCHING -> MatchingTabContent(uiState.matchingClasses, navigateToApplicant)
             INDEX_SCHEDULED -> ScheduledTabContent(uiState.scheduledClasses)
-            INDEX_COMPLETED -> CompletedTabContent()
+            INDEX_COMPLETED -> CompletedTabContent(uiState.completedClasses)
         }
     }
 }
