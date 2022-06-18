@@ -2,10 +2,13 @@ package kr.co.knowledgerally.ui.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import kr.co.knowledgerally.ui.R
 
@@ -17,94 +20,113 @@ private val Suit = FontFamily(
 )
 
 private val Typography = KnowllyTypography(
-    headline1 = TextStyle(
+    headline1 = textStyle(
         fontFamily = Suit,
         fontSize = 34.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 44.sp,
     ),
-    headline2 = TextStyle(
+    headline2 = textStyle(
         fontFamily = Suit,
         fontSize = 28.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 38.sp,
     ),
-    headline3 = TextStyle(
+    headline3 = textStyle(
         fontFamily = Suit,
         fontSize = 22.sp,
         fontWeight = FontWeight.Bold,
         lineHeight = 34.sp,
     ),
-    headline4 = TextStyle(
+    headline4 = textStyle(
         fontFamily = Suit,
         fontSize = 20.sp,
         fontWeight = FontWeight.Bold,
         lineHeight = 30.sp,
     ),
-    subtitle1 = TextStyle(
+    subtitle1 = textStyle(
         fontFamily = Suit,
         fontSize = 18.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 28.sp,
         letterSpacing = (-0.25).sp
     ),
-    subtitle2 = TextStyle(
+    subtitle2 = textStyle(
         fontFamily = Suit,
         fontSize = 16.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 24.sp,
     ),
-    subtitle3 = TextStyle(
+    subtitle3 = textStyle(
         fontFamily = Suit,
         fontSize = 16.sp,
         fontWeight = FontWeight.Normal,
         lineHeight = 22.sp,
     ),
-    subtitle4 = TextStyle(
+    subtitle4 = textStyle(
         fontFamily = Suit,
         fontSize = 14.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 20.sp,
         letterSpacing = (-0.25).sp
     ),
-    body1 = TextStyle(
+    body1 = textStyle(
         fontFamily = Suit,
         fontSize = 14.sp,
         fontWeight = FontWeight.Normal,
         lineHeight = 20.sp,
-        letterSpacing = (-0.25).sp
+        letterSpacing = (-0.25).sp,
     ),
-    body2 = TextStyle(
+    body2 = textStyle(
         fontFamily = Suit,
         fontSize = 12.sp,
         fontWeight = FontWeight.Normal,
         lineHeight = 18.sp,
         letterSpacing = (-0.25).sp
     ),
-    button1 = TextStyle(
+    button1 = textStyle(
         fontFamily = Suit,
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium,
         lineHeight = 16.sp,
     ),
-    button2 = TextStyle(
+    button2 = textStyle(
         fontFamily = Suit,
         fontSize = 12.sp,
         fontWeight = FontWeight.Medium,
         lineHeight = 16.sp,
     ),
-    caption = TextStyle(
+    caption = textStyle(
         fontFamily = Suit,
         fontSize = 10.sp,
         fontWeight = FontWeight.Normal,
         lineHeight = 16.sp,
     ),
-    overline = TextStyle(
+    overline = textStyle(
         fontFamily = Suit,
         fontSize = 10.sp,
         fontWeight = FontWeight.Medium,
         lineHeight = 16.sp,
         letterSpacing = (0.2).sp
+    ),
+)
+
+private fun textStyle(
+    fontFamily: FontFamily,
+    fontSize: TextUnit,
+    fontWeight: FontWeight,
+    lineHeight: TextUnit,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+) = TextStyle(
+    fontFamily = fontFamily,
+    fontSize = fontSize,
+    fontWeight = fontWeight,
+    lineHeight = lineHeight,
+    letterSpacing = letterSpacing,
+    platformStyle = PlatformTextStyle(includeFontPadding = false),
+    lineHeightStyle = LineHeightStyle(
+        alignment = LineHeightStyle.Alignment.Center,
+        trim = LineHeightStyle.Trim.None,
     ),
 )
 
