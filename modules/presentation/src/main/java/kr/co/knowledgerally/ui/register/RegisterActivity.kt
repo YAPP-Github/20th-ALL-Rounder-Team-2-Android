@@ -9,7 +9,6 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kr.co.knowledgerally.base.ActivityTransition
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -17,9 +16,6 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 class RegisterActivity : BaseActivity() {
 
     private val viewModel: RegisterViewModel by viewModels()
-
-    override val activityTransition: ActivityTransition
-        get() = ActivityTransition.Cover
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +31,15 @@ class RegisterActivity : BaseActivity() {
                 ) {
                     composable(RegisterDestination.Register.route) {
                         RegisterScreen(
+                            viewModel = viewModel,
                             navigateUp = { finish() },
-                            viewModel = viewModel
+                            navigateToSchedule = { navController.navigate(RegisterDestination.Schedule.route) }
                         )
                     }
                     composable(RegisterDestination.Schedule.route) {
-                        ScheduleScreen()
+                        ScheduleScreen(
+                            navigateUp = { navController.popBackStack() }
+                        )
                     }
                 }
             }

@@ -34,7 +34,8 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    navigateToSchedule: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -57,7 +58,8 @@ fun RegisterScreen(
                 coroutineScope.launch {
                     sheetState.show()
                 }
-            }
+            },
+            navigateToSchedule = navigateToSchedule
         )
     }
 }
@@ -66,6 +68,7 @@ fun RegisterScreen(
 fun RegisterContent(
     navigateUp: () -> Unit,
     onCategorySelect: () -> Unit,
+    navigateToSchedule: () -> Unit,
 ) {
     Column {
         KnowllyTopAppBar(NavigationType.Close, onNavigationClick = navigateUp)
@@ -173,11 +176,11 @@ fun RegisterContent(
 
             KnowllyContainedButton(
                 text = stringResource(id = R.string.next),
-                onClick = { /* TODO */ },
+                onClick = navigateToSchedule,
                 modifier = Modifier
                     .padding(start = 16.dp, top = 24.dp, end = 16.dp, bottom = 24.dp)
                     .fillMaxWidth(),
-                enabled = false,
+                enabled = true,
             )
         }
     }
@@ -187,6 +190,10 @@ fun RegisterContent(
 @Composable
 fun RegisterScreenPreview() {
     KnowllyTheme {
-        RegisterScreen(viewModel = viewModel(), navigateUp = { })
+        RegisterScreen(
+            viewModel = viewModel(),
+            navigateUp = { },
+            navigateToSchedule = { },
+        )
     }
 }
