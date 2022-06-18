@@ -29,7 +29,7 @@ import kr.co.knowledgerally.ui.model.CategoryModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun CategorySelectContent(
+fun CategorySelectSheetContent(
     sheetState: ModalBottomSheetState,
     onSelect: (CategoryModel) -> Unit,
 ) {
@@ -106,7 +106,7 @@ private fun CategorySelectItem(
 @Composable
 private fun CategorySelectContentPreview() {
     KnowllyTheme {
-        CategorySelectContent(
+        CategorySelectSheetContent(
             sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded),
             onSelect = { }
         )
