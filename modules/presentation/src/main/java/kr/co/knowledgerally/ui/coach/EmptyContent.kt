@@ -23,7 +23,7 @@ import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun EmptyContent(navigateToRegister: () -> Unit) {
+fun EmptyItem(navigateToRegister: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -75,7 +75,7 @@ private val ROOT_PADDING = PaddingValues(
 @Composable
 private fun EmptyContentPreview() {
     KnowllyTheme {
-        EmptyContent(
+        EmptyItem(
             navigateToRegister = { },
         )
     }
