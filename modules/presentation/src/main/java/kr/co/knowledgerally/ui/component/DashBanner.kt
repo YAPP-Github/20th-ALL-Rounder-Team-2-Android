@@ -25,7 +25,7 @@ fun DashBanner(text: String, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .height(IntrinsicSize.Max)
+            .height(IntrinsicSize.Max),
     ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val radius = 10.dp.toPx()
