@@ -32,7 +32,10 @@ class RegisterActivity : BaseActivity() {
                     startDestination = RegisterDestination.Register.route,
                 ) {
                     composable(RegisterDestination.Register.route) {
-                        RegisterScreen(viewModel = viewModel)
+                        RegisterScreen(
+                            navigateUp = { finish() },
+                            viewModel = viewModel
+                        )
                     }
                     composable(RegisterDestination.Schedule.route) {
                         ScheduleScreen()

@@ -32,9 +32,13 @@ import kr.co.knowledgerally.ui.component.PageIndicator
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun RegisterScreen(viewModel: RegisterViewModel) {
+fun RegisterScreen(
+    viewModel: RegisterViewModel,
+    navigateUp: () -> Unit
+) {
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
+
     ModalBottomSheetLayout(
         sheetContent = {
             CategorySelectSheetContent(
@@ -48,6 +52,7 @@ fun RegisterScreen(viewModel: RegisterViewModel) {
         sheetShape = RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp)
     ) {
         RegisterContent(
+            navigateUp = navigateUp,
             onCategorySelect = {
                 coroutineScope.launch {
                     sheetState.show()
@@ -59,10 +64,11 @@ fun RegisterScreen(viewModel: RegisterViewModel) {
 
 @Composable
 fun RegisterContent(
+    navigateUp: () -> Unit,
     onCategorySelect: () -> Unit,
 ) {
     Column {
-        KnowllyTopAppBar(NavigationType.Close)
+        KnowllyTopAppBar(NavigationType.Close, onNavigationClick = navigateUp)
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             val modifier = Modifier.padding(horizontal = 24.dp)
 
@@ -181,6 +187,6 @@ fun RegisterContent(
 @Composable
 fun RegisterScreenPreview() {
     KnowllyTheme {
-        RegisterScreen(viewModel = viewModel())
+        RegisterScreen(viewModel = viewModel(), navigateUp = { })
     }
 }
