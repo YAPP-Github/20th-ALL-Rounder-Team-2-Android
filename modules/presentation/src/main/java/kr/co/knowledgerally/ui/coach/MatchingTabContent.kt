@@ -1,16 +1,15 @@
 package kr.co.knowledgerally.ui.coach
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.domain.model.Applicant
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.Banner
+import kr.co.knowledgerally.ui.component.RoundRect
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -73,15 +73,12 @@ private fun MatchingItem(
 
 @Composable
 private fun MatchingItemHeader(text: String) {
-    Box(modifier = Modifier.fillMaxWidth()) {
-        Box(
-            Modifier
-                .size(4.dp, 28.dp)
-                .background(
-                    color = KnowllyTheme.colors.primary,
-                    shape = RoundedCornerShape(8.dp)
-                )
-        )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Max)
+    ) {
+        RoundRect(radius = 8.dp, width = 4.dp)
         Text(
             text = text,
             style = KnowllyTheme.typography.subtitle2,
