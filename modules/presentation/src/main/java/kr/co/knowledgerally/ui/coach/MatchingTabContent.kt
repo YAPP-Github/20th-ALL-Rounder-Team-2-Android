@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.domain.model.Applicant
 import kr.co.knowledgerally.ui.R
+import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -37,7 +38,7 @@ fun MatchingTabContent(
             .padding(24.dp)
     ) {
         CoachTitle(text = stringResource(R.string.coach_matching_title))
-        CoachBanner(
+        Banner(
             text = stringResource(id = R.string.coach_matching_banner),
             modifier = Modifier.padding(top = 10.dp),
         )

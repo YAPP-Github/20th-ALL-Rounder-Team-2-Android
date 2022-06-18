@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import kr.co.knowledgerally.ui.R
+import kr.co.knowledgerally.ui.component.Banner
 
 @Composable
 fun CompletedTabContent() {
@@ -17,6 +18,6 @@ fun CompletedTabContent() {
             .verticalScroll(rememberScrollState())
     ) {
         CoachTitle(text = stringResource(R.string.coach_completed_title))
-        CoachBanner(text = stringResource(id = R.string.coach_completed_banner))
+        Banner(text = stringResource(id = R.string.coach_completed_banner))
     }
 }
