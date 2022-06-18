@@ -95,6 +95,24 @@
     <string name="coach_completed_empty">아직 코칭을 완료한 클래스가 없어요.\n클래스 운영을 통해 성장해 보세요!</string>
     <string name="coach_completed_ball_saved">볼 적립 완료</string>
 
+    <string name="player_matching">매칭 중</string>
+    <string name="player_matching_title">매칭 대기 중</string>
+    <string name="player_matching_banner">신청한 클래스 코치의 응답을 기다리고 있어요!</string>
+    <string name="player_matching_empty">매칭 신청 중인 클래스가 없어요.\n새로운 클래스에 도전하여 성장해보세요!</string>
+
+    <string name="player_scheduled">예정된</string>
+    <string name="player_scheduled_title">예정된 클래스</string>
+    <string name="player_scheduled_banner">매칭이 성사되었어요! 코치의 카카오톡 ID로 연락해 인사를 나누고, 클래스 장소를 정해보세요.</string>
+    <string name="player_scheduled_empty">예정되어 있는 클래스가 없어요.\n새로운 클래스에 도전하여 성장해보세요!</string>
+
+    <string name="player_completed">완료된</string>
+    <string name="player_completed_title">완료된 클래스</string>
+    <string name="player_completed_banner">클래스는 어떠셨나요? 소중한 후기를 남겨주세요!</string>
+    <string name="player_completed_empty">아직 완료한 클래스가 없어요.\n새로운 클래스에 도전하여 성장해보세요!</string>
+
+    <string name="player_review_button">후기 작성하기</string>
+    <string name="player_reviewed">후기</string>
+    <string name="player_not_reviewed">후기 미작성</string>
 
     <string name="applicant_title">매칭 신청인</string>
     <string name="applicant_description">가장 먼저 신청한 플레이어부터 차례로 노출됩니다.</string>
