@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.ui.coach
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -29,12 +30,12 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun CompletedTabContent(
     completedList: List<ClassUiState.Completed>,
-    navigateToCompletedClassList: () -> Unit = { },
+    scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scrollState)
             .padding(24.dp)
     ) {
         CoachTitle(text = stringResource(R.string.coach_completed_title))
