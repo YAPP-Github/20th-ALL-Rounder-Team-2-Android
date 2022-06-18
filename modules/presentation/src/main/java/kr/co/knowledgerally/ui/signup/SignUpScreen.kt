@@ -1,18 +1,15 @@
 package kr.co.knowledgerally.ui.signup
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyCheckBoxText
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
+import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -33,31 +31,38 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun SignUpScreen(
     viewModel: SignUpViewModel,
+    navigateUp: () -> Unit,
     navigateToTerms: () -> Unit,
-    navigateToPolicy: () -> Unit
+    navigateToPolicy: () -> Unit,
+    navigateToProfile: () -> Unit
 ) {
     val signUpState = rememberSignUpState()
     SignUpScreen(
         signUpState = signUpState,
+        navigateUp = navigateUp,
         navigateToTerms = navigateToTerms,
         navigateToPolicy = navigateToPolicy,
+        navigateToProfile = navigateToProfile
     )
 }
 
 @Composable
 private fun SignUpScreen(
     signUpState: SignUpState,
+    navigateUp: () -> Unit,
     navigateToTerms: () -> Unit,
-    navigateToPolicy: () -> Unit
+    navigateToPolicy: () -> Unit,
+    navigateToProfile: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        SignUpTopAppBar()
+        KnowllyTopAppBar(onNavigationClick = navigateUp)
         SignUpContent(
             signUpState = signUpState,
             navigateToTerms = navigateToTerms,
-            navigateToPolicy = navigateToPolicy
+            navigateToPolicy = navigateToPolicy,
+            navigateToProfile = navigateToProfile
         )
     }
 }
@@ -66,7 +71,8 @@ private fun SignUpScreen(
 private fun SignUpContent(
     signUpState: SignUpState,
     navigateToTerms: () -> Unit,
-    navigateToPolicy: () -> Unit
+    navigateToPolicy: () -> Unit,
+    navigateToProfile: () -> Unit
 ) {
     val termsState = signUpState.termsState
     val policyState = signUpState.policyState
@@ -108,25 +114,7 @@ private fun SignUpContent(
             modifier = Modifier.padding(start = 36.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
-        SignUpButton(enabled = signUpState.isRequired)
-    }
-}
-
-@Composable
-fun SignUpTopAppBar() {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 24.dp, vertical = 12.dp)
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_previous),
-            contentDescription = null,
-            tint = KnowllyTheme.colors.gray00,
-            modifier = Modifier.size(24.dp)
-        )
+        SignUpButton(enabled = signUpState.isRequired, onClick = { navigateToProfile() })
     }
 }
 
@@ -178,11 +166,14 @@ fun CheckItem(
 }
 
 @Composable
-fun SignUpButton(enabled: Boolean) {
+fun SignUpButton(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
     KnowllyContainedButton(
         text = stringResource(R.string.signup_signup),
         enabled = enabled,
-        onClick = { },
+        onClick = onClick,
         modifier = Modifier
             .padding(horizontal = 4.dp)
             .fillMaxWidth()
@@ -195,8 +186,10 @@ private fun SignUpScreenPreview() {
     KnowllyTheme {
         SignUpScreen(
             signUpState = rememberSignUpState(),
+            navigateUp = { },
             navigateToTerms = { },
-            navigateToPolicy = { }
+            navigateToPolicy = { },
+            navigateToProfile = { }
         )
     }
 }
