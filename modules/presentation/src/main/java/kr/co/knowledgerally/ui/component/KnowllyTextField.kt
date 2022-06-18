@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
+private val TextFieldMinHeight = 48.dp
+
 @Composable
 fun KnowllyTextField(
     value: String,
@@ -47,7 +49,7 @@ fun KnowllyTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     singleLine: Boolean = false,
     maxLines: Int = Int.MAX_VALUE,
-    minHeight: Dp = Dp.Unspecified,
+    minHeight: Dp = TextFieldMinHeight,
     maxHeight: Dp = minHeight,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -56,7 +58,6 @@ fun KnowllyTextField(
 
     Column(modifier = modifier) {
 
-        @OptIn(ExperimentalMaterial3Api::class)
         BasicTextField(
             value = value,
             onValueChange = onValueChange,

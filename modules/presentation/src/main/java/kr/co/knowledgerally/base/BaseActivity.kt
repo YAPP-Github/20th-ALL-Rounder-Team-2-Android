@@ -1,9 +1,10 @@
 package kr.co.knowledgerally.base
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 
-abstract class BaseActivity : ComponentActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     protected inline val TAG get() = this::class.java.simpleName
     protected open val activityTransition = ActivityTransition.Push
