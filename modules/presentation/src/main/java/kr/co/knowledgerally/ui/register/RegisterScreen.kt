@@ -15,11 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
+import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyDropdown
 import kr.co.knowledgerally.ui.component.KnowllyMultilineTextField
@@ -73,26 +75,26 @@ fun RegisterContent(
                 )
             }
             Text(
-                text = "클래스 등록하기",
+                text = stringResource(id = R.string.register_title),
                 modifier = modifier.padding(top = 24.dp),
                 style = KnowllyTheme.typography.headline3,
             )
 
             Text(
-                text = "클래스 카테고리",
+                text = stringResource(id = R.string.register_category),
                 modifier = modifier.padding(top = 40.dp),
                 style = KnowllyTheme.typography.subtitle2,
                 color = KnowllyTheme.colors.gray44,
             )
             KnowllyDropdown(
-                value = "카테고리 선택",
+                value = stringResource(id = R.string.register_category_placeholder),
                 onClick = onCategorySelect,
                 modifier = modifier.padding(top = 8.dp),
                 isSelected = false,
             )
 
             Text(
-                text = "클래스 이름",
+                text = stringResource(id = R.string.register_name),
                 modifier = modifier.padding(top = 24.dp),
                 style = KnowllyTheme.typography.subtitle2,
                 color = KnowllyTheme.colors.gray44,
@@ -103,11 +105,11 @@ fun RegisterContent(
                 modifier = modifier.padding(top = 8.dp),
                 counterEnabled = true,
                 counterMaxLength = 20,
-                placeholder = "클래스 이름을 작성해주세요.",
+                placeholder = stringResource(id = R.string.register_name_placeholder),
             )
 
             Text(
-                text = "클래스 소개",
+                text = stringResource(id = R.string.register_introduction),
                 modifier = modifier.padding(top = 24.dp),
                 style = KnowllyTheme.typography.subtitle2,
                 color = KnowllyTheme.colors.gray44,
@@ -118,7 +120,7 @@ fun RegisterContent(
                 modifier = modifier.padding(top = 8.dp),
                 counterEnabled = true,
                 counterMaxLength = 500,
-                placeholder = "클래스 내용, 클래스 목적, 추천하는 대상 등을 포함해 클래스를 소개해보세요.",
+                placeholder = stringResource(id = R.string.register_introduction_placeholder),
                 minHeight = 184.dp,
             )
             Row(
@@ -126,12 +128,12 @@ fun RegisterContent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "클래스 태그",
+                    text = stringResource(id = R.string.register_tag),
                     style = KnowllyTheme.typography.subtitle2,
                     color = KnowllyTheme.colors.gray44,
                 )
                 Text(
-                    text = "(최대 5개)",
+                    text = stringResource(id = R.string.register_tag_max_count),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray44,
                 )
@@ -141,8 +143,8 @@ fun RegisterContent(
                 onValueChange = { },
                 modifier = modifier.padding(top = 8.dp),
                 helperTextEnabled = true,
-                helperText = "#’태그이름’ 입력 후 쉼표를 입력해주세요.",
-                placeholder = "#태그 입력",
+                helperText = stringResource(id = R.string.register_tag_helper_text),
+                placeholder = stringResource(id = R.string.register_tag_placeholder),
             )
 
             Row(
@@ -150,19 +152,19 @@ fun RegisterContent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "클래스 사진",
+                    text = stringResource(id = R.string.register_image),
                     style = KnowllyTheme.typography.subtitle2,
                     color = KnowllyTheme.colors.gray44,
                 )
                 Text(
-                    text = "(선택)",
+                    text = stringResource(id = R.string.register_image_optional),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray44,
                 )
             }
 
             KnowllyContainedButton(
-                text = "다음",
+                text = stringResource(id = R.string.next),
                 onClick = { /* TODO */ },
                 modifier = Modifier
                     .padding(start = 16.dp, top = 24.dp, end = 16.dp, bottom = 24.dp)
