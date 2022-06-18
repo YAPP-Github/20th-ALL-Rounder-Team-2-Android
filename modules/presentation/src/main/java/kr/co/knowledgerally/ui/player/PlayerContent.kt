@@ -87,8 +87,16 @@ fun PlayerContentListItem(
                 VerticalSpacer(height = 2.dp)
                 Text(text = "코치 이름", style = KnowllyTheme.typography.body1)
                 VerticalSpacer(height = 6.dp)
-                Text(text = "2022년 6월 18일 (토)", style = KnowllyTheme.typography.body2)
-                Text(text = "오후 6:00 (3시간 수업)", style = KnowllyTheme.typography.body2)
+                Text(
+                    text = "2022년 6월 18일 (토)",
+                    style = KnowllyTheme.typography.body2,
+                    color = KnowllyTheme.colors.gray6B
+                )
+                Text(
+                    text = "오후 6:00 (3시간 수업)",
+                    style = KnowllyTheme.typography.body2,
+                    color = KnowllyTheme.colors.gray6B
+                )
             }
         }
         when (lesson) {
