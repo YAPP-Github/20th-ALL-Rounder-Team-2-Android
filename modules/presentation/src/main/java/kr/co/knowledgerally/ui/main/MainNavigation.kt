@@ -1,10 +1,10 @@
-package kr.co.knowledgerally.ui.main.navigation
+package kr.co.knowledgerally.ui.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 class MainNavigation(
     val navController: NavHostController,
@@ -32,6 +32,11 @@ class MainNavigation(
 
 @Composable
 fun rememberMainNavigation(
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberAnimatedNavController(),
     navigateToRegister: () -> Unit,
-) = remember(navController) { MainNavigation(navController, navigateToRegister = navigateToRegister) }
+) = remember(navController) {
+    MainNavigation(
+        navController = navController,
+        navigateToRegister = navigateToRegister
+    )
+}

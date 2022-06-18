@@ -28,7 +28,7 @@ import coil.compose.AsyncImage
 import kr.co.knowledgerally.domain.model.Applicant
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
-import kr.co.knowledgerally.ui.component.KnowllyLoading
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
@@ -67,7 +67,7 @@ fun ApplicantContent(
     }
 
     if (uiState is ApplicantUiState.Loading) {
-        KnowllyLoading()
+        Loading()
     }
 }
 

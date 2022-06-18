@@ -1,6 +1,8 @@
 package kr.co.knowledgerally.ui.main
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,33 +12,41 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import kr.co.knowledgerally.ui.R
+import kr.co.knowledgerally.ui.coach.CoachScreen
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
-import kr.co.knowledgerally.ui.component.KnowllyTopAppBarBall
-import kr.co.knowledgerally.ui.component.KnowllyTopAppBarLogo
-import kr.co.knowledgerally.ui.component.KnowllyTopAppBarNotification
+import kr.co.knowledgerally.ui.component.Logo
 import kr.co.knowledgerally.ui.component.NavigationType
-import kr.co.knowledgerally.ui.main.navigation.MainDestination
-import kr.co.knowledgerally.ui.main.navigation.MainNavHost
-import kr.co.knowledgerally.ui.main.navigation.rememberMainNavigation
+import kr.co.knowledgerally.ui.home.HomeScreen
+import kr.co.knowledgerally.ui.main.dialog.WelcomeDialog
+import kr.co.knowledgerally.ui.mypage.MyPageScreen
+import kr.co.knowledgerally.ui.player.PlayerScreen
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
@@ -46,7 +56,7 @@ fun MainScreen(
     navigateToBall: () -> Unit,
     navigateToNotification: () -> Unit,
 ) {
-    val navController = rememberNavController()
+    val navController = rememberAnimatedNavController()
     val navigation = rememberMainNavigation(navController, navigateToRegister)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -58,11 +68,11 @@ fun MainScreen(
                 navigationType = NavigationType.None,
                 actions = {
                     if (currentDestination?.route == MainDestination.Home.route) {
-                        KnowllyTopAppBarLogo(Modifier.padding(start = 24.dp))
+                        Logo(Modifier.padding(start = 24.dp))
                         Spacer(modifier = Modifier.weight(1f))
                     }
-                    KnowllyTopAppBarBall(ballCount = 10, onClick = navigateToBall)
-                    KnowllyTopAppBarNotification(onClick = navigateToNotification)
+                    BallIcon(ballCount = 10, onClick = navigateToBall)
+                    NotificationIcon(onClick = navigateToNotification)
                 }
             )
         },
@@ -74,15 +84,76 @@ fun MainScreen(
             )
         },
     ) { padding ->
-        MainNavHost(
-            navigation = navigation,
-            modifier = Modifier.padding(padding),
-        )
+        AnimatedNavHost(
+            navController = navigation.navController,
+            startDestination = MainDestination.Home.route,
+            modifier = Modifier.padding(padding)
+        ) {
+            composable(route = MainDestination.Home.route) {
+                HomeScreen()
+            }
+            composable(route = MainDestination.Player.route) {
+                PlayerScreen()
+            }
+            composable(MainDestination.Coach.route) {
+                CoachScreen(
+                    navigateToRegister = { navigation.navigateTo(MainDestination.Register) }
+                )
+            }
+            composable(MainDestination.MyPage.route) {
+                MyPageScreen()
+            }
+        }
     }
 
     if (showWelcome) {
         WelcomeDialog(onDismiss = { viewModel.shownWelcome() })
     }
+}
+
+@Composable
+private fun BallIcon(
+    ballCount: Int,
+    onClick: () -> Unit
+) {
+    Surface(
+        shape = RoundedCornerShape(36.dp),
+        color = Color.Unspecified,
+        border = BorderStroke(width = 2.dp, color = KnowllyTheme.colors.grayEF),
+        modifier = Modifier
+            .clip(RoundedCornerShape(36.dp))
+            .clickable { onClick() }
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_ball),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.size(20.dp)
+            )
+            Text(
+                text = ballCount.toString(), style = KnowllyTheme.typography.subtitle4
+            )
+        }
+    }
+}
+
+@Composable
+private fun NotificationIcon(onClick: () -> Unit) {
+    Icon(
+        painter = painterResource(id = R.drawable.ic_alarm),
+        contentDescription = null,
+        tint = KnowllyTheme.colors.gray00,
+        modifier = Modifier
+            .size(32.dp)
+            .clip(CircleShape)
+            .clickable { onClick() }
+            .padding(4.dp)
+    )
 }
 
 @Composable
@@ -128,8 +199,6 @@ private fun RowScope.NavigationBarItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val color = if (selected) KnowllyTheme.colors.primaryDark else KnowllyTheme.colors.gray8F
-    val iconRes = if (selected) destination.activeIconResId else destination.inactiveIconResId
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -141,11 +210,15 @@ private fun RowScope.NavigationBarItem(
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(painterResource(id = iconRes), contentDescription = null, tint = color)
+        Icon(
+            painter = painterResource(id = destination.icon(selected)),
+            contentDescription = null,
+            tint = destination.color(selected)
+        )
         Text(
-            text = stringResource(id = destination.iconTextResId),
+            text = destination.text(),
             style = KnowllyTheme.typography.caption,
-            color = color
+            color = destination.color(selected)
         )
     }
 }
