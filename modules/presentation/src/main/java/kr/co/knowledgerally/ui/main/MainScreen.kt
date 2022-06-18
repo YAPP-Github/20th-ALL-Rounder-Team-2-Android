@@ -1,5 +1,7 @@
 package kr.co.knowledgerally.ui.main
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,15 +30,20 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import kr.co.knowledgerally.ui.coach.CoachScreen
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBarBall
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBarLogo
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBarNotification
 import kr.co.knowledgerally.ui.component.NavigationType
+import kr.co.knowledgerally.ui.home.HomeScreen
 import kr.co.knowledgerally.ui.main.navigation.MainDestination
-import kr.co.knowledgerally.ui.main.navigation.MainNavHost
 import kr.co.knowledgerally.ui.main.navigation.rememberMainNavigation
+import kr.co.knowledgerally.ui.mypage.MyPageScreen
+import kr.co.knowledgerally.ui.player.PlayerScreen
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
@@ -46,7 +53,7 @@ fun MainScreen(
     navigateToBall: () -> Unit,
     navigateToNotification: () -> Unit,
 ) {
-    val navController = rememberNavController()
+    val navController = rememberAnimatedNavController()
     val navigation = rememberMainNavigation(navController, navigateToRegister)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -74,10 +81,28 @@ fun MainScreen(
             )
         },
     ) { padding ->
-        MainNavHost(
-            navigation = navigation,
+        AnimatedNavHost(
+            navController = navigation.navController,
+            startDestination = MainDestination.Home.route,
             modifier = Modifier.padding(padding),
-        )
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+        ) {
+            composable(route = MainDestination.Home.route) {
+                HomeScreen()
+            }
+            composable(route = MainDestination.Player.route) {
+                PlayerScreen()
+            }
+            composable(MainDestination.Coach.route) {
+                CoachScreen(
+                    navigateToRegister = { navigation.navigateTo(MainDestination.Register) }
+                )
+            }
+            composable(MainDestination.MyPage.route) {
+                MyPageScreen()
+            }
+        }
     }
 
     if (showWelcome) {

@@ -26,7 +26,7 @@ private const val INDEX_SCHEDULED = 1
 private const val INDEX_COMPLETED = 2
 
 @Composable
-fun CoachRoute(
+fun CoachScreen(
     viewModel: CoachViewModel = hiltViewModel(),
     navigateToRegister: () -> Unit,
 ) {
