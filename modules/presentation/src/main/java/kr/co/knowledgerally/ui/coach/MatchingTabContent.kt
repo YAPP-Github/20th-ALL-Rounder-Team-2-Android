@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.ui.coach
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,12 +30,13 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun MatchingTabContent(
     matchingList: List<ClassUiState.Matching>,
-    navigateToApplicant: (classId: String) -> Unit
+    navigateToApplicant: (classId: String) -> Unit,
+    scrollState: ScrollState = rememberScrollState(),
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scrollState)
             .padding(24.dp)
     ) {
         CoachTitle(text = stringResource(R.string.coach_matching_title))

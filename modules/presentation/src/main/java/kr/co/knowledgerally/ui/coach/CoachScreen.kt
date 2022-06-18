@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -81,6 +82,10 @@ fun CoachContent(
     navigateToApplicant: (classId: String) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
+    val matchingScrollState = rememberScrollState()
+    val scheduledScrollState = rememberScrollState()
+    val completedScrollState = rememberScrollState()
+
     Column(modifier = Modifier.fillMaxSize()) {
         KnowllyTabRow(
             selectedTabIndex = tabState.currentIndex,
@@ -90,9 +95,15 @@ fun CoachContent(
         )
 
         when (tabState.currentIndex) {
-            INDEX_MATCHING -> MatchingTabContent(uiState.matchingClasses, navigateToApplicant)
-            INDEX_SCHEDULED -> ScheduledTabContent(uiState.scheduledClasses)
-            INDEX_COMPLETED -> CompletedTabContent()
+            INDEX_MATCHING -> MatchingTabContent(
+                matchingList = uiState.matchingClasses,
+                navigateToApplicant = navigateToApplicant,
+                scrollState = matchingScrollState
+            )
+            INDEX_SCHEDULED ->
+                ScheduledTabContent(uiState.scheduledClasses, scheduledScrollState)
+            INDEX_COMPLETED ->
+                CompletedTabContent(uiState.completedClasses, completedScrollState)
         }
     }
 }

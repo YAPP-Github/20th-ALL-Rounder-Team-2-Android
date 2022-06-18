@@ -32,7 +32,13 @@ class CoachViewModel @Inject constructor() : BaseViewModel() {
                     ClassUiState.Scheduled,
                     ClassUiState.Scheduled,
                 ),
-                completedClasses = emptyList()
+                completedClasses = listOf(
+                    ClassUiState.Completed,
+                    ClassUiState.Completed,
+                    ClassUiState.Completed,
+                    ClassUiState.Completed,
+                    ClassUiState.Completed,
+                )
             )
         )
     }.stateIn(viewModelScope, SharingStarted.Eagerly, CoachUiState.Loading)

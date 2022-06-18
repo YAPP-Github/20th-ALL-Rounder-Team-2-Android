@@ -82,15 +82,19 @@
     <string name="coach_matching">매칭 중</string>
     <string name="coach_matching_title">매칭 대기중</string>
     <string name="coach_matching_banner">플레이어가 매칭 신청을 기다리고 있어요! 매칭 신청이 들어온 클래스를 수락해 보세요!</string>
+    <string name="coach_matching_applicant_fmt">매칭 신청인 (%d)</string>
+
     <string name="coach_scheduled">예정된</string>
     <string name="coach_scheduled_title">예정된 클래스</string>
     <string name="coach_scheduled_banner">매칭이 성사되었어요! 문의 사항이 있다면 플레이어의 연락처를 복사해 연락해주세요.</string>
+    <string name="coach_scheduled_empty">예정되어 있는 클래스가 없어요.\n새로운 클래스를 코칭하여 성장해 보세요!</string>
+
     <string name="coach_completed">완료된</string>
     <string name="coach_completed_title">완료된 클래스</string>
-    <string name="coach_completed_banner">클래스 코칭은 어떠셨나요? 소중한 후기를 남겨주세요!</string>
+    <string name="coach_completed_banner">클래스 코칭 어떠셨나요? 계속해서 클래스를 진행해보고 볼을 적립받아 보세요. </string>
+    <string name="coach_completed_empty">아직 코칭을 완료한 클래스가 없어요.\n클래스 운영을 통해 성장해 보세요!</string>
+    <string name="coach_completed_ball_saved">볼 적립 완료</string>
 
-    <string name="coach_matching_applicant_fmt">매칭 신청인 (%d)</string>
-    <string name="coach_scheduled_empty">예정되어 있는 클래스가 없어요.\n새로운 클래스를 코칭하여 성장해 보세요!</string>
 
     <string name="applicant_title">매칭 신청인</string>
     <string name="applicant_description">가장 먼저 신청한 플레이어부터 차례로 노출됩니다.</string>
