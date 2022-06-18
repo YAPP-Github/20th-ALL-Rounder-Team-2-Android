@@ -27,7 +27,8 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun ScheduleScreen(
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    navigateToSchedule: () -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
@@ -58,7 +59,7 @@ fun ScheduleScreen(
 
             Surface(
                 shape = RoundedCornerShape(10.dp),
-                onClick = { /*TODO*/ },
+                onClick = navigateToSchedule,
                 modifier = modifier
                     .padding(top = 40.dp)
                     .fillMaxWidth()
@@ -103,6 +104,7 @@ private fun ScheduleScreenPreview() {
     KnowllyTheme {
         ScheduleScreen(
             navigateUp = { },
+            navigateToSchedule = { },
         )
     }
 }

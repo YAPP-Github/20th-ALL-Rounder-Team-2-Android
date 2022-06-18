@@ -23,5 +23,7 @@ class ScheduleActivity : BaseActivity() {
                 ScheduleScreen()
             }
         }
+    companion object {
+        fun getIntent(context: Context): Intent = Intent(context, ScheduleActivity::class.java)
     }
 }
