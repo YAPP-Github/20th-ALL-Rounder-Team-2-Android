@@ -1,6 +1,5 @@
 package kr.co.knowledgerally.ui.coach
 
-import android.widget.Toast
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,10 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import kr.co.knowledgerally.toast.Toaster
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.DashBanner
@@ -31,12 +30,10 @@ fun ScheduledTabContent(
     scheduledList: List<ClassUiState.Scheduled>,
     scrollState: ScrollState = rememberScrollState(),
 ) {
-    val context = LocalContext.current
-    val toastMessage = stringResource(id = R.string.copied_kakao_id)
     val clipboardManager = LocalClipboardManager.current
     val copyTo: (String) -> Unit = {
         clipboardManager.setText(AnnotatedString(it))
-        Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show()
+        Toaster.show(R.string.copied_kakao_id)
     }
 
     Column(

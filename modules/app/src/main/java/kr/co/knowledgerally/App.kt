@@ -5,6 +5,8 @@ import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import kr.co.knowledgerally.log.AndroidLogger
 import kr.co.knowledgerally.log.Logger
+import kr.co.knowledgerally.toast.AndroidToast
+import kr.co.knowledgerally.toast.Toaster
 
 @HiltAndroidApp
 class App : Application() {
@@ -16,6 +18,7 @@ class App : Application() {
             Logger.add(AndroidLogger)
         }
 
+        Toaster.init(AndroidToast(this))
         KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY)
     }
 }
