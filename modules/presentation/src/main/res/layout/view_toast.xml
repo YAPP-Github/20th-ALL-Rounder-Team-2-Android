@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_toast"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="13dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view"
+            android:letterSpacing="-0.025"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            tools:text="클래스 목록이 삭제되었습니다."
+            android:layout_gravity="center"
+            android:fontFamily="@font/suit_regular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+</FrameLayout>
