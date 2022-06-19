@@ -35,8 +35,10 @@ fun PlayerContent(
         PlayerTabState.Tab.Scheduled -> uiState.scheduledLesson
         PlayerTabState.Tab.Completed -> uiState.completedLesson
     }
-
-    PlayerContentList(lessonList = lessonList)
+    Column {
+        PlayerContentList(lessonList = lessonList)
+        KnowllyDivider()
+    }
 }
 
 @Composable
@@ -47,7 +49,6 @@ fun PlayerContentList(
         items(lessonList) { lesson ->
             PlayerContentListItem(lesson = lesson)
         }
-        item { KnowllyDivider() }
     }
 }
 

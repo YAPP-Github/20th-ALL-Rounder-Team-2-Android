@@ -10,7 +10,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseActivity
-import kr.co.knowledgerally.ui.login.LoginActivity
 import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -51,7 +50,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun startLoginActivity() {
-        LoginActivity.startActivity(this)
+        MainActivity.startActivity(this)
         finish()
     }
 
