@@ -11,7 +11,7 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyOutlinedButton
 
 @Composable
-fun CopyButton(
+fun KakaoIdCopyButton(
     kakaoId: String,
     modifier: Modifier = Modifier
 ) {

@@ -102,7 +102,7 @@ fun PlayerContentListItem(
         when (lesson) {
             is LessonUiState.Matching -> {}
             is LessonUiState.Scheduled -> {
-                CopyButton(
+                KakaoIdCopyButton(
                     kakaoId = lesson.kakaoId,
                     modifier = Modifier
                         .padding(bottom = 16.dp)
