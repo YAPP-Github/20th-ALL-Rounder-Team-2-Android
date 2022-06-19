@@ -8,6 +8,7 @@ buildscript {
         classpath(libs.android.gradle)
         classpath(libs.kotlin)
         classpath(libs.hilt.gradle)
+        classpath(libs.google.secrets.gradle)
     }
 }
 
@@ -18,11 +19,6 @@ plugins {
 allprojects {
     apply {
         plugin("org.jlleitschuh.gradle.ktlint")
-    }
-    repositories {
-        google()
-        mavenCentral()
-        maven { url = uri("https://devrepo.kakao.com/nexus/content/groups/public/") }
     }
     afterEvaluate {
         ktlint {

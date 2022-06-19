@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.policy.PolicyActivity
+import kr.co.knowledgerally.ui.profile.ProfileActivity
 import kr.co.knowledgerally.ui.terms.TermsActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -23,15 +24,22 @@ class SignUpActivity : BaseActivity() {
             KnowllyTheme {
                 SignUpScreen(
                     viewModel = viewModel,
-                    navigateToTerms = { startTermsActivity() },
-                    navigateToPolicy = { startPolicyActivity() }
+                    navigateUp = ::navigateUp,
+                    navigateToTerms = ::startTermsActivity,
+                    navigateToPolicy = ::startPolicyActivity,
+                    navigateToProfile = ::startProfileActivity
                 )
             }
         }
     }
 
+    private fun navigateUp() = finish()
     private fun startTermsActivity() = TermsActivity.startActivity(this)
     private fun startPolicyActivity() = PolicyActivity.startActivity(this)
+    private fun startProfileActivity() {
+        ProfileActivity.startActivity(this)
+        finish()
+    }
 
     companion object {
 

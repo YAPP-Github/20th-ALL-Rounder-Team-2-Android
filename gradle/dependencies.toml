@@ -16,6 +16,7 @@ dagger = "2.41"
 coil = "2.1.0"
 
 accompanist = "0.24.9-beta"
+secrets-gradle-plugin = "2.0.1"
 
 okhttp = "4.9.3"
 retrofit = "2.9.0"
@@ -52,6 +53,7 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 google-accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
+google-secrets-gradle = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secrets-gradle-plugin" }
 
 material = { module = "com.google.android.material:material", version.ref = "material" }
 
