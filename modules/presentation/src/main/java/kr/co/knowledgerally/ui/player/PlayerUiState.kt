@@ -7,7 +7,6 @@ sealed class PlayerUiState {
         val completedLesson: List<LessonUiState.Completed>
     ) : PlayerUiState()
 
-    object Empty : PlayerUiState()
     object Failure : PlayerUiState()
     object Loading : PlayerUiState()
 }

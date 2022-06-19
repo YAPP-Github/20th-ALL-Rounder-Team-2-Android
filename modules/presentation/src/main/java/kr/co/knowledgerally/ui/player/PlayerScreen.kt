@@ -52,9 +52,6 @@ fun PlayerScreen(
                 is PlayerUiState.Success -> {
                     PlayerContent(tab = tabState.selectedTab, uiState = uiState)
                 }
-                PlayerUiState.Empty -> {
-                    PlayerContentEmpty(tab = tabState.selectedTab)
-                }
                 PlayerUiState.Loading -> {
                     /* no-op */
                 }
@@ -72,7 +69,17 @@ private fun PlayerScreenPreview() {
     KnowllyTheme {
         PlayerScreen(
             tabState = PlayerTabState.DEFAULT,
-            uiState = PlayerUiState.Empty,
+            uiState = PlayerUiState.Success(
+                matchingLesson = emptyList(),
+                scheduledLesson = listOf(
+                    LessonUiState.Scheduled(lessonId = 0, kakaoId = "kakaoId"),
+                    LessonUiState.Scheduled(lessonId = 1, kakaoId = "kakaoId"),
+                ),
+                completedLesson = listOf(
+                    LessonUiState.Completed(lessonId = 2, isReviewed = true),
+                    LessonUiState.Completed(lessonId = 3, isReviewed = false)
+                )
+            ),
             switchTab = {}
         )
     }

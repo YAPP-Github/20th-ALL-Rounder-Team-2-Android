@@ -35,9 +35,14 @@ fun PlayerContent(
         PlayerTabState.Tab.Scheduled -> uiState.scheduledLesson
         PlayerTabState.Tab.Completed -> uiState.completedLesson
     }
-    Column {
-        PlayerContentList(lessonList = lessonList)
-        KnowllyDivider()
+
+    if (lessonList.isNotEmpty()) {
+        Column {
+            PlayerContentList(lessonList = lessonList)
+            KnowllyDivider()
+        }
+    } else {
+        PlayerContentEmpty(tab = tab)
     }
 }
 
