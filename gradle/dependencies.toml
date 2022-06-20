@@ -53,6 +53,7 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 google-accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
+google-accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
 google-secrets-gradle = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secrets-gradle-plugin" }
 
 material = { module = "com.google.android.material:material", version.ref = "material" }

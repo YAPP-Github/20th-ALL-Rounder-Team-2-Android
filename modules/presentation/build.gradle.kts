@@ -61,6 +61,7 @@ dependencies {
 
     implementation(libs.google.accompanist.systemuicontroller)
     implementation(libs.google.accompanist.navigation.animation)
+    implementation(libs.google.accompanist.webview)
     implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.hilt.android)
