@@ -2,13 +2,13 @@ package kr.co.knowledgerally.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class SignInResponse(
+data class UserExistsResponse(
     @SerializedName("data")
     val data: Data
 ) {
 
     data class Data(
-        @SerializedName("jwtToken")
-        val jwtToken: JwtTokenResponse,
+        @SerializedName("exists")
+        val exists: Boolean
     )
 }

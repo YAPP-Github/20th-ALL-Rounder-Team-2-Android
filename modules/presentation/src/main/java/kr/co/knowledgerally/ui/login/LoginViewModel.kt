@@ -20,21 +20,24 @@ class LoginViewModel @Inject constructor(
 
     private val _state = MutableStateFlow<LoginState>(LoginState.NotLoggedIn)
     val state: StateFlow<LoginState> = _state.asStateFlow()
-    
+
     suspend fun login(accessToken: String) {
         val providerToken = ProviderToken.kakao(accessToken)
         val isSignedUp = isSignedUpUseCase(providerToken).getOrThrow()
 
-        if (isSignedUp) {
-            signInUseCase(providerToken)
-                .onSuccess {
-                    val isOnboarded = isOnboardedUseCase().getOrThrow()
-                    _state.value =
-                        if (isOnboarded) LoginState.Success else LoginState.NeedToOnboard
-                }
-        } else {
-            _state.value = LoginState.NeedToSignUp(providerToken.accessToken)
+        if (!isSignedUp) {
+            _state.value = LoginState.NeedToSignUp(accessToken)
+            return
         }
-        _state.value = LoginState.NeedToSignUp(accessToken)
+
+        signInUseCase(providerToken)
+            .onSuccess {
+                val isOnboarded = isOnboardedUseCase().getOrThrow()
+                _state.value =
+                    if (isOnboarded) LoginState.Success else LoginState.NeedToOnboard
+            }
+            .onFailure {
+                handleException(it)
+            }
     }
 }

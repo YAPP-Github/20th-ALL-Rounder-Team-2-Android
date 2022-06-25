@@ -14,7 +14,7 @@ internal class AuthRemoteDataSourceImpl @Inject constructor(
     override suspend fun isSignedUp(providerToken: ProviderTokenEntity): Result<Boolean> =
         runCatching {
             val response = apiService.isSignedUp(providerToken.name, providerToken.accessToken)
-            response.data.isSignedUp
+            response.data.exists
         }
 
     override suspend fun signUp(providerToken: ProviderTokenEntity): Result<JwtTokenEntity> =
