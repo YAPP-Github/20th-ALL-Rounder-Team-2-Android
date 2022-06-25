@@ -16,6 +16,7 @@ import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.feature.kakao.KakaoLogin
 import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.ui.policy.PolicyActivity
+import kr.co.knowledgerally.ui.profile.ProfileActivity
 import kr.co.knowledgerally.ui.signup.SignUpActivity
 import kr.co.knowledgerally.ui.terms.TermsActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
@@ -66,14 +67,20 @@ class LoginActivity : BaseActivity() {
         viewModel.state.collect { state ->
             when (state) {
                 is LoginState.NeedToSignUp -> startSignUpActivity(state.providerAccessToken)
-                LoginState.NotLoggedIn -> Unit // TODO
-                LoginState.Success -> Unit // TODO
+                LoginState.NeedToOnboard -> startProfileActivity()
+                LoginState.Success -> startMainActivity()
+                LoginState.NotLoggedIn -> Unit
             }
         }
     }
 
     private fun startMainActivity() {
         MainActivity.startActivity(this)
+        finish()
+    }
+
+    private fun startProfileActivity() {
+        ProfileActivity.startActivity(this)
         finish()
     }
 
