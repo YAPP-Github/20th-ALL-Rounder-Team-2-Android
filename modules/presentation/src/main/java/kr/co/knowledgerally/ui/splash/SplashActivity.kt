@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.login.LoginActivity
 import kr.co.knowledgerally.ui.main.MainActivity
+import kr.co.knowledgerally.ui.profile.ProfileActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
@@ -43,6 +44,7 @@ class SplashActivity : BaseActivity() {
 
     private fun handleState(state: SplashUiState) = when (state) {
         SplashUiState.AlreadyLoggedIn -> startMainActivity()
+        SplashUiState.NeedToOnboard -> startProfileActivity()
         SplashUiState.NeedToLogin -> startLoginActivity()
         SplashUiState.Unspecified -> Unit /* no-op */
     }
@@ -54,6 +56,11 @@ class SplashActivity : BaseActivity() {
 
     private fun startLoginActivity() {
         LoginActivity.startActivity(this)
+        finish()
+    }
+
+    private fun startProfileActivity() {
+        ProfileActivity.startActivity(this)
         finish()
     }
 
