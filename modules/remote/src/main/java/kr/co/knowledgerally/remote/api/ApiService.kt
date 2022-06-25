@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.remote.api
 
+import kr.co.knowledgerally.remote.model.UserResponseWrapper
 import kr.co.knowledgerally.remote.model.OnboardRequest
 import kr.co.knowledgerally.remote.model.OnboardedResponse
 import kr.co.knowledgerally.remote.model.ProviderTokenRequest
@@ -21,6 +22,9 @@ internal interface ApiService {
 
     @DELETE("user/me")
     suspend fun withdrawal()
+
+    @GET("user/me")
+    suspend fun getUser(): UserResponseWrapper
 
     @GET("user/user-onboarded") // 임시 endpoint, 확정 후 수정 필요
     suspend fun isOnboarded(): OnboardedResponse
