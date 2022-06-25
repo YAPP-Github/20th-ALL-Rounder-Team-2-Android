@@ -2,6 +2,6 @@ package kr.co.knowledgerally.ui.splash
 
 sealed class SplashUiState {
     object Unspecified : SplashUiState()
-    object AlreadyLoggedIn : SplashUiState()
+    data class AlreadyLoggedIn(val isOnboarded: Boolean) : SplashUiState()
     object NeedToLogin : SplashUiState()
 }
