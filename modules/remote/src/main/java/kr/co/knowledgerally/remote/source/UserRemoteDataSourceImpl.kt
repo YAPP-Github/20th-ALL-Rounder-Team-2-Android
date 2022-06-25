@@ -9,6 +9,7 @@ internal class UserRemoteDataSourceImpl @Inject constructor(
 ) : UserRemoteDataSource {
 
     override suspend fun isOnboarded(): Result<Boolean> = runCatching {
-        apiService.isOnboarded().data.isOnboarded
+        val response = apiService.isOnboarded()
+        response.data.isOnboarded
     }
 }
