@@ -61,7 +61,11 @@ fun KnowllyTextField(
 
         BasicTextField(
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = {
+                if (counterMaxLength > 0) {
+                    onValueChange(it.take(counterMaxLength))
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = minHeight, max = maxHeight),
