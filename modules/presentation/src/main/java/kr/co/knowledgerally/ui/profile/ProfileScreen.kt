@@ -48,10 +48,12 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
     ProfileContent(
         profileState = profileState,
         onSubmit = {
-            viewModel.submitProfile(
+            viewModel.submit(
                 name = profileState.nameState.text,
                 introduction = profileState.introductionState.text,
-                imageUri = profileState.imageState.uri.toString()
+                kakaoId = profileState.kakaoIdState.text,
+                portfolio = profileState.portfolioState.text,
+                imageUri = profileState.imageState.uriString,
             )
         }
     )

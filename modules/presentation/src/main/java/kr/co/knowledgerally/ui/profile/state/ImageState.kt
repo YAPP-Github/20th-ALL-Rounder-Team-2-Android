@@ -11,4 +11,7 @@ class ImageState {
     var uri by mutableStateOf<Uri>(Uri.EMPTY)
     val isEmpty: Boolean
         get() = uri == Uri.EMPTY
+
+    val uriString: String
+        get() = if (isEmpty) "" else uri.toString()
 }
