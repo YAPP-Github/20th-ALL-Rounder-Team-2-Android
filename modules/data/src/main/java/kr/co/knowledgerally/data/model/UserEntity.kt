@@ -7,6 +7,7 @@ data class UserEntity(
     val profile: ProfileEntity,
     val ballCount: Int,
     val pushActive: Boolean,
+    val coach: Boolean,
 )
 
 fun UserEntity.toDomain() = User(
@@ -14,4 +15,5 @@ fun UserEntity.toDomain() = User(
     profile = profile.toDomain(),
     ballCount = ballCount,
     pushActive = pushActive,
+    coach = coach,
 )

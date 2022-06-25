@@ -5,4 +5,5 @@ data class User(
     val profile: Profile,
     val ballCount: Int,
     val pushActive: Boolean,
+    val coach: Boolean,
 )
