@@ -10,6 +10,6 @@ interface AuthRepository {
     suspend fun signUp(providerToken: ProviderToken): Result<JwtToken>
 
     suspend fun withdrawal(): Result<Unit>
-
+    
     suspend fun logout(): Result<Unit>
 }
