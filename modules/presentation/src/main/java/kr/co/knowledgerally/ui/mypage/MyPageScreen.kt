@@ -42,7 +42,7 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.uiState.collectAsState()
     val loading by viewModel.loading.collectAsState()
     val isExpired by viewModel.isLoggedOut.collectAsState()
     val context = LocalContext.current
@@ -50,7 +50,7 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
     MyPageScreen(
         state = state,
         loading = loading,
-        onNotificationEnabledChange = { viewModel.updateNotificationEnabled(it) },
+        onPushActiveChange = { viewModel.updatePushActive(it) },
         navigateToProfile = { },
         navigateToTermsOfService = { },
         logout = { viewModel.logout() },
@@ -68,7 +68,7 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
 private fun MyPageScreen(
     state: MyPageUiState,
     loading: Boolean,
-    onNotificationEnabledChange: (Boolean) -> Unit,
+    onPushActiveChange: (Boolean) -> Unit,
     navigateToProfile: () -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
@@ -78,7 +78,7 @@ private fun MyPageScreen(
         when (state) {
             MyPageUiState.Loading -> MyPageScreen(
                 notificationEnabled = false,
-                onNotificationEnabledChange = { },
+                onPushActiveChange = { },
                 versionName = "",
                 userName = "",
                 isCoach = false,
@@ -88,11 +88,11 @@ private fun MyPageScreen(
                 withdrawal = { },
             )
             is MyPageUiState.Success -> MyPageScreen(
-                notificationEnabled = state.notificationEnabled,
-                onNotificationEnabledChange = onNotificationEnabledChange,
+                notificationEnabled = state.user.pushActive,
+                onPushActiveChange = onPushActiveChange,
                 versionName = state.versionName,
-                userName = state.userName,
-                isCoach = state.isCoach,
+                userName = state.user.profile.username,
+                isCoach = state.user.coach,
                 navigateToProfile = navigateToProfile,
                 navigateToTermsOfService = navigateToTermsOfService,
                 logout = logout,
@@ -109,7 +109,7 @@ private fun MyPageScreen(
 @Composable
 private fun MyPageScreen(
     notificationEnabled: Boolean,
-    onNotificationEnabledChange: (Boolean) -> Unit,
+    onPushActiveChange: (Boolean) -> Unit,
     versionName: String,
     userName: String,
     isCoach: Boolean,
@@ -135,7 +135,7 @@ private fun MyPageScreen(
             content = {
                 MyPageSwitch(
                     checked = notificationEnabled,
-                    onCheckedChange = onNotificationEnabledChange
+                    onCheckedChange = onPushActiveChange
                 )
             }
         )
@@ -295,7 +295,7 @@ private fun MyPageScreenPreview() {
         MyPageScreen(
             state = MyPageUiState.Loading,
             loading = false,
-            onNotificationEnabledChange = { },
+            onPushActiveChange = { },
             navigateToProfile = { },
             navigateToTermsOfService = { },
             logout = { },

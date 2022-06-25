@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.model.VersionName
+import kr.co.knowledgerally.domain.usecase.GetUserUseCase
 import kr.co.knowledgerally.domain.usecase.LogoutUseCase
 import kr.co.knowledgerally.domain.usecase.WithdrawalUseCase
 import javax.inject.Inject
@@ -12,12 +13,13 @@ import javax.inject.Inject
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     versionName: VersionName,
+    getUserUseCase: GetUserUseCase,
     private val withdrawalUseCase: WithdrawalUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseViewModel() {
 
-    private val _state: MutableStateFlow<MyPageUiState> = MutableStateFlow(MyPageUiState.Loading)
-    val state = _state.asStateFlow()
+    private val _uiState: MutableStateFlow<MyPageUiState> = MutableStateFlow(MyPageUiState.Loading)
+    val uiState = _uiState.asStateFlow()
 
     private val _loading = MutableStateFlow(false)
     val loading = _loading.asStateFlow()
@@ -26,20 +28,26 @@ class MyPageViewModel @Inject constructor(
     val isLoggedOut = _isLoggedOut.asStateFlow()
 
     init {
-        // TODO: 유저 정보 가져오기
-        _state.value = MyPageUiState.Success(
-            notificationEnabled = false,
-            versionName = versionName.toString(),
-            userName = "Laco",
-            isCoach = true,
-            remainingBallCount = 0,
-        )
+        launch {
+            val user = getUserUseCase().getOrThrow()
+            _uiState.value = MyPageUiState.Success(
+                user = user,
+                versionName = versionName.toString()
+            )
+        }
     }
 
-    fun updateNotificationEnabled(enabled: Boolean) {
-        val state = state.value
-        if (state is MyPageUiState.Success) {
-            _state.value = state.copy(enabled)
+    fun updatePushActive(active: Boolean) {
+        val state = uiState.value
+        if (state !is MyPageUiState.Success) {
+            return
+        }
+
+        val newUser = state.user.copy(pushActive = active)
+        _uiState.value = state.copy(user = newUser)
+
+        launch {
+            // TODO: Patch User
         }
     }
 

@@ -1,16 +1,12 @@
 package kr.co.knowledgerally.ui.mypage
 
+import kr.co.knowledgerally.domain.model.User
+
 sealed interface MyPageUiState {
     object Loading : MyPageUiState
 
-    /**
-     * TODO: User Model을 직접 받도록 개선
-     */
     data class Success(
-        val notificationEnabled: Boolean,
+        val user: User,
         val versionName: String,
-        val userName: String,
-        val isCoach: Boolean,
-        val remainingBallCount: Int,
     ) : MyPageUiState
 }
