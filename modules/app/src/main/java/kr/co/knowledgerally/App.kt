@@ -1,6 +1,7 @@
 package kr.co.knowledgerally
 
 import android.app.Application
+import com.facebook.spectrum.SpectrumSoLoader
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import kr.co.knowledgerally.log.AndroidLogger
@@ -20,5 +21,6 @@ class App : Application() {
 
         Toaster.init(AndroidToast(this))
         KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY)
+        SpectrumSoLoader.init(this)
     }
 }
