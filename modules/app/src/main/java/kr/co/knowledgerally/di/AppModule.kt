@@ -16,7 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 internal object AppModule {
 
     @Provides
-    fun provideBaseUrl(): BaseUrl = BaseUrl("https://randomuser.me")
+    fun provideBaseUrl(): BaseUrl = BaseUrl("http://knowllydev.hkpark.net/api/")
 
     @Provides
     fun provideInterceptors(): Interceptors {
