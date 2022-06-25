@@ -32,6 +32,11 @@ import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyMultilineTextField
 import kr.co.knowledgerally.ui.component.KnowllySinglelineTextField
 import kr.co.knowledgerally.ui.component.VerticalSpacer
+import kr.co.knowledgerally.ui.profile.state.ImageState
+import kr.co.knowledgerally.ui.profile.state.IntroductionState
+import kr.co.knowledgerally.ui.profile.state.NameState
+import kr.co.knowledgerally.ui.profile.state.ProfileState
+import kr.co.knowledgerally.ui.profile.state.rememberProfileState
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable

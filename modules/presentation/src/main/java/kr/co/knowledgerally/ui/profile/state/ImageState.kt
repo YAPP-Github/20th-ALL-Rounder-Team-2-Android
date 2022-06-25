@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.profile
+package kr.co.knowledgerally.ui.profile.state
 
 import android.net.Uri
 import androidx.compose.runtime.Stable
