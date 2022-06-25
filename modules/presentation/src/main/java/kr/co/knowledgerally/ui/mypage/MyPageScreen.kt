@@ -3,6 +3,7 @@ package kr.co.knowledgerally.ui.mypage
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -19,12 +20,14 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,54 +36,73 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.ContainedBadge
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
+import kr.co.knowledgerally.ui.component.Loading
+import kr.co.knowledgerally.ui.splash.SplashActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
+    val loading by viewModel.loading.collectAsState()
+    val isExpired by viewModel.isLoggedOut.collectAsState()
+    val context = LocalContext.current
 
     MyPageScreen(
         state = state,
+        loading = loading,
         onNotificationEnabledChange = { viewModel.updateNotificationEnabled(it) },
         navigateToProfile = { },
         navigateToTermsOfService = { },
         logout = { viewModel.logout() },
         withdrawal = { viewModel.withdrawal() },
     )
+
+    LaunchedEffect(isExpired) {
+        if (isExpired) {
+            SplashActivity.startActivity(context)
+        }
+    }
 }
 
 @Composable
 private fun MyPageScreen(
     state: MyPageUiState,
+    loading: Boolean,
     onNotificationEnabledChange: (Boolean) -> Unit,
     navigateToProfile: () -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
     withdrawal: () -> Unit,
 ) {
-    when (state) {
-        MyPageUiState.Loading -> MyPageScreen(
-            notificationEnabled = false,
-            onNotificationEnabledChange = { },
-            versionName = "",
-            userName = "",
-            isCoach = false,
-            navigateToProfile = { },
-            navigateToTermsOfService = { },
-            logout = { },
-            withdrawal = { },
-        )
-        is MyPageUiState.Success -> MyPageScreen(
-            notificationEnabled = state.notificationEnabled,
-            onNotificationEnabledChange = onNotificationEnabledChange,
-            versionName = state.versionName,
-            userName = state.userName,
-            isCoach = state.isCoach,
-            navigateToProfile = navigateToProfile,
-            navigateToTermsOfService = navigateToTermsOfService,
-            logout = logout,
-            withdrawal = withdrawal,
-        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        when (state) {
+            MyPageUiState.Loading -> MyPageScreen(
+                notificationEnabled = false,
+                onNotificationEnabledChange = { },
+                versionName = "",
+                userName = "",
+                isCoach = false,
+                navigateToProfile = { },
+                navigateToTermsOfService = { },
+                logout = { },
+                withdrawal = { },
+            )
+            is MyPageUiState.Success -> MyPageScreen(
+                notificationEnabled = state.notificationEnabled,
+                onNotificationEnabledChange = onNotificationEnabledChange,
+                versionName = state.versionName,
+                userName = state.userName,
+                isCoach = state.isCoach,
+                navigateToProfile = navigateToProfile,
+                navigateToTermsOfService = navigateToTermsOfService,
+                logout = logout,
+                withdrawal = withdrawal,
+            )
+        }
+
+        if (loading) {
+            Loading()
+        }
     }
 }
 
@@ -272,6 +294,7 @@ private fun MyPageScreenPreview() {
     KnowllyTheme {
         MyPageScreen(
             state = MyPageUiState.Loading,
+            loading = false,
             onNotificationEnabledChange = { },
             navigateToProfile = { },
             navigateToTermsOfService = { },

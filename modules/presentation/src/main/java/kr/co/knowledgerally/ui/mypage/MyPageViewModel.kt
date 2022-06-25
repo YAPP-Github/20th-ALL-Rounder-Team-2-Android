@@ -5,15 +5,25 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.model.VersionName
+import kr.co.knowledgerally.domain.usecase.LogoutUseCase
+import kr.co.knowledgerally.domain.usecase.WithdrawalUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     versionName: VersionName,
+    private val withdrawalUseCase: WithdrawalUseCase,
+    private val logoutUseCase: LogoutUseCase,
 ) : BaseViewModel() {
 
     private val _state: MutableStateFlow<MyPageUiState> = MutableStateFlow(MyPageUiState.Loading)
     val state = _state.asStateFlow()
+
+    private val _loading = MutableStateFlow(false)
+    val loading = _loading.asStateFlow()
+
+    private val _isLoggedOut = MutableStateFlow(false)
+    val isLoggedOut = _isLoggedOut.asStateFlow()
 
     init {
         // TODO: 유저 정보 가져오기
@@ -34,11 +44,27 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun logout() {
-        // TODO
+        _loading.value = true
+        launch {
+            logoutUseCase()
+                .onSuccess { _isLoggedOut.value = true }
+                .onFailure {
+                    _loading.value = false
+                    handleException(it)
+                }
+        }
     }
 
     // 회원 탈퇴
     fun withdrawal() {
-        // TODO
+        _loading.value = true
+        launch {
+            withdrawalUseCase()
+                .onSuccess { _isLoggedOut.value = true }
+                .onFailure {
+                    _loading.value = false
+                    handleException(it)
+                }
+        }
     }
 }
