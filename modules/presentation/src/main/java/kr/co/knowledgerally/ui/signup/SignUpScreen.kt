@@ -34,7 +34,7 @@ fun SignUpScreen(
     navigateUp: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToPolicy: () -> Unit,
-    navigateToProfile: () -> Unit
+    signUp: () -> Unit
 ) {
     val signUpState = rememberSignUpState()
     SignUpScreen(
@@ -42,7 +42,7 @@ fun SignUpScreen(
         navigateUp = navigateUp,
         navigateToTerms = navigateToTerms,
         navigateToPolicy = navigateToPolicy,
-        navigateToProfile = navigateToProfile
+        signUp = signUp
     )
 }
 
@@ -52,7 +52,7 @@ private fun SignUpScreen(
     navigateUp: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToPolicy: () -> Unit,
-    navigateToProfile: () -> Unit
+    signUp: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -62,7 +62,7 @@ private fun SignUpScreen(
             signUpState = signUpState,
             navigateToTerms = navigateToTerms,
             navigateToPolicy = navigateToPolicy,
-            navigateToProfile = navigateToProfile
+            signUp = signUp
         )
     }
 }
@@ -72,7 +72,7 @@ private fun SignUpContent(
     signUpState: SignUpState,
     navigateToTerms: () -> Unit,
     navigateToPolicy: () -> Unit,
-    navigateToProfile: () -> Unit
+    signUp: () -> Unit
 ) {
     val termsState = signUpState.termsState
     val policyState = signUpState.policyState
@@ -114,7 +114,7 @@ private fun SignUpContent(
             modifier = Modifier.padding(start = 36.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
-        SignUpButton(enabled = signUpState.isRequired, onClick = { navigateToProfile() })
+        SignUpButton(enabled = signUpState.isRequired, onClick = { signUp() })
     }
 }
 
@@ -189,7 +189,7 @@ private fun SignUpScreenPreview() {
             navigateUp = { },
             navigateToTerms = { },
             navigateToPolicy = { },
-            navigateToProfile = { }
+            signUp = { }
         )
     }
 }
