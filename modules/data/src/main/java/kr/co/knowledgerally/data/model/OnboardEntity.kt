@@ -7,7 +7,7 @@ data class OnboardEntity(
     val intro: String,
     val kakaoId: String,
     val portfolio: String?,
-    val imageUriString: String?,
+    val imageUri: String?,
 )
 
 fun Onboard.toData() = OnboardEntity(
@@ -15,5 +15,5 @@ fun Onboard.toData() = OnboardEntity(
     intro = intro,
     kakaoId = kakaoId,
     portfolio = portfolio,
-    imageUriString = imageUriString
+    imageUri = imageUri
 )

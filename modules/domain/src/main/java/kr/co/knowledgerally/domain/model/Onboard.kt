@@ -5,5 +5,5 @@ data class Onboard(
     val intro: String,
     val kakaoId: String,
     val portfolio: String?,
-    val imageUriString: String?,
+    val imageUri: String?,
 )
