@@ -19,6 +19,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -32,6 +34,7 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyMultilineTextField
 import kr.co.knowledgerally.ui.component.KnowllySinglelineTextField
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.profile.state.ImageState
 import kr.co.knowledgerally.ui.profile.state.IntroductionState
 import kr.co.knowledgerally.ui.profile.state.KakaoIdState
@@ -44,19 +47,26 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel) {
     val profileState = rememberProfileState()
+    val loading by viewModel.loading.collectAsState()
 
-    ProfileContent(
-        profileState = profileState,
-        onSubmit = {
-            viewModel.submit(
-                name = profileState.nameState.text,
-                introduction = profileState.introductionState.text,
-                kakaoId = profileState.kakaoIdState.text,
-                portfolio = profileState.portfolioState.text,
-                imageUri = profileState.imageState.uriString,
-            )
+    Box(modifier = Modifier.fillMaxSize()) {
+        ProfileContent(
+            profileState = profileState,
+            onSubmit = {
+                viewModel.submit(
+                    name = profileState.nameState.text,
+                    introduction = profileState.introductionState.text,
+                    kakaoId = profileState.kakaoIdState.text,
+                    portfolio = profileState.portfolioState.text,
+                    imageUri = profileState.imageState.uriString,
+                )
+            }
+        )
+
+        if (loading) {
+            Loading()
         }
-    )
+    }
 }
 
 @Composable
