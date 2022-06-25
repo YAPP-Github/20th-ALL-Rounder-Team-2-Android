@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,7 +47,6 @@ fun KnowllyTextField(
     enabled: Boolean = true,
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
     singleLine: Boolean = false,
     maxLines: Int = Int.MAX_VALUE,
     minHeight: Dp = TextFieldMinHeight,
@@ -54,6 +54,7 @@ fun KnowllyTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
+    val focusManager = LocalFocusManager.current
     val colors = KnowllyTextFieldDefaults.colors
 
     Column(modifier = modifier) {
@@ -68,7 +69,7 @@ fun KnowllyTextField(
             textStyle = textStyle,
             cursorBrush = SolidColor(colors.cursorColor(isError).value),
             keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
+            keyboardActions = KeyboardActions { focusManager.clearFocus() },
             singleLine = singleLine,
             maxLines = maxLines,
             interactionSource = interactionSource,
@@ -134,7 +135,6 @@ fun KnowllySinglelineTextField(
         enabled = enabled,
         isError = isError,
         keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
         singleLine = true,
         visualTransformation = visualTransformation,
         interactionSource = interactionSource
@@ -174,7 +174,6 @@ fun KnowllyMultilineTextField(
         enabled = enabled,
         isError = isError,
         keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
         singleLine = false,
         maxLines = maxLines,
         minHeight = minHeight,
@@ -340,8 +339,8 @@ private fun KnowllyTextFieldPreviewHelperText() {
         KnowllyTextField(
             value = "텍스트",
             onValueChange = { },
-            helperText = "message",
             helperTextEnabled = true,
+            helperText = "message",
         )
     }
 }
@@ -353,8 +352,8 @@ private fun KnowllyTextFieldPreviewCounter() {
         KnowllyTextField(
             value = "텍스트",
             onValueChange = { },
-            counterMaxLength = 10,
             counterEnabled = true,
+            counterMaxLength = 10,
         )
     }
 }
