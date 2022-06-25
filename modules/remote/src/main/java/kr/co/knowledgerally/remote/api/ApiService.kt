@@ -27,7 +27,7 @@ internal interface ApiService {
 
     @POST("user/image")
     @Multipart
-    suspend fun uploadImage(@Part part: MultipartBody.Part)
+    suspend fun uploadUserImage(@Part part: MultipartBody.Part)
 
     @POST("user/onboard")
     suspend fun submitOnboard(@Body onboard: OnboardRequest)

@@ -30,7 +30,7 @@ internal class UserRemoteDataSourceImpl @Inject constructor(
                     MultipartBody.Part.createFormData("image", null, requestBody)
                 }
                 .getOrThrow()
-            apiService.uploadImage(image)
+            apiService.uploadUserImage(image)
         }
         apiService.submitOnboard(onboard.toRemote())
     }
