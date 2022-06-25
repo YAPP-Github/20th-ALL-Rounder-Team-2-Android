@@ -5,13 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.feature.kakao.KakaoLogin
@@ -35,6 +34,13 @@ class LoginActivity : BaseActivity() {
 
         setContent()
         observeViewModel()
+
+        lifecycleScope.launch {
+            // 화면에 진입할 때 마다 로그아웃 처리
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                kakaoLogin.logout()
+            }
+        }
     }
 
     private fun setContent() = setContent {
@@ -56,11 +62,14 @@ class LoginActivity : BaseActivity() {
             .onFailure { /* no-op */ }
     }
 
-    private fun observeViewModel() {
-        viewModel.state
-            .filter { it is LoginState.Success }
-            .onEach { startSignUpActivity() }
-            .launchIn(lifecycleScope)
+    private fun observeViewModel() = lifecycleScope.launch {
+        viewModel.state.collect { state ->
+            when (state) {
+                is LoginState.NeedToSignUp -> startSignUpActivity(state.providerAccessToken)
+                LoginState.NotLoggedIn -> Unit // TODO
+                LoginState.Success -> Unit // TODO
+            }
+        }
     }
 
     private fun startMainActivity() {
@@ -68,8 +77,8 @@ class LoginActivity : BaseActivity() {
         finish()
     }
 
-    private fun startSignUpActivity() {
-        SignUpActivity.startActivity(this)
+    private fun startSignUpActivity(providerAccessToken: String) {
+        SignUpActivity.startActivity(this, providerAccessToken)
         finish()
     }
 
