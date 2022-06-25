@@ -23,7 +23,8 @@ class SplashViewModel @Inject constructor(
             val isLoggedIn = isLoggedInUseCase().getOrThrow()
             if (isLoggedIn) {
                 val isOnboarded = isOnboardedUseCase().getOrThrow()
-                _state.value = SplashUiState.AlreadyLoggedIn(isOnboarded = isOnboarded)
+                _state.value =
+                    if (isOnboarded) SplashUiState.AlreadyLoggedIn else SplashUiState.NeedToOnboard
             } else {
                 _state.value = SplashUiState.NeedToLogin
             }

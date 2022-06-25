@@ -43,13 +43,8 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun handleState(state: SplashUiState) = when (state) {
-        is SplashUiState.AlreadyLoggedIn -> {
-            if (state.isOnboarded) {
-                startMainActivity()
-            } else {
-                startProfileActivity()
-            }
-        }
+        SplashUiState.AlreadyLoggedIn -> startMainActivity()
+        SplashUiState.NeedToOnboard -> startProfileActivity()
         SplashUiState.NeedToLogin -> startLoginActivity()
         SplashUiState.Unspecified -> Unit /* no-op */
     }
