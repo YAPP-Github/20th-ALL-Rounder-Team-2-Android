@@ -26,7 +26,7 @@ internal class AuthRemoteDataSourceImpl @Inject constructor(
     override suspend fun signIn(providerToken: ProviderTokenEntity): Result<JwtTokenEntity> =
         runCatching {
             val response = apiService.signIn(providerToken.toRemote())
-            response.data.jwtToken.toData()
+            response.jwtToken.toData()
         }
 
     override suspend fun withdrawal(): Result<Unit> = runCatching {
