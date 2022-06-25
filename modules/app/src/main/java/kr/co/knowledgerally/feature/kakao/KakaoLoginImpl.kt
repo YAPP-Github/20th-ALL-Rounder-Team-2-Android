@@ -4,9 +4,11 @@ import android.content.Context
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kr.co.knowledgerally.log.Logger
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 internal class KakaoLoginImpl @Inject constructor() : KakaoLogin {
 
@@ -31,6 +33,13 @@ internal class KakaoLoginImpl @Inject constructor() : KakaoLogin {
             } else {
                 userApiClient.loginWithKakaoAccount(context, callback = callback)
             }
+        }
+    }
+
+    override suspend fun logout(): Result<Unit> = runCatching {
+        suspendCoroutine<Unit> { continuation ->
+            Logger.d("KakaoLogin", "logout")
+            UserApiClient.instance.logout { continuation.resume(Unit) }
         }
     }
 }

@@ -47,6 +47,7 @@ android {
 
 dependencies {
     implementation(project(Modules.DOMAIN))
+    implementation(project(Modules.LOG))
 
     implementation(libs.androidx.core.ktx)
 
