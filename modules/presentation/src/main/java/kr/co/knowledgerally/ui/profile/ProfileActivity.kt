@@ -27,12 +27,17 @@ class ProfileActivity : BaseActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.completed.collect { isComplete ->
-                if (isComplete) {
-                    MainActivity.startActivity(this@ProfileActivity)
+            viewModel.completed.collect { complete ->
+                if (complete) {
+                    startMainActivity()
                 }
             }
         }
+    }
+
+    private fun startMainActivity() {
+        MainActivity.startActivity(this)
+        finish()
     }
 
     companion object {
