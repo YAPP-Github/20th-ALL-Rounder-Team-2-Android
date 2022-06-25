@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 class NameState(initialText: String) : TextFieldState(
     initialText = initialText,
     validator = {
-        it.isNotBlank() && it.length < MAX_LENGTH
+        it.isNotBlank() && it.length <= MAX_LENGTH
     }
 ) {
 
