@@ -10,6 +10,7 @@ import kr.co.knowledgerally.remote.api.Interceptors
 import kr.co.knowledgerally.remote.api.baseUrl
 import kr.co.knowledgerally.remote.api.createOkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -21,9 +22,10 @@ internal object RemoteModule {
     fun provideApiService(
         baseUrl: BaseUrl,
         interceptors: Interceptors,
-    ) = Retrofit.Builder()
+    ): ApiService = Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(createOkHttpClient(interceptors))
+        .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(ApiService::class.java)
 }
