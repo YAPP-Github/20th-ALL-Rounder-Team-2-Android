@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.profile
+package kr.co.knowledgerally.ui.profile.state
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 class NameState(initialText: String) : TextFieldState(
     initialText = initialText,
     validator = {
-        it.isNotBlank() && it.length < MAX_LENGTH
+        it.isNotBlank() && it.length <= MAX_LENGTH
     }
 ) {
 

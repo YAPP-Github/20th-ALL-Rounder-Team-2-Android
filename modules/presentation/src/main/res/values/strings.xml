@@ -30,6 +30,12 @@
     <string name="profile_introduction_hint"> 관심 분야, 취미 등을 포함해 소개를 작성해 주세요.</string>
     <string name="profile_introduction_helper_text">소개를 입력해주세요</string>
     <string name="profile_upload">작성 완료하기</string>
+    <string name="profile_kakao_id">카카오톡 ID</string>
+    <string name="profile_kakao_id_description">클래스 매칭 이후에만 소통 목적으로 상대방 유저에게 전달됩니다.</string>
+    <string name="profile_kakao_id_hint">카카오톡 ID를 입력해주세요.</string>
+    <string name="profile_portfolio">웹사이트</string>
+    <string name="profile_portfolio_option">(선택)</string>
+    <string name="profile_portfolio_hint">포토폴리오 URL을 첨부해보세요.</string>
 
     <string name="ball_my">내 볼</string>
     <string name="ball_banner">볼은 언제 적립받고 어떻게 사용하나요?</string>
