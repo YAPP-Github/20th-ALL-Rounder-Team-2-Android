@@ -2,13 +2,13 @@ package kr.co.knowledgerally.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class OnboardedResponse(
+data class UserExistsResponse(
     @SerializedName("data")
     val data: Data
 ) {
 
     data class Data(
-        @SerializedName("isOnboard")
-        val isOnboarded: Boolean
+        @SerializedName("exists")
+        val exists: Boolean
     )
 }

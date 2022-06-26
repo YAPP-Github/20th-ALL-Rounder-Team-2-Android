@@ -18,8 +18,16 @@ internal class AuthRepositoryImpl @Inject constructor(
         .getJwtToken()
         .map { it?.toDomain() ?: JwtToken.Empty }
 
+    override suspend fun isSignedUp(providerToken: ProviderToken): Result<Boolean> =
+        authRemoteDataSource.isSignedUp(providerToken.toData())
+
     override suspend fun signUp(providerToken: ProviderToken): Result<JwtToken> =
         authRemoteDataSource.signUp(providerToken.toData())
+            .onSuccess { authLocalDataSource.saveJwtToken(it) }
+            .map { it.toDomain() }
+
+    override suspend fun signIn(providerToken: ProviderToken): Result<JwtToken> =
+        authRemoteDataSource.signIn(providerToken.toData())
             .onSuccess { authLocalDataSource.saveJwtToken(it) }
             .map { it.toDomain() }
 

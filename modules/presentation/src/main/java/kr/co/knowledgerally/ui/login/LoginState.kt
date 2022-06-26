@@ -7,5 +7,7 @@ sealed class LoginState {
         val providerAccessToken: String,
     ) : LoginState()
 
+    object NeedToOnboard : LoginState()
+
     object Success : LoginState()
 }
