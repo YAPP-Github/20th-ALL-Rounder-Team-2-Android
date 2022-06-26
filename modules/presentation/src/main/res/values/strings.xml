@@ -1,4 +1,7 @@
 <resources>
+    <string name="exception_common">오류가 발생하였습니다.</string>
+    <string name="exception_image">지원되지 않는 파일 형식입니다.</string>
+
     <string name="player">플레이어</string>
     <string name="coach">코치</string>
 

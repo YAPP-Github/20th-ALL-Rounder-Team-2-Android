@@ -5,4 +5,5 @@ object Modules {
     const val REMOTE = ":remote"
     const val LOCAL = ":local"
     const val LOG = ":log"
+    const val CORE_EXCEPTION = ":core-exception"
 }

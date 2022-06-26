@@ -48,6 +48,7 @@ android {
 dependencies {
     implementation(project(Modules.DOMAIN))
     implementation(project(Modules.LOG))
+    implementation(project(Modules.CORE_EXCEPTION))
 
     implementation(libs.androidx.core.ktx)
 
