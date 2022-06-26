@@ -1,12 +1,13 @@
 package kr.co.knowledgerally.domain.usecase
 
+import kotlinx.coroutines.flow.Flow
 import kr.co.knowledgerally.domain.model.User
 import kr.co.knowledgerally.domain.repo.UserRepository
 import javax.inject.Inject
 
-class GetUserUseCase @Inject constructor(
+class GetUserStreamUseCase @Inject constructor(
     private val userRepository: UserRepository,
 ) {
 
-    suspend operator fun invoke(): Result<User> = userRepository.getUser()
+    operator fun invoke(): Flow<User> = userRepository.getUserStream()
 }

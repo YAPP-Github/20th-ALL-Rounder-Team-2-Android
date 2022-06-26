@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.domain.repo
 
+import kotlinx.coroutines.flow.Flow
 import kr.co.knowledgerally.domain.model.Onboard
 import kr.co.knowledgerally.domain.model.User
 
@@ -9,5 +10,7 @@ interface UserRepository {
 
     suspend fun submitOnboard(request: Onboard): Result<Unit>
 
-    suspend fun getUser(): Result<User>
+    fun getUserStream(): Flow<User>
+
+    suspend fun refreshUser(): Result<User>
 }
