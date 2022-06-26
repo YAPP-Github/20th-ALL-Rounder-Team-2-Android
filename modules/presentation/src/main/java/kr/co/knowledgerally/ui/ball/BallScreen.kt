@@ -44,12 +44,10 @@ fun BallScreen(
     navigateUp: () -> Unit,
     navigateToGuide: () -> Unit
 ) {
-    val user by viewModel.user.collectAsState()
-    val state by viewModel.state.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     BallScreen(
-        ball = user?.ballCount ?: 0,
-        state = state,
+        uiState = uiState,
         navigateUp = navigateUp,
         navigateToGuide = navigateToGuide
     )
@@ -57,8 +55,7 @@ fun BallScreen(
 
 @Composable
 fun BallScreen(
-    ball: Int,
-    state: BallUiState,
+    uiState: BallUiState,
     navigateUp: () -> Unit,
     navigateToGuide: () -> Unit
 ) {
@@ -70,17 +67,19 @@ fun BallScreen(
         Column(
             modifier = Modifier.padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 0.dp)
         ) {
-            MyBall(ball)
+            MyBall(uiState = uiState)
             VerticalSpacer(height = 24.dp)
             BallBanner(onClick = navigateToGuide)
             VerticalSpacer(height = 48.dp)
-            BallHistoryContent(state = state)
+            BallHistoryContent(uiState = uiState)
         }
     }
 }
 
 @Composable
-fun MyBall(ball: Int) {
+fun MyBall(uiState: BallUiState) {
+    val ballCount = if (uiState is BallUiState.Success) uiState.ballCount else 0
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -97,7 +96,7 @@ fun MyBall(ball: Int) {
             )
             HorizontalSpacer(width = 8.dp)
             Text(
-                text = ball.toString() + stringResource(id = R.string.ball_count),
+                text = ballCount.toString() + stringResource(id = R.string.ball_count),
                 style = KnowllyTheme.typography.headline4
             )
         }
@@ -153,13 +152,12 @@ fun BallBanner(
 }
 
 @Composable
-fun BallHistoryContent(state: BallUiState) {
-    when (state) {
+fun BallHistoryContent(uiState: BallUiState) {
+    when (uiState) {
         is BallUiState.Success -> {
-            BallHistoryList(histories = state.histories)
+            BallHistoryList(histories = uiState.histories)
         }
         BallUiState.Loading -> {}
-        BallUiState.Empty -> {}
         BallUiState.Failure -> {}
     }
 }
@@ -232,8 +230,7 @@ private fun BallScreenPreview() {
 
     KnowllyTheme {
         BallScreen(
-            ball = 1,
-            state = BallUiState.Success(tempBallHistoryList),
+            uiState = BallUiState.Success(10, tempBallHistoryList),
             navigateUp = {},
             navigateToGuide = {}
         )
