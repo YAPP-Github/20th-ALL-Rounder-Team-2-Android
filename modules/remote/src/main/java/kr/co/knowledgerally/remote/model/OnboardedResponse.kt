@@ -8,7 +8,7 @@ data class OnboardedResponse(
 ) {
 
     data class Data(
-        @SerializedName("isOnboard")
+        @SerializedName("onboard")
         val isOnboarded: Boolean
     )
 }
