@@ -1,40 +1,31 @@
 package kr.co.knowledgerally.ui.ball
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.usecase.GetBallHistoryListUseCase
-import kr.co.knowledgerally.domain.usecase.GetBallUseCase
-import kr.co.knowledgerally.ui.model.BallCountModel
+import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
 import kr.co.knowledgerally.ui.model.toPresentation
 import javax.inject.Inject
 
 @HiltViewModel
 class BallViewModel @Inject constructor(
-    private val getBallUseCase: GetBallUseCase,
+    private val getUserStreamUseCase: GetUserStreamUseCase,
     private val getBallHistoryListUseCase: GetBallHistoryListUseCase
 ) : BaseViewModel() {
 
-    private val _ball = MutableStateFlow(BallCountModel(""))
-    val ball = _ball.asStateFlow()
+    val user = getUserStreamUseCase()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     private val _state = MutableStateFlow<BallUiState>(BallUiState.Loading)
     val state = _state.asStateFlow()
 
     init {
-        fetchBall()
         fetchBallHistoryList()
-    }
-
-    private fun fetchBall() {
-        launch {
-            val result = getBallUseCase()
-            result
-                .mapCatching { it.toPresentation() }
-                .onSuccess { _ball.value = it }
-                .onFailure { /* no-op */ }
-        }
     }
 
     private fun fetchBallHistoryList() {

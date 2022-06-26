@@ -5,14 +5,14 @@ import java.time.format.DateTimeFormatter
 
 data class BallHistoryModel(
     val title: String,
-    val subtitle: String,
+    val content: String,
     val date: String,
-    val changedBallCount: Int
+    val count: Int
 )
 
 fun BallHistory.toPresentation(): BallHistoryModel = BallHistoryModel(
     title = title,
-    subtitle = subtitle,
+    content = content,
     date = date.format(DateTimeFormatter.ofPattern("MM.dd")),
-    changedBallCount = changedBallCount
+    count = count
 )

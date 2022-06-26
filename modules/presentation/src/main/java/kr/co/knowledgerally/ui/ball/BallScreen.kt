@@ -34,7 +34,6 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.VerticalSpacer
-import kr.co.knowledgerally.ui.model.BallCountModel
 import kr.co.knowledgerally.ui.model.BallHistoryModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import kotlin.math.abs
@@ -45,11 +44,11 @@ fun BallScreen(
     navigateUp: () -> Unit,
     navigateToGuide: () -> Unit
 ) {
-    val ball by viewModel.ball.collectAsState()
+    val user by viewModel.user.collectAsState()
     val state by viewModel.state.collectAsState()
 
     BallScreen(
-        ball = ball,
+        ball = user?.ballCount ?: 0,
         state = state,
         navigateUp = navigateUp,
         navigateToGuide = navigateToGuide
@@ -58,7 +57,7 @@ fun BallScreen(
 
 @Composable
 fun BallScreen(
-    ball: BallCountModel,
+    ball: Int,
     state: BallUiState,
     navigateUp: () -> Unit,
     navigateToGuide: () -> Unit
@@ -81,7 +80,7 @@ fun BallScreen(
 }
 
 @Composable
-fun MyBall(ball: BallCountModel) {
+fun MyBall(ball: Int) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -98,7 +97,7 @@ fun MyBall(ball: BallCountModel) {
             )
             HorizontalSpacer(width = 8.dp)
             Text(
-                text = ball.value + stringResource(id = R.string.ball_count),
+                text = ball.toString() + stringResource(id = R.string.ball_count),
                 style = KnowllyTheme.typography.headline4
             )
         }
@@ -182,7 +181,7 @@ fun BallHistoryList(
 fun BallHistoryListItem(
     history: BallHistoryModel
 ) {
-    val sign = if (history.changedBallCount > 0) "+" else "-"
+    val sign = if (history.count > 0) "+" else "-"
 
     Row(
         modifier = Modifier
@@ -195,13 +194,13 @@ fun BallHistoryListItem(
             Text(text = history.title, style = KnowllyTheme.typography.subtitle2)
             VerticalSpacer(height = 4.dp)
             Text(
-                text = "${history.date} | ${history.subtitle}",
+                text = "${history.date} | ${history.content}",
                 style = KnowllyTheme.typography.body1,
                 color = KnowllyTheme.colors.gray8F
             )
         }
         Text(
-            text = "$sign ${abs(history.changedBallCount)}" + stringResource(id = R.string.ball_count),
+            text = "$sign ${abs(history.count)}" + stringResource(id = R.string.ball_count),
             style = KnowllyTheme.typography.subtitle1
         )
     }
@@ -213,27 +212,27 @@ private fun BallScreenPreview() {
     val tempBallHistoryList = listOf(
         BallHistoryModel(
             title = "클래스 운영",
-            subtitle = "프랑스어",
+            content = "프랑스어",
             date = "05.09",
-            changedBallCount = 1
+            count = 1
         ),
         BallHistoryModel(
             title = "클래스 수강",
-            subtitle = "요리 원데이 클래스",
+            content = "요리 원데이 클래스",
             date = "05.09",
-            changedBallCount = -1
+            count = -1
         ),
         BallHistoryModel(
             title = "첫 가입 축하 볼",
-            subtitle = "첫 가입 축하 볼",
+            content = "첫 가입 축하 볼",
             date = "05.08",
-            changedBallCount = 1
+            count = 1
         )
     )
 
     KnowllyTheme {
         BallScreen(
-            ball = BallCountModel("1"),
+            ball = 1,
             state = BallUiState.Success(tempBallHistoryList),
             navigateUp = {},
             navigateToGuide = {}
