@@ -24,17 +24,15 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 /**
  * TODO
- * 1. 가입하기 클릭 이벤트
- * 2. 뒤로가기 클릭 이벤트
+ * 1. 뒤로가기 클릭 이벤트
  */
 
 @Composable
 fun SignUpScreen(
-    viewModel: SignUpViewModel,
     navigateUp: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToPolicy: () -> Unit,
-    signUp: () -> Unit
+    signUp: (Boolean) -> Unit
 ) {
     val signUpState = rememberSignUpState()
     SignUpScreen(
@@ -42,7 +40,7 @@ fun SignUpScreen(
         navigateUp = navigateUp,
         navigateToTerms = navigateToTerms,
         navigateToPolicy = navigateToPolicy,
-        signUp = signUp
+        signUp = { signUp(signUpState.notificationState.isChecked) }
     )
 }
 
@@ -180,7 +178,7 @@ fun SignUpButton(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun SignUpScreenPreview() {
     KnowllyTheme {

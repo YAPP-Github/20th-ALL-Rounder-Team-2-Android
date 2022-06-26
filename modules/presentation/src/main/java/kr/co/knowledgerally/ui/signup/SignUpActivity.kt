@@ -25,11 +25,10 @@ class SignUpActivity : BaseActivity() {
         setContent {
             KnowllyTheme {
                 SignUpScreen(
-                    viewModel = viewModel,
                     navigateUp = ::navigateUp,
                     navigateToTerms = ::startTermsActivity,
                     navigateToPolicy = ::startPolicyActivity,
-                    signUp = { viewModel.signUp() }
+                    signUp = { pushActive -> viewModel.signUp(pushActive) }
                 )
             }
         }

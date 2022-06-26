@@ -3,9 +3,11 @@ package kr.co.knowledgerally.remote.source
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.co.knowledgerally.data.model.OnboardEntity
+import kr.co.knowledgerally.data.model.UserEntity
 import kr.co.knowledgerally.data.source.UserRemoteDataSource
 import kr.co.knowledgerally.remote.api.ApiService
 import kr.co.knowledgerally.remote.image.ImageTranscoder
+import kr.co.knowledgerally.remote.model.toData
 import kr.co.knowledgerally.remote.model.toRemote
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -33,5 +35,15 @@ internal class UserRemoteDataSourceImpl @Inject constructor(
             apiService.uploadUserImage(image)
         }
         apiService.submitOnboard(onboard.toRemote())
+    }
+
+    override suspend fun getUser(): Result<UserEntity> = runCatching {
+        val data = apiService.getUser().data
+        val imageUrl = data.userImage.userImageUrl
+        data.user.toData(imageUrl)
+    }
+
+    override suspend fun updatePushActive(active: Boolean): Result<Unit> = runCatching {
+        apiService.updatePushActive(active)
     }
 }
