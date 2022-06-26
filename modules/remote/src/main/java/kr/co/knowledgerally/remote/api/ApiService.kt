@@ -32,6 +32,6 @@ internal interface ApiService {
     @DELETE("user/me")
     suspend fun withdrawal()
 
-    @GET("user/user-onboarded") // 임시 endpoint, 확정 후 수정 필요
+    @GET("user/check-onboard")
     suspend fun isOnboarded(): OnboardedResponse
 }

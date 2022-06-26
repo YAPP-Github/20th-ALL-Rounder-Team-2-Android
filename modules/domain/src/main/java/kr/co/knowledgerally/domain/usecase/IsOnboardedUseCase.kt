@@ -7,5 +7,5 @@ class IsOnboardedUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
 
-    suspend operator fun invoke(): Result<Boolean> = userRepository.isOnboarded()
+    suspend operator fun invoke(): Result<Boolean> = runCatching { true }
 }
