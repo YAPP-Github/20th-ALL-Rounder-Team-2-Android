@@ -15,5 +15,9 @@ class SignUpUseCase @Inject constructor(
         pushActive: Boolean
     ): Result<Unit> = authRepository
         .signUp(providerToken)
-        .mapCatching { userRepository.updatePushActive(pushActive).getOrThrow() }
+        .mapCatching {
+            if (pushActive) {
+                userRepository.updatePushActive(pushActive).getOrThrow()
+            }
+        }
 }

@@ -24,6 +24,7 @@ includeAll(
     "remote",
     "local",
     "log",
+    "core-exception"
 )
 
 fun includeAll(vararg names: String) {

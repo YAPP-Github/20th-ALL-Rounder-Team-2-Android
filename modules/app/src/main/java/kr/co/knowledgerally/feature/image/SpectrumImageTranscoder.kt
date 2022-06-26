@@ -12,28 +12,34 @@ import com.facebook.spectrum.logging.SpectrumLogcatLogger
 import com.facebook.spectrum.options.TranscodeOptions
 import com.facebook.spectrum.requirements.EncodeRequirement
 import com.facebook.spectrum.requirements.ResizeRequirement.Mode
+import kr.co.knowledgerally.core.exception.ImageException
 import kr.co.knowledgerally.remote.image.ImageTranscoder
 import java.io.ByteArrayOutputStream
 
 class SpectrumImageTranscoder(private val context: Context) : ImageTranscoder {
 
-    override fun from(uri: String): Result<ByteArray> = runCatching {
-        val spectrum = Spectrum.make(SpectrumLogcatLogger(), DefaultPlugins.get())
-        val outputStream = ByteArrayOutputStream()
-        val inputStream = context.contentResolver.openInputStream(Uri.parse(uri))
-        val options = TranscodeOptions.Builder(
-            EncodeRequirement(EncodedImageFormat.JPEG, IMAGE_QUALITY)
-        )
-            .resize(Mode.EXACT_OR_SMALLER, ImageSize(IMAGE_SIZE, IMAGE_SIZE))
-            .build()
+    override fun from(uri: String): Result<ByteArray> {
+        val result = runCatching {
+            val spectrum = Spectrum.make(SpectrumLogcatLogger(), DefaultPlugins.get())
+            val outputStream = ByteArrayOutputStream()
+            val inputStream = context.contentResolver.openInputStream(Uri.parse(uri))
+            val options = TranscodeOptions.Builder(
+                EncodeRequirement(EncodedImageFormat.JPEG, IMAGE_QUALITY)
+            )
+                .resize(Mode.EXACT_OR_SMALLER, ImageSize(IMAGE_SIZE, IMAGE_SIZE))
+                .build()
 
-        spectrum.transcode(
-            EncodedImageSource.from(inputStream),
-            EncodedImageSink.from(outputStream),
-            options,
-            context.packageName
-        )
-        outputStream.toByteArray()
+            spectrum.transcode(
+                EncodedImageSource.from(inputStream),
+                EncodedImageSink.from(outputStream),
+                options,
+                context.packageName
+            )
+            outputStream.toByteArray()
+        }
+
+        val exception = result.exceptionOrNull() ?: return result
+        return Result.failure(ImageException(uri, exception))
     }
 
     companion object {

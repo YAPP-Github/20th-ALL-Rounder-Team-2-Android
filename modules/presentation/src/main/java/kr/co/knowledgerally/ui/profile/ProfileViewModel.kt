@@ -5,8 +5,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.co.knowledgerally.base.BaseViewModel
+import kr.co.knowledgerally.core.exception.ImageException
 import kr.co.knowledgerally.domain.model.Onboard
 import kr.co.knowledgerally.domain.usecase.SubmitOnboardUseCase
+import kr.co.knowledgerally.toast.Toaster
+import kr.co.knowledgerally.ui.R
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,12 +43,18 @@ class ProfileViewModel @Inject constructor(
                 portfolio = portfolio.takeUnless { it.isNullOrBlank() },
                 imageUri = imageUri,
             )
+
             submitOnboardUseCase(onboard)
                 .onSuccess { _completed.value = true }
-                .onFailure {
-                    _loading.value = false
-                    handleException(it)
-                }
+                .onFailure { handleException(it) }
+        }
+    }
+
+    override fun handleException(throwable: Throwable) {
+        _loading.value = false
+        when (throwable) {
+            is ImageException -> Toaster.show(R.string.exception_image)
+            else -> super.handleException(throwable)
         }
     }
 }
