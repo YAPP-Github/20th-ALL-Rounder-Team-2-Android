@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Surface
 import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material3.Divider
@@ -28,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -36,6 +36,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
+import kr.co.knowledgerally.domain.model.User
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.ContainedBadge
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
@@ -97,30 +99,18 @@ private fun MyPageScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         when (state) {
-            MyPageUiState.Loading -> MyPageScreen(
-                notificationEnabled = false,
-                onPushActiveChange = { },
-                versionName = "",
-                userName = "",
-                isCoach = false,
-                navigateToProfile = { },
-                navigateToTermsOfService = { },
-                logout = { },
-                withdrawal = { },
-            )
+            MyPageUiState.Loading -> Loading()
             is MyPageUiState.Success -> MyPageScreen(
                 notificationEnabled = state.user.pushActive,
                 onPushActiveChange = onPushActiveChange,
                 versionName = state.versionName,
-                userName = state.user.profile.username,
-                isCoach = state.user.coach,
+                user = state.user,
                 navigateToProfile = navigateToProfile,
                 navigateToTermsOfService = navigateToTermsOfService,
                 logout = logout,
                 withdrawal = withdrawal,
             )
         }
-
         if (loading) {
             Loading()
         }
@@ -132,8 +122,7 @@ private fun MyPageScreen(
     notificationEnabled: Boolean,
     onPushActiveChange: (Boolean) -> Unit,
     versionName: String,
-    userName: String,
-    isCoach: Boolean,
+    user: User,
     navigateToProfile: () -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
@@ -145,8 +134,7 @@ private fun MyPageScreen(
             .background(Color.White)
     ) {
         MyPageProfile(
-            userName = userName,
-            isCoach = isCoach,
+            user = user,
             navigateToProfile = navigateToProfile,
         )
         MyPageDivider()
@@ -190,39 +178,44 @@ private fun MyPageScreen(
 
 @Composable
 private fun MyPageProfile(
-    userName: String,
-    isCoach: Boolean,
+    user: User,
     navigateToProfile: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(
-                top = 12.dp,
-                bottom = 40.dp,
-                start = 24.dp
-            )
+            .padding(top = 12.dp, bottom = 40.dp, start = 24.dp)
     ) {
-        Image(
-            painter = painterResource(R.drawable.img_avatar),
-            contentDescription = null,
+        Surface(
             modifier = Modifier
                 .padding(end = 16.dp)
-                .size(60.dp)
-                .clip(CircleShape)
-        )
+                .size(60.dp),
+            shape = CircleShape,
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.img_profile_placeholder),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+            AsyncImage(
+                model = user.profile.imageUrl,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Text(text = userName, style = KnowllyTheme.typography.subtitle1)
+            Text(text = user.profile.username, style = KnowllyTheme.typography.subtitle1)
             Row(modifier = Modifier.padding(top = 4.dp)) {
                 ContainedBadge(
                     text = stringResource(id = R.string.player),
                     contentColor = KnowllyTheme.colors.primaryDark,
                     backgroundColor = KnowllyTheme.colors.primary.copy(alpha = 0.1f)
                 )
-                if (isCoach) {
+                if (user.coach) {
                     ContainedBadge(
                         text = stringResource(id = R.string.coach),
                         contentColor = KnowllyTheme.colors.secondaryLimeDark,
