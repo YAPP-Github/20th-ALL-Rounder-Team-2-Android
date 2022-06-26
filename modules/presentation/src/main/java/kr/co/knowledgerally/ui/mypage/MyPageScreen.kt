@@ -23,6 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,15 +40,21 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.ContainedBadge
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.Loading
+import kr.co.knowledgerally.ui.mypage.dialog.LogoutDialog
+import kr.co.knowledgerally.ui.mypage.dialog.WithdrawalDialog
 import kr.co.knowledgerally.ui.splash.SplashActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+
     val state by viewModel.uiState.collectAsState()
     val loading by viewModel.loading.collectAsState()
     val isExpired by viewModel.isLoggedOut.collectAsState()
-    val context = LocalContext.current
+
+    var showLogoutDialog by remember { mutableStateOf(false) }
+    var showWithdrawalDialog by remember { mutableStateOf(false) }
 
     MyPageScreen(
         state = state,
@@ -53,9 +62,21 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
         onPushActiveChange = { viewModel.updatePushActive(it) },
         navigateToProfile = { },
         navigateToTermsOfService = { },
-        logout = { viewModel.logout() },
-        withdrawal = { viewModel.withdrawal() },
+        logout = { showLogoutDialog = true },
+        withdrawal = { showWithdrawalDialog = true },
     )
+
+    // Dialog
+    when {
+        showLogoutDialog -> LogoutDialog(
+            onDismiss = { showLogoutDialog = false },
+            onConfirm = { viewModel.logout() }
+        )
+        showWithdrawalDialog -> WithdrawalDialog(
+            onDismiss = { showWithdrawalDialog = false },
+            onConfirm = { viewModel.withdrawal() }
+        )
+    }
 
     LaunchedEffect(isExpired) {
         if (isExpired) {

@@ -148,4 +148,13 @@
     <string name="schedule_title">클래스 일정 추가하기</string>
     <string name="schedule_subtitle">날짜 선택</string>
     <string name="schedule_description">편하신 날짜를 하나 선택해주세요.</string>
+
+    <string name="dialog_logout_text">로그아웃 하시겠습니까?</string>
+    <string name="dialog_logout_dismiss">취소</string>
+    <string name="dialog_logout_confirm">로그아웃</string>
+
+    <string name="dialog_withdrawal_text">정말 탈퇴 하시겠어요?</string>
+    <string name="dialog_withdrawal_dismiss">취소</string>
+    <string name="dialog_withdrawal_confirm">탈퇴하기</string>
+
 </resources>
