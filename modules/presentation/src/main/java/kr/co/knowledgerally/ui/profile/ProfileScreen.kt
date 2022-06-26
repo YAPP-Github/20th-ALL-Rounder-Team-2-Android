@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -31,23 +34,39 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyMultilineTextField
 import kr.co.knowledgerally.ui.component.KnowllySinglelineTextField
-import kr.co.knowledgerally.ui.component.VerticalSpacer
+import kr.co.knowledgerally.ui.component.Loading
+import kr.co.knowledgerally.ui.profile.state.ImageState
+import kr.co.knowledgerally.ui.profile.state.IntroductionState
+import kr.co.knowledgerally.ui.profile.state.KakaoIdState
+import kr.co.knowledgerally.ui.profile.state.NameState
+import kr.co.knowledgerally.ui.profile.state.PortfolioState
+import kr.co.knowledgerally.ui.profile.state.ProfileState
+import kr.co.knowledgerally.ui.profile.state.rememberProfileState
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel) {
     val profileState = rememberProfileState()
+    val loading by viewModel.loading.collectAsState()
 
-    ProfileContent(
-        profileState = profileState,
-        onSubmit = {
-            viewModel.submitProfile(
-                name = profileState.nameState.text,
-                introduction = profileState.introductionState.text,
-                imageUri = profileState.imageState.uri.toString()
-            )
+    Box(modifier = Modifier.fillMaxSize()) {
+        ProfileContent(
+            profileState = profileState,
+            onSubmit = {
+                viewModel.submit(
+                    name = profileState.nameState.text,
+                    introduction = profileState.introductionState.text,
+                    kakaoId = profileState.kakaoIdState.text,
+                    portfolio = profileState.portfolioState.text,
+                    imageUri = profileState.imageState.uriString,
+                )
+            }
+        )
+
+        if (loading) {
+            Loading()
         }
-    )
+    }
 }
 
 @Composable
@@ -56,40 +75,52 @@ private fun ProfileContent(
     profileState: ProfileState,
     onSubmit: () -> Unit,
 ) {
-    val nameState = profileState.nameState
-    val introductionState = profileState.introductionState
-    val imageState = profileState.imageState
-
-    Box(modifier = modifier.padding(horizontal = 24.dp)) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(top = 64.dp)
+                .padding(start = 24.dp, top = 68.dp, end = 24.dp, bottom = 120.dp)
         ) {
             ProfileTitle(text = stringResource(id = R.string.profile_title))
 
             // 프로필 사진
-            VerticalSpacer(height = 36.dp)
-            ProfileImage(imageState, Modifier.align(Alignment.CenterHorizontally))
-            VerticalSpacer(height = 48.dp)
+            ProfileImage(
+                state = profileState.imageState,
+                modifier = Modifier
+                    .padding(top = 40.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
 
             // 이름
-            ProfileSubtitle(text = stringResource(id = R.string.profile_name))
-            NameTextField(state = nameState)
-
-            VerticalSpacer(height = 20.dp)
+            ProfileName(
+                state = profileState.nameState,
+                modifier = Modifier.padding(top = 48.dp)
+            )
 
             // 자기소개
-            ProfileSubtitle(text = stringResource(id = R.string.profile_introduction))
-            IntroductionTextField(state = introductionState)
+            ProfileIntroduction(
+                state = profileState.introductionState,
+                modifier = Modifier.padding(top = 24.dp)
+            )
 
-            // 버튼 추가 여백
-            VerticalSpacer(height = 90.dp)
+            // 카카오톡 ID
+            ProfileKakaoId(
+                state = profileState.kakaoIdState,
+                modifier = Modifier.padding(top = 24.dp)
+            )
+
+            // 포트폴리오
+            ProfilePortfolio(
+                state = profileState.portfolioState,
+                modifier = Modifier.padding(top = 24.dp)
+            )
         }
 
         ProfileButton(
-            modifier = Modifier.align(Alignment.BottomCenter),
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 24.dp)
+                .align(Alignment.BottomCenter),
             onClick = onSubmit,
             enabled = profileState.isValid
         )
@@ -107,15 +138,25 @@ private fun ProfileSubtitle(text: String) {
 }
 
 @Composable
+private fun ProfileDescription(text: String, modifier: Modifier = Modifier) {
+    Text(
+        text = text,
+        modifier = modifier,
+        style = KnowllyTheme.typography.body2,
+        color = KnowllyTheme.colors.gray8F
+    )
+}
+
+@Composable
 private fun ProfileImage(
-    imageState: ImageState,
+    state: ImageState,
     modifier: Modifier = Modifier,
 ) {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             if (uri != null) {
-                imageState.uri = uri
+                state.uri = uri
             }
         },
     )
@@ -138,7 +179,7 @@ private fun ProfileImage(
                     contentDescription = null
                 )
                 AsyncImage(
-                    model = imageState.uri,
+                    model = state.uri,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                 )
@@ -166,46 +207,99 @@ private fun ProfileImage(
 }
 
 @Composable
-private fun NameTextField(
+private fun ProfileName(
     state: NameState,
     modifier: Modifier = Modifier,
 ) {
-    val isError = state.isError
-    KnowllySinglelineTextField(
-        value = state.text,
-        onValueChange = { state.text = it },
-        modifier = modifier
-            .padding(top = 12.dp)
-            .onFocusChanged { state.onFocusChange(it.isFocused) },
-        placeholder = stringResource(id = R.string.profile_name_hint),
-        isError = isError,
-        helperText = stringResource(id = R.string.profile_name_helper_text),
-        helperTextEnabled = isError,
-        counterMaxLength = NameState.MAX_LENGTH,
-        counterEnabled = true,
-    )
+    Column(modifier = modifier) {
+        ProfileSubtitle(text = stringResource(id = R.string.profile_name))
+        KnowllySinglelineTextField(
+            value = state.text,
+            onValueChange = { state.text = it },
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .onFocusChanged { state.onFocusChange(it.isFocused) },
+            placeholder = stringResource(id = R.string.profile_name_hint),
+            isError = state.isError,
+            helperText = stringResource(id = R.string.profile_name_helper_text),
+            helperTextEnabled = state.isError,
+            counterMaxLength = NameState.MAX_LENGTH,
+            counterEnabled = true,
+        )
+    }
 }
 
 @Composable
-private fun IntroductionTextField(
+private fun ProfileIntroduction(
     state: IntroductionState,
     modifier: Modifier = Modifier,
 ) {
-    val isError = state.isError
-    KnowllyMultilineTextField(
-        value = state.text,
-        onValueChange = { state.text = it },
-        modifier = modifier
-            .padding(top = 12.dp)
-            .onFocusChanged { state.onFocusChange(it.isFocused) },
-        placeholder = stringResource(id = R.string.profile_introduction_hint),
-        isError = isError,
-        helperText = stringResource(id = R.string.profile_introduction_hint),
-        helperTextEnabled = isError,
-        counterMaxLength = IntroductionState.MAX_LENGTH,
-        counterEnabled = true,
-        minHeight = 180.dp,
-    )
+    Column(modifier = modifier) {
+        ProfileSubtitle(text = stringResource(id = R.string.profile_introduction))
+        KnowllyMultilineTextField(
+            value = state.text,
+            onValueChange = { state.text = it },
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .onFocusChanged { state.onFocusChange(it.isFocused) },
+            placeholder = stringResource(id = R.string.profile_introduction_hint),
+            isError = state.isError,
+            helperText = stringResource(id = R.string.profile_introduction_hint),
+            helperTextEnabled = state.isError,
+            counterMaxLength = IntroductionState.MAX_LENGTH,
+            counterEnabled = true,
+            minHeight = 180.dp,
+        )
+    }
+}
+
+@Composable
+private fun ProfileKakaoId(
+    state: KakaoIdState,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        ProfileSubtitle(text = stringResource(id = R.string.profile_kakao_id))
+        ProfileDescription(
+            text = stringResource(id = R.string.profile_kakao_id_description),
+            modifier = Modifier.padding(top = 2.dp),
+        )
+        KnowllySinglelineTextField(
+            value = state.text,
+            onValueChange = { state.text = it },
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .onFocusChanged { state.onFocusChange(it.isFocused) },
+            placeholder = stringResource(id = R.string.profile_kakao_id_hint),
+        )
+    }
+}
+
+@Composable
+private fun ProfilePortfolio(
+    state: PortfolioState,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            ProfileSubtitle(text = stringResource(id = R.string.profile_portfolio))
+            Text(
+                text = stringResource(id = R.string.profile_portfolio_option),
+                modifier = Modifier.padding(start = 4.dp),
+                style = KnowllyTheme.typography.body2,
+                color = KnowllyTheme.colors.gray44
+            )
+        }
+        KnowllySinglelineTextField(
+            value = state.text,
+            onValueChange = { state.text = it },
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .onFocusChanged { state.onFocusChange(it.isFocused) },
+            placeholder = stringResource(id = R.string.profile_portfolio_hint),
+        )
+    }
 }
 
 @Composable
@@ -217,9 +311,7 @@ private fun ProfileButton(
     KnowllyContainedButton(
         text = stringResource(id = R.string.profile_upload),
         onClick = onClick,
-        modifier = modifier
-            .padding(bottom = 24.dp, top = 20.dp)
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         enabled = enabled
     )
 }

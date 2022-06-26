@@ -61,6 +61,7 @@ fun MainScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val showWelcome by viewModel.showWelcome.collectAsState()
+    val user by viewModel.user.collectAsState()
 
     Scaffold(
         topBar = {
@@ -70,7 +71,7 @@ fun MainScreen(
                     val visible = currentDestination?.route == MainDestination.Home.route
                     Logo(Modifier.padding(start = 24.dp), visible = visible)
                     Spacer(modifier = Modifier.weight(1f))
-                    BallIcon(ballCount = 10, onClick = navigateToBall)
+                    BallIcon(ballCount = user?.ballCount ?: 0, onClick = navigateToBall)
                     NotificationIcon(onClick = navigateToNotification)
                 }
             )

@@ -10,6 +10,7 @@ tasks {
 
 dependencies {
     implementation(libs.javax.inject)
+    implementation(libs.coroutines.core)
 
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.truth)

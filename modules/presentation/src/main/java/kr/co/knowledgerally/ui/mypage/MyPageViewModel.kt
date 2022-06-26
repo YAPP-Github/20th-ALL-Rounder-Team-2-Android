@@ -1,23 +1,37 @@
 package kr.co.knowledgerally.ui.mypage
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.model.VersionName
+import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
 import kr.co.knowledgerally.domain.usecase.LogoutUseCase
+import kr.co.knowledgerally.domain.usecase.RefreshUserUseCase
+import kr.co.knowledgerally.domain.usecase.UpdatePushActiveUseCase
 import kr.co.knowledgerally.domain.usecase.WithdrawalUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     versionName: VersionName,
+    getUserStreamUseCase: GetUserStreamUseCase,
+    private val refreshUserUseCase: RefreshUserUseCase,
+    private val updatePushActiveUseCase: UpdatePushActiveUseCase,
     private val withdrawalUseCase: WithdrawalUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseViewModel() {
-
-    private val _state: MutableStateFlow<MyPageUiState> = MutableStateFlow(MyPageUiState.Loading)
-    val state = _state.asStateFlow()
+    val uiState: StateFlow<MyPageUiState> = getUserStreamUseCase().map { user ->
+        MyPageUiState.Success(
+            user = user,
+            versionName = versionName.toString()
+        )
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, MyPageUiState.Loading)
 
     private val _loading = MutableStateFlow(false)
     val loading = _loading.asStateFlow()
@@ -25,21 +39,10 @@ class MyPageViewModel @Inject constructor(
     private val _isLoggedOut = MutableStateFlow(false)
     val isLoggedOut = _isLoggedOut.asStateFlow()
 
-    init {
-        // TODO: 유저 정보 가져오기
-        _state.value = MyPageUiState.Success(
-            notificationEnabled = false,
-            versionName = versionName.toString(),
-            userName = "Laco",
-            isCoach = true,
-            remainingBallCount = 0,
-        )
-    }
-
-    fun updateNotificationEnabled(enabled: Boolean) {
-        val state = state.value
-        if (state is MyPageUiState.Success) {
-            _state.value = state.copy(enabled)
+    fun updatePushActive(active: Boolean) {
+        launch {
+            updatePushActiveUseCase(active).getOrThrow()
+            refreshUserUseCase().getOrThrow()
         }
     }
 

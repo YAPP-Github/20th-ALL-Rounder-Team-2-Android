@@ -59,6 +59,12 @@ android {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
+
+    splits {
+        abi {
+            isEnable = true
+        }
+    }
 }
 
 dependencies {
@@ -77,6 +83,7 @@ dependencies {
     implementation(libs.kakao.user)
 
     implementation(libs.hilt.android)
+    implementation(libs.spectrum)
     kapt(libs.hilt.compiler)
 
     compileOnly(libs.okhttp.logging.interceptor)

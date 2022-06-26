@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.profile
+package kr.co.knowledgerally.ui.profile.state
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
