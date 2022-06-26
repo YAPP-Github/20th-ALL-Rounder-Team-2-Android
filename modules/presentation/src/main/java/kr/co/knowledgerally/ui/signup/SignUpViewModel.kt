@@ -25,14 +25,13 @@ class SignUpViewModel @Inject constructor(
 
     private var job: Job? = null
 
-    // TODO: 알림 수신동의 필드 받기
-    fun signUp() {
+    fun signUp(pushActive: Boolean) {
         if (job?.isActive == true) {
             return
         }
         job = launch {
             val providerToken = ProviderToken.kakao(providerAccessToken)
-            signUpUseCase(providerToken)
+            signUpUseCase(providerToken, pushActive)
                 .onSuccess { _result.value = SignUpResult.Success }
                 .onFailure { handleException(it) }
         }
