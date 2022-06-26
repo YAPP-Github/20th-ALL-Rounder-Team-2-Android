@@ -1,6 +1,6 @@
 package kr.co.knowledgerally.remote.api
 
-import kr.co.knowledgerally.remote.model.BallHistoryListResponse
+import kr.co.knowledgerally.remote.model.BallHistoryResponseWrapper
 import kr.co.knowledgerally.remote.model.OnboardRequest
 import kr.co.knowledgerally.remote.model.OnboardedResponse
 import kr.co.knowledgerally.remote.model.ProviderTokenRequest
@@ -59,5 +59,5 @@ internal interface ApiService {
     suspend fun updatePushActive(@Field("pushActive") active: Boolean)
 
     @GET("ballhistory/me")
-    suspend fun getBallHistories(): BallHistoryListResponse
+    suspend fun getBallHistories(): BallHistoryResponseWrapper
 }

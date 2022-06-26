@@ -3,11 +3,6 @@ package kr.co.knowledgerally.remote.model
 import com.google.gson.annotations.SerializedName
 import kr.co.knowledgerally.data.model.BallHistoryEntity
 
-data class BallHistoryListResponse(
-    @SerializedName("data")
-    val data: List<BallHistoryResponse>
-)
-
 data class BallHistoryResponse(
     @SerializedName("title")
     val title: String,
