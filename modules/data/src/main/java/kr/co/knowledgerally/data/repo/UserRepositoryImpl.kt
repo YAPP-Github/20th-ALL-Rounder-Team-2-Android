@@ -27,4 +27,7 @@ internal class UserRepositoryImpl @Inject constructor(
         .getUser()
         .map { it.toDomain() }
         .onSuccess { user.value = it }
+
+    override suspend fun updatePushActive(active: Boolean): Result<Unit> =
+        userRemoteDataSource.updatePushActive(active)
 }

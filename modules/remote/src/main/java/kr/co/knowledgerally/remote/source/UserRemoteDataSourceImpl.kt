@@ -42,4 +42,8 @@ internal class UserRemoteDataSourceImpl @Inject constructor(
         val imageUrl = data.userImageResponse.userImageUrl
         data.user.toData(imageUrl)
     }
+
+    override suspend fun updatePushActive(active: Boolean): Result<Unit> = runCatching {
+        apiService.updatePushActive(active)
+    }
 }

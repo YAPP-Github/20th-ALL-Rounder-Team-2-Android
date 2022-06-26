@@ -13,4 +13,6 @@ interface UserRepository {
     fun getUserStream(): Flow<User>
 
     suspend fun refreshUser(): Result<User>
+
+    suspend fun updatePushActive(active: Boolean): Result<Unit>
 }

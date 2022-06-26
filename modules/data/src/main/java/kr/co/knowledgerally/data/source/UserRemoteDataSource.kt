@@ -10,4 +10,6 @@ interface UserRemoteDataSource {
     suspend fun submitOnboard(request: OnboardEntity): Result<Unit>
 
     suspend fun getUser(): Result<UserEntity>
+
+    suspend fun updatePushActive(active: Boolean): Result<Unit>
 }
