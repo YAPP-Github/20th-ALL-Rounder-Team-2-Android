@@ -76,6 +76,7 @@ dependencies {
     implementation(project(Modules.LOCAL))
     implementation(project(Modules.REMOTE))
     implementation(project(Modules.LOG))
+    implementation(project(Modules.CORE_EXCEPTION))
 
     implementation(libs.coroutines.android)
     implementation(libs.material)

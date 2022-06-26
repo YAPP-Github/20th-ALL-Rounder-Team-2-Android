@@ -9,6 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kr.co.knowledgerally.log.Logger
 import kr.co.knowledgerally.toast.Toaster
+import kr.co.knowledgerally.ui.R
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -27,8 +28,8 @@ abstract class BaseViewModel : ViewModel() {
         return viewModelScope.launch(context + exceptionHandler, start = start, block = block)
     }
 
-    protected fun handleException(throwable: Throwable) {
-        Toaster.show("오류가 발생하였습니다.")
+    protected open fun handleException(throwable: Throwable) {
+        Toaster.show(R.string.exception_common)
         Logger.e(TAG, throwable)
     }
 }
