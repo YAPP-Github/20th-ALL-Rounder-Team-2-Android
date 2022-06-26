@@ -62,9 +62,12 @@ fun KnowllyTextField(
         BasicTextField(
             value = value,
             onValueChange = {
-                if (counterMaxLength > 0) {
-                    onValueChange(it.take(counterMaxLength))
+                val newValue = if (counterMaxLength > 0) {
+                    it.take(counterMaxLength)
+                } else {
+                    it
                 }
+                onValueChange(newValue)
             },
             modifier = Modifier
                 .fillMaxWidth()
