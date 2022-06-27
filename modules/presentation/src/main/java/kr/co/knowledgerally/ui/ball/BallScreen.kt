@@ -30,12 +30,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.co.knowledgerally.domain.model.BallHistory
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.VerticalSpacer
-import kr.co.knowledgerally.ui.model.BallHistoryModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import java.time.LocalDate
 import kotlin.math.abs
 
 @Composable
@@ -164,7 +165,7 @@ fun BallHistoryContent(uiState: BallUiState) {
 
 @Composable
 fun BallHistoryList(
-    histories: List<BallHistoryModel>
+    histories: List<BallHistory>
 ) {
     LazyColumn {
         item { Divider(color = KnowllyTheme.colors.grayEF) }
@@ -177,7 +178,7 @@ fun BallHistoryList(
 
 @Composable
 fun BallHistoryListItem(
-    history: BallHistoryModel
+    history: BallHistory
 ) {
     val sign = if (history.count > 0) "+" else "-"
 
@@ -208,22 +209,22 @@ fun BallHistoryListItem(
 @Composable
 private fun BallScreenPreview() {
     val tempBallHistoryList = listOf(
-        BallHistoryModel(
+        BallHistory(
             title = "클래스 운영",
             content = "프랑스어",
-            date = "05.09",
+            date = LocalDate.now(),
             count = 1
         ),
-        BallHistoryModel(
+        BallHistory(
             title = "클래스 수강",
             content = "요리 원데이 클래스",
-            date = "05.09",
+            date = LocalDate.now(),
             count = -1
         ),
-        BallHistoryModel(
+        BallHistory(
             title = "첫 가입 축하 볼",
             content = "첫 가입 축하 볼",
-            date = "05.08",
+            date = LocalDate.now(),
             count = 1
         )
     )

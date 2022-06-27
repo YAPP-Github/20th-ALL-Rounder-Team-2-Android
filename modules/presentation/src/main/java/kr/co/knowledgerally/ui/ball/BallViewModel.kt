@@ -23,7 +23,6 @@ class BallViewModel @Inject constructor(
         getUserStreamUseCase(),
         flow {
             getBallHistoryListUseCase()
-                .mapCatching { it.map { history -> history.toPresentation() } }
                 .onSuccess { emit(it) }
                 .onFailure { handleException(it) }
         }
