@@ -5,6 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -14,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.feature.kakao.KakaoLogin
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.ui.policy.PolicyActivity
 import kr.co.knowledgerally.ui.profile.ProfileActivity
@@ -48,12 +54,19 @@ class LoginActivity : BaseActivity() {
         val systemUiController: SystemUiController = rememberSystemUiController()
         systemUiController.setStatusBarColor(KnowllyTheme.colors.primaryLight)
 
+        val loading by viewModel.loading.collectAsState()
+
         KnowllyTheme {
-            LoginScreen(
-                onLogin = { requestKakaoLogin() },
-                navigateToTerms = { startTermsActivity() },
-                navigateToPolicy = { startPolicyActivity() }
-            )
+            Box(modifier = Modifier.fillMaxSize()) {
+                LoginScreen(
+                    onLogin = { requestKakaoLogin() },
+                    navigateToTerms = { startTermsActivity() },
+                    navigateToPolicy = { startPolicyActivity() }
+                )
+                if (loading) {
+                    Loading()
+                }
+            }
         }
     }
 

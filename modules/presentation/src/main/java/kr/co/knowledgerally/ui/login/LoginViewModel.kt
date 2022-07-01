@@ -21,13 +21,17 @@ class LoginViewModel @Inject constructor(
     private val _state = MutableStateFlow<LoginState>(LoginState.NotLoggedIn)
     val state: StateFlow<LoginState> = _state.asStateFlow()
 
-    suspend fun login(accessToken: String) {
+    private val _loading = MutableStateFlow(false)
+    val loading = _loading.asStateFlow()
+
+    fun login(accessToken: String) = launch {
+        _loading.value = true
         val providerToken = ProviderToken.kakao(accessToken)
         val isSignedUp = isSignedUpUseCase(providerToken).getOrThrow()
 
         if (!isSignedUp) {
             _state.value = LoginState.NeedToSignUp(accessToken)
-            return
+            return@launch
         }
 
         signInUseCase(providerToken)
@@ -39,5 +43,10 @@ class LoginViewModel @Inject constructor(
             .onFailure {
                 handleException(it)
             }
+    }
+
+    override fun handleException(throwable: Throwable) {
+        _loading.value = false
+        super.handleException(throwable)
     }
 }
