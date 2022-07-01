@@ -8,7 +8,8 @@ internal class AccessTokenProviderImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : AccessTokenProvider {
 
-    override fun get(): String = sharedPreferences.getString(KEY_ACCESS_TOKEN, null) ?: ""
+    override val value: String
+        get() = sharedPreferences.getString(KEY_ACCESS_TOKEN, null) ?: ""
 
     companion object {
         private const val KEY_ACCESS_TOKEN = "KEY_ACCESS_TOKEN"

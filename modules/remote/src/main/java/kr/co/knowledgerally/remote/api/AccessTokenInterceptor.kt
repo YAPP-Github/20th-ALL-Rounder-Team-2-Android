@@ -9,7 +9,7 @@ class AccessTokenInterceptor(
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val accessToken = accessTokenProvider.get()
+        val accessToken = accessTokenProvider.value
         return if (accessToken.isBlank()) {
             chain.proceed(chain.request())
         } else {
