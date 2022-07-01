@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:44491871675:android:8c3cca3316398f6f6aa09e",
+        "mobilesdk_app_id": "1:44491871675:android:87ab3a4e7eaa99386aa09e",
         "android_client_info": {
-          "package_name": "kr.co.knowledgerally.debug"
+          "package_name": "kr.co.knowledgerally"
         }
       },
       "oauth_client": [
         {
-          "client_id": "44491871675-0etnf3grvon60vokdivr1ejaend3n95m.apps.googleusercontent.com",
+          "client_id": "44491871675-m2u6etoicejbqsthflr1pl04m9f0o3el.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "kr.co.knowledgerally.debug",
+            "package_name": "kr.co.knowledgerally",
             "certificate_hash": "c4d4a2440d0d44961c550292f53651e6804298cf"
           }
         },
@@ -44,17 +44,17 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:44491871675:android:01918e7a0982218c6aa09e",
+        "mobilesdk_app_id": "1:44491871675:android:8c3cca3316398f6f6aa09e",
         "android_client_info": {
-          "package_name": "kr.co.knowlegerally"
+          "package_name": "kr.co.knowledgerally.debug"
         }
       },
       "oauth_client": [
         {
-          "client_id": "44491871675-mqu76gj7prelu6hr0mp4jeli1nvl2dom.apps.googleusercontent.com",
+          "client_id": "44491871675-0etnf3grvon60vokdivr1ejaend3n95m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "kr.co.knowlegerally",
+            "package_name": "kr.co.knowledgerally.debug",
             "certificate_hash": "c4d4a2440d0d44961c550292f53651e6804298cf"
           }
         },
