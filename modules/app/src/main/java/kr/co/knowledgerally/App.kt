@@ -6,6 +6,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import kr.co.knowledgerally.log.AndroidLogger
+import kr.co.knowledgerally.log.CrashlyticsLogger
 import kr.co.knowledgerally.log.Logger
 import kr.co.knowledgerally.toast.AndroidToast
 import kr.co.knowledgerally.toast.Toaster
@@ -19,6 +20,8 @@ class App : Application() {
         // Logger
         if (BuildConfig.DEBUG) {
             Logger.add(AndroidLogger)
+        } else {
+            Logger.add(CrashlyticsLogger)
         }
 
         // Toaster
