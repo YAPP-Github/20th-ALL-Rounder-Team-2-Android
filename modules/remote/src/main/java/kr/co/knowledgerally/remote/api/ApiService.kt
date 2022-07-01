@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.remote.api
 
+import kr.co.knowledgerally.remote.model.BallHistoryResponseWrapper
 import kr.co.knowledgerally.remote.model.OnboardRequest
 import kr.co.knowledgerally.remote.model.OnboardedResponse
 import kr.co.knowledgerally.remote.model.ProviderTokenRequest
@@ -16,8 +17,8 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.Query
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 internal interface ApiService {
 
@@ -56,4 +57,7 @@ internal interface ApiService {
     @FormUrlEncoded
     @PATCH("user/setting/push")
     suspend fun updatePushActive(@Field("pushActive") active: Boolean)
+
+    @GET("ballhistory/me")
+    suspend fun getBallHistories(): BallHistoryResponseWrapper
 }

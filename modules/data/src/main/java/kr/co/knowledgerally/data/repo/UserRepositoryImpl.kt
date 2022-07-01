@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kr.co.knowledgerally.data.model.toData
 import kr.co.knowledgerally.data.model.toDomain
 import kr.co.knowledgerally.data.source.UserRemoteDataSource
+import kr.co.knowledgerally.domain.model.BallHistory
 import kr.co.knowledgerally.domain.model.Onboard
 import kr.co.knowledgerally.domain.model.User
 import kr.co.knowledgerally.domain.repo.UserRepository
@@ -30,4 +31,8 @@ internal class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updatePushActive(active: Boolean): Result<Unit> =
         userRemoteDataSource.updatePushActive(active)
+
+    override suspend fun getBallHistories(): Result<List<BallHistory>> =
+        userRemoteDataSource.getBallHistories()
+            .mapCatching { histories -> histories.map { it.toDomain() } }
 }

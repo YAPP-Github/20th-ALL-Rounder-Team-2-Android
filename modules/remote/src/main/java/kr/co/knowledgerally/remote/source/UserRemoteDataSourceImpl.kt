@@ -2,6 +2,7 @@ package kr.co.knowledgerally.remote.source
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kr.co.knowledgerally.data.model.BallHistoryEntity
 import kr.co.knowledgerally.data.model.OnboardEntity
 import kr.co.knowledgerally.data.model.UserEntity
 import kr.co.knowledgerally.data.source.UserRemoteDataSource
@@ -45,5 +46,10 @@ internal class UserRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun updatePushActive(active: Boolean): Result<Unit> = runCatching {
         apiService.updatePushActive(active)
+    }
+
+    override suspend fun getBallHistories(): Result<List<BallHistoryEntity>> = runCatching {
+        val data = apiService.getBallHistories().data
+        data.map { it.toData() }
     }
 }
