@@ -8,6 +8,8 @@ buildscript {
         classpath(libs.android.gradle)
         classpath(libs.kotlin)
         classpath(libs.hilt.gradle)
+        classpath(libs.google.services)
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.1")
         classpath(libs.google.secrets.gradle)
     }
 }

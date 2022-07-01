@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
     kotlin("android")
     kotlin("kapt")
 }
@@ -77,6 +79,11 @@ dependencies {
     implementation(project(Modules.REMOTE))
     implementation(project(Modules.LOG))
     implementation(project(Modules.CORE_EXCEPTION))
+
+    implementation(platform("com.google.firebase:firebase-bom:30.2.0"))
+
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
 
     implementation(libs.coroutines.android)
     implementation(libs.material)
