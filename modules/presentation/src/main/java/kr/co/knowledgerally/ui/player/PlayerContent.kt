@@ -20,9 +20,9 @@ fun PlayerContent(
     uiState: PlayerUiState.Success
 ) {
     val lessonList = when (tab) {
-        PlayerTabState.Tab.Matching -> uiState.matchingLesson
-        PlayerTabState.Tab.Scheduled -> uiState.scheduledLesson
-        PlayerTabState.Tab.Completed -> uiState.completedLesson
+        PlayerTabState.Tab.Matching -> uiState.matchingLessons
+        PlayerTabState.Tab.Scheduled -> uiState.scheduledLessons
+        PlayerTabState.Tab.Completed -> uiState.completedLessons
     }
 
     if (lessonList.isNotEmpty()) {
@@ -98,7 +98,7 @@ fun PlayerContentListItem(
             is PlayerLessonModel.Matching -> {}
             is PlayerLessonModel.Scheduled -> {
                 KakaoIdCopyButton(
-                    kakaoId = lesson.kakaoId,
+                    kakaoId = lesson.coachKakaoId,
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .fillMaxWidth()
