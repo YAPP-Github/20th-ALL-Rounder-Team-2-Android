@@ -1,12 +1,14 @@
 package kr.co.knowledgerally.ui.player
 
-sealed class PlayerUiState {
-    data class Success(
-        val matchingLesson: List<LessonUiState.Matching>,
-        val scheduledLesson: List<LessonUiState.Scheduled>,
-        val completedLesson: List<LessonUiState.Completed>
-    ) : PlayerUiState()
+sealed interface PlayerUiState {
 
-    object Failure : PlayerUiState()
-    object Loading : PlayerUiState()
+    data class Success(
+        val matchingLessons: List<LessonUiState.Matching>,
+        val scheduledLessons: List<LessonUiState.Scheduled>,
+        val completedLessons: List<LessonUiState.Completed>
+    ) : PlayerUiState
+
+    object Failure : PlayerUiState
+    
+    object Loading : PlayerUiState
 }

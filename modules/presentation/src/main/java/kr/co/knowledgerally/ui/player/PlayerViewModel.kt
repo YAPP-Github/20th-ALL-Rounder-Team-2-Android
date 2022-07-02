@@ -1,42 +1,51 @@
 package kr.co.knowledgerally.ui.player
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
+import kr.co.knowledgerally.domain.model.Lesson
+import kr.co.knowledgerally.domain.usecase.GetPlayerLessonListUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class PlayerViewModel @Inject constructor() : BaseViewModel() {
+class PlayerViewModel @Inject constructor(
+    private val getPlayerLessonListUseCase: GetPlayerLessonListUseCase
+) : BaseViewModel() {
 
     private val _tabState = MutableStateFlow(PlayerTabState.DEFAULT)
     val tabState: StateFlow<PlayerTabState> = _tabState.asStateFlow()
 
-    val uiState: StateFlow<PlayerUiState> = flow {
-        // TODO: Fetch player's class list
-        emit(
-            PlayerUiState.Success(
-                matchingLesson = listOf(
-                    LessonUiState.Matching(lessonId = 0),
-                    LessonUiState.Matching(lessonId = 2)
-                ),
-                scheduledLesson = listOf(
-                    LessonUiState.Scheduled(lessonId = 3, kakaoId = "kakaoId"),
-                    LessonUiState.Scheduled(lessonId = 4, kakaoId = "kakaoId"),
-                ),
-                completedLesson = listOf(
-                    LessonUiState.Completed(lessonId = 5, isReviewed = true),
-                    LessonUiState.Completed(lessonId = 6, isReviewed = false)
-                )
-            )
-        )
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, PlayerUiState.Loading)
+    private val _uiState = MutableStateFlow<PlayerUiState>(PlayerUiState.Loading)
+    val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
+
+    init {
+        fetchCoachLessons()
+    }
+
+    private fun fetchCoachLessons() {
+        _uiState.value = PlayerUiState.Loading
+        launch {
+            val result = getPlayerLessonListUseCase()
+            result
+                .onSuccess { lessons ->
+                    _uiState.value = PlayerUiState.Success(
+                        matchingLessons = lessons
+                            .filter { it.type == Lesson.Type.Matching }
+                            .map { it.toPlayerPresentation() as LessonUiState.Matching },
+                        scheduledLessons = lessons
+                            .filter { it.type == Lesson.Type.Scheduled }
+                            .map { it.toPlayerPresentation() as LessonUiState.Scheduled },
+                        completedLessons = lessons
+                            .filter { it.type == Lesson.Type.Completed }
+                            .map { it.toPlayerPresentation() as LessonUiState.Completed }
+                    )
+                }
+                .onFailure { _uiState.value = PlayerUiState.Failure }
+        }
+    }
 
     fun switchTab(newIndex: Int) {
         if (newIndex != tabState.value.selectedTab.ordinal) {
