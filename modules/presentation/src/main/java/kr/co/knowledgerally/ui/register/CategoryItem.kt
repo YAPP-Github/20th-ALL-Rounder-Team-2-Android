@@ -31,5 +31,9 @@ enum class CategoryItem(
     Etc(
         R.drawable.ic_etc,
         R.string.category_etc
-    )
+    );
+
+    companion object {
+        fun from(ordinal: Int) = values().find { it.ordinal == ordinal }
+    }
 }

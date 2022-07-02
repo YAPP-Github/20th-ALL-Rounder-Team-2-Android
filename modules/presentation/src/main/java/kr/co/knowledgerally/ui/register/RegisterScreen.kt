@@ -30,6 +30,7 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,7 +61,7 @@ fun RegisterScreen(
     navigateUp: () -> Unit,
     navigateToSchedule: () -> Unit,
 ) {
-    val state = rememberRegisterState()
+    val state by rememberRegisterState()
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
 
@@ -419,7 +420,7 @@ private fun ImageButton(
 fun RegisterScreenPreview() {
     KnowllyTheme {
         RegisterContent(
-            state = rememberRegisterState(),
+            state = rememberRegisterState().value,
             navigateUp = { },
             onAskCategory = { },
             onPickImage = { },

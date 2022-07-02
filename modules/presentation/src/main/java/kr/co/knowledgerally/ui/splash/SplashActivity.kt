@@ -15,6 +15,7 @@ import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.login.LoginActivity
 import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.ui.profile.ProfileActivity
+import kr.co.knowledgerally.ui.register.RegisterActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
@@ -25,6 +26,9 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        RegisterActivity.startActivity(this)
+        return
         setContent()
 
         lifecycleScope.launch {
