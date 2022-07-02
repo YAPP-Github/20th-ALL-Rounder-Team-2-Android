@@ -55,10 +55,10 @@ private fun MatchingItem(
             .fillMaxWidth()
     ) {
         VerticalSpacer(height = 16.dp)
-        MatchingItemHeader(text = matching.className)
+        MatchingItemHeader(text = matching.lessonTitle)
         MatchingItemApplicant(
             applicants = matching.applicants,
-            onClick = { navigateToApplicant(matching.classId) },
+            onClick = { navigateToApplicant(matching.lessonId) },
             modifier = Modifier.padding(top = 8.dp)
         )
         VerticalSpacer(height = 16.dp)
