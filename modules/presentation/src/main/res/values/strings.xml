@@ -135,13 +135,15 @@
     <string name="register_category_placeholder">카테고리 선택</string>
     <string name="register_name">클래스 이름</string>
     <string name="register_name_placeholder">클래스 이름을 작성해주세요.</string>
-    <string name="register_introduction">클래스 소개</string>
-    <string name="register_introduction_placeholder">클래스 내용, 클래스 목적, 추천하는 대상 등을 포함해 클래스를 소개해보세요.</string>
+    <string name="register_introduce">클래스 소개</string>
+    <string name="register_introduce_description">클래스 내용, 클래스 목적, 추천하는 대상, 클래스 진행방식 등을 포함해 클래스를 소개해보세요.</string>
+    <string name="register_introduce_placeholder">클래스 소개를 작성해주세요.</string>
     <string name="register_tag">클래스 태그</string>
     <string name="register_tag_placeholder">#태그 입력</string>
     <string name="register_tag_helper_text">#’태그이름’ 입력 후 쉼표를 입력해주세요.</string>
     <string name="register_tag_max_count">(최대 5개)</string>
     <string name="register_image">클래스 사진</string>
+    <string name="register_image_description">클래스를 나타낼 수 있는 사진이 있다면 등록해주세요.</string>
     <string name="register_image_optional">(선택)</string>
 
     <string name="register_schedule_title">클래스 일정 등록하기</string>

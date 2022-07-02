@@ -25,19 +25,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import kr.co.knowledgerally.ui.R
-import kr.co.knowledgerally.ui.model.CategoryModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun CategorySelectSheetContent(
     sheetState: ModalBottomSheetState,
-    onSelect: (CategoryModel) -> Unit,
+    onSelect: (CategoryItem) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     Column {
-        CategorySelectText()
+        Text(
+            text = stringResource(R.string.category_select),
+            style = KnowllyTheme.typography.subtitle1,
+            modifier = Modifier.padding(top = 24.dp, start = 24.dp)
+        )
+
         CategorySelectItems(
-            categories = CategoryModel.values().toList(),
+            categories = CategoryItem.values().toList(),
             onClick = {
                 onSelect(it)
                 coroutineScope.launch { sheetState.hide() }
@@ -47,18 +51,9 @@ fun CategorySelectSheetContent(
 }
 
 @Composable
-private fun CategorySelectText() {
-    Text(
-        text = stringResource(R.string.category_select),
-        style = KnowllyTheme.typography.subtitle1,
-        modifier = Modifier.padding(top = 24.dp, start = 24.dp)
-    )
-}
-
-@Composable
 private fun CategorySelectItems(
-    categories: List<CategoryModel>,
-    onClick: (CategoryModel) -> Unit,
+    categories: List<CategoryItem>,
+    onClick: (CategoryItem) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -78,8 +73,8 @@ private fun CategorySelectItems(
 
 @Composable
 private fun CategorySelectItem(
-    category: CategoryModel,
-    onClick: (CategoryModel) -> Unit,
+    category: CategoryItem,
+    onClick: (CategoryItem) -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

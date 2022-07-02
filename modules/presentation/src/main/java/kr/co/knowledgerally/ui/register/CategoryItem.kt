@@ -1,10 +1,10 @@
-package kr.co.knowledgerally.ui.model
+package kr.co.knowledgerally.ui.register
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kr.co.knowledgerally.ui.R
 
-enum class CategoryModel(
+enum class CategoryItem(
     @DrawableRes val drawableResId: Int,
     @StringRes val textResId: Int,
 ) {
@@ -31,5 +31,9 @@ enum class CategoryModel(
     Etc(
         R.drawable.ic_etc,
         R.string.category_etc
-    )
+    );
+
+    companion object {
+        fun from(ordinal: Int) = values().find { it.ordinal == ordinal }
+    }
 }
