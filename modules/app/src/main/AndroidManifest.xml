@@ -79,6 +79,7 @@
 
         <activity
             android:name=".ui.register.RegisterActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
 
         <activity

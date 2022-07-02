@@ -1,10 +1,10 @@
-package kr.co.knowledgerally.ui.model
+package kr.co.knowledgerally.ui.register
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kr.co.knowledgerally.ui.R
 
-enum class CategoryModel(
+enum class CategoryItem(
     @DrawableRes val drawableResId: Int,
     @StringRes val textResId: Int,
 ) {
