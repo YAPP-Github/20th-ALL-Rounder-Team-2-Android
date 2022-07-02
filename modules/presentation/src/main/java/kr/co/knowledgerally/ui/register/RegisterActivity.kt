@@ -48,9 +48,11 @@ class RegisterActivity : BaseActivity() {
                 ) {
                     composable(RegisterDestination.Register.route) {
                         RegisterScreen(
-                            viewModel = viewModel,
                             navigateUp = { finish() },
-                            navigateToSchedule = { navController.navigate(RegisterDestination.Schedule.route) }
+                            navigateToSchedule = { state ->
+                                viewModel.updateRegistration(state.toRegistration())
+                                navController.navigate(RegisterDestination.Schedule.route)
+                            }
                         )
                     }
                     composable(RegisterDestination.Schedule.route) {

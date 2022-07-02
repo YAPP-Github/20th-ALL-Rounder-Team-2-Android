@@ -57,9 +57,8 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun RegisterScreen(
-    viewModel: RegisterViewModel,
     navigateUp: () -> Unit,
-    navigateToSchedule: () -> Unit,
+    navigateToSchedule: (RegisterState) -> Unit,
 ) {
     val state by rememberRegisterState()
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
@@ -87,7 +86,7 @@ fun RegisterScreen(
             navigateUp = navigateUp,
             onAskCategory = { coroutineScope.launch { sheetState.show() } },
             onPickImage = { launcher.launch("image/*") },
-            navigateToSchedule = navigateToSchedule
+            navigateToSchedule = { navigateToSchedule(state) }
         )
     }
 }

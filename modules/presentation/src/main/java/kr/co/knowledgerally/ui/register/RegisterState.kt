@@ -9,6 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import kr.co.knowledgerally.domain.model.Category
+import kr.co.knowledgerally.domain.model.Registration
 
 @Stable
 class RegisterState(
@@ -78,3 +80,19 @@ class RegisterState(
 fun rememberRegisterState() = rememberSaveable(stateSaver = RegisterState.Saver) {
     mutableStateOf(RegisterState())
 }
+
+fun RegisterState.toRegistration() = Registration(
+    category = when (category) {
+        CategoryItem.ServicePlanning -> Category.ServicePlanning
+        CategoryItem.Design -> Category.Design
+        CategoryItem.Develop -> Category.Develop
+        CategoryItem.Marketing -> Category.Marketing
+        CategoryItem.Language -> Category.Language
+        CategoryItem.Etc -> Category.Etc
+        else -> throw IllegalStateException()
+    },
+    name = name,
+    introduce = introduce,
+    tags = tags.toList(),
+    imageUris = imageUris.map { it.toString() }
+)
