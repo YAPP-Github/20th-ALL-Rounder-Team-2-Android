@@ -1,47 +1,55 @@
 package kr.co.knowledgerally.ui.coach
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
+import kr.co.knowledgerally.domain.model.Lesson
+import kr.co.knowledgerally.domain.usecase.GetCoachLessonListUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class CoachViewModel @Inject constructor() : BaseViewModel() {
+class CoachViewModel @Inject constructor(
+    private val getCoachLessonListUseCase: GetCoachLessonListUseCase
+) : BaseViewModel() {
 
     private val _tabState = MutableStateFlow(CoachTabState.Default)
     val tabState = _tabState.asStateFlow()
 
-    val uiState: StateFlow<CoachUiState> = flow {
-        emit(
-            CoachUiState.Success(
-                matchingClasses = listOf(
-                    ClassUiState.Matching(classId = "0", "프랑스어", emptyList()),
-                    ClassUiState.Matching(classId = "1", "프랑스어", emptyList()),
-                ),
-                scheduledClasses = listOf(
-                    ClassUiState.Scheduled,
-                    ClassUiState.Scheduled,
-                    ClassUiState.Scheduled,
-                    ClassUiState.Scheduled,
-                    ClassUiState.Scheduled,
-                ),
-                completedClasses = listOf(
-                    ClassUiState.Completed,
-                    ClassUiState.Completed,
-                    ClassUiState.Completed,
-                    ClassUiState.Completed,
-                    ClassUiState.Completed,
-                )
-            )
-        )
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, CoachUiState.Loading)
+    private val _uiState = MutableStateFlow<CoachUiState>(CoachUiState.Loading)
+    val uiState: StateFlow<CoachUiState> = _uiState.asStateFlow()
+
+    init {
+        fetchCoachLessons()
+    }
+
+    private fun fetchCoachLessons() {
+        _uiState.value = CoachUiState.Loading
+        launch {
+            val result = getCoachLessonListUseCase()
+            result
+                .onSuccess { lessons ->
+                    if (lessons.isNotEmpty()) {
+                        _uiState.value = CoachUiState.Success(
+                            matchingClasses = lessons
+                                .filter { it.type == Lesson.Type.Matching }
+                                .map { it.toCoachPresentation() as ClassUiState.Matching },
+                            scheduledClasses = lessons
+                                .filter { it.type == Lesson.Type.Scheduled }
+                                .map { it.toCoachPresentation() as ClassUiState.Scheduled },
+                            completedClasses = lessons
+                                .filter { it.type == Lesson.Type.Completed }
+                                .map { it.toCoachPresentation() as ClassUiState.Completed }
+                        )
+                    } else {
+                        _uiState.value = CoachUiState.Empty
+                    }
+                }
+                .onFailure { _uiState.value = CoachUiState.Failure }
+        }
+    }
 
     fun switchTab(newIndex: Int) {
         if (newIndex != tabState.value.currentIndex) {
@@ -52,6 +60,6 @@ class CoachViewModel @Inject constructor() : BaseViewModel() {
     }
 
     fun refresh() {
-        // TODO
+        fetchCoachLessons()
     }
 }
