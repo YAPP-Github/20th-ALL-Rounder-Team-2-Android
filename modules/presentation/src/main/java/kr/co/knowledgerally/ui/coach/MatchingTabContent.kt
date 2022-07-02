@@ -2,14 +2,7 @@ package kr.co.knowledgerally.ui.coach
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -29,7 +22,7 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun MatchingTabContent(
-    matchingList: List<ClassUiState.Matching>,
+    matchingList: List<CoachLessonModel.Matching>,
     navigateToApplicant: (classId: String) -> Unit,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -54,7 +47,7 @@ fun MatchingTabContent(
 
 @Composable
 private fun MatchingItem(
-    matching: ClassUiState.Matching,
+    matching: CoachLessonModel.Matching,
     navigateToApplicant: (classId: String) -> Unit
 ) {
     Column(

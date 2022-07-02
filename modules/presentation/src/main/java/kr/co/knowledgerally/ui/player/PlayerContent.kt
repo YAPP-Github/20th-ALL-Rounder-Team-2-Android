@@ -1,12 +1,6 @@
 package kr.co.knowledgerally.ui.player
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,12 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
-import kr.co.knowledgerally.ui.component.Banner
-import kr.co.knowledgerally.ui.component.DashBanner
-import kr.co.knowledgerally.ui.component.HorizontalSpacer
-import kr.co.knowledgerally.ui.component.KnowllyContainedButton
-import kr.co.knowledgerally.ui.component.KnowllyDivider
-import kr.co.knowledgerally.ui.component.VerticalSpacer
+import kr.co.knowledgerally.ui.component.*
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
@@ -48,7 +37,7 @@ fun PlayerContent(
 
 @Composable
 fun PlayerContentList(
-    lessonList: List<LessonUiState>
+    lessonList: List<PlayerLessonModel>
 ) {
     LazyColumn {
         items(lessonList) { lesson ->
@@ -59,7 +48,7 @@ fun PlayerContentList(
 
 @Composable
 fun PlayerContentListItem(
-    lesson: LessonUiState
+    lesson: PlayerLessonModel
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -86,7 +75,7 @@ fun PlayerContentListItem(
                 ) {
                     Text(text = "클래스 이름", style = KnowllyTheme.typography.subtitle2)
                     Spacer(modifier = Modifier.weight(1f))
-                    if (lesson is LessonUiState.Completed) {
+                    if (lesson is PlayerLessonModel.Completed) {
                         ReviewOutlinedBadge(isReviewed = lesson.isReviewed)
                     }
                 }
@@ -106,8 +95,8 @@ fun PlayerContentListItem(
             }
         }
         when (lesson) {
-            is LessonUiState.Matching -> {}
-            is LessonUiState.Scheduled -> {
+            is PlayerLessonModel.Matching -> {}
+            is PlayerLessonModel.Scheduled -> {
                 KakaoIdCopyButton(
                     kakaoId = lesson.kakaoId,
                     modifier = Modifier
@@ -116,7 +105,7 @@ fun PlayerContentListItem(
                         .height(40.dp)
                 )
             }
-            is LessonUiState.Completed -> {
+            is PlayerLessonModel.Completed -> {
                 if (!lesson.isReviewed) {
                     KnowllyContainedButton(
                         text = stringResource(id = R.string.player_review_button),

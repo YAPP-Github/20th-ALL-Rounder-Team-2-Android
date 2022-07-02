@@ -3,14 +3,14 @@ package kr.co.knowledgerally.ui.coach
 import kr.co.knowledgerally.domain.model.Applicant
 import kr.co.knowledgerally.domain.model.Lesson
 
-sealed interface ClassUiState {
+sealed interface CoachLessonModel {
 
     data class Matching(
         val classId: String,
         val className: String,
         val thumbnailUrl: String?,
         val applicants: List<Applicant>,
-    ) : ClassUiState
+    ) : CoachLessonModel
 
     data class Scheduled(
         val classId: String,
@@ -20,7 +20,7 @@ sealed interface ClassUiState {
         val playerKakaoId: String,
         val startTime: String,
         val runningTime: String
-    ) : ClassUiState
+    ) : CoachLessonModel
 
     data class Completed(
         val classId: String,
@@ -30,13 +30,13 @@ sealed interface ClassUiState {
         val startTime: String,
         val runningTime: String,
         val isReviewed: Boolean
-    ) : ClassUiState
+    ) : CoachLessonModel
 }
 
 fun Lesson.toCoachPresentation() =
     when (type) {
         Lesson.Type.Matching -> {
-            ClassUiState.Matching(
+            CoachLessonModel.Matching(
                 classId = id.toString(),
                 className = title,
                 thumbnailUrl = thumbnailUrl,
@@ -44,7 +44,7 @@ fun Lesson.toCoachPresentation() =
             )
         }
         Lesson.Type.Scheduled -> {
-            ClassUiState.Scheduled(
+            CoachLessonModel.Scheduled(
                 classId = id.toString(),
                 className = title,
                 thumbnailUrl = thumbnailUrl,
@@ -55,7 +55,7 @@ fun Lesson.toCoachPresentation() =
             )
         }
         Lesson.Type.Completed -> {
-            ClassUiState.Completed(
+            CoachLessonModel.Completed(
                 classId = id.toString(),
                 className = title,
                 thumbnailUrl = thumbnailUrl,

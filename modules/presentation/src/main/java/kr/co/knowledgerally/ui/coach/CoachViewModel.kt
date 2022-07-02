@@ -35,13 +35,13 @@ class CoachViewModel @Inject constructor(
                         _uiState.value = CoachUiState.Success(
                             matchingClasses = lessons
                                 .filter { it.type == Lesson.Type.Matching }
-                                .map { it.toCoachPresentation() as ClassUiState.Matching },
+                                .map { it.toCoachPresentation() as CoachLessonModel.Matching },
                             scheduledClasses = lessons
                                 .filter { it.type == Lesson.Type.Scheduled }
-                                .map { it.toCoachPresentation() as ClassUiState.Scheduled },
+                                .map { it.toCoachPresentation() as CoachLessonModel.Scheduled },
                             completedClasses = lessons
                                 .filter { it.type == Lesson.Type.Completed }
-                                .map { it.toCoachPresentation() as ClassUiState.Completed }
+                                .map { it.toCoachPresentation() as CoachLessonModel.Completed }
                         )
                     } else {
                         _uiState.value = CoachUiState.Empty

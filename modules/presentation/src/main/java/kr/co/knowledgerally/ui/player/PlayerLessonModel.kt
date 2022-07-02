@@ -2,14 +2,14 @@ package kr.co.knowledgerally.ui.player
 
 import kr.co.knowledgerally.domain.model.Lesson
 
-sealed interface LessonUiState {
+sealed interface PlayerLessonModel {
 
     data class Matching(
         val lessonId: String,
         val lessonTitle: String,
         val startTime: String,
         val runningTime: String
-    ) : LessonUiState
+    ) : PlayerLessonModel
 
     data class Scheduled(
         val lessonId: String,
@@ -18,7 +18,7 @@ sealed interface LessonUiState {
         val coachKakaoId: String,
         val startTime: String,
         val runningTime: String
-    ) : LessonUiState
+    ) : PlayerLessonModel
 
     data class Completed(
         val lessonId: String,
@@ -27,13 +27,13 @@ sealed interface LessonUiState {
         val startTime: String,
         val runningTime: String,
         val isReviewed: Boolean
-    ) : LessonUiState
+    ) : PlayerLessonModel
 }
 
 fun Lesson.toPlayerPresentation() =
     when (type) {
         Lesson.Type.Matching -> {
-            LessonUiState.Matching(
+            PlayerLessonModel.Matching(
                 lessonId = id.toString(),
                 lessonTitle = title,
                 startTime = startAt.toString(),
@@ -41,7 +41,7 @@ fun Lesson.toPlayerPresentation() =
             )
         }
         Lesson.Type.Scheduled -> {
-            LessonUiState.Scheduled(
+            PlayerLessonModel.Scheduled(
                 lessonId = id.toString(),
                 lessonTitle = title,
                 coachName = coachName,
@@ -51,7 +51,7 @@ fun Lesson.toPlayerPresentation() =
             )
         }
         Lesson.Type.Completed -> {
-            LessonUiState.Completed(
+            PlayerLessonModel.Completed(
                 lessonId = id.toString(),
                 lessonTitle = title,
                 coachName = coachName,

@@ -1,13 +1,7 @@
 package kr.co.knowledgerally.ui.coach
 
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -27,7 +21,7 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun ScheduledTabContent(
-    scheduledList: List<ClassUiState.Scheduled>,
+    scheduledList: List<CoachLessonModel.Scheduled>,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val clipboardManager = LocalClipboardManager.current
@@ -67,7 +61,7 @@ fun ScheduledTabContent(
 
 @Composable
 private fun ScheduledItem(
-    scheduled: ClassUiState.Scheduled,
+    scheduled: CoachLessonModel.Scheduled,
     copyToClipboard: (String) -> Unit,
 ) {
     Column(

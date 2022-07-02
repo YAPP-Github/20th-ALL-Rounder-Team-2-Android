@@ -34,13 +34,13 @@ class PlayerViewModel @Inject constructor(
                     _uiState.value = PlayerUiState.Success(
                         matchingLessons = lessons
                             .filter { it.type == Lesson.Type.Matching }
-                            .map { it.toPlayerPresentation() as LessonUiState.Matching },
+                            .map { it.toPlayerPresentation() as PlayerLessonModel.Matching },
                         scheduledLessons = lessons
                             .filter { it.type == Lesson.Type.Scheduled }
-                            .map { it.toPlayerPresentation() as LessonUiState.Scheduled },
+                            .map { it.toPlayerPresentation() as PlayerLessonModel.Scheduled },
                         completedLessons = lessons
                             .filter { it.type == Lesson.Type.Completed }
-                            .map { it.toPlayerPresentation() as LessonUiState.Completed }
+                            .map { it.toPlayerPresentation() as PlayerLessonModel.Completed }
                     )
                 }
                 .onFailure { _uiState.value = PlayerUiState.Failure }
