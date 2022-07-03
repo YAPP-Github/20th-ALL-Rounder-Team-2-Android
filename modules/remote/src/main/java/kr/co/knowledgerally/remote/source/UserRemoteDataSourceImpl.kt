@@ -6,6 +6,7 @@ import kr.co.knowledgerally.data.model.BallHistoryEntity
 import kr.co.knowledgerally.data.model.OnboardEntity
 import kr.co.knowledgerally.data.model.UserEntity
 import kr.co.knowledgerally.data.source.UserRemoteDataSource
+import kr.co.knowledgerally.log.Logger
 import kr.co.knowledgerally.remote.api.ApiService
 import kr.co.knowledgerally.remote.image.ImageTranscoder
 import kr.co.knowledgerally.remote.model.toData
@@ -28,9 +29,12 @@ internal class UserRemoteDataSourceImpl @Inject constructor(
         val imageUri = onboard.imageUri
         if (imageUri != null) {
             val image = withContext(Dispatchers.IO) { imageTranscoder.from(imageUri) }
-                .map { byteArray -> byteArray.toRequestBody(MultipartBody.FORM) }
-                .map { requestBody ->
-                    MultipartBody.Part.createFormData("image", null, requestBody)
+                .map { image ->
+                    MultipartBody.Part.createFormData(
+                        "image",
+                        image.filename,
+                        image.data.toRequestBody(MultipartBody.FORM)
+                    )
                 }
                 .getOrThrow()
             apiService.uploadUserImage(image)
