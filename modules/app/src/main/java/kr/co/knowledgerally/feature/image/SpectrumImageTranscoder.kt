@@ -12,17 +12,20 @@ import com.facebook.spectrum.logging.SpectrumLogcatLogger
 import com.facebook.spectrum.options.TranscodeOptions
 import com.facebook.spectrum.requirements.EncodeRequirement
 import com.facebook.spectrum.requirements.ResizeRequirement.Mode
-import kr.co.knowledgerally.core.exception.ImageException
+import kr.co.knowledgerally.core.exception.ImageTranscodeException
+import kr.co.knowledgerally.log.Logger
+import kr.co.knowledgerally.remote.image.Image
 import kr.co.knowledgerally.remote.image.ImageTranscoder
 import java.io.ByteArrayOutputStream
 
 class SpectrumImageTranscoder(private val context: Context) : ImageTranscoder {
 
-    override fun from(uri: String): Result<ByteArray> {
+    override fun from(uriString: String): Result<Image> {
         val result = runCatching {
+            val uri = Uri.parse(uriString)
             val spectrum = Spectrum.make(SpectrumLogcatLogger(), DefaultPlugins.get())
             val outputStream = ByteArrayOutputStream()
-            val inputStream = context.contentResolver.openInputStream(Uri.parse(uri))
+            val inputStream = context.contentResolver.openInputStream(uri)
             val options = TranscodeOptions.Builder(
                 EncodeRequirement(EncodedImageFormat.JPEG, IMAGE_QUALITY)
             )
@@ -35,11 +38,15 @@ class SpectrumImageTranscoder(private val context: Context) : ImageTranscoder {
                 options,
                 context.packageName
             )
-            outputStream.toByteArray()
+            Image(
+                data = outputStream.toByteArray(),
+                filename = UriUtil.getFilepath(context, uri)
+            )
+                .also { Logger.d("SpectrumImageTranscoder", "image: $it") }
         }
 
         val exception = result.exceptionOrNull() ?: return result
-        return Result.failure(ImageException(uri, exception))
+        return Result.failure(ImageTranscodeException(uriString, exception))
     }
 
     companion object {

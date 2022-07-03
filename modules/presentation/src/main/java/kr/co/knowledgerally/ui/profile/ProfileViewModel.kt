@@ -5,7 +5,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.co.knowledgerally.base.BaseViewModel
-import kr.co.knowledgerally.core.exception.ImageException
+import kr.co.knowledgerally.core.exception.ImageTranscodeException
 import kr.co.knowledgerally.domain.model.Onboard
 import kr.co.knowledgerally.domain.usecase.SubmitOnboardUseCase
 import kr.co.knowledgerally.toast.Toaster
@@ -53,7 +53,7 @@ class ProfileViewModel @Inject constructor(
     override fun handleException(throwable: Throwable) {
         _loading.value = false
         when (throwable) {
-            is ImageException -> Toaster.show(R.string.exception_image)
+            is ImageTranscodeException -> Toaster.show(R.string.exception_image)
             else -> super.handleException(throwable)
         }
     }
