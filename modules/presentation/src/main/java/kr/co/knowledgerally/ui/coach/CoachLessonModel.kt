@@ -10,14 +10,12 @@ sealed interface CoachLessonModel {
     data class Matching(
         val lessonId: String,
         val lessonTitle: String,
-        val thumbnailUrl: String?,
         val applicants: List<Applicant>,
     ) : CoachLessonModel
 
     data class Scheduled(
         val lessonId: String,
         val lessonTitle: String,
-        val thumbnailUrl: String?,
         val playerName: String,
         val playerKakaoId: String,
         val startTime: LocalDateTime,
@@ -27,7 +25,6 @@ sealed interface CoachLessonModel {
     data class Completed(
         val lessonId: String,
         val lessonTitle: String,
-        val thumbnailUrl: String?,
         val playerName: String,
         val startTime: LocalDateTime,
         val runningTime: Long,
@@ -41,7 +38,6 @@ fun Lesson.toCoachPresentation() =
             CoachLessonModel.Matching(
                 lessonId = id.toString(),
                 lessonTitle = title,
-                thumbnailUrl = thumbnailUrl,
                 applicants = applicants!!
             )
         }
@@ -49,7 +45,6 @@ fun Lesson.toCoachPresentation() =
             CoachLessonModel.Scheduled(
                 lessonId = id.toString(),
                 lessonTitle = title,
-                thumbnailUrl = thumbnailUrl,
                 playerName = playerName!!,
                 playerKakaoId = playerKakaoId!!,
                 startTime = startAt,
@@ -60,7 +55,6 @@ fun Lesson.toCoachPresentation() =
             CoachLessonModel.Completed(
                 lessonId = id.toString(),
                 lessonTitle = title,
-                thumbnailUrl = thumbnailUrl,
                 playerName = playerName!!,
                 startTime = startAt,
                 runningTime = ChronoUnit.HOURS.between(endAt, startAt),
