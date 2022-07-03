@@ -53,7 +53,9 @@ class ScheduleActivity : BaseActivity() {
             .build()
 
         dialog.addOnPositiveButtonClickListener { timeInMillis ->
-            // TODO: viewModel.updateTime
+            val localDate =
+                Instant.ofEpochMilli(timeInMillis).atZone(ZoneId.systemDefault()).toLocalDate()
+            viewModel.select(localDate)
         }
         dialog.show(supportFragmentManager, TAG_DIALOG)
     }
