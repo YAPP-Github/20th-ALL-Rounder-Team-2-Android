@@ -1,6 +1,7 @@
 package kr.co.knowledgerally.ui.player
 
 import kr.co.knowledgerally.domain.model.Lesson
+import java.time.temporal.ChronoUnit
 
 sealed interface PlayerLessonModel {
 
@@ -37,7 +38,7 @@ fun Lesson.toPlayerPresentation() =
                 lessonId = id.toString(),
                 lessonTitle = title,
                 startTime = startAt.toString(),
-                runningTime = "3시간"
+                runningTime = ChronoUnit.HOURS.between(endAt, startAt).toString()
             )
         }
         Lesson.Type.Scheduled -> {
@@ -47,7 +48,7 @@ fun Lesson.toPlayerPresentation() =
                 coachName = coachName,
                 coachKakaoId = coachKakaoId,
                 startTime = startAt.toString(),
-                runningTime = "3시간"
+                runningTime = ChronoUnit.HOURS.between(endAt, startAt).toString()
             )
         }
         Lesson.Type.Completed -> {
@@ -56,7 +57,7 @@ fun Lesson.toPlayerPresentation() =
                 lessonTitle = title,
                 coachName = coachName,
                 startTime = startAt.toString(),
-                runningTime = "3시간",
+                runningTime = ChronoUnit.HOURS.between(endAt, startAt).toString(),
                 isReviewed = isReviewed
             )
         }

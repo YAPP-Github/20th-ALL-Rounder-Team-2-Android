@@ -2,6 +2,7 @@ package kr.co.knowledgerally.ui.coach
 
 import kr.co.knowledgerally.domain.model.Applicant
 import kr.co.knowledgerally.domain.model.Lesson
+import java.time.temporal.ChronoUnit
 
 sealed interface CoachLessonModel {
 
@@ -51,7 +52,7 @@ fun Lesson.toCoachPresentation() =
                 playerName = playerName!!,
                 playerKakaoId = playerKakaoId!!,
                 startTime = startAt.toString(),
-                runningTime = "3시간" // LocalDateTime 계산 관련 함수가 거의 대부분 API 26 이상을 필요
+                runningTime = ChronoUnit.HOURS.between(endAt, startAt).toString()
             )
         }
         Lesson.Type.Completed -> {
@@ -61,7 +62,7 @@ fun Lesson.toCoachPresentation() =
                 thumbnailUrl = thumbnailUrl,
                 playerName = playerName!!,
                 startTime = startAt.toString(),
-                runningTime = "3시간",
+                runningTime = ChronoUnit.HOURS.between(endAt, startAt).toString(),
                 isReviewed = isReviewed
             )
         }
