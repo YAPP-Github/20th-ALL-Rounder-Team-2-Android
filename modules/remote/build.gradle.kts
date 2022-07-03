@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation(project(Modules.DATA))
+    implementation(project(Modules.LOG))
 
     implementation(libs.hilt.core)
     kapt(libs.hilt.compiler)

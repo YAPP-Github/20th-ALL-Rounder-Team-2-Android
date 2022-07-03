@@ -51,7 +51,7 @@ internal interface ApiService {
     @Multipart
     suspend fun uploadUserImage(@Part part: MultipartBody.Part)
 
-    @POST("user/onboard")
+    @PATCH("user/onboard")
     suspend fun submitOnboard(@Body onboard: OnboardRequest)
 
     @FormUrlEncoded

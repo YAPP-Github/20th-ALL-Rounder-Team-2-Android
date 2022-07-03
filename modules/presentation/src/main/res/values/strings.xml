@@ -5,11 +5,15 @@
     <string name="player">플레이어</string>
     <string name="coach">코치</string>
 
+    <string name="am">오전</string>
+    <string name="pm">오후</string>
+
     <string name="copy_kakao_id">카카오톡 ID 복사</string>
     <string name="copied_kakao_id">카카오톡 ID가 복사되었습니다.</string>
 
     <string name="next">다음</string>
     <string name="do_register">등록하기</string>
+    <string name="do_add">추가하기</string>
 
     <string name="nav_home">홈</string>
     <string name="nav_player">수강 클래스</string>
@@ -155,8 +159,14 @@
     <string name="register_schedule_add_schedule">일정 추가</string>
 
     <string name="schedule_title">클래스 일정 추가하기</string>
-    <string name="schedule_subtitle">날짜 선택</string>
-    <string name="schedule_description">편하신 날짜를 하나 선택해주세요.</string>
+    <string name="schedule_select_date">날짜 선택</string>
+    <string name="schedule_select_date_description">편하신 날짜를 하나 선택해주세요.</string>
+    <string name="schedule_date_fmt">yyyy년 M월 d일</string>
+    <string name="schedule_select_time">시간 선택</string>
+    <string name="schedule_select_time_description">클래스 시작 시간과 진행 시간을 선택해주세요.\n진행 시간은 1시간부터 5시간까지 선택 가능합니다.</string>
+    <string name="schedule_select_time_start_time">클래스 시작 시간</string>
+    <string name="schedule_select_duration">클래스 예상 소요 시간</string>
+    <string name="schedule_select_duration_fmt">%d시간</string>
 
     <string name="dialog_logout_text">로그아웃 하시겠습니까?</string>
     <string name="dialog_logout_dismiss">취소</string>

@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kr.co.knowledgerally.log.Logger
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyMultilineTextField
@@ -156,6 +157,7 @@ private fun ProfileImage(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             if (uri != null) {
+                Logger.d("Profile", "uri: $uri")
                 state.uri = uri
             }
         },
