@@ -1,63 +1,63 @@
 package kr.co.knowledgerally.ui.player
 
-import kr.co.knowledgerally.domain.model.Lesson
+import kr.co.knowledgerally.domain.model.Lecture
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
-sealed interface PlayerLessonModel {
-    val lessonId: String
-    val lessonTitle: String
+sealed interface PlayerLectureModel {
+    val lectureId: String
+    val lectureTitle: String
     val thumbnailUrl: String?
     val coachName: String
     val startTime: LocalDateTime
     val runningTime: Long
 
     data class Matching(
-        override val lessonId: String,
-        override val lessonTitle: String,
+        override val lectureId: String,
+        override val lectureTitle: String,
         override val thumbnailUrl: String?,
         override val coachName: String,
         override val startTime: LocalDateTime,
         override val runningTime: Long
-    ) : PlayerLessonModel
+    ) : PlayerLectureModel
 
     data class Scheduled(
-        override val lessonId: String,
-        override val lessonTitle: String,
+        override val lectureId: String,
+        override val lectureTitle: String,
         override val thumbnailUrl: String?,
         override val coachName: String,
         override val startTime: LocalDateTime,
         override val runningTime: Long,
         val coachKakaoId: String
-    ) : PlayerLessonModel
+    ) : PlayerLectureModel
 
     data class Completed(
-        override val lessonId: String,
-        override val lessonTitle: String,
+        override val lectureId: String,
+        override val lectureTitle: String,
         override val thumbnailUrl: String?,
         override val coachName: String,
         override val startTime: LocalDateTime,
         override val runningTime: Long,
         val isReviewed: Boolean
-    ) : PlayerLessonModel
+    ) : PlayerLectureModel
 }
 
-fun Lesson.toPlayerPresentation() =
+fun Lecture.toPlayerPresentation() =
     when (type) {
-        Lesson.Type.Matching -> {
-            PlayerLessonModel.Matching(
-                lessonId = id.toString(),
-                lessonTitle = title,
+        Lecture.Type.Matching -> {
+            PlayerLectureModel.Matching(
+                lectureId = id.toString(),
+                lectureTitle = title,
                 thumbnailUrl = thumbnailUrl,
                 coachName = coachName,
                 startTime = startAt,
                 runningTime = ChronoUnit.HOURS.between(endAt, startAt)
             )
         }
-        Lesson.Type.Scheduled -> {
-            PlayerLessonModel.Scheduled(
-                lessonId = id.toString(),
-                lessonTitle = title,
+        Lecture.Type.Scheduled -> {
+            PlayerLectureModel.Scheduled(
+                lectureId = id.toString(),
+                lectureTitle = title,
                 thumbnailUrl = thumbnailUrl,
                 coachName = coachName,
                 coachKakaoId = coachKakaoId,
@@ -65,10 +65,10 @@ fun Lesson.toPlayerPresentation() =
                 runningTime = ChronoUnit.HOURS.between(endAt, startAt)
             )
         }
-        Lesson.Type.Completed -> {
-            PlayerLessonModel.Completed(
-                lessonId = id.toString(),
-                lessonTitle = title,
+        Lecture.Type.Completed -> {
+            PlayerLectureModel.Completed(
+                lectureId = id.toString(),
+                lectureTitle = title,
                 thumbnailUrl = thumbnailUrl,
                 coachName = coachName,
                 startTime = startAt,

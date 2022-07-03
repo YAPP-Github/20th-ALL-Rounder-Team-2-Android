@@ -6,13 +6,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
-import kr.co.knowledgerally.domain.model.Lesson
-import kr.co.knowledgerally.domain.usecase.GetCoachLessonListUseCase
+import kr.co.knowledgerally.domain.model.Lecture
+import kr.co.knowledgerally.domain.usecase.GetCoachLectureListUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class CoachViewModel @Inject constructor(
-    private val getCoachLessonListUseCase: GetCoachLessonListUseCase
+    private val getCoachLectureListUseCase: GetCoachLectureListUseCase
 ) : BaseViewModel() {
 
     private val _tabState = MutableStateFlow(CoachTabState.Default)
@@ -22,26 +22,26 @@ class CoachViewModel @Inject constructor(
     val uiState: StateFlow<CoachUiState> = _uiState.asStateFlow()
 
     init {
-        fetchCoachLessons()
+        fetchCoachLectures()
     }
 
-    private fun fetchCoachLessons() {
+    private fun fetchCoachLectures() {
         _uiState.value = CoachUiState.Loading
         launch {
-            val result = getCoachLessonListUseCase()
+            val result = getCoachLectureListUseCase()
             result
-                .onSuccess { lessons ->
-                    if (lessons.isNotEmpty()) {
+                .onSuccess { lectures ->
+                    if (lectures.isNotEmpty()) {
                         _uiState.value = CoachUiState.Success(
-                            matchingClasses = lessons
-                                .filter { it.type == Lesson.Type.Matching }
-                                .map { it.toCoachPresentation() as CoachLessonModel.Matching },
-                            scheduledClasses = lessons
-                                .filter { it.type == Lesson.Type.Scheduled }
-                                .map { it.toCoachPresentation() as CoachLessonModel.Scheduled },
-                            completedClasses = lessons
-                                .filter { it.type == Lesson.Type.Completed }
-                                .map { it.toCoachPresentation() as CoachLessonModel.Completed }
+                            matchingLectures = lectures
+                                .filter { it.type == Lecture.Type.Matching }
+                                .map { it.toCoachPresentation() as CoachLectureModel.Matching },
+                            scheduledLectures = lectures
+                                .filter { it.type == Lecture.Type.Scheduled }
+                                .map { it.toCoachPresentation() as CoachLectureModel.Scheduled },
+                            completedLectures = lectures
+                                .filter { it.type == Lecture.Type.Completed }
+                                .map { it.toCoachPresentation() as CoachLectureModel.Completed }
                         )
                     } else {
                         _uiState.value = CoachUiState.Empty
@@ -60,6 +60,6 @@ class CoachViewModel @Inject constructor(
     }
 
     fun refresh() {
-        fetchCoachLessons()
+        fetchCoachLectures()
     }
 }

@@ -22,7 +22,7 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun MatchingTabContent(
-    matchingList: List<CoachLessonModel.Matching>,
+    matchingList: List<CoachLectureModel.Matching>,
     navigateToApplicant: (classId: String) -> Unit,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -47,7 +47,7 @@ fun MatchingTabContent(
 
 @Composable
 private fun MatchingItem(
-    matching: CoachLessonModel.Matching,
+    matching: CoachLectureModel.Matching,
     navigateToApplicant: (classId: String) -> Unit
 ) {
     Column(
@@ -55,10 +55,10 @@ private fun MatchingItem(
             .fillMaxWidth()
     ) {
         VerticalSpacer(height = 16.dp)
-        MatchingItemHeader(text = matching.lessonTitle)
+        MatchingItemHeader(text = matching.lectureTitle)
         MatchingItemApplicant(
             applicants = matching.applicants,
-            onClick = { navigateToApplicant(matching.lessonId) },
+            onClick = { navigateToApplicant(matching.lectureId) },
             modifier = Modifier.padding(top = 8.dp)
         )
         VerticalSpacer(height = 16.dp)

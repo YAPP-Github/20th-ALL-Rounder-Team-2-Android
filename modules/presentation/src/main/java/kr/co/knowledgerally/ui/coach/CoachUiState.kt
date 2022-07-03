@@ -9,8 +9,8 @@ sealed interface CoachUiState {
     object Empty : CoachUiState
 
     data class Success(
-        val matchingClasses: List<CoachLessonModel.Matching>,
-        val scheduledClasses: List<CoachLessonModel.Scheduled>,
-        val completedClasses: List<CoachLessonModel.Completed>,
+        val matchingLectures: List<CoachLectureModel.Matching>,
+        val scheduledLectures: List<CoachLectureModel.Scheduled>,
+        val completedLectures: List<CoachLectureModel.Completed>,
     ) : CoachUiState
 }

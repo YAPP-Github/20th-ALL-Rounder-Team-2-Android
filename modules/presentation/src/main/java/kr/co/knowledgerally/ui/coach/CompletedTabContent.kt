@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun CompletedTabContent(
-    completedList: List<CoachLessonModel.Completed>,
+    completedList: List<CoachLectureModel.Completed>,
     scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
@@ -57,7 +57,7 @@ fun CompletedTabContent(
 
 @Composable
 private fun CompletedItem(
-    completed: CoachLessonModel.Completed,
+    completed: CoachLectureModel.Completed,
 ) {
     Box(
         modifier = Modifier
@@ -85,7 +85,7 @@ private fun CompletedItem(
             },
         )
         Column(modifier = Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp)) {
-            Text(text = completed.lessonTitle, style = KnowllyTheme.typography.subtitle2)
+            Text(text = completed.lectureTitle, style = KnowllyTheme.typography.subtitle2)
             Text(
                 text = completed.playerName,
                 style = KnowllyTheme.typography.body1,

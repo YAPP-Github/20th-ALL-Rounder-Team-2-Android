@@ -1,60 +1,60 @@
 package kr.co.knowledgerally.ui.coach
 
 import kr.co.knowledgerally.domain.model.Applicant
-import kr.co.knowledgerally.domain.model.Lesson
+import kr.co.knowledgerally.domain.model.Lecture
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
-sealed interface CoachLessonModel {
+sealed interface CoachLectureModel {
 
     data class Matching(
-        val lessonId: String,
-        val lessonTitle: String,
+        val lectureId: String,
+        val lectureTitle: String,
         val applicants: List<Applicant>,
-    ) : CoachLessonModel
+    ) : CoachLectureModel
 
     data class Scheduled(
-        val lessonId: String,
-        val lessonTitle: String,
+        val lectureId: String,
+        val lectureTitle: String,
         val playerName: String,
         val playerKakaoId: String,
         val startTime: LocalDateTime,
         val runningTime: Long
-    ) : CoachLessonModel
+    ) : CoachLectureModel
 
     data class Completed(
-        val lessonId: String,
-        val lessonTitle: String,
+        val lectureId: String,
+        val lectureTitle: String,
         val playerName: String,
         val startTime: LocalDateTime,
         val runningTime: Long,
         val isReviewed: Boolean
-    ) : CoachLessonModel
+    ) : CoachLectureModel
 }
 
-fun Lesson.toCoachPresentation() =
+fun Lecture.toCoachPresentation() =
     when (type) {
-        Lesson.Type.Matching -> {
-            CoachLessonModel.Matching(
-                lessonId = id.toString(),
-                lessonTitle = title,
+        Lecture.Type.Matching -> {
+            CoachLectureModel.Matching(
+                lectureId = id.toString(),
+                lectureTitle = title,
                 applicants = applicants!!
             )
         }
-        Lesson.Type.Scheduled -> {
-            CoachLessonModel.Scheduled(
-                lessonId = id.toString(),
-                lessonTitle = title,
+        Lecture.Type.Scheduled -> {
+            CoachLectureModel.Scheduled(
+                lectureId = id.toString(),
+                lectureTitle = title,
                 playerName = playerName!!,
                 playerKakaoId = playerKakaoId!!,
                 startTime = startAt,
                 runningTime = ChronoUnit.HOURS.between(endAt, startAt)
             )
         }
-        Lesson.Type.Completed -> {
-            CoachLessonModel.Completed(
-                lessonId = id.toString(),
-                lessonTitle = title,
+        Lecture.Type.Completed -> {
+            CoachLectureModel.Completed(
+                lectureId = id.toString(),
+                lectureTitle = title,
                 playerName = playerName!!,
                 startTime = startAt,
                 runningTime = ChronoUnit.HOURS.between(endAt, startAt),

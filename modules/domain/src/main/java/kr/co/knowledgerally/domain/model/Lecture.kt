@@ -2,7 +2,7 @@ package kr.co.knowledgerally.domain.model
 
 import java.time.LocalDateTime
 
-data class Lesson (
+data class Lecture(
     val id: Int,
     val title: String,
     val thumbnailUrl: String?,
@@ -15,7 +15,7 @@ data class Lesson (
     val type: Type,
     val startAt: LocalDateTime,
     val endAt: LocalDateTime
-){
+) {
 
     enum class Type {
         Matching, Scheduled, Completed

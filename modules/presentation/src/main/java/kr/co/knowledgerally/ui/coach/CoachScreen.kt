@@ -48,8 +48,8 @@ fun CoachScreen(
         tabState = tabState,
         navigateToRegister = navigateToRegister,
         switchTab = viewModel::switchTab,
-        navigateToApplicant = { classId ->
-            val intent = ApplicantActivity.getIntent(context, classId)
+        navigateToApplicant = { lectureId ->
+            val intent = ApplicantActivity.getIntent(context, lectureId)
             applicantLauncher.launch(intent)
         }
     )
@@ -60,7 +60,7 @@ fun CoachScreen(
     uiState: CoachUiState,
     tabState: CoachTabState,
     navigateToRegister: () -> Unit,
-    navigateToApplicant: (classId: String) -> Unit,
+    navigateToApplicant: (lectureId: String) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     when (uiState) {
@@ -79,7 +79,7 @@ fun CoachScreen(
 fun CoachContent(
     uiState: CoachUiState.Success,
     tabState: CoachTabState,
-    navigateToApplicant: (classId: String) -> Unit,
+    navigateToApplicant: (lectureId: String) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     val matchingScrollState = rememberScrollState()
@@ -96,14 +96,14 @@ fun CoachContent(
 
         when (tabState.currentIndex) {
             INDEX_MATCHING -> MatchingTabContent(
-                matchingList = uiState.matchingClasses,
+                matchingList = uiState.matchingLectures,
                 navigateToApplicant = navigateToApplicant,
                 scrollState = matchingScrollState
             )
             INDEX_SCHEDULED ->
-                ScheduledTabContent(uiState.scheduledClasses, scheduledScrollState)
+                ScheduledTabContent(uiState.scheduledLectures, scheduledScrollState)
             INDEX_COMPLETED ->
-                CompletedTabContent(uiState.completedClasses, completedScrollState)
+                CompletedTabContent(uiState.completedLectures, completedScrollState)
         }
     }
 }

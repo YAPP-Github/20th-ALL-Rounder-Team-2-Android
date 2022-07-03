@@ -22,15 +22,15 @@ fun PlayerContent(
     tab: PlayerTabState.Tab,
     uiState: PlayerUiState.Success
 ) {
-    val lessonList = when (tab) {
-        PlayerTabState.Tab.Matching -> uiState.matchingLessons
-        PlayerTabState.Tab.Scheduled -> uiState.scheduledLessons
-        PlayerTabState.Tab.Completed -> uiState.completedLessons
+    val lectures = when (tab) {
+        PlayerTabState.Tab.Matching -> uiState.matchingLectures
+        PlayerTabState.Tab.Scheduled -> uiState.scheduledLectures
+        PlayerTabState.Tab.Completed -> uiState.completedLectures
     }
 
-    if (lessonList.isNotEmpty()) {
+    if (lectures.isNotEmpty()) {
         Column {
-            PlayerContentList(lessonList = lessonList)
+            PlayerContentList(lectures = lectures)
             KnowllyDivider()
         }
     } else {
@@ -40,18 +40,18 @@ fun PlayerContent(
 
 @Composable
 fun PlayerContentList(
-    lessonList: List<PlayerLessonModel>
+    lectures: List<PlayerLectureModel>
 ) {
     LazyColumn {
-        items(lessonList) { lesson ->
-            PlayerContentListItem(lesson = lesson)
+        items(lectures) { lecture ->
+            PlayerContentListItem(lecture = lecture)
         }
     }
 }
 
 @Composable
 fun PlayerContentListItem(
-    lesson: PlayerLessonModel
+    lecture: PlayerLectureModel
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -67,9 +67,9 @@ fun PlayerContentListItem(
                 color = KnowllyTheme.colors.grayEF,
                 modifier = Modifier.size(88.dp)
             ) {
-                if (lesson.thumbnailUrl != null) {
+                if (lecture.thumbnailUrl != null) {
                     AsyncImage(
-                        model = lesson.thumbnailUrl,
+                        model = lecture.thumbnailUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
@@ -82,47 +82,47 @@ fun PlayerContentListItem(
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = lesson.lessonTitle, style = KnowllyTheme.typography.subtitle2)
+                    Text(text = lecture.lectureTitle, style = KnowllyTheme.typography.subtitle2)
                     Spacer(modifier = Modifier.weight(1f))
-                    if (lesson is PlayerLessonModel.Completed) {
-                        ReviewOutlinedBadge(isReviewed = lesson.isReviewed)
+                    if (lecture is PlayerLectureModel.Completed) {
+                        ReviewOutlinedBadge(isReviewed = lecture.isReviewed)
                     }
                 }
                 VerticalSpacer(height = 2.dp)
-                Text(text = lesson.coachName, style = KnowllyTheme.typography.body1)
+                Text(text = lecture.coachName, style = KnowllyTheme.typography.body1)
                 VerticalSpacer(height = 6.dp)
                 Text(
-                    text = lesson.startTime.format(
+                    text = lecture.startTime.format(
                         DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
                     ),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )
                 Text(
-                    text = lesson.startTime.format(
+                    text = lecture.startTime.format(
                         DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_time_format))
                     ) + " " + stringResource(
                         R.string.lecture_runningtime_format,
-                        lesson.runningTime
+                        lecture.runningTime
                     ),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )
             }
         }
-        when (lesson) {
-            is PlayerLessonModel.Matching -> {}
-            is PlayerLessonModel.Scheduled -> {
+        when (lecture) {
+            is PlayerLectureModel.Matching -> {}
+            is PlayerLectureModel.Scheduled -> {
                 KakaoIdCopyButton(
-                    kakaoId = lesson.coachKakaoId,
+                    kakaoId = lecture.coachKakaoId,
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .fillMaxWidth()
                         .height(40.dp)
                 )
             }
-            is PlayerLessonModel.Completed -> {
-                if (!lesson.isReviewed) {
+            is PlayerLectureModel.Completed -> {
+                if (!lecture.isReviewed) {
                     KnowllyContainedButton(
                         text = stringResource(id = R.string.player_review_button),
                         onClick = { /* TODO: 후기 페이지로 이동 */ },

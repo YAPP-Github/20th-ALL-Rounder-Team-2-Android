@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun ScheduledTabContent(
-    scheduledList: List<CoachLessonModel.Scheduled>,
+    scheduledList: List<CoachLectureModel.Scheduled>,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val clipboardManager = LocalClipboardManager.current
@@ -62,7 +62,7 @@ fun ScheduledTabContent(
 
 @Composable
 private fun ScheduledItem(
-    scheduled: CoachLessonModel.Scheduled,
+    scheduled: CoachLectureModel.Scheduled,
     copyToClipboard: (String) -> Unit,
 ) {
     Column(
@@ -73,7 +73,7 @@ private fun ScheduledItem(
         Box(modifier = Modifier.height(IntrinsicSize.Max)) {
             RoundRect(radius = 8.dp, width = 4.dp)
             Column(modifier = Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp)) {
-                Text(text = scheduled.lessonTitle, style = KnowllyTheme.typography.subtitle2)
+                Text(text = scheduled.lectureTitle, style = KnowllyTheme.typography.subtitle2)
                 Text(
                     text = scheduled.playerName,
                     style = KnowllyTheme.typography.body1,

@@ -6,13 +6,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
-import kr.co.knowledgerally.domain.model.Lesson
-import kr.co.knowledgerally.domain.usecase.GetPlayerLessonListUseCase
+import kr.co.knowledgerally.domain.model.Lecture
+import kr.co.knowledgerally.domain.usecase.GetPlayerLectureListUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    private val getPlayerLessonListUseCase: GetPlayerLessonListUseCase
+    private val getPlayerLectureListUseCase: GetPlayerLectureListUseCase
 ) : BaseViewModel() {
 
     private val _tabState = MutableStateFlow(PlayerTabState.DEFAULT)
@@ -22,25 +22,25 @@ class PlayerViewModel @Inject constructor(
     val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
 
     init {
-        fetchCoachLessons()
+        fetchCoachLectures()
     }
 
-    private fun fetchCoachLessons() {
+    private fun fetchCoachLectures() {
         _uiState.value = PlayerUiState.Loading
         launch {
-            val result = getPlayerLessonListUseCase()
+            val result = getPlayerLectureListUseCase()
             result
-                .onSuccess { lessons ->
+                .onSuccess { lectures ->
                     _uiState.value = PlayerUiState.Success(
-                        matchingLessons = lessons
-                            .filter { it.type == Lesson.Type.Matching }
-                            .map { it.toPlayerPresentation() as PlayerLessonModel.Matching },
-                        scheduledLessons = lessons
-                            .filter { it.type == Lesson.Type.Scheduled }
-                            .map { it.toPlayerPresentation() as PlayerLessonModel.Scheduled },
-                        completedLessons = lessons
-                            .filter { it.type == Lesson.Type.Completed }
-                            .map { it.toPlayerPresentation() as PlayerLessonModel.Completed }
+                        matchingLectures = lectures
+                            .filter { it.type == Lecture.Type.Matching }
+                            .map { it.toPlayerPresentation() as PlayerLectureModel.Matching },
+                        scheduledLectures = lectures
+                            .filter { it.type == Lecture.Type.Scheduled }
+                            .map { it.toPlayerPresentation() as PlayerLectureModel.Scheduled },
+                        completedLectures = lectures
+                            .filter { it.type == Lecture.Type.Completed }
+                            .map { it.toPlayerPresentation() as PlayerLectureModel.Completed }
                     )
                 }
                 .onFailure { _uiState.value = PlayerUiState.Failure }
