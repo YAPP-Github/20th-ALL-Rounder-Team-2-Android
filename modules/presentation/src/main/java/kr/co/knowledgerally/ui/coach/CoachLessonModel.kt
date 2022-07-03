@@ -2,6 +2,7 @@ package kr.co.knowledgerally.ui.coach
 
 import kr.co.knowledgerally.domain.model.Applicant
 import kr.co.knowledgerally.domain.model.Lesson
+import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 sealed interface CoachLessonModel {
@@ -19,8 +20,8 @@ sealed interface CoachLessonModel {
         val thumbnailUrl: String?,
         val playerName: String,
         val playerKakaoId: String,
-        val startTime: String,
-        val runningTime: String
+        val startTime: LocalDateTime,
+        val runningTime: Long
     ) : CoachLessonModel
 
     data class Completed(
@@ -28,8 +29,8 @@ sealed interface CoachLessonModel {
         val lessonTitle: String,
         val thumbnailUrl: String?,
         val playerName: String,
-        val startTime: String,
-        val runningTime: String,
+        val startTime: LocalDateTime,
+        val runningTime: Long,
         val isReviewed: Boolean
     ) : CoachLessonModel
 }
@@ -51,8 +52,8 @@ fun Lesson.toCoachPresentation() =
                 thumbnailUrl = thumbnailUrl,
                 playerName = playerName!!,
                 playerKakaoId = playerKakaoId!!,
-                startTime = startAt.toString(),
-                runningTime = ChronoUnit.HOURS.between(endAt, startAt).toString()
+                startTime = startAt,
+                runningTime = ChronoUnit.HOURS.between(endAt, startAt)
             )
         }
         Lesson.Type.Completed -> {
@@ -61,8 +62,8 @@ fun Lesson.toCoachPresentation() =
                 lessonTitle = title,
                 thumbnailUrl = thumbnailUrl,
                 playerName = playerName!!,
-                startTime = startAt.toString(),
-                runningTime = ChronoUnit.HOURS.between(endAt, startAt).toString(),
+                startTime = startAt,
+                runningTime = ChronoUnit.HOURS.between(endAt, startAt),
                 isReviewed = isReviewed
             )
         }

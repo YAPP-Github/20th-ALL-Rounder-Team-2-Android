@@ -126,6 +126,10 @@
     <string name="player_reviewed">후기</string>
     <string name="player_not_reviewed">후기 미작성</string>
 
+    <string name="lecture_date_format">yyyy년 M월 d일 (E)</string>
+    <string name="lecture_time_format">a H:mm</string>
+    <string name="lecture_runningtime_format">(%d시간 수업)</string>
+
     <string name="applicant_title">매칭 신청인</string>
     <string name="applicant_description">가장 먼저 신청한 플레이어부터 차례로 노출됩니다.</string>
     <string name="applicant_form_shortcut">신청서 바로가기</string>

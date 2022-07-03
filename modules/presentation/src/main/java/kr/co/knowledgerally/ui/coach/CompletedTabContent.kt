@@ -19,6 +19,7 @@ import kr.co.knowledgerally.ui.component.DashBanner
 import kr.co.knowledgerally.ui.component.OutlinedBadge
 import kr.co.knowledgerally.ui.component.RoundRect
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun CompletedTabContent(
@@ -91,13 +92,20 @@ private fun CompletedItem(
                 modifier = Modifier.padding(top = 2.dp)
             )
             Text(
-                text = "2022년 5월 4일 (화)",
+                text = completed.startTime.format(
+                    DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
+                ),
                 modifier = Modifier.padding(top = 6.dp),
                 style = KnowllyTheme.typography.body2,
                 color = KnowllyTheme.colors.gray6B
             )
             Text(
-                text = "오후 6:00 (3시간 수업)",
+                text = completed.startTime.format(
+                    DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_time_format))
+                ) + " " + stringResource(
+                    R.string.lecture_runningtime_format,
+                    completed.runningTime
+                ),
                 style = KnowllyTheme.typography.body2,
                 color = KnowllyTheme.colors.gray6B
             )
