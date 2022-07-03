@@ -5,14 +5,23 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.ActivityTransition
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.domain.model.Schedule
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
@@ -27,13 +36,29 @@ class ScheduleActivity : BaseActivity() {
 
         setContent {
             KnowllyTheme {
+                val selectedDate: LocalDate? by viewModel.selectedDate.collectAsState()
+                val state = rememberScheduleState(selectedDate)
+
                 ScheduleScreen(
-                    viewModel = viewModel,
+                    state = state,
                     navigateUp = ::finish,
-                    showDatePicker = ::showDatePicker
+                    showDatePicker = ::showDatePicker,
+                    addSchedule = { state.schedule()?.let(viewModel::updateSchedule) }
                 )
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.schedule
+                .filterNotNull()
+                .collect { onScheduled(it) }
+        }
+    }
+
+    private fun onScheduled(schedule: Schedule) {
+        val intent = ScheduleResult.toIntent(schedule)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     private fun showDatePicker() {
@@ -53,7 +78,9 @@ class ScheduleActivity : BaseActivity() {
             .build()
 
         dialog.addOnPositiveButtonClickListener { timeInMillis ->
-            // TODO: viewModel.updateTime
+            val localDate =
+                Instant.ofEpochMilli(timeInMillis).atZone(ZoneId.systemDefault()).toLocalDate()
+            viewModel.select(localDate)
         }
         dialog.show(supportFragmentManager, TAG_DIALOG)
     }
