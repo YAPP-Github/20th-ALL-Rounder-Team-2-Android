@@ -7,12 +7,16 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.ActivityTransition
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.domain.model.Schedule
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import java.time.Instant
@@ -39,12 +43,22 @@ class ScheduleActivity : BaseActivity() {
                     state = state,
                     navigateUp = ::finish,
                     showDatePicker = ::showDatePicker,
-                    addSchedule = {
-                        // TODO: Schedule 만들기
-                    }
+                    addSchedule = { state.schedule()?.let(viewModel::updateSchedule) }
                 )
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.schedule
+                .filterNotNull()
+                .collect { onScheduled(it) }
+        }
+    }
+
+    private fun onScheduled(schedule: Schedule) {
+        val intent = ScheduleResult.toIntent(schedule)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     private fun showDatePicker() {

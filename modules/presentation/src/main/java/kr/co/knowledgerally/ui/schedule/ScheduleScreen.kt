@@ -65,6 +65,7 @@ fun ScheduleScreen(
         ScheduleContent(
             state = state,
             showDatePicker = showDatePicker,
+            addSchedule = addSchedule,
         )
     }
 }
@@ -73,6 +74,7 @@ fun ScheduleScreen(
 private fun ScheduleContent(
     state: ScheduleState,
     showDatePicker: () -> Unit,
+    addSchedule: () -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -104,7 +106,7 @@ private fun ScheduleContent(
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
             enabled = state.canAdd,
-            onClick = { /* TODO: Submit*/ }
+            onClick = addSchedule
         )
     }
 }
@@ -186,10 +188,10 @@ private fun ClassTimeSelection(
         StartTimePicker(
             timePeriod = state.timePeriod,
             onTimePeriodChange = { state.timePeriod = it },
-            hours = state.hours,
-            onHoursChange = { state.hours = it },
-            minutes = state.minutes,
-            onMinutesChange = { state.minutes = it },
+            hour = state.hour,
+            onHourChange = { state.hour = it },
+            minute = state.minute,
+            onMinuteChange = { state.minute = it },
             modifier = Modifier.padding(horizontal = 24.dp)
         )
         ScheduleDivider(Modifier.padding(horizontal = 24.dp))
@@ -225,10 +227,10 @@ private fun ClassTimeSelectionDescription(modifier: Modifier = Modifier) {
 private fun StartTimePicker(
     timePeriod: TimePeriod,
     onTimePeriodChange: (TimePeriod) -> Unit,
-    hours: String,
-    onHoursChange: (String) -> Unit,
-    minutes: String,
-    onMinutesChange: (String) -> Unit,
+    hour: String,
+    onHourChange: (String) -> Unit,
+    minute: String,
+    onMinuteChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -249,14 +251,14 @@ private fun StartTimePicker(
         ) {
             TimeTextField(
                 range = TimeRange.Hours,
-                value = hours,
-                onValueChange = onHoursChange
+                value = hour,
+                onValueChange = onHourChange
             )
             TimeColon(count = 2, modifier = Modifier.padding(horizontal = 6.dp))
             TimeTextField(
                 range = TimeRange.Minutes,
-                value = minutes,
-                onValueChange = onMinutesChange
+                value = minute,
+                onValueChange = onMinuteChange
             )
             TimePeriodText(
                 timePeriod = TimePeriod.AM,
@@ -433,8 +435,8 @@ fun ScheduleScreenPreview() {
 @Composable
 fun ScheduleScreenPreviewSelected() {
     val state = ScheduleState(LocalDate.of(2022, 7, 3)).apply {
-        hours = "11"
-        minutes = "30"
+        hour = "11"
+        minute = "30"
         timePeriod = TimePeriod.AM
         runningTime = 2
     }

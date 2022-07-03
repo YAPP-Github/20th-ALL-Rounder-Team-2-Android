@@ -7,22 +7,33 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import kr.co.knowledgerally.domain.model.Schedule
 import kr.co.knowledgerally.domain.model.TimePeriod
 import java.time.LocalDate
+import java.time.LocalTime
 
 @Stable
 class ScheduleState(
     val date: LocalDate?
 ) {
     val hasDate: Boolean get() = date != null
-    var hours: String by mutableStateOf("")
-    var minutes by mutableStateOf("")
+    var hour: String by mutableStateOf("")
+    var minute by mutableStateOf("")
     var timePeriod by mutableStateOf(TimePeriod.PM)
     var runningTime: Int? by mutableStateOf(null)
     val runningTimes = List(5) { it + 1 }
 
     val canAdd: Boolean by derivedStateOf {
-        hasDate && hours.isNotBlank() && minutes.isNotBlank() && runningTime != null
+        hasDate && hour.isNotBlank() && minute.isNotBlank() && runningTime != null
+    }
+
+    fun schedule(): Schedule? {
+        if (date == null || runningTime == null) {
+            return null
+        }
+        val startAt = date.atTime(LocalTime.of(hour.toInt(), minute.toInt()))
+        val endAt = startAt.plusHours(runningTime!!.toLong())
+        return Schedule(startAt, endAt)
     }
 }
 
