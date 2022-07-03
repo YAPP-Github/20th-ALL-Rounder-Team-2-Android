@@ -85,9 +85,9 @@ private fun CompletedItem(
             },
         )
         Column(modifier = Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp)) {
-            Text(text = "프랑스어", style = KnowllyTheme.typography.subtitle2)
+            Text(text = completed.lessonTitle, style = KnowllyTheme.typography.subtitle2)
             Text(
-                text = "유지민님",
+                text = completed.playerName,
                 style = KnowllyTheme.typography.body1,
                 modifier = Modifier.padding(top = 2.dp)
             )

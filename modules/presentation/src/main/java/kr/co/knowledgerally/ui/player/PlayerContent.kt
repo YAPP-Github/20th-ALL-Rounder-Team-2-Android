@@ -8,11 +8,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.*
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun PlayerContent(
@@ -64,7 +67,13 @@ fun PlayerContentListItem(
                 color = KnowllyTheme.colors.grayEF,
                 modifier = Modifier.size(88.dp)
             ) {
-                // Lesson image
+                if (lesson.thumbnailUrl != null) {
+                    AsyncImage(
+                        model = lesson.thumbnailUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop
+                    )
+                }
             }
             HorizontalSpacer(width = 12.dp)
             Column(
@@ -73,22 +82,29 @@ fun PlayerContentListItem(
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = "클래스 이름", style = KnowllyTheme.typography.subtitle2)
+                    Text(text = lesson.lessonTitle, style = KnowllyTheme.typography.subtitle2)
                     Spacer(modifier = Modifier.weight(1f))
                     if (lesson is PlayerLessonModel.Completed) {
                         ReviewOutlinedBadge(isReviewed = lesson.isReviewed)
                     }
                 }
                 VerticalSpacer(height = 2.dp)
-                Text(text = "코치 이름", style = KnowllyTheme.typography.body1)
+                Text(text = lesson.coachName, style = KnowllyTheme.typography.body1)
                 VerticalSpacer(height = 6.dp)
                 Text(
-                    text = "2022년 6월 18일 (토)",
+                    text = lesson.startTime.format(
+                        DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
+                    ),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )
                 Text(
-                    text = "오후 6:00 (3시간 수업)",
+                    text = lesson.startTime.format(
+                        DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_time_format))
+                    ) + " " + stringResource(
+                        R.string.lecture_runningtime_format,
+                        lesson.runningTime
+                    ),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )
