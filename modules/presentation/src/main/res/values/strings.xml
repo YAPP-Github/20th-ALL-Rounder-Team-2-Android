@@ -172,4 +172,6 @@
     <string name="dialog_withdrawal_dismiss">취소</string>
     <string name="dialog_withdrawal_confirm">탈퇴하기</string>
 
+    <string name="javascript_interface_name">Android</string>
+
 </resources>

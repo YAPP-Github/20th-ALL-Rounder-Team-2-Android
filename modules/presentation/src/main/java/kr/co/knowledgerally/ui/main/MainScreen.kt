@@ -3,24 +3,11 @@ package kr.co.knowledgerally.ui.main
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -38,6 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import kr.co.knowledgerally.bridge.WebAppInterface
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.coach.CoachScreen
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
@@ -55,6 +43,7 @@ fun MainScreen(
     navigateToRegister: () -> Unit,
     navigateToBall: () -> Unit,
     navigateToNotification: () -> Unit,
+    webAppInterface: WebAppInterface
 ) {
     val navController = rememberAnimatedNavController()
     val navigation = rememberMainNavigation(navController, navigateToRegister)
@@ -90,7 +79,7 @@ fun MainScreen(
             modifier = Modifier.padding(padding)
         ) {
             composable(route = MainDestination.Home.route) {
-                HomeScreen()
+                HomeScreen(webAppInterface = webAppInterface)
             }
             composable(route = MainDestination.Player.route) {
                 PlayerScreen()
