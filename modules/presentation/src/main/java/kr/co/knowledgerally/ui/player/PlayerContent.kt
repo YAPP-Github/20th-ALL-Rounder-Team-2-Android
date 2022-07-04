@@ -1,6 +1,12 @@
 package kr.co.knowledgerally.ui.player
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,7 +19,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import kr.co.knowledgerally.ui.R
-import kr.co.knowledgerally.ui.component.*
+import kr.co.knowledgerally.ui.component.Banner
+import kr.co.knowledgerally.ui.component.DashBanner
+import kr.co.knowledgerally.ui.component.HorizontalSpacer
+import kr.co.knowledgerally.ui.component.KnowllyContainedButton
+import kr.co.knowledgerally.ui.component.KnowllyDivider
+import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import java.time.format.DateTimeFormatter
 
