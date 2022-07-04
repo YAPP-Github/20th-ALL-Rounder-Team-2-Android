@@ -31,5 +31,5 @@ internal abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindLessonRepository(repo: LectureRepositoryImpl): LectureRepository
+    abstract fun bindLectureRepository(repo: LectureRepositoryImpl): LectureRepository
 }
