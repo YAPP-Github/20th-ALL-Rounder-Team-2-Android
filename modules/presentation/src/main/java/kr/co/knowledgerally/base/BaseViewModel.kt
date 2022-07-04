@@ -5,7 +5,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kr.co.knowledgerally.log.Logger
+import kr.co.knowledgerally.toast.Toaster
+import kr.co.knowledgerally.ui.R
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -17,14 +21,15 @@ abstract class BaseViewModel : ViewModel() {
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
         block: suspend CoroutineScope.() -> Unit
-    ) {
+    ): Job {
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
             handleException(throwable)
         }
-        viewModelScope.launch(context + exceptionHandler, start = start, block = block)
+        return viewModelScope.launch(context + exceptionHandler, start = start, block = block)
     }
 
-    protected fun handleException(throwable: Throwable) {
-        // TODO: 오류 처리
+    protected open fun handleException(throwable: Throwable) {
+        Toaster.show(R.string.exception_common)
+        Logger.e(TAG, throwable)
     }
 }

@@ -3,6 +3,7 @@ package kr.co.knowledgerally.ui.mypage
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -13,84 +14,116 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Surface
 import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
+import kr.co.knowledgerally.domain.model.User
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.ContainedBadge
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
+import kr.co.knowledgerally.ui.component.Loading
+import kr.co.knowledgerally.ui.mypage.dialog.LogoutDialog
+import kr.co.knowledgerally.ui.mypage.dialog.WithdrawalDialog
+import kr.co.knowledgerally.ui.splash.SplashActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
-    val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+
+    val state by viewModel.uiState.collectAsState()
+    val loading by viewModel.loading.collectAsState()
+    val isExpired by viewModel.isLoggedOut.collectAsState()
+
+    var showLogoutDialog by remember { mutableStateOf(false) }
+    var showWithdrawalDialog by remember { mutableStateOf(false) }
 
     MyPageScreen(
         state = state,
-        onNotificationEnabledChange = { viewModel.updateNotificationEnabled(it) },
+        loading = loading,
+        onPushActiveChange = { viewModel.updatePushActive(it) },
         navigateToProfile = { },
         navigateToTermsOfService = { },
-        logout = { viewModel.logout() },
-        withdrawal = { viewModel.withdrawal() },
+        logout = { showLogoutDialog = true },
+        withdrawal = { showWithdrawalDialog = true },
     )
+
+    // Dialog
+    when {
+        showLogoutDialog -> LogoutDialog(
+            onDismiss = { showLogoutDialog = false },
+            onConfirm = { viewModel.logout() }
+        )
+        showWithdrawalDialog -> WithdrawalDialog(
+            onDismiss = { showWithdrawalDialog = false },
+            onConfirm = { viewModel.withdrawal() }
+        )
+    }
+
+    LaunchedEffect(isExpired) {
+        if (isExpired) {
+            SplashActivity.startActivity(context)
+        }
+    }
 }
 
 @Composable
 private fun MyPageScreen(
     state: MyPageUiState,
-    onNotificationEnabledChange: (Boolean) -> Unit,
+    loading: Boolean,
+    onPushActiveChange: (Boolean) -> Unit,
     navigateToProfile: () -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
     withdrawal: () -> Unit,
 ) {
-    when (state) {
-        MyPageUiState.Loading -> MyPageScreen(
-            notificationEnabled = false,
-            onNotificationEnabledChange = { },
-            versionName = "",
-            userName = "",
-            isCoach = false,
-            navigateToProfile = { },
-            navigateToTermsOfService = { },
-            logout = { },
-            withdrawal = { },
-        )
-        is MyPageUiState.Success -> MyPageScreen(
-            notificationEnabled = state.notificationEnabled,
-            onNotificationEnabledChange = onNotificationEnabledChange,
-            versionName = state.versionName,
-            userName = state.userName,
-            isCoach = state.isCoach,
-            navigateToProfile = navigateToProfile,
-            navigateToTermsOfService = navigateToTermsOfService,
-            logout = logout,
-            withdrawal = withdrawal,
-        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        when (state) {
+            MyPageUiState.Loading -> Loading()
+            is MyPageUiState.Success -> MyPageScreen(
+                notificationEnabled = state.user.pushActive,
+                onPushActiveChange = onPushActiveChange,
+                versionName = state.versionName,
+                user = state.user,
+                navigateToProfile = navigateToProfile,
+                navigateToTermsOfService = navigateToTermsOfService,
+                logout = logout,
+                withdrawal = withdrawal,
+            )
+        }
+        if (loading) {
+            Loading()
+        }
     }
 }
 
 @Composable
 private fun MyPageScreen(
     notificationEnabled: Boolean,
-    onNotificationEnabledChange: (Boolean) -> Unit,
+    onPushActiveChange: (Boolean) -> Unit,
     versionName: String,
-    userName: String,
-    isCoach: Boolean,
+    user: User,
     navigateToProfile: () -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
@@ -102,8 +135,7 @@ private fun MyPageScreen(
             .background(Color.White)
     ) {
         MyPageProfile(
-            userName = userName,
-            isCoach = isCoach,
+            user = user,
             navigateToProfile = navigateToProfile,
         )
         MyPageDivider()
@@ -113,7 +145,7 @@ private fun MyPageScreen(
             content = {
                 MyPageSwitch(
                     checked = notificationEnabled,
-                    onCheckedChange = onNotificationEnabledChange
+                    onCheckedChange = onPushActiveChange
                 )
             }
         )
@@ -147,39 +179,45 @@ private fun MyPageScreen(
 
 @Composable
 private fun MyPageProfile(
-    userName: String,
-    isCoach: Boolean,
+    user: User,
     navigateToProfile: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(
-                top = 12.dp,
-                bottom = 40.dp,
-                start = 24.dp
-            )
+            .padding(top = 12.dp, bottom = 40.dp, start = 24.dp)
     ) {
-        Image(
-            painter = painterResource(R.drawable.img_avatar),
-            contentDescription = null,
+        Surface(
             modifier = Modifier
                 .padding(end = 16.dp)
-                .size(60.dp)
-                .clip(CircleShape)
-        )
+                .size(60.dp),
+            shape = CircleShape,
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.img_profile_placeholder),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+            AsyncImage(
+                model = user.profile.imageUrl,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
+
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Text(text = userName, style = KnowllyTheme.typography.subtitle1)
+            Text(text = user.profile.username, style = KnowllyTheme.typography.subtitle1)
             Row(modifier = Modifier.padding(top = 4.dp)) {
                 ContainedBadge(
                     text = stringResource(id = R.string.player),
                     contentColor = KnowllyTheme.colors.primaryDark,
                     backgroundColor = KnowllyTheme.colors.primary.copy(alpha = 0.1f)
                 )
-                if (isCoach) {
+                if (user.coach) {
                     ContainedBadge(
                         text = stringResource(id = R.string.coach),
                         contentColor = KnowllyTheme.colors.secondaryLimeDark,
@@ -272,7 +310,8 @@ private fun MyPageScreenPreview() {
     KnowllyTheme {
         MyPageScreen(
             state = MyPageUiState.Loading,
-            onNotificationEnabledChange = { },
+            loading = false,
+            onPushActiveChange = { },
             navigateToProfile = { },
             navigateToTermsOfService = { },
             logout = { },

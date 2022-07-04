@@ -30,13 +30,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.co.knowledgerally.domain.model.BallHistory
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.VerticalSpacer
-import kr.co.knowledgerally.ui.model.BallCountModel
-import kr.co.knowledgerally.ui.model.BallHistoryModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import java.time.LocalDate
 import kotlin.math.abs
 
 @Composable
@@ -45,12 +45,10 @@ fun BallScreen(
     navigateUp: () -> Unit,
     navigateToGuide: () -> Unit
 ) {
-    val ball by viewModel.ball.collectAsState()
-    val state by viewModel.state.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     BallScreen(
-        ball = ball,
-        state = state,
+        uiState = uiState,
         navigateUp = navigateUp,
         navigateToGuide = navigateToGuide
     )
@@ -58,8 +56,7 @@ fun BallScreen(
 
 @Composable
 fun BallScreen(
-    ball: BallCountModel,
-    state: BallUiState,
+    uiState: BallUiState,
     navigateUp: () -> Unit,
     navigateToGuide: () -> Unit
 ) {
@@ -71,17 +68,19 @@ fun BallScreen(
         Column(
             modifier = Modifier.padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 0.dp)
         ) {
-            MyBall(ball)
+            MyBall(uiState = uiState)
             VerticalSpacer(height = 24.dp)
             BallBanner(onClick = navigateToGuide)
             VerticalSpacer(height = 48.dp)
-            BallHistoryContent(state = state)
+            BallHistoryContent(uiState = uiState)
         }
     }
 }
 
 @Composable
-fun MyBall(ball: BallCountModel) {
+fun MyBall(uiState: BallUiState) {
+    val ballCount = if (uiState is BallUiState.Success) uiState.ballCount else 0
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -98,7 +97,7 @@ fun MyBall(ball: BallCountModel) {
             )
             HorizontalSpacer(width = 8.dp)
             Text(
-                text = ball.value + stringResource(id = R.string.ball_count),
+                text = ballCount.toString() + stringResource(id = R.string.ball_count),
                 style = KnowllyTheme.typography.headline4
             )
         }
@@ -154,20 +153,19 @@ fun BallBanner(
 }
 
 @Composable
-fun BallHistoryContent(state: BallUiState) {
-    when (state) {
+fun BallHistoryContent(uiState: BallUiState) {
+    when (uiState) {
         is BallUiState.Success -> {
-            BallHistoryList(histories = state.histories)
+            BallHistoryList(histories = uiState.histories)
         }
         BallUiState.Loading -> {}
-        BallUiState.Empty -> {}
         BallUiState.Failure -> {}
     }
 }
 
 @Composable
 fun BallHistoryList(
-    histories: List<BallHistoryModel>
+    histories: List<BallHistory>
 ) {
     LazyColumn {
         item { Divider(color = KnowllyTheme.colors.grayEF) }
@@ -180,9 +178,9 @@ fun BallHistoryList(
 
 @Composable
 fun BallHistoryListItem(
-    history: BallHistoryModel
+    history: BallHistory
 ) {
-    val sign = if (history.changedBallCount > 0) "+" else "-"
+    val sign = if (history.count > 0) "+" else "-"
 
     Row(
         modifier = Modifier
@@ -195,13 +193,13 @@ fun BallHistoryListItem(
             Text(text = history.title, style = KnowllyTheme.typography.subtitle2)
             VerticalSpacer(height = 4.dp)
             Text(
-                text = "${history.date} | ${history.subtitle}",
+                text = "${history.date} | ${history.content}",
                 style = KnowllyTheme.typography.body1,
                 color = KnowllyTheme.colors.gray8F
             )
         }
         Text(
-            text = "$sign ${abs(history.changedBallCount)}" + stringResource(id = R.string.ball_count),
+            text = "$sign ${abs(history.count)}" + stringResource(id = R.string.ball_count),
             style = KnowllyTheme.typography.subtitle1
         )
     }
@@ -211,30 +209,29 @@ fun BallHistoryListItem(
 @Composable
 private fun BallScreenPreview() {
     val tempBallHistoryList = listOf(
-        BallHistoryModel(
+        BallHistory(
             title = "클래스 운영",
-            subtitle = "프랑스어",
-            date = "05.09",
-            changedBallCount = 1
+            content = "프랑스어",
+            date = LocalDate.now(),
+            count = 1
         ),
-        BallHistoryModel(
+        BallHistory(
             title = "클래스 수강",
-            subtitle = "요리 원데이 클래스",
-            date = "05.09",
-            changedBallCount = -1
+            content = "요리 원데이 클래스",
+            date = LocalDate.now(),
+            count = -1
         ),
-        BallHistoryModel(
+        BallHistory(
             title = "첫 가입 축하 볼",
-            subtitle = "첫 가입 축하 볼",
-            date = "05.08",
-            changedBallCount = 1
+            content = "첫 가입 축하 볼",
+            date = LocalDate.now(),
+            count = 1
         )
     )
 
     KnowllyTheme {
         BallScreen(
-            ball = BallCountModel("1"),
-            state = BallUiState.Success(tempBallHistoryList),
+            uiState = BallUiState.Success(10, tempBallHistoryList),
             navigateUp = {},
             navigateToGuide = {}
         )

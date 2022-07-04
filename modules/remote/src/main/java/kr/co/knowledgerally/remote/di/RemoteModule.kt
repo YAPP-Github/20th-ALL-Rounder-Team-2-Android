@@ -4,12 +4,19 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kr.co.knowledgerally.data.provider.AccessTokenProvider
+import kr.co.knowledgerally.data.provider.RefreshTokenProvider
+import kr.co.knowledgerally.remote.api.AccessTokenInterceptor
 import kr.co.knowledgerally.remote.api.ApiService
+import kr.co.knowledgerally.remote.api.AuthenticationListener
+import kr.co.knowledgerally.remote.api.Authenticator
 import kr.co.knowledgerally.remote.api.BaseUrl
 import kr.co.knowledgerally.remote.api.Interceptors
+import kr.co.knowledgerally.remote.api.RefreshApiService
 import kr.co.knowledgerally.remote.api.baseUrl
-import kr.co.knowledgerally.remote.api.createOkHttpClient
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -21,9 +28,45 @@ internal object RemoteModule {
     fun provideApiService(
         baseUrl: BaseUrl,
         interceptors: Interceptors,
-    ) = Retrofit.Builder()
+        accessTokenProvider: AccessTokenProvider,
+        refreshTokenProvider: RefreshTokenProvider,
+        authenticationListener: AuthenticationListener,
+    ): ApiService {
+        val authenticator = Authenticator(
+            apiService = provideRefreshApiService(baseUrl, interceptors),
+            accessTokenProvider = accessTokenProvider,
+            refreshTokenProvider = refreshTokenProvider,
+            authenticationListener = authenticationListener
+        )
+
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(
+                createOkHttpClient(interceptors) {
+                    addInterceptor(AccessTokenInterceptor(accessTokenProvider))
+                    authenticator(authenticator)
+                }
+            )
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApiService::class.java)
+    }
+
+    private fun provideRefreshApiService(
+        baseUrl: BaseUrl,
+        interceptors: Interceptors,
+    ): RefreshApiService = Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(createOkHttpClient(interceptors))
+        .addConverterFactory(GsonConverterFactory.create())
         .build()
-        .create(ApiService::class.java)
+        .create(RefreshApiService::class.java)
+
+    private fun createOkHttpClient(
+        interceptors: Interceptors,
+        apply: OkHttpClient.Builder.() -> Unit = { },
+    ) = OkHttpClient.Builder()
+        .apply { interceptors.value.forEach(::addInterceptor) }
+        .apply(apply)
+        .build()
 }

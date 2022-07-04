@@ -8,6 +8,6 @@ class IsLoggedInUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): Result<Boolean> = authRepository
-        .getAccessToken()
-        .map { it.isNotBlank() }
+        .getJwtToken()
+        .map { jwtToken -> jwtToken.isNotEmpty }
 }

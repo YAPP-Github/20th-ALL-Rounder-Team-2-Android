@@ -6,12 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.co.knowledgerally.data.repo.AppMetaRepositoryImpl
 import kr.co.knowledgerally.data.repo.AuthRepositoryImpl
-import kr.co.knowledgerally.data.repo.BallRepositoryImpl
-import kr.co.knowledgerally.data.repo.UserRepository
 import kr.co.knowledgerally.data.repo.UserRepositoryImpl
 import kr.co.knowledgerally.domain.repo.AppMetaRepository
 import kr.co.knowledgerally.domain.repo.AuthRepository
-import kr.co.knowledgerally.domain.repo.BallRepository
+import kr.co.knowledgerally.domain.repo.UserRepository
 import javax.inject.Singleton
 
 @Module
@@ -25,10 +23,6 @@ internal abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindAuthRepository(repo: AuthRepositoryImpl): AuthRepository
-
-    @Binds
-    @Singleton
-    abstract fun bindBallRepository(repo: BallRepositoryImpl): BallRepository
 
     @Binds
     abstract fun bindAppMetaRepository(repo: AppMetaRepositoryImpl): AppMetaRepository

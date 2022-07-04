@@ -1,5 +1,7 @@
 package kr.co.knowledgerally.ui.register
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -46,9 +48,11 @@ class RegisterActivity : BaseActivity() {
                 ) {
                     composable(RegisterDestination.Register.route) {
                         RegisterScreen(
-                            viewModel = viewModel,
                             navigateUp = { finish() },
-                            navigateToSchedule = { navController.navigate(RegisterDestination.Schedule.route) }
+                            navigateToSchedule = { state ->
+                                viewModel.updateRegistration(state.toRegistration())
+                                navController.navigate(RegisterDestination.Schedule.route)
+                            }
                         )
                     }
                     composable(RegisterDestination.Schedule.route) {
@@ -66,5 +70,12 @@ class RegisterActivity : BaseActivity() {
         // TODO: StartActivityForResult
         val intent = ScheduleActivity.getIntent(this)
         startActivity(intent)
+    }
+
+    companion object {
+        fun startActivity(context: Context) {
+            val intent = Intent(context, RegisterActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 }

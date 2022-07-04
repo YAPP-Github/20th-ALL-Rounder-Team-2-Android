@@ -5,8 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
@@ -22,6 +25,19 @@ class ProfileActivity : BaseActivity() {
                 ProfileScreen(viewModel = viewModel)
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.completed.collect { complete ->
+                if (complete) {
+                    startMainActivity()
+                }
+            }
+        }
+    }
+
+    private fun startMainActivity() {
+        MainActivity.startActivity(this)
+        finish()
     }
 
     companion object {
