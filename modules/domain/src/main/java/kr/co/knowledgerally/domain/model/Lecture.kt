@@ -1,23 +1,23 @@
 package kr.co.knowledgerally.domain.model
 
-import java.time.LocalDateTime
+sealed interface Lecture {
 
-data class Lecture(
-    val id: Int,
-    val title: String,
-    val thumbnailUrl: String?,
-    val playerName: String?,
-    val playerKakaoId: String?,
-    val coachName: String,
-    val coachKakaoId: String,
-    val applicants: List<Applicant>?,
-    val isReviewed: Boolean,
-    val type: Type,
-    val startAt: LocalDateTime,
-    val endAt: LocalDateTime
-) {
+    data class Onboard(
+        val lecture: LectureInfo,
+        val coach: User,
+        val applicants: List<Applicant>
+    ) : Lecture
 
-    enum class Type {
-        Matching, Scheduled, Completed
-    }
+    data class Ongoing(
+        val lecture: LectureInfo,
+        val coach: User,
+        val player: User
+    ) : Lecture
+
+    data class Done(
+        val lecture: LectureInfo,
+        val coach: User,
+        val player: User,
+        val isReviewed: Boolean
+    ) : Lecture
 }
