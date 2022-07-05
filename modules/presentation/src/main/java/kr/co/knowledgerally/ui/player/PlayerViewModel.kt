@@ -33,9 +33,9 @@ class PlayerViewModel @Inject constructor(
             result
                 .onSuccess { lectures ->
                     _uiState.value = PlayerUiState.Success(
-                        matchingLectures = lectures.ongoingLectures.map { it.toPlayerPresentation() as PlayerLectureModel.Matching },
+                        matchingLectures = lectures.onboardingLectures.map { it.toPlayerPresentation() as PlayerLectureModel.Matching },
                         scheduledLectures = lectures.ongoingLectures.map { it.toPlayerPresentation() as PlayerLectureModel.Scheduled },
-                        completedLectures = lectures.ongoingLectures.map { it.toPlayerPresentation() as PlayerLectureModel.Completed },
+                        completedLectures = lectures.doneLectures.map { it.toPlayerPresentation() as PlayerLectureModel.Completed },
                     )
                 }
                 .onFailure { _uiState.value = PlayerUiState.Failure }

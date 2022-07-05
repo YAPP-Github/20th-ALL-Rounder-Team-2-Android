@@ -36,9 +36,9 @@ class CoachViewModel @Inject constructor(
                         _uiState.value = CoachUiState.Empty
                     } else {
                         _uiState.value = CoachUiState.Success(
-                            matchingLectures = lectures.ongoingLectures.map { it.toCoachPresentation() as CoachLectureModel.Matching },
+                            matchingLectures = lectures.onboardingLectures.map { it.toCoachPresentation() as CoachLectureModel.Matching },
                             scheduledLectures = lectures.ongoingLectures.map { it.toCoachPresentation() as CoachLectureModel.Scheduled },
-                            completedLectures = lectures.ongoingLectures.map { it.toCoachPresentation() as CoachLectureModel.Completed },
+                            completedLectures = lectures.doneLectures.map { it.toCoachPresentation() as CoachLectureModel.Completed },
                         )
                     }
                 }
