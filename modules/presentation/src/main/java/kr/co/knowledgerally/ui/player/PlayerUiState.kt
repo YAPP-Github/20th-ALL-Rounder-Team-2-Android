@@ -1,5 +1,7 @@
 package kr.co.knowledgerally.ui.player
 
+import kr.co.knowledgerally.ui.model.PlayerLectureModel
+
 sealed interface PlayerUiState {
 
     data class Success(

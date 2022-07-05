@@ -6,8 +6,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
-import kr.co.knowledgerally.domain.model.Lecture
 import kr.co.knowledgerally.domain.usecase.GetCoachLectureListUseCase
+import kr.co.knowledgerally.ui.model.CoachLectureModel
+import kr.co.knowledgerally.ui.model.toCoachPresentation
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,20 +32,14 @@ class CoachViewModel @Inject constructor(
             val result = getCoachLectureListUseCase()
             result
                 .onSuccess { lectures ->
-                    if (lectures.isNotEmpty()) {
-                        _uiState.value = CoachUiState.Success(
-                            matchingLectures = lectures
-                                .filter { it.type == Lecture.Type.Matching }
-                                .map { it.toCoachPresentation() as CoachLectureModel.Matching },
-                            scheduledLectures = lectures
-                                .filter { it.type == Lecture.Type.Scheduled }
-                                .map { it.toCoachPresentation() as CoachLectureModel.Scheduled },
-                            completedLectures = lectures
-                                .filter { it.type == Lecture.Type.Completed }
-                                .map { it.toCoachPresentation() as CoachLectureModel.Completed }
-                        )
-                    } else {
+                    if (lectures.isEmpty) {
                         _uiState.value = CoachUiState.Empty
+                    } else {
+                        _uiState.value = CoachUiState.Success(
+                            matchingLectures = lectures.ongoingLectures.map { it.toCoachPresentation() as CoachLectureModel.Matching },
+                            scheduledLectures = lectures.ongoingLectures.map { it.toCoachPresentation() as CoachLectureModel.Scheduled },
+                            completedLectures = lectures.ongoingLectures.map { it.toCoachPresentation() as CoachLectureModel.Completed },
+                        )
                     }
                 }
                 .onFailure { _uiState.value = CoachUiState.Failure }

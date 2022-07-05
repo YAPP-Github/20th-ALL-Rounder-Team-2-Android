@@ -1,5 +1,7 @@
 package kr.co.knowledgerally.ui.coach
 
+import kr.co.knowledgerally.ui.model.CoachLectureModel
+
 sealed interface CoachUiState {
 
     object Failure : CoachUiState

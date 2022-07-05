@@ -6,8 +6,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
-import kr.co.knowledgerally.domain.model.Lecture
 import kr.co.knowledgerally.domain.usecase.GetPlayerLectureListUseCase
+import kr.co.knowledgerally.ui.model.PlayerLectureModel
+import kr.co.knowledgerally.ui.model.toPlayerPresentation
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,15 +33,9 @@ class PlayerViewModel @Inject constructor(
             result
                 .onSuccess { lectures ->
                     _uiState.value = PlayerUiState.Success(
-                        matchingLectures = lectures
-                            .filter { it.type == Lecture.Type.Matching }
-                            .map { it.toPlayerPresentation() as PlayerLectureModel.Matching },
-                        scheduledLectures = lectures
-                            .filter { it.type == Lecture.Type.Scheduled }
-                            .map { it.toPlayerPresentation() as PlayerLectureModel.Scheduled },
-                        completedLectures = lectures
-                            .filter { it.type == Lecture.Type.Completed }
-                            .map { it.toPlayerPresentation() as PlayerLectureModel.Completed }
+                        matchingLectures = lectures.ongoingLectures.map { it.toPlayerPresentation() as PlayerLectureModel.Matching },
+                        scheduledLectures = lectures.ongoingLectures.map { it.toPlayerPresentation() as PlayerLectureModel.Scheduled },
+                        completedLectures = lectures.ongoingLectures.map { it.toPlayerPresentation() as PlayerLectureModel.Completed },
                     )
                 }
                 .onFailure { _uiState.value = PlayerUiState.Failure }
