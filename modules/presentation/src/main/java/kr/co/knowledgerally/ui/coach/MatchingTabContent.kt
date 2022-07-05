@@ -25,6 +25,7 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.RoundRect
 import kr.co.knowledgerally.ui.component.VerticalSpacer
+import kr.co.knowledgerally.ui.model.CoachLectureModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
@@ -62,10 +63,10 @@ private fun MatchingItem(
             .fillMaxWidth()
     ) {
         VerticalSpacer(height = 16.dp)
-        MatchingItemHeader(text = matching.lectureTitle)
+        MatchingItemHeader(text = matching.lecture.title)
         MatchingItemApplicant(
             applicants = matching.applicants,
-            onClick = { navigateToApplicant(matching.lectureId) },
+            onClick = { navigateToApplicant(matching.lecture.id) },
             modifier = Modifier.padding(top = 8.dp)
         )
         VerticalSpacer(height = 16.dp)

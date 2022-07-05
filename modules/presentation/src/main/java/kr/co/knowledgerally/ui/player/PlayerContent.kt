@@ -25,6 +25,7 @@ import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyDivider
 import kr.co.knowledgerally.ui.component.VerticalSpacer
+import kr.co.knowledgerally.ui.model.PlayerLectureModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import java.time.format.DateTimeFormatter
 
@@ -55,14 +56,14 @@ fun PlayerContentList(
 ) {
     LazyColumn {
         items(lectures) { lecture ->
-            PlayerContentListItem(lecture = lecture)
+            PlayerContentListItem(playerLecture = lecture)
         }
     }
 }
 
 @Composable
 fun PlayerContentListItem(
-    lecture: PlayerLectureModel
+    playerLecture: PlayerLectureModel
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -78,9 +79,9 @@ fun PlayerContentListItem(
                 color = KnowllyTheme.colors.grayEF,
                 modifier = Modifier.size(88.dp)
             ) {
-                if (lecture.thumbnailUrl != null) {
+                if (playerLecture.lecture.imageUrls.isNotEmpty()) {
                     AsyncImage(
-                        model = lecture.thumbnailUrl,
+                        model = playerLecture.lecture.imageUrls[0],
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
@@ -93,39 +94,51 @@ fun PlayerContentListItem(
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = lecture.lectureTitle, style = KnowllyTheme.typography.subtitle2)
+                    Text(
+                        text = playerLecture.lecture.title,
+                        style = KnowllyTheme.typography.subtitle2
+                    )
                     Spacer(modifier = Modifier.weight(1f))
-                    if (lecture is PlayerLectureModel.Completed) {
-                        ReviewOutlinedBadge(isReviewed = lecture.isReviewed)
+                    if (playerLecture is PlayerLectureModel.Completed) {
+                        ReviewOutlinedBadge(isReviewed = playerLecture.isReviewed)
                     }
                 }
                 VerticalSpacer(height = 2.dp)
-                Text(text = lecture.coachName, style = KnowllyTheme.typography.body1)
+                Text(
+                    text = playerLecture.coach.profile.username,
+                    style = KnowllyTheme.typography.body1
+                )
                 VerticalSpacer(height = 6.dp)
                 Text(
-                    text = lecture.startTime.format(
+                    text = playerLecture.lecture.startAt.format(
                         DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
                     ),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )
                 Text(
-                    text = lecture.startTime.format(
-                        DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_time_format))
-                    ) + " " + stringResource(
-                        R.string.lecture_runningtime_format,
-                        lecture.runningTime
-                    ),
+                    text = "${
+                        playerLecture.lecture.startAt.format(
+                            DateTimeFormatter.ofPattern(
+                                stringResource(id = R.string.lecture_time_format)
+                            )
+                        )
+                    } ${
+                        stringResource(
+                            R.string.lecture_runningtime_format,
+                            playerLecture.lecture.runningTime
+                        )
+                    }",
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )
             }
         }
-        when (lecture) {
+        when (playerLecture) {
             is PlayerLectureModel.Matching -> {}
             is PlayerLectureModel.Scheduled -> {
                 KakaoIdCopyButton(
-                    kakaoId = lecture.coachKakaoId,
+                    kakaoId = playerLecture.coach.profile.kakaoId,
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .fillMaxWidth()
@@ -133,7 +146,7 @@ fun PlayerContentListItem(
                 )
             }
             is PlayerLectureModel.Completed -> {
-                if (!lecture.isReviewed) {
+                if (!playerLecture.isReviewed) {
                     KnowllyContainedButton(
                         text = stringResource(id = R.string.player_review_button),
                         onClick = { /* TODO: 후기 페이지로 이동 */ },

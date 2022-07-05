@@ -26,6 +26,7 @@ import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.DashBanner
 import kr.co.knowledgerally.ui.component.OutlinedBadge
 import kr.co.knowledgerally.ui.component.RoundRect
+import kr.co.knowledgerally.ui.model.CoachLectureModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import java.time.format.DateTimeFormatter
 
@@ -93,14 +94,14 @@ private fun CompletedItem(
             },
         )
         Column(modifier = Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp)) {
-            Text(text = completed.lectureTitle, style = KnowllyTheme.typography.subtitle2)
+            Text(text = completed.lecture.title, style = KnowllyTheme.typography.subtitle2)
             Text(
-                text = completed.playerName,
+                text = completed.player.profile.username,
                 style = KnowllyTheme.typography.body1,
                 modifier = Modifier.padding(top = 2.dp)
             )
             Text(
-                text = completed.startTime.format(
+                text = completed.lecture.startAt.format(
                     DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
                 ),
                 modifier = Modifier.padding(top = 6.dp),
@@ -108,16 +109,21 @@ private fun CompletedItem(
                 color = KnowllyTheme.colors.gray6B
             )
             Text(
-                text = completed.startTime.format(
-                    DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_time_format))
-                ) + " " + stringResource(
-                    R.string.lecture_runningtime_format,
-                    completed.runningTime
-                ),
+                text = "${
+                    completed.lecture.startAt.format(
+                        DateTimeFormatter.ofPattern(
+                            stringResource(id = R.string.lecture_time_format)
+                        )
+                    )
+                } ${
+                    stringResource(
+                        R.string.lecture_runningtime_format,
+                        completed.lecture.runningTime
+                    )
+                }",
                 style = KnowllyTheme.typography.body2,
                 color = KnowllyTheme.colors.gray6B
             )
         }
     }
 }
-
