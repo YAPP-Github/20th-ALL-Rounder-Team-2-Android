@@ -11,6 +11,8 @@ data class UserResponse(
     val username: String,
     @SerializedName("intro")
     val introduction: String,
+    @SerializedName("kakaoId")
+    val kakaoId: String,
     @SerializedName("portfolio")
     val portfolio: String?,
     @SerializedName("ballCnt")
@@ -26,6 +28,7 @@ fun UserResponse.toData(imageUrl: String?) = UserEntity(
     profile = ProfileEntity(
         username = username,
         introduction = introduction,
+        kakaoId = kakaoId,
         portfolio = portfolio ?: "",
         imageUrl = imageUrl
     ),
