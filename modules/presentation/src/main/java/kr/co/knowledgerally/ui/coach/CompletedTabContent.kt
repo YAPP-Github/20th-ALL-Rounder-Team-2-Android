@@ -26,13 +26,12 @@ import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.DashBanner
 import kr.co.knowledgerally.ui.component.OutlinedBadge
 import kr.co.knowledgerally.ui.component.RoundRect
-import kr.co.knowledgerally.ui.model.CoachLectureModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun CompletedTabContent(
-    completedList: List<CoachLectureModel.Completed>,
+    completedList: List<CoachLectureUiState.Completed>,
     scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
@@ -66,7 +65,7 @@ fun CompletedTabContent(
 
 @Composable
 private fun CompletedItem(
-    completed: CoachLectureModel.Completed,
+    completed: CoachLectureUiState.Completed,
 ) {
     Box(
         modifier = Modifier

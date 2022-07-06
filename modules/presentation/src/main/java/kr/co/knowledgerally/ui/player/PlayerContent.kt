@@ -25,7 +25,6 @@ import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyDivider
 import kr.co.knowledgerally.ui.component.VerticalSpacer
-import kr.co.knowledgerally.ui.model.PlayerLectureModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import java.time.format.DateTimeFormatter
 
@@ -52,7 +51,7 @@ fun PlayerContent(
 
 @Composable
 fun PlayerContentList(
-    lectures: List<PlayerLectureModel>
+    lectures: List<PlayerLectureUiState>
 ) {
     LazyColumn {
         items(lectures) { lecture ->
@@ -63,7 +62,7 @@ fun PlayerContentList(
 
 @Composable
 fun PlayerContentListItem(
-    playerLecture: PlayerLectureModel
+    playerLecture: PlayerLectureUiState
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -99,7 +98,7 @@ fun PlayerContentListItem(
                         style = KnowllyTheme.typography.subtitle2
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    if (playerLecture is PlayerLectureModel.Completed) {
+                    if (playerLecture is PlayerLectureUiState.Completed) {
                         ReviewOutlinedBadge(isReviewed = playerLecture.isReviewed)
                     }
                 }
@@ -135,8 +134,8 @@ fun PlayerContentListItem(
             }
         }
         when (playerLecture) {
-            is PlayerLectureModel.Matching -> {}
-            is PlayerLectureModel.Scheduled -> {
+            is PlayerLectureUiState.Matching -> {}
+            is PlayerLectureUiState.Scheduled -> {
                 KakaoIdCopyButton(
                     kakaoId = playerLecture.coach.profile.kakaoId,
                     modifier = Modifier
@@ -145,7 +144,7 @@ fun PlayerContentListItem(
                         .height(40.dp)
                 )
             }
-            is PlayerLectureModel.Completed -> {
+            is PlayerLectureUiState.Completed -> {
                 if (!playerLecture.isReviewed) {
                     KnowllyContainedButton(
                         text = stringResource(id = R.string.player_review_button),

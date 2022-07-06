@@ -1,13 +1,11 @@
 package kr.co.knowledgerally.ui.player
 
-import kr.co.knowledgerally.ui.model.PlayerLectureModel
-
 sealed interface PlayerUiState {
 
     data class Success(
-        val matchingLectures: List<PlayerLectureModel.Matching>,
-        val scheduledLectures: List<PlayerLectureModel.Scheduled>,
-        val completedLectures: List<PlayerLectureModel.Completed>
+        val matchingLectures: List<PlayerLectureUiState.Matching>,
+        val scheduledLectures: List<PlayerLectureUiState.Scheduled>,
+        val completedLectures: List<PlayerLectureUiState.Completed>
     ) : PlayerUiState
 
     object Failure : PlayerUiState

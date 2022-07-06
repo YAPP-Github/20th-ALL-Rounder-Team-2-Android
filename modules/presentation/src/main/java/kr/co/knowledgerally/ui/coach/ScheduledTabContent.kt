@@ -23,13 +23,12 @@ import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.DashBanner
 import kr.co.knowledgerally.ui.component.KnowllyOutlinedButton
 import kr.co.knowledgerally.ui.component.RoundRect
-import kr.co.knowledgerally.ui.model.CoachLectureModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun ScheduledTabContent(
-    scheduledList: List<CoachLectureModel.Scheduled>,
+    scheduledList: List<CoachLectureUiState.Scheduled>,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val clipboardManager = LocalClipboardManager.current
@@ -69,7 +68,7 @@ fun ScheduledTabContent(
 
 @Composable
 private fun ScheduledItem(
-    scheduled: CoachLectureModel.Scheduled,
+    scheduled: CoachLectureUiState.Scheduled,
     copyToClipboard: (String) -> Unit,
 ) {
     Column(

@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.usecase.GetCoachLectureBundleUseCase
-import kr.co.knowledgerally.ui.model.CoachLectureModel
-import kr.co.knowledgerally.ui.model.toCoachPresentation
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,9 +34,9 @@ class CoachViewModel @Inject constructor(
                         _uiState.value = CoachUiState.Empty
                     } else {
                         _uiState.value = CoachUiState.Success(
-                            matchingLectures = lectures.onboardingLectures.map { it.toCoachPresentation() as CoachLectureModel.Matching },
-                            scheduledLectures = lectures.ongoingLectures.map { it.toCoachPresentation() as CoachLectureModel.Scheduled },
-                            completedLectures = lectures.doneLectures.map { it.toCoachPresentation() as CoachLectureModel.Completed },
+                            matchingLectures = lectures.onboardingLectures.map { it.toCoachUiState() as CoachLectureUiState.Matching },
+                            scheduledLectures = lectures.ongoingLectures.map { it.toCoachUiState() as CoachLectureUiState.Scheduled },
+                            completedLectures = lectures.doneLectures.map { it.toCoachUiState() as CoachLectureUiState.Completed },
                         )
                     }
                 }

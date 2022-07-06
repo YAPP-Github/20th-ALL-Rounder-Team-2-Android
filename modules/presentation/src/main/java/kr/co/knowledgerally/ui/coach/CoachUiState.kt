@@ -1,7 +1,5 @@
 package kr.co.knowledgerally.ui.coach
 
-import kr.co.knowledgerally.ui.model.CoachLectureModel
-
 sealed interface CoachUiState {
 
     object Failure : CoachUiState
@@ -11,8 +9,8 @@ sealed interface CoachUiState {
     object Empty : CoachUiState
 
     data class Success(
-        val matchingLectures: List<CoachLectureModel.Matching>,
-        val scheduledLectures: List<CoachLectureModel.Scheduled>,
-        val completedLectures: List<CoachLectureModel.Completed>,
+        val matchingLectures: List<CoachLectureUiState.Matching>,
+        val scheduledLectures: List<CoachLectureUiState.Scheduled>,
+        val completedLectures: List<CoachLectureUiState.Completed>,
     ) : CoachUiState
 }

@@ -25,12 +25,11 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.RoundRect
 import kr.co.knowledgerally.ui.component.VerticalSpacer
-import kr.co.knowledgerally.ui.model.CoachLectureModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun MatchingTabContent(
-    matchingList: List<CoachLectureModel.Matching>,
+    matchingList: List<CoachLectureUiState.Matching>,
     navigateToApplicant: (classId: String) -> Unit,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -55,7 +54,7 @@ fun MatchingTabContent(
 
 @Composable
 private fun MatchingItem(
-    matching: CoachLectureModel.Matching,
+    matching: CoachLectureUiState.Matching,
     navigateToApplicant: (classId: String) -> Unit
 ) {
     Column(
@@ -66,7 +65,7 @@ private fun MatchingItem(
         MatchingItemHeader(text = matching.lecture.title)
         MatchingItemApplicant(
             applicants = matching.applicants,
-            onClick = { navigateToApplicant(matching.lecture.id) },
+            onClick = { navigateToApplicant(matching.lecture.id.toString()) },
             modifier = Modifier.padding(top = 8.dp)
         )
         VerticalSpacer(height = 16.dp)
