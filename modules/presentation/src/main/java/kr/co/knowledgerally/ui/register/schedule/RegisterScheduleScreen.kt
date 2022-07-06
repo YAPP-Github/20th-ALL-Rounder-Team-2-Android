@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.register
+package kr.co.knowledgerally.ui.register.schedule
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,7 @@ import kr.co.knowledgerally.ui.component.PageIndicator
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun ScheduleScreen(
+fun RegisterScheduleScreen(
     navigateUp: () -> Unit,
     navigateToSchedule: () -> Unit,
 ) {
@@ -69,9 +69,9 @@ fun ScheduleScreen(
 
 @Preview(widthDp = 360, showBackground = true)
 @Composable
-private fun ScheduleScreenPreview() {
+private fun RegisterScheduleScreenPreview() {
     KnowllyTheme {
-        ScheduleScreen(
+        RegisterScheduleScreen(
             navigateUp = { },
             navigateToSchedule = { },
         )
