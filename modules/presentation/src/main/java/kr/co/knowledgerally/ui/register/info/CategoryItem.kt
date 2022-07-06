@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.register
+package kr.co.knowledgerally.ui.register.info
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.register
+package kr.co.knowledgerally.ui.register.info
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +28,7 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun CategorySelectSheetContent(
+fun CategorySelectContent(
     sheetState: ModalBottomSheetState,
     onSelect: (CategoryItem) -> Unit,
 ) {
@@ -101,7 +101,7 @@ private fun CategorySelectItem(
 @Composable
 private fun CategorySelectContentPreview() {
     KnowllyTheme {
-        CategorySelectSheetContent(
+        CategorySelectContent(
             sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded),
             onSelect = { }
         )

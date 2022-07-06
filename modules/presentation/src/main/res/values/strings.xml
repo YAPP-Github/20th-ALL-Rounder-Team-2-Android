@@ -172,4 +172,10 @@
     <string name="dialog_withdrawal_dismiss">취소</string>
     <string name="dialog_withdrawal_confirm">탈퇴하기</string>
 
+    <string name="register_lounge_title">새로운 클래스 등록하기</string>
+    <string name="register_lounge_description">코칭할 새로운 클래스를 등록해주세요!</string>
+    <string name="register_lounge_register_time">클래스 시간 추가 등록하기</string>
+    <string name="register_lounge_register_time_description">기존 클래스에 시간을 추가하여 코칭을 이어가세요.</string>
+    <string name="register_lounge_register_time_button">시간 추가 등록하기</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.register
+package kr.co.knowledgerally.ui.register.info
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
@@ -13,7 +13,7 @@ import kr.co.knowledgerally.domain.model.Category
 import kr.co.knowledgerally.domain.model.Registration
 
 @Stable
-class RegisterState(
+class RegisterInfoState(
     category: CategoryItem? = null,
     name: String = "",
     introduce: String = "",
@@ -53,7 +53,7 @@ class RegisterState(
     companion object {
         private const val MAX_IMAGE_LENGTH = 5
 
-        val Saver = listSaver<RegisterState, Any>(
+        val Saver = listSaver<RegisterInfoState, Any>(
             save = {
                 listOf(
                     it.category?.ordinal ?: 0,
@@ -64,7 +64,7 @@ class RegisterState(
                 )
             },
             restore = {
-                RegisterState(
+                RegisterInfoState(
                     category = CategoryItem.from(it[0] as Int),
                     name = it[1] as String,
                     introduce = it[2] as String,
@@ -77,11 +77,11 @@ class RegisterState(
 }
 
 @Composable
-fun rememberRegisterState() = rememberSaveable(stateSaver = RegisterState.Saver) {
-    mutableStateOf(RegisterState())
+fun rememberRegisterState() = rememberSaveable(stateSaver = RegisterInfoState.Saver) {
+    mutableStateOf(RegisterInfoState())
 }
 
-fun RegisterState.toRegistration() = Registration(
+fun RegisterInfoState.toRegistration() = Registration(
     category = when (category) {
         CategoryItem.ServicePlanning -> Category.ServicePlanning
         CategoryItem.Design -> Category.Design

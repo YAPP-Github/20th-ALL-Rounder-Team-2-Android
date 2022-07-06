@@ -1,6 +1,5 @@
 package kr.co.knowledgerally.ui.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -33,7 +32,6 @@ fun KnowllyTopAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(TOP_APP_BAR_HEIGHT)
-            .background(color = KnowllyTheme.colors.grayFF)
             .padding(top = 12.dp, end = 12.dp, bottom = 12.dp)
     ) {
         if (navigationType != NavigationType.None) {
