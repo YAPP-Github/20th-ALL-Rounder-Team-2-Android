@@ -35,7 +35,7 @@ class SplashActivity : BaseActivity() {
 
     private fun setContent() = setContent {
         val systemUiController: SystemUiController = rememberSystemUiController()
-        systemUiController.setStatusBarColor(KnowllyTheme.colors.primaryDark)
+        systemUiController.setSystemBarsColor(KnowllyTheme.colors.primaryDark)
 
         KnowllyTheme {
             SplashScreen()
