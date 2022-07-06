@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
-import kr.co.knowledgerally.domain.usecase.GetCoachLectureListUseCase
+import kr.co.knowledgerally.domain.usecase.GetCoachLectureBundleUseCase
 import kr.co.knowledgerally.ui.model.CoachLectureModel
 import kr.co.knowledgerally.ui.model.toCoachPresentation
 import javax.inject.Inject
 
 @HiltViewModel
 class CoachViewModel @Inject constructor(
-    private val getCoachLectureListUseCase: GetCoachLectureListUseCase
+    private val getCoachLectureBundleUseCase: GetCoachLectureBundleUseCase
 ) : BaseViewModel() {
 
     private val _tabState = MutableStateFlow(CoachTabState.Default)
@@ -29,7 +29,7 @@ class CoachViewModel @Inject constructor(
     private fun fetchCoachLectures() {
         _uiState.value = CoachUiState.Loading
         launch {
-            val result = getCoachLectureListUseCase()
+            val result = getCoachLectureBundleUseCase()
             result
                 .onSuccess { lectures ->
                     if (lectures.isEmpty) {
