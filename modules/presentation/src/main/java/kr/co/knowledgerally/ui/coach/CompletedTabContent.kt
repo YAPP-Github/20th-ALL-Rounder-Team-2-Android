@@ -27,10 +27,11 @@ import kr.co.knowledgerally.ui.component.DashBanner
 import kr.co.knowledgerally.ui.component.OutlinedBadge
 import kr.co.knowledgerally.ui.component.RoundRect
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun CompletedTabContent(
-    completedList: List<ClassUiState.Completed>,
+    completedList: List<CoachLectureUiState.Completed>,
     scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
@@ -64,7 +65,7 @@ fun CompletedTabContent(
 
 @Composable
 private fun CompletedItem(
-    completed: ClassUiState.Completed,
+    completed: CoachLectureUiState.Completed,
 ) {
     Box(
         modifier = Modifier
@@ -92,24 +93,36 @@ private fun CompletedItem(
             },
         )
         Column(modifier = Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp)) {
-            Text(text = "프랑스어", style = KnowllyTheme.typography.subtitle2)
+            Text(text = completed.lecture.title, style = KnowllyTheme.typography.subtitle2)
             Text(
-                text = "유지민님",
+                text = completed.player.profile.username,
                 style = KnowllyTheme.typography.body1,
                 modifier = Modifier.padding(top = 2.dp)
             )
             Text(
-                text = "2022년 5월 4일 (화)",
+                text = completed.lecture.startAt.format(
+                    DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
+                ),
                 modifier = Modifier.padding(top = 6.dp),
                 style = KnowllyTheme.typography.body2,
                 color = KnowllyTheme.colors.gray6B
             )
             Text(
-                text = "오후 6:00 (3시간 수업)",
+                text = "${
+                    completed.lecture.startAt.format(
+                        DateTimeFormatter.ofPattern(
+                            stringResource(id = R.string.lecture_time_format)
+                        )
+                    )
+                } ${
+                    stringResource(
+                        R.string.lecture_runningtime_format,
+                        completed.lecture.runningTime
+                    )
+                }",
                 style = KnowllyTheme.typography.body2,
                 color = KnowllyTheme.colors.gray6B
             )
         }
     }
 }
-

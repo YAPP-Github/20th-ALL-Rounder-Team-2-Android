@@ -9,12 +9,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kr.co.knowledgerally.ui.component.KnowllyTabRow
 import kr.co.knowledgerally.ui.component.VerticalSpacer
-import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun PlayerScreen(viewModel: PlayerViewModel = hiltViewModel()) {
@@ -60,27 +58,5 @@ fun PlayerScreen(
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PlayerScreenPreview() {
-    KnowllyTheme {
-        PlayerScreen(
-            tabState = PlayerTabState.DEFAULT,
-            uiState = PlayerUiState.Success(
-                matchingLesson = emptyList(),
-                scheduledLesson = listOf(
-                    LessonUiState.Scheduled(lessonId = 0, kakaoId = "kakaoId"),
-                    LessonUiState.Scheduled(lessonId = 1, kakaoId = "kakaoId"),
-                ),
-                completedLesson = listOf(
-                    LessonUiState.Completed(lessonId = 2, isReviewed = true),
-                    LessonUiState.Completed(lessonId = 3, isReviewed = false)
-                )
-            ),
-            switchTab = {}
-        )
     }
 }

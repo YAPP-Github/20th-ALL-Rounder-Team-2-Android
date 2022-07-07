@@ -24,10 +24,11 @@ import kr.co.knowledgerally.ui.component.DashBanner
 import kr.co.knowledgerally.ui.component.KnowllyOutlinedButton
 import kr.co.knowledgerally.ui.component.RoundRect
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ScheduledTabContent(
-    scheduledList: List<ClassUiState.Scheduled>,
+    scheduledList: List<CoachLectureUiState.Scheduled>,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val clipboardManager = LocalClipboardManager.current
@@ -67,7 +68,7 @@ fun ScheduledTabContent(
 
 @Composable
 private fun ScheduledItem(
-    scheduled: ClassUiState.Scheduled,
+    scheduled: CoachLectureUiState.Scheduled,
     copyToClipboard: (String) -> Unit,
 ) {
     Column(
@@ -78,20 +79,33 @@ private fun ScheduledItem(
         Box(modifier = Modifier.height(IntrinsicSize.Max)) {
             RoundRect(radius = 8.dp, width = 4.dp)
             Column(modifier = Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp)) {
-                Text(text = "프랑스어", style = KnowllyTheme.typography.subtitle2)
+                Text(text = scheduled.lecture.title, style = KnowllyTheme.typography.subtitle2)
                 Text(
-                    text = "유지민님",
+                    text = scheduled.player.profile.username,
                     style = KnowllyTheme.typography.body1,
                     modifier = Modifier.padding(top = 2.dp)
                 )
                 Text(
-                    text = "2022년 5월 4일 (화)",
+                    text = scheduled.lecture.startAt.format(
+                        DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
+                    ),
                     modifier = Modifier.padding(top = 6.dp),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )
                 Text(
-                    text = "오후 6:00 (3시간 수업)",
+                    text = "${
+                        scheduled.lecture.startAt.format(
+                            DateTimeFormatter.ofPattern(
+                                stringResource(id = R.string.lecture_time_format)
+                            )
+                        )
+                    } ${
+                        stringResource(
+                            R.string.lecture_runningtime_format,
+                            scheduled.lecture.runningTime
+                        )
+                    }",
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )
