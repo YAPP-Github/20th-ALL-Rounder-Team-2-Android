@@ -16,7 +16,7 @@ data class FormResponse(
     @SerializedName("userImage")
     val userImage: UserImageResponse,
     @SerializedName("state")
-    val state: String, // REQUEST, ACCEPT, REJECT
+    val state: State,
     @SerializedName("expirationDate")
     val expirationDate: LocalDateTime
     ) {
