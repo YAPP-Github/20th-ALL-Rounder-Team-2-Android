@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 data class LectureInfo(
-    val id: Int,
+    val id: Long,
     val title: String,
     val imageUrls: List<String>,
     val startAt: LocalDateTime,
