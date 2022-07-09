@@ -12,6 +12,6 @@ internal class CategoryRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getCategoryList(): Result<List<CategoryEntity>> = runCatching {
         val response = apiService.getCategoryList()
-        response.data.map { it.category.toData() }
+        response.data.map { it.toData() }
     }
 }
