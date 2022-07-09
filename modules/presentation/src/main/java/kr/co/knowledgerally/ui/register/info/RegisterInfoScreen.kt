@@ -30,6 +30,7 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -41,8 +42,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
+import kr.co.knowledgerally.log.Logger
 import kr.co.knowledgerally.model.CategoryModel
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.AddPhotoIcon
@@ -51,6 +54,7 @@ import kr.co.knowledgerally.ui.component.KnowllyDropdown
 import kr.co.knowledgerally.ui.component.KnowllyMultilineTextField
 import kr.co.knowledgerally.ui.component.KnowllySinglelineTextField
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.component.NavigationType
 import kr.co.knowledgerally.ui.component.PageIndicator
 import kr.co.knowledgerally.ui.component.TagTextField
@@ -58,12 +62,14 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun RegisterInfoScreen(
+    viewModel: RegisterInfoViewModel = hiltViewModel(),
     navigateUp: () -> Unit,
     navigateToSchedule: (RegisterInfoState) -> Unit,
 ) {
     val state by rememberRegisterState()
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
+    val categories by viewModel.categories.collectAsState()
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
@@ -72,6 +78,7 @@ fun RegisterInfoScreen(
     ModalBottomSheetLayout(
         sheetContent = {
             CategoryPicker(
+                categories = categories,
                 sheetState = sheetState,
                 onSelect = { state.category = it },
             )
@@ -82,13 +89,18 @@ fun RegisterInfoScreen(
         sheetBackgroundColor = KnowllyTheme.colors.grayFF,
         sheetShape = RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp)
     ) {
-        RegisterContent(
-            state = state,
-            navigateUp = navigateUp,
-            onAskCategory = { coroutineScope.launch { sheetState.show() } },
-            onPickImage = { launcher.launch("image/*") },
-            navigateToSchedule = { navigateToSchedule(state) }
-        )
+        Box(modifier = Modifier.fillMaxSize()) {
+            RegisterContent(
+                state = state,
+                navigateUp = navigateUp,
+                onAskCategory = { coroutineScope.launch { sheetState.show() } },
+                onPickImage = { launcher.launch("image/*") },
+                navigateToSchedule = { navigateToSchedule(state) }
+            )
+            if (categories.isEmpty()) {
+                Loading()
+            }
+        }
     }
 }
 

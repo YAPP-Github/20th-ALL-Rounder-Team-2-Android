@@ -30,6 +30,7 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun CategoryPicker(
+    categories: List<CategoryModel>,
     sheetState: ModalBottomSheetState,
     onSelect: (CategoryModel) -> Unit,
 ) {
@@ -50,7 +51,7 @@ fun CategoryPicker(
             ),
             horizontalArrangement = Arrangement.spacedBy(32.dp),
             content = {
-                items(CategoryModel.values().toList()) {
+                items(categories) {
                     CategoryPickerItem(
                         category = it,
                         onClick = {
@@ -93,6 +94,7 @@ private fun CategoryPickerItem(
 private fun CategoryPickerPreview() {
     KnowllyTheme {
         CategoryPicker(
+            categories = CategoryModel.values().toList(),
             sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded),
             onSelect = { }
         )

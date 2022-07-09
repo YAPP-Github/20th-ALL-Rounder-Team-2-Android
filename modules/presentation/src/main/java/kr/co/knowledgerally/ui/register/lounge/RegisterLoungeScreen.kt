@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,18 +29,22 @@ fun RegisterLoungeScreen(
     navigateToInfo: (Boolean) -> Unit,
     navigateToSchedule: (String) -> Unit,
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
         when (uiState) {
             RegisterLoungeUiState.Loading -> Loading()
-            RegisterLoungeUiState.NoLecture -> navigateToInfo(true)
+            RegisterLoungeUiState.NoLecture -> Unit // no-op
             is RegisterLoungeUiState.Lectures -> RegisterLoungeContent(
                 lectures = emptyList(),
                 navigateToSchedule = navigateToSchedule,
                 navigateToInfo = { navigateToInfo(false) },
                 navigateUp = navigateUp,
             )
+        }
+    }
+
+    LaunchedEffect(uiState) {
+        if (uiState is RegisterLoungeUiState.NoLecture) {
+            navigateToInfo(true)
         }
     }
 }
