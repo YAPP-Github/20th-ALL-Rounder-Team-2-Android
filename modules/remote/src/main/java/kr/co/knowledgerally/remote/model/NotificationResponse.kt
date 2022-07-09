@@ -35,7 +35,13 @@ internal fun NotificationResponse.toData() =
         content = content,
         lectureTitle = lectureTitle,
         date = date,
-        type = NotificationEntity.Type.valueOf(type.toString()),
+        type = type.toData(),
         sender = sender.toData(imageUrl = null),
         receiver = receiver.toData(imageUrl = null)
     )
+
+internal fun NotificationResponse.Type.toData() =
+    when (this) {
+        NotificationResponse.Type.Coach -> NotificationEntity.Type.Coach
+        NotificationResponse.Type.Player -> NotificationEntity.Type.Player
+    }

@@ -22,5 +22,11 @@ internal fun NotificationEntity.toDomain() =
         receiver = receiver.toDomain(),
         sender = sender.toDomain(),
         date = date,
-        type = Notification.Type.valueOf(type.toString())
+        type = type.toDomain()
     )
+
+internal fun NotificationEntity.Type.toDomain() =
+    when (this) {
+        NotificationEntity.Type.Coach -> Notification.Type.Coach
+        NotificationEntity.Type.Player -> Notification.Type.Player
+    }
