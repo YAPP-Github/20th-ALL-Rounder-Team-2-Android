@@ -11,16 +11,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import kr.co.knowledgerally.domain.model.Category
 import kr.co.knowledgerally.domain.model.Registration
+import kr.co.knowledgerally.model.CategoryModel
 
 @Stable
 class RegisterInfoState(
-    category: CategoryItem? = null,
+    category: CategoryModel? = null,
     name: String = "",
     introduce: String = "",
     tags: Set<String> = emptySet(),
     imageUris: List<Uri> = emptyList(),
 ) {
-    var category: CategoryItem? by mutableStateOf(category)
+    var category: CategoryModel? by mutableStateOf(category)
     var name: String by mutableStateOf(name)
     var introduce: String by mutableStateOf(introduce)
 
@@ -65,7 +66,7 @@ class RegisterInfoState(
             },
             restore = {
                 RegisterInfoState(
-                    category = CategoryItem.from(it[0] as Int),
+                    category = CategoryModel.from(it[0] as Int),
                     name = it[1] as String,
                     introduce = it[2] as String,
                     tags = it[3] as Set<String>,
@@ -83,12 +84,12 @@ fun rememberRegisterState() = rememberSaveable(stateSaver = RegisterInfoState.Sa
 
 fun RegisterInfoState.toRegistration() = Registration(
     category = when (category) {
-        CategoryItem.ServicePlanning -> Category.ServicePlanning
-        CategoryItem.Design -> Category.Design
-        CategoryItem.Develop -> Category.Develop
-        CategoryItem.Marketing -> Category.Marketing
-        CategoryItem.Language -> Category.Language
-        CategoryItem.Etc -> Category.Etc
+        CategoryModel.PM -> Category.PM
+        CategoryModel.Design -> Category.Design
+        CategoryModel.Develop -> Category.Develop
+        CategoryModel.Marketing -> Category.Marketing
+        CategoryModel.Language -> Category.Language
+        CategoryModel.Etc -> Category.Etc
         else -> throw IllegalStateException()
     },
     name = name,
