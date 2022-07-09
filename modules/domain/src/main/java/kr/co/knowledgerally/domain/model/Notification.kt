@@ -1,13 +1,13 @@
 package kr.co.knowledgerally.domain.model
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class Notification(
-    val id: Long,
-    val text: String,
-    val lessonTitle: String,
-    val opponentName: String,
-    val date: LocalDate,
+    val content: String,
+    val lectureTitle: String,
+    val receiver: User,
+    val sender: User,
+    val date: LocalDateTime,
     val type: Type
 ) {
 
