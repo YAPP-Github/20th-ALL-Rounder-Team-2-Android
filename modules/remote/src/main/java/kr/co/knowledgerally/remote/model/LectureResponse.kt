@@ -17,8 +17,13 @@ data class LectureResponse(
 ) {
 
     enum class State {
-        @SerializedName("ON_BOARD") Onboard,
-        @SerializedName("ON_GOING") Ongoing,
-        @SerializedName("DONE") Done
+        @SerializedName("ON_BOARD")
+        Onboard,
+
+        @SerializedName("ON_GOING")
+        Ongoing,
+        
+        @SerializedName("DONE")
+        Done
     }
 }

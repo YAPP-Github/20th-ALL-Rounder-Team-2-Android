@@ -19,12 +19,17 @@ data class FormResponse(
     val state: State,
     @SerializedName("expirationDate")
     val expirationDate: LocalDateTime
-    ) {
+) {
 
     enum class State {
-        @SerializedName("REQUEST") Request,
-        @SerializedName("ACCEPT") Accept,
-        @SerializedName("REJECT") Reject
+        @SerializedName("REQUEST")
+        Request,
+
+        @SerializedName("ACCEPT")
+        Accept,
+        
+        @SerializedName("REJECT")
+        Reject
     }
 }
 
