@@ -18,7 +18,7 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun SplashScreen() {
+fun Splash() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,8 +44,8 @@ fun SplashScreen() {
 
 @Preview
 @Composable
-private fun SplashScreenPreview() {
+private fun SplashPreview() {
     KnowllyTheme {
-        SplashScreen()
+        Splash()
     }
 }

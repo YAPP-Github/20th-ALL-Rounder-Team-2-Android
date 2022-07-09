@@ -30,6 +30,7 @@ android {
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-opt-in=com.google.accompanist.pager.ExperimentalPagerApi",
         )
         jvmTarget = "1.8"
     }

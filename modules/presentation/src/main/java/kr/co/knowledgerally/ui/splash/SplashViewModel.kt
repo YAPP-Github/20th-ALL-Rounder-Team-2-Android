@@ -15,18 +15,18 @@ class SplashViewModel @Inject constructor(
     isOnboardedUseCase: IsOnboardedUseCase
 ) : BaseViewModel() {
 
-    private val _state = MutableStateFlow<SplashUiState>(SplashUiState.Unspecified)
-    val state: StateFlow<SplashUiState> = _state.asStateFlow()
+    private val _uiState = MutableStateFlow<SplashUiState>(SplashUiState.Loading)
+    val uiState: StateFlow<SplashUiState> = _uiState.asStateFlow()
 
     init {
         launch {
             val isLoggedIn = isLoggedInUseCase().getOrThrow()
             if (isLoggedIn) {
                 val isOnboarded = isOnboardedUseCase().getOrThrow()
-                _state.value =
+                _uiState.value =
                     if (isOnboarded) SplashUiState.AlreadyLoggedIn else SplashUiState.NeedToOnboard
             } else {
-                _state.value = SplashUiState.NeedToLogin
+                _uiState.value = SplashUiState.NeedToLogin
             }
         }
     }
