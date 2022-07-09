@@ -8,6 +8,4 @@ sealed interface SplashUiState {
     object AlreadyLoggedIn : SplashUiState
 
     object NeedToOnboard : SplashUiState
-
-    object NeedToLogin : SplashUiState
 }

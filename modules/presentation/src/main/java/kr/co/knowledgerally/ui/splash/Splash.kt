@@ -1,5 +1,8 @@
 package kr.co.knowledgerally.ui.splash
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,27 +21,34 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun Splash() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = KnowllyTheme.colors.primaryDark),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+fun Splash(visible: Boolean) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = fadeIn(),
+        exit = fadeOut(),
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_logo),
-            tint = KnowllyTheme.colors.grayFF,
-            contentDescription = null,
-            modifier = Modifier.size(width = 64.dp, height = 64.dp)
-        )
-        Spacer(Modifier.height(24.dp))
-        Icon(
-            painter = painterResource(id = R.drawable.ic_logo_text),
-            tint = KnowllyTheme.colors.grayFF,
-            contentDescription = null,
-            modifier = Modifier.size(width = 128.dp, height = 36.dp)
-        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = KnowllyTheme.colors.primaryDark),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_logo),
+                tint = KnowllyTheme.colors.grayFF,
+                contentDescription = null,
+                modifier = Modifier.size(width = 64.dp, height = 64.dp)
+            )
+            Spacer(Modifier.height(24.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.ic_logo_text),
+                tint = KnowllyTheme.colors.grayFF,
+                contentDescription = null,
+                modifier = Modifier.size(width = 128.dp, height = 36.dp)
+            )
+        }
     }
 }
 
@@ -46,6 +56,6 @@ fun Splash() {
 @Composable
 private fun SplashPreview() {
     KnowllyTheme {
-        Splash()
+        Splash(visible = true)
     }
 }

@@ -7,8 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.login.LoginActivity
@@ -24,22 +23,22 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            val systemUiController: SystemUiController = rememberSystemUiController()
-            systemUiController.setSystemBarsColor(KnowllyTheme.colors.primaryDark)
-
             KnowllyTheme {
                 val uiState by viewModel.uiState.collectAsState()
                 when (uiState) {
                     SplashUiState.AlreadyLoggedIn -> startMainActivity()
                     SplashUiState.NeedToOnboard -> startProfileActivity()
-                    SplashUiState.NeedToLogin -> startLoginActivity()
-                    SplashUiState.Tutorial -> SplashPage(
-                        items = PageItems,
-                        startKnowlly = { startLoginActivity() },
-                    )
-                    SplashUiState.Loading -> Splash()
+                    SplashUiState.Loading -> Unit // no-op
+                    SplashUiState.Tutorial -> Unit // no-op
                 }
+                Splash(visible = uiState == SplashUiState.Loading)
+                SplashPage(
+                    visible = uiState == SplashUiState.Tutorial,
+                    items = PageItems,
+                    startKnowlly = { startLoginActivity() },
+                )
             }
         }
     }

@@ -6,10 +6,13 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,57 +38,68 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun SplashPage(
+    visible: Boolean,
     items: List<PageItem>,
     startKnowlly: () -> Unit,
 ) {
     val pagerState = rememberPagerState()
-    var isLastPage by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
+    var lastPage by remember { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            SplashTopAppBar(
-                canSkip = isLastPage,
-                onSkip = {
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(page = items.lastIndex)
+    AnimatedVisibility(
+        visible = visible,
+        enter = fadeIn(),
+        exit = fadeOut(),
+        content = {
+            Scaffold(
+                topBar = {
+                    SplashTopAppBar(
+                        canSkip = lastPage,
+                        onSkip = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(page = items.lastIndex)
+                            }
+                        },
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .windowInsetsPadding(WindowInsets.safeDrawing),
+                content = { paddingValues ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                        verticalArrangement = Arrangement.Bottom,
+                    ) {
+                        HorizontalPager(
+                            count = items.size,
+                            state = pagerState,
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+                        ) { page -> SplashPageItem(items[page]) }
+                        StartButton(
+                            visible = lastPage,
+                            onClick = startKnowlly,
+                        )
+                        HorizontalPagerIndicator(
+                            pagerState = pagerState,
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(bottom = 30.dp),
+                            activeColor = KnowllyTheme.colors.gray00,
+                            inactiveColor = KnowllyTheme.colors.grayDD,
+                        )
                     }
                 },
             )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                verticalArrangement = Arrangement.Bottom,
-            ) {
-                HorizontalPager(
-                    count = items.size,
-                    state = pagerState,
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                ) { page -> SplashPageItem(items[page]) }
-                StartButton(
-                    visible = isLastPage,
-                    onClick = startKnowlly,
-                )
-                HorizontalPagerIndicator(
-                    pagerState = pagerState,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(bottom = 30.dp),
-                    activeColor = KnowllyTheme.colors.gray00,
-                    inactiveColor = KnowllyTheme.colors.grayDD,
-                )
-            }
         }
     )
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }
             .map { it == items.lastIndex }
-            .collect { isLastPage = it }
+            .collect { lastPage = it }
     }
 }
 
@@ -123,6 +137,7 @@ private fun StartButton(
 fun SplashPagePreview() {
     KnowllyTheme {
         SplashPage(
+            visible = true,
             items = PageItems,
             startKnowlly = { },
         )
