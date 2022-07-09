@@ -1,15 +1,16 @@
-package kr.co.knowledgerally.ui.register.info
+package kr.co.knowledgerally.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import kr.co.knowledgerally.domain.model.Category
 import kr.co.knowledgerally.ui.R
 
-enum class CategoryItem(
-    @DrawableRes val drawableResId: Int,
-    @StringRes val textResId: Int,
+enum class CategoryModel(
+    @DrawableRes val icon: Int,
+    @StringRes val text: Int,
 ) {
-    ServicePlanning(
-        R.drawable.ic_service_planning,
+    PM(
+        R.drawable.ic_pm,
         R.string.category_service_planning
     ),
     Design(
@@ -36,4 +37,13 @@ enum class CategoryItem(
     companion object {
         fun from(ordinal: Int) = values().find { it.ordinal == ordinal }
     }
+}
+
+fun Category.toPresentation(): CategoryModel = when (this) {
+    Category.PM -> CategoryModel.PM
+    Category.Design -> CategoryModel.Design
+    Category.Develop -> CategoryModel.Develop
+    Category.Marketing -> CategoryModel.Marketing
+    Category.Language -> CategoryModel.Language
+    Category.Etc -> CategoryModel.Etc
 }
