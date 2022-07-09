@@ -18,10 +18,17 @@ data class FormResponse(
     val state: String, // REQUEST, ACCEPT, REJECT
     @SerializedName("expirationDate")
     val expirationDate: String
-)
+) {
+
+    enum class State {
+        @SerializedName("REQUEST") Request,
+        @SerializedName("ACCEPT") Accept,
+        @SerializedName("REJECT") Reject
+    }
+}
 
 internal fun FormResponse.toData() = ApplicantEntity(
-    id = id.toString(),
+    id = id,
     name = user.username,
     content = content,
     imageUrl = userImage.userImageUrl,

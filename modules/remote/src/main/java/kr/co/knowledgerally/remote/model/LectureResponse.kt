@@ -12,5 +12,12 @@ data class LectureResponse(
     @SerializedName("endAt")
     val endAt: String,
     @SerializedName("state")
-    val state: String // ON_BOARD, ON_GOING, DONE
-)
+    val state: State
+) {
+
+    enum class State {
+        @SerializedName("ON_BOARD") Onboard,
+        @SerializedName("ON_GOING") Ongoing,
+        @SerializedName("DONE") Done
+    }
+}

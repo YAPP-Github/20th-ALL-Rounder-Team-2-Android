@@ -11,6 +11,7 @@ import kr.co.knowledgerally.remote.api.ApiService
 import kr.co.knowledgerally.remote.api.AuthenticationListener
 import kr.co.knowledgerally.remote.api.Authenticator
 import kr.co.knowledgerally.remote.api.BaseUrl
+import kr.co.knowledgerally.remote.api.EnumConverterFactory
 import kr.co.knowledgerally.remote.api.Interceptors
 import kr.co.knowledgerally.remote.api.RefreshApiService
 import kr.co.knowledgerally.remote.api.baseUrl
@@ -48,6 +49,7 @@ internal object RemoteModule {
                 }
             )
             .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(EnumConverterFactory)
             .build()
             .create(ApiService::class.java)
     }
