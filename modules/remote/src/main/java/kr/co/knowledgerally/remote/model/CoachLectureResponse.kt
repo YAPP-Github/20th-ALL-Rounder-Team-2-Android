@@ -18,7 +18,7 @@ data class CoachLectureResponse(
 internal fun CoachLectureResponse.toLectureInfoEntity() = LectureInfoEntity(
     id = lectureInfo.id,
     title = lectureInfo.title,
-    imageUrls = lectureInfo.images.map { it.url },
+    imageUrls = lectureInfo.images.map { it.imageUrl },
     startAt = lecture.startAt,
     endAt = lecture.endAt
 )

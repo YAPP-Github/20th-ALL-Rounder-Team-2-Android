@@ -6,5 +6,5 @@ data class LectureImageResponse(
     @SerializedName("id")
     val id: Long,
     @SerializedName("lectureImgUrl")
-    val url: String
+    val imageUrl: String
 )

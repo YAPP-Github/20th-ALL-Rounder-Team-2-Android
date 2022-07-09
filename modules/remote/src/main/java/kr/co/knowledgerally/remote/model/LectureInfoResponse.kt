@@ -8,7 +8,7 @@ data class LectureInfoResponse(
     @SerializedName("topic")
     val title: String,
     @SerializedName("introduce")
-    val intro: String,
+    val introduction: String,
     @SerializedName("price")
     val price: Int,
     @SerializedName("coach")

@@ -15,7 +15,7 @@ internal fun PlayerLectureResponse.toLectureInfoEntity() =
     LectureInfoEntity(
         id = lectureInfo.id,
         title = lectureInfo.title,
-        imageUrls = lectureInfo.images.map { it.url },
+        imageUrls = lectureInfo.images.map { it.imageUrl },
         startAt = form.lecture.startAt,
         endAt = form.lecture.endAt
     )
