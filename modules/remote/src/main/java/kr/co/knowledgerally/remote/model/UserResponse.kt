@@ -21,9 +21,11 @@ data class UserResponse(
     val pushActive: Boolean,
     @SerializedName("coach")
     val coach: Boolean,
+    @SerializedName("userImgUrl")
+    val imageUrl: String?
 )
 
-fun UserResponse.toData(imageUrl: String?) = UserEntity(
+fun UserResponse.toData() = UserEntity(
     id = id,
     profile = ProfileEntity(
         username = username,

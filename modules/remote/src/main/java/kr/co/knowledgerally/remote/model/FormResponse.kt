@@ -13,8 +13,6 @@ data class FormResponse(
     val lecture: LectureResponse,
     @SerializedName("user")
     val user: UserResponse,
-    @SerializedName("userImage")
-    val userImage: UserImageResponse,
     @SerializedName("state")
     val state: State,
     @SerializedName("expirationDate")
@@ -27,7 +25,7 @@ data class FormResponse(
 
         @SerializedName("ACCEPT")
         Accept,
-        
+
         @SerializedName("REJECT")
         Reject
     }
@@ -37,6 +35,6 @@ internal fun FormResponse.toData() = ApplicantEntity(
     id = id,
     name = user.username,
     content = content,
-    imageUrl = userImage.userImageUrl,
+    imageUrl = user.imageUrl,
     startAt = lecture.startAt
 )

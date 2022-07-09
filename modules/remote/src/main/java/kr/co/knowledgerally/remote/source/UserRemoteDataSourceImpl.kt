@@ -43,9 +43,7 @@ internal class UserRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getUser(): Result<UserEntity> = runCatching {
-        val data = apiService.getUser().data
-        val imageUrl = data.userImage?.userImageUrl
-        data.user.toData(imageUrl)
+        apiService.getUser().data.user.toData()
     }
 
     override suspend fun updatePushActive(active: Boolean): Result<Unit> = runCatching {

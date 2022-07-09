@@ -9,8 +9,6 @@ data class UserResponseWrapper(
 
     data class Data(
         @SerializedName("user")
-        val user: UserResponse,
-        @SerializedName("userImage")
-        val userImage: UserImageResponse?,
+        val user: UserResponse
     )
 }
