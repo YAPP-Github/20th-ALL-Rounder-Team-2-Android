@@ -2,6 +2,7 @@ package kr.co.knowledgerally.remote.api
 
 import kr.co.knowledgerally.remote.model.BallHistoryResponseWrapper
 import kr.co.knowledgerally.remote.model.NotificationResponseWrapper
+import kr.co.knowledgerally.remote.model.CategoryResponseWrapper
 import kr.co.knowledgerally.remote.model.OnboardRequest
 import kr.co.knowledgerally.remote.model.OnboardedResponse
 import kr.co.knowledgerally.remote.model.ProviderTokenRequest
@@ -64,4 +65,7 @@ internal interface ApiService {
 
     @GET("notification/me")
     suspend fun getNotifications(): NotificationResponseWrapper
+
+    @GET("category")
+    suspend fun getCategoryList(): CategoryResponseWrapper
 }
