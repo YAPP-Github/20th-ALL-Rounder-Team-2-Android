@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.remote.di
 
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,6 +12,7 @@ import kr.co.knowledgerally.remote.api.ApiService
 import kr.co.knowledgerally.remote.api.AuthenticationListener
 import kr.co.knowledgerally.remote.api.Authenticator
 import kr.co.knowledgerally.remote.api.BaseUrl
+import kr.co.knowledgerally.remote.api.EnumConverterFactory
 import kr.co.knowledgerally.remote.api.Interceptors
 import kr.co.knowledgerally.remote.api.RefreshApiService
 import kr.co.knowledgerally.remote.api.baseUrl
@@ -39,6 +41,10 @@ internal object RemoteModule {
             authenticationListener = authenticationListener
         )
 
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm")
+            .create()
+
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(
@@ -47,7 +53,8 @@ internal object RemoteModule {
                     authenticator(authenticator)
                 }
             )
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(EnumConverterFactory)
             .build()
             .create(ApiService::class.java)
     }
