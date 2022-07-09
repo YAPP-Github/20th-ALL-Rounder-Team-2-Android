@@ -4,7 +4,7 @@ import kr.co.knowledgerally.domain.model.Applicant
 import java.time.LocalDate
 
 data class ApplicantEntity(
-    val id: String,
+    val id: Long,
     val name: String,
     val content: String,
     val imageUrl: String?,
