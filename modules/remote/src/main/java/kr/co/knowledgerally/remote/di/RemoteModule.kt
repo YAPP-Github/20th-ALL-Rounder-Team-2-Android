@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.remote.di
 
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,6 +41,10 @@ internal object RemoteModule {
             authenticationListener = authenticationListener
         )
 
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm")
+            .create()
+
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(
@@ -48,7 +53,7 @@ internal object RemoteModule {
                     authenticator(authenticator)
                 }
             )
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .addConverterFactory(EnumConverterFactory)
             .build()
             .create(ApiService::class.java)

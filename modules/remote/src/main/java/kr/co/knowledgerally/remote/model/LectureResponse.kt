@@ -1,6 +1,7 @@
 package kr.co.knowledgerally.remote.model
 
 import com.google.gson.annotations.SerializedName
+import java.time.LocalDateTime
 
 data class LectureResponse(
     @SerializedName("id")
@@ -8,9 +9,9 @@ data class LectureResponse(
     @SerializedName("reviewWritten")
     val isReviewed: Boolean,
     @SerializedName("startAt")
-    val startAt: String,
+    val startAt: LocalDateTime,
     @SerializedName("endAt")
-    val endAt: String,
+    val endAt: LocalDateTime,
     @SerializedName("state")
     val state: State
 ) {

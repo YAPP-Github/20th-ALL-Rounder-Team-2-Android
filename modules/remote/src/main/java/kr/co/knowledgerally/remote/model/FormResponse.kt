@@ -2,6 +2,7 @@ package kr.co.knowledgerally.remote.model
 
 import com.google.gson.annotations.SerializedName
 import kr.co.knowledgerally.data.model.ApplicantEntity
+import java.time.LocalDateTime
 
 data class FormResponse(
     @SerializedName("id")
@@ -17,8 +18,8 @@ data class FormResponse(
     @SerializedName("state")
     val state: String, // REQUEST, ACCEPT, REJECT
     @SerializedName("expirationDate")
-    val expirationDate: String
-) {
+    val expirationDate: LocalDateTime
+    ) {
 
     enum class State {
         @SerializedName("REQUEST") Request,

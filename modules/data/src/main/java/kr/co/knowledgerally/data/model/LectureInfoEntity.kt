@@ -7,14 +7,14 @@ data class LectureInfoEntity(
     val id: Long,
     val title: String,
     val imageUrls: List<String>,
-    val startAt: String,
-    val endAt: String
+    val startAt: LocalDateTime,
+    val endAt: LocalDateTime
 )
 
 internal fun LectureInfoEntity.toDomain() = LectureInfo(
     id = id,
     title = title,
     imageUrls = imageUrls,
-    startAt = LocalDateTime.parse(startAt),
-    endAt = LocalDateTime.parse(endAt)
+    startAt = startAt,
+    endAt = endAt
 )
