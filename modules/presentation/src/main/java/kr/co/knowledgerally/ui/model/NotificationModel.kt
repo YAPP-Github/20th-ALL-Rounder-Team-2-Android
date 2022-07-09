@@ -2,14 +2,13 @@ package kr.co.knowledgerally.ui.model
 
 import kr.co.knowledgerally.domain.model.Notification
 import kr.co.knowledgerally.ui.R
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class NotificationModel(
-    val id: Long,
-    val text: String,
-    val lessonTitle: String,
+    val content: String,
+    val lectureTitle: String,
     val opponentName: String,
-    val date: LocalDate,
+    val date: LocalDateTime,
     val type: Type
 ) {
 
@@ -22,10 +21,9 @@ data class NotificationModel(
 }
 
 fun Notification.toPresentation(): NotificationModel = NotificationModel(
-    id = id,
-    text = text,
-    lessonTitle = lessonTitle,
-    opponentName = opponentName,
+    content = content,
+    lectureTitle = lectureTitle,
+    opponentName = sender.profile.username,
     date = date,
     type = when (type) {
         Notification.Type.Coach -> NotificationModel.Type.Coach
