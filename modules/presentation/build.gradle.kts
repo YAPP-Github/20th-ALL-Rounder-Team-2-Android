@@ -68,6 +68,8 @@ dependencies {
 
     implementation(libs.google.accompanist.systemuicontroller)
     implementation(libs.google.accompanist.navigation.animation)
+    implementation(libs.google.accompanist.pager.core)
+    implementation(libs.google.accompanist.pager.indicators)
     implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.hilt.android)
