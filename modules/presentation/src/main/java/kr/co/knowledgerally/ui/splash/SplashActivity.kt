@@ -5,12 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.login.LoginActivity
 import kr.co.knowledgerally.ui.main.MainActivity
@@ -25,28 +23,24 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContent()
-
-        lifecycleScope.launch {
-            delay(SPLASH_TIME_MILLIS)
-            viewModel.state.collect { state -> handleState(state) }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        setContent {
+            KnowllyTheme {
+                val uiState by viewModel.uiState.collectAsState()
+                when (uiState) {
+                    SplashUiState.AlreadyLoggedIn -> startMainActivity()
+                    SplashUiState.NeedToOnboard -> startProfileActivity()
+                    SplashUiState.Loading -> Unit // no-op
+                    SplashUiState.Tutorial -> Unit // no-op
+                }
+                Splash(visible = uiState == SplashUiState.Loading)
+                SplashPage(
+                    visible = uiState == SplashUiState.Tutorial,
+                    items = PageItems,
+                    startKnowlly = { startLoginActivity() },
+                )
+            }
         }
-    }
-
-    private fun setContent() = setContent {
-        val systemUiController: SystemUiController = rememberSystemUiController()
-        systemUiController.setSystemBarsColor(KnowllyTheme.colors.primaryDark)
-
-        KnowllyTheme {
-            SplashScreen()
-        }
-    }
-
-    private fun handleState(state: SplashUiState) = when (state) {
-        SplashUiState.AlreadyLoggedIn -> startMainActivity()
-        SplashUiState.NeedToOnboard -> startProfileActivity()
-        SplashUiState.NeedToLogin -> startLoginActivity()
-        SplashUiState.Unspecified -> Unit /* no-op */
     }
 
     private fun startMainActivity() {
@@ -65,8 +59,6 @@ class SplashActivity : BaseActivity() {
     }
 
     companion object {
-        private const val SPLASH_TIME_MILLIS = 2_000L
-
         fun startActivity(context: Context) {
             val intent = Intent(context, SplashActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

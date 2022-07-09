@@ -1,7 +1,7 @@
 package kr.co.knowledgerally.domain.model
 
 enum class Category {
-    ServicePlanning,
+    PM,
     Design,
     Develop,
     Marketing,

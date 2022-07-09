@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
+import kr.co.knowledgerally.model.CategoryModel
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.AddPhotoIcon
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
@@ -70,7 +71,7 @@ fun RegisterInfoScreen(
     )
     ModalBottomSheetLayout(
         sheetContent = {
-            CategorySelectContent(
+            CategoryPicker(
                 sheetState = sheetState,
                 onSelect = { state.category = it },
             )
@@ -163,7 +164,7 @@ private fun ClassIndicator(modifier: Modifier = Modifier) {
 
 @Composable
 private fun ClassCategory(
-    category: CategoryItem?,
+    category: CategoryModel?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -177,7 +178,7 @@ private fun ClassCategory(
             value = if (category == null) {
                 stringResource(id = R.string.register_category_placeholder)
             } else {
-                stringResource(id = category.textResId)
+                stringResource(id = category.text)
             },
             onClick = onClick,
             modifier = Modifier.padding(top = 8.dp),
