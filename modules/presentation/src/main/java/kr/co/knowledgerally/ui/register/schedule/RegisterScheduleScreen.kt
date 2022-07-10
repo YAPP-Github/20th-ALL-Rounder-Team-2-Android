@@ -15,8 +15,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +31,7 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.AddScheduleButton
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.component.PageIndicator
 import kr.co.knowledgerally.ui.schedule.ScheduleActivity
 import kr.co.knowledgerally.ui.schedule.ScheduleResult
@@ -38,6 +41,7 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 fun RegisterScheduleScreen(
     viewModel: RegisterScheduleViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
+    onResult: () -> Unit,
 ) {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
@@ -58,6 +62,15 @@ fun RegisterScheduleScreen(
         navigateToSchedule = { launcher.launch(ScheduleActivity.getIntent(context)) },
         onRegister = { viewModel.register() },
     )
+
+    if (uiState.isLoading) {
+        Loading()
+    }
+
+    uiState.result?.let {
+        val currentOnResult by rememberUpdatedState(onResult)
+        LaunchedEffect(uiState) { currentOnResult() }
+    }
 }
 
 @Composable
