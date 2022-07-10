@@ -1,15 +1,13 @@
 package kr.co.knowledgerally.data.model
 
 import kr.co.knowledgerally.domain.model.Applicant
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 data class ApplicantEntity(
     val id: Long,
     val name: String,
     val content: String,
     val imageUrl: String?,
-    val startAt: LocalDateTime,
+    val schedule: ScheduleEntity,
 )
 
 internal fun ApplicantEntity.toDomain() = Applicant(
@@ -17,5 +15,5 @@ internal fun ApplicantEntity.toDomain() = Applicant(
     name = name,
     content = content,
     imageUrl = imageUrl,
-    startAt = startAt
+    schedule = schedule.toDomain(),
 )

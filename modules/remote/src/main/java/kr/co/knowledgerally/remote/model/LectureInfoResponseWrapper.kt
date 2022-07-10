@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class LectureInfoResponseWrapper(
     @SerializedName("data")
-    val data: LectureInfoResponse
+    val data: LectureInfoResponseLegacy
 )

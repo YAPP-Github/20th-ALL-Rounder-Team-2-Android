@@ -6,7 +6,7 @@ data class CoachResponse(
     @SerializedName("id")
     val id: Long,
     @SerializedName("introduce")
-    val introduction: String,
+    val introduce: String,
     @SerializedName("user")
     val user: UserResponse
 )

@@ -1,14 +1,29 @@
 package kr.co.knowledgerally.domain.model
 
-import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
-
 data class LectureInfo(
+    /**
+     * 클래스 아이디
+     */
     val id: Long,
-    val title: String,
+    /**
+     * 강의(일정) 목록
+     */
+    val lectures: List<Lecture>,
+    /**
+     * 클래스 제목
+     */
+    val topic: String,
+    /**
+     * 클래스 사진 목록
+     */
     val imageUrls: List<String>,
-    val startAt: LocalDateTime,
-    val endAt: LocalDateTime
+    /**
+     * 클래스 주최한 코치
+     */
+    val coach: User,
 ) {
-    val runningTime: Long = ChronoUnit.HOURS.between(endAt, startAt)
+    /**
+     * 클래스 목록으로 보여주는 썸네일 이미지
+     */
+    val thumbnailImageUrl: String? get() = imageUrls.firstOrNull()
 }

@@ -1,40 +1,40 @@
 package kr.co.knowledgerally.ui.coach
 
 import kr.co.knowledgerally.domain.model.Applicant
-import kr.co.knowledgerally.domain.model.Lecture
-import kr.co.knowledgerally.domain.model.LectureInfo
+import kr.co.knowledgerally.domain.model.LectureLegacy
+import kr.co.knowledgerally.domain.model.LectureInfoLegacy
 import kr.co.knowledgerally.domain.model.User
 
 sealed interface CoachLectureUiState {
 
     data class Matching(
-        val lecture: LectureInfo,
+        val lecture: LectureInfoLegacy,
         val applicants: List<Applicant>
     ) : CoachLectureUiState
 
     data class Scheduled(
-        val lecture: LectureInfo,
+        val lecture: LectureInfoLegacy,
         val player: User
     ) : CoachLectureUiState
 
     data class Completed(
-        val lecture: LectureInfo,
+        val lecture: LectureInfoLegacy,
         val player: User,
         val isReviewed: Boolean
     ) : CoachLectureUiState
 }
 
-fun Lecture.toCoachUiState(): CoachLectureUiState =
+fun LectureLegacy.toCoachUiState(): CoachLectureUiState =
     when (this) {
-        is Lecture.Onboard -> CoachLectureUiState.Matching(
+        is LectureLegacy.Onboard -> CoachLectureUiState.Matching(
             lecture = lecture,
             applicants = applicants
         )
-        is Lecture.Ongoing -> CoachLectureUiState.Scheduled(
+        is LectureLegacy.Ongoing -> CoachLectureUiState.Scheduled(
             lecture = lecture,
             player = player
         )
-        is Lecture.Done -> CoachLectureUiState.Completed(
+        is LectureLegacy.Done -> CoachLectureUiState.Completed(
             lecture = lecture,
             player = player,
             isReviewed = isReviewed

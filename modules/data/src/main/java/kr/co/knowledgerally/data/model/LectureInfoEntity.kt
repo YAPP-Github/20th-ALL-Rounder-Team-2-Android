@@ -1,20 +1,19 @@
 package kr.co.knowledgerally.data.model
 
 import kr.co.knowledgerally.domain.model.LectureInfo
-import java.time.LocalDateTime
 
 data class LectureInfoEntity(
     val id: Long,
-    val title: String,
+    val lectures: List<LectureEntity>,
+    val topic: String,
     val imageUrls: List<String>,
-    val startAt: LocalDateTime,
-    val endAt: LocalDateTime
+    val coach: UserEntity,
 )
 
 internal fun LectureInfoEntity.toDomain() = LectureInfo(
     id = id,
-    title = title,
+    lectures = lectures.map { it.toDomain() },
+    topic = topic,
     imageUrls = imageUrls,
-    startAt = startAt,
-    endAt = endAt
+    coach = coach.toDomain(),
 )

@@ -5,7 +5,8 @@ import kr.co.knowledgerally.remote.model.CategoryResponseWrapper
 import kr.co.knowledgerally.remote.model.CoachLectureResponseWrapper
 import kr.co.knowledgerally.remote.model.ImagesResponseWrapper
 import kr.co.knowledgerally.remote.model.LectureInfoResponseWrapper
-import kr.co.knowledgerally.remote.model.LectureResponse
+import kr.co.knowledgerally.remote.model.LectureResponseLegacy
+import kr.co.knowledgerally.remote.model.LectureStateResponse
 import kr.co.knowledgerally.remote.model.NotificationResponseWrapper
 import kr.co.knowledgerally.remote.model.OnboardRequest
 import kr.co.knowledgerally.remote.model.OnboardedResponse
@@ -73,10 +74,10 @@ internal interface ApiService {
     suspend fun getNotifications(): NotificationResponseWrapper
 
     @GET("user/lecture/me")
-    suspend fun getPlayerLectures(@Query("state") state: LectureResponse.State? = null): PlayerLectureResponseWrapper
+    suspend fun getPlayerLectures(@Query("state") state: LectureStateResponse? = null): PlayerLectureResponseWrapper
 
     @GET("coach/lecture/me")
-    suspend fun getCoachLectures(@Query("state") state: LectureResponse.State? = null): CoachLectureResponseWrapper
+    suspend fun getCoachLectures(@Query("state") state: LectureStateResponse? = null): CoachLectureResponseWrapper
 
     @GET("category")
     suspend fun getCategoryList(): CategoryResponseWrapper
