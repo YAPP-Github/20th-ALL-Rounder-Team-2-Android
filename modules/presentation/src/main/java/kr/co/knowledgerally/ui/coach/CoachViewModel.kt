@@ -37,7 +37,7 @@ class CoachViewModel @Inject constructor(
         launch {
             EventBus.event
                 .filterIsInstance<Event.LectureRegistered>()
-                .collect { fetch() }
+                .collect { refresh() }
         }
     }
 
