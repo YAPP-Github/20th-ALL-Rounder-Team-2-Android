@@ -170,6 +170,8 @@
     <string name="register_schedule_add_schedule">일정 추가</string>
     <string name="register_schedule_date_fmt">M월 d일 (E)</string>
     <string name="register_schedule_time_fmt">a H:mm</string>
+    <string name="register_schedule_already_contains_schedule">이미 추가된 일정입니다.</string>
+    <string name="register_schedule_complete">클래스 등록이 완료되었습니다.</string>
 
     <string name="schedule_title">클래스 일정 추가하기</string>
     <string name="schedule_select_date">날짜 선택</string>

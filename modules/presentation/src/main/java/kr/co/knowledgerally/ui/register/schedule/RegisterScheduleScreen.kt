@@ -50,9 +50,9 @@ fun RegisterScheduleScreen(
             }
         }
     )
-    val schedules by viewModel.schedules.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     RegisterScheduleScreen(
-        schedules = schedules,
+        schedules = uiState.schedules,
         onScheduleRemove = viewModel::removeSchedule,
         onBackClick = onBackClick,
         navigateToSchedule = { launcher.launch(ScheduleActivity.getIntent(context)) },
