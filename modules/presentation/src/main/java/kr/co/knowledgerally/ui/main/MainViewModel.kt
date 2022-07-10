@@ -48,13 +48,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    /**
-     * TODO
-     * Refresh User
-     * Refresh Lectures
-     * Emit lecture register event
-     */
     fun onLectureRegistered() {
-
+        launch {
+            refreshUserUseCase().getOrThrow()
+        }
     }
 }
