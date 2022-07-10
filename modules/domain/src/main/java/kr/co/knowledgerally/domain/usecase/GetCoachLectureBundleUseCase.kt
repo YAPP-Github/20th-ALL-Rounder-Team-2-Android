@@ -10,7 +10,7 @@ class GetCoachLectureBundleUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): Result<LectureBundle> =
-        lectureRepository.getCoachLectures().map {
+        lectureRepository.getCoachLectures(null).map {
             LectureBundle(
                 onboardingLectures = it.filterIsInstance<Lecture.Onboard>(),
                 ongoingLectures = it.filterIsInstance<Lecture.Ongoing>(),

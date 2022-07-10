@@ -1,6 +1,7 @@
 package kr.co.knowledgerally.remote.model
 
 import com.google.gson.annotations.SerializedName
+import kr.co.knowledgerally.data.model.LectureStateEntity
 import java.time.LocalDateTime
 
 data class LectureResponse(
@@ -22,8 +23,14 @@ data class LectureResponse(
 
         @SerializedName("ON_GOING")
         Ongoing,
-        
+
         @SerializedName("DONE")
         Done
     }
+}
+
+internal fun LectureStateEntity.toRemote() = when (this) {
+    LectureStateEntity.Onboard -> LectureResponse.State.Onboard
+    LectureStateEntity.Ongoing -> LectureResponse.State.Ongoing
+    LectureStateEntity.Done -> LectureResponse.State.Done
 }
