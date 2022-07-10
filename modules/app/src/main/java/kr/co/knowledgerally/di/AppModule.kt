@@ -3,6 +3,7 @@ package kr.co.knowledgerally.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,12 +27,19 @@ internal object AppModule {
 
     @Provides
     fun provideInterceptors(): Interceptors {
-        val logger = HttpLoggingInterceptor.Logger { message ->
-            Logger.d("OkHttp", message)
+        return if (BuildConfig.DEBUG) {
+            val logger = HttpLoggingInterceptor.Logger { message ->
+                Logger.d("OkHttp", message)
+            }
+            val loggingInterceptor = HttpLoggingInterceptor(logger)
+                .apply { level = HttpLoggingInterceptor.Level.BODY }
+            Interceptors(
+                listOf(loggingInterceptor),
+                listOf(StethoInterceptor())
+            )
+        } else {
+            Interceptors.Empty
         }
-        val loggingInterceptor = HttpLoggingInterceptor(logger)
-            .apply { level = HttpLoggingInterceptor.Level.BODY }
-        return Interceptors(loggingInterceptor)
     }
 
     @Provides

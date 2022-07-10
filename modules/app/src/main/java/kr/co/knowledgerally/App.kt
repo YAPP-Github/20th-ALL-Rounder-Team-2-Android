@@ -2,6 +2,7 @@ package kr.co.knowledgerally
 
 import android.app.Application
 import com.facebook.spectrum.SpectrumSoLoader
+import com.facebook.stetho.Stetho
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
@@ -37,5 +38,10 @@ class App : Application() {
         FirebaseCrashlytics
             .getInstance()
             .setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+
+        // Stetho
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this)
+        }
     }
 }
