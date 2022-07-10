@@ -23,6 +23,15 @@ enum class CategoryResponse {
     Etc,
 }
 
+fun CategoryEntity.toRemote(): CategoryResponse = when (this) {
+    CategoryEntity.PM -> CategoryResponse.PM
+    CategoryEntity.Design -> CategoryResponse.Design
+    CategoryEntity.Develop -> CategoryResponse.Develop
+    CategoryEntity.Marketing -> CategoryResponse.Marketing
+    CategoryEntity.Language -> CategoryResponse.Language
+    CategoryEntity.Etc -> CategoryResponse.Etc
+}
+
 fun CategoryResponse.toData(): CategoryEntity = when (this) {
     CategoryResponse.PM -> CategoryEntity.PM
     CategoryResponse.Design -> CategoryEntity.Design

@@ -92,7 +92,7 @@ fun RegisterInfoState.toRegistration() = Registration(
         CategoryModel.Etc -> Category.Etc
         else -> throw IllegalStateException()
     },
-    name = name,
+    topic = name,
     introduce = introduce,
     tags = tags.toList(),
     imageUris = imageUris.map { it.toString() }

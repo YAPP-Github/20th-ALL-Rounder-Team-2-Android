@@ -11,6 +11,15 @@ enum class CategoryEntity {
     Etc,
 }
 
+fun Category.toData(): CategoryEntity = when (this) {
+    Category.PM -> CategoryEntity.PM
+    Category.Design -> CategoryEntity.Design
+    Category.Develop -> CategoryEntity.Develop
+    Category.Marketing -> CategoryEntity.Marketing
+    Category.Language -> CategoryEntity.Language
+    Category.Etc -> CategoryEntity.Etc
+}
+
 fun CategoryEntity.toDomain(): Category = when (this) {
     CategoryEntity.PM -> Category.PM
     CategoryEntity.Design -> Category.Design
