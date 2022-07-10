@@ -7,5 +7,5 @@ data class Schedule(
     val startAt: LocalDateTime,
     val endAt: LocalDateTime,
 ) {
-    val runningTime: Long = ChronoUnit.HOURS.between(endAt, startAt)
+    val runningTime: Long = ChronoUnit.HOURS.between(startAt, endAt)
 }

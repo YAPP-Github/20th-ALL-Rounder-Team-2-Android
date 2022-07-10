@@ -5,7 +5,7 @@ enum class TimeRange(
     private val second: IntRange,
 ) {
     Hours(
-        first = (1..2),
+        first = (0..2),
         second = (1..12),
     ),
     Minutes(
