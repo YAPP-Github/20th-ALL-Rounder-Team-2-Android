@@ -10,6 +10,14 @@ internal class CategoryRepositoryImpl @Inject constructor(
     private val dataSource: CategoryRemoteDataSource,
 ) : CategoryRepository {
 
-    override suspend fun getCategoryList(): Result<List<Category>> = dataSource.getCategoryList()
-        .map { it.map { it.toDomain() } }
+    private var categories: List<Category>? = null
+
+    override suspend fun getCategoryList(): Result<List<Category>> =
+        if (categories.isNullOrEmpty()) {
+            dataSource.getCategoryList()
+                .map { it.map { it.toDomain() } }
+                .onSuccess { categories = it }
+        } else {
+            Result.success(categories!!)
+        }
 }
