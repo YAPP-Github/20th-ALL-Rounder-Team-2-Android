@@ -2,6 +2,7 @@ package kr.co.knowledgerally.remote.model
 
 import com.google.gson.annotations.SerializedName
 import kr.co.knowledgerally.data.model.ApplicantEntity
+import kr.co.knowledgerally.data.model.ScheduleEntity
 import java.time.LocalDateTime
 
 data class FormResponse(
@@ -36,5 +37,5 @@ internal fun FormResponse.toData() = ApplicantEntity(
     name = user.username,
     content = content,
     imageUrl = user.imageUrl,
-    startAt = lecture.startAt
+    schedule = ScheduleEntity(lecture.startAt, lecture.endAt),
 )
