@@ -2,7 +2,12 @@ package kr.co.knowledgerally.remote.api
 
 import okhttp3.Interceptor
 
-data class Interceptors(val value: List<Interceptor>) {
+data class Interceptors(
+    val interceptors: List<Interceptor>,
+    val networkInterceptors: List<Interceptor>
+) {
 
-    constructor(vararg interceptors: Interceptor) : this(interceptors.toList())
+    companion object {
+        val Empty = Interceptors(emptyList(), emptyList())
+    }
 }

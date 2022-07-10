@@ -78,7 +78,10 @@ internal object RemoteModule {
         interceptors: Interceptors,
         apply: OkHttpClient.Builder.() -> Unit = { },
     ) = OkHttpClient.Builder()
-        .apply { interceptors.value.forEach(::addInterceptor) }
+        .apply {
+            interceptors.interceptors.forEach(::addInterceptor)
+            interceptors.networkInterceptors.forEach(::addNetworkInterceptor)
+        }
         .apply(apply)
         .build()
 }
