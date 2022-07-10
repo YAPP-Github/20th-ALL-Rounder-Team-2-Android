@@ -31,7 +31,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun PlayerContent(
     tab: PlayerTabState.Tab,
-    uiState: PlayerUiState.Success
+    uiState: PlayerUiState
 ) {
     val lectures = when (tab) {
         PlayerTabState.Tab.Matching -> uiState.matchingLectures

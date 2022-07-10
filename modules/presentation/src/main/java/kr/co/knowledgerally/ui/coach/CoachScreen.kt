@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.applicant.ApplicantActivity
 import kr.co.knowledgerally.ui.component.KnowllyTabRow
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 private const val INDEX_MATCHING = 0
@@ -63,21 +65,26 @@ fun CoachScreen(
     navigateToApplicant: (lectureId: String) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
-    when (uiState) {
-        CoachUiState.Loading -> Unit /* no-op */
-        CoachUiState.Empty -> EmptyItem(navigateToRegister = navigateToRegister)
-        is CoachUiState.Success -> CoachContent(
-            uiState = uiState,
-            tabState = tabState,
-            switchTab = switchTab,
-            navigateToApplicant = navigateToApplicant
-        )
+    Surface(modifier = Modifier.fillMaxSize()) {
+        when {
+            !uiState.isInit -> Unit
+            uiState.isEmpty -> EmptyItem(navigateToRegister = navigateToRegister)
+            else -> CoachContent(
+                uiState = uiState,
+                tabState = tabState,
+                switchTab = switchTab,
+                navigateToApplicant = navigateToApplicant
+            )
+        }
+        if (uiState.isLoading) {
+            Loading()
+        }
     }
 }
 
 @Composable
 fun CoachContent(
-    uiState: CoachUiState.Success,
+    uiState: CoachUiState,
     tabState: CoachTabState,
     navigateToApplicant: (lectureId: String) -> Unit,
     switchTab: (Int) -> Unit,
@@ -113,7 +120,13 @@ fun CoachContent(
 private fun CoachContentPreview() {
     KnowllyTheme {
         CoachContent(
-            uiState = CoachUiState.Success(emptyList(), emptyList(), emptyList()),
+            uiState = CoachUiState(
+                isInit = false,
+                isLoading = false,
+                matchingLectures = emptyList(),
+                scheduledLectures = emptyList(),
+                completedLectures = emptyList()
+            ),
             tabState = CoachTabState(
                 titles = listOf(
                     R.string.coach_matching,
