@@ -47,4 +47,14 @@ class MainViewModel @Inject constructor(
                 .onSuccess { _showWelcome.value = false }
         }
     }
+
+    /**
+     * TODO
+     * Refresh User
+     * Refresh Lectures
+     * Emit lecture register event
+     */
+    fun onLectureRegistered() {
+
+    }
 }

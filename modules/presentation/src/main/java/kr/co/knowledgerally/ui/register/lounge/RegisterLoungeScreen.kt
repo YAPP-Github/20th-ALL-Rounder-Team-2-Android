@@ -1,7 +1,6 @@
 package kr.co.knowledgerally.ui.register.lounge
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,19 +26,17 @@ fun RegisterLoungeScreen(
     uiState: RegisterLoungeUiState,
     navigateUp: () -> Unit,
     navigateToInfo: (Boolean) -> Unit,
-    navigateToSchedule: (String) -> Unit,
+    navigateToSchedule: (Long) -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        when (uiState) {
-            RegisterLoungeUiState.Loading -> Loading()
-            RegisterLoungeUiState.NoLecture -> Unit // no-op
-            is RegisterLoungeUiState.Lectures -> RegisterLoungeContent(
-                lectures = emptyList(),
-                navigateToSchedule = navigateToSchedule,
-                navigateToInfo = { navigateToInfo(false) },
-                navigateUp = navigateUp,
-            )
-        }
+    when (uiState) {
+        RegisterLoungeUiState.Loading -> Loading()
+        RegisterLoungeUiState.NoLecture -> Unit // no-op
+        is RegisterLoungeUiState.Lectures -> RegisterLoungeContent(
+            lectures = List(3) { it.toString() },
+            navigateToSchedule = navigateToSchedule,
+            navigateToInfo = { navigateToInfo(false) },
+            navigateUp = navigateUp,
+        )
     }
 
     LaunchedEffect(uiState) {
@@ -53,7 +50,7 @@ fun RegisterLoungeScreen(
 fun RegisterLoungeContent(
     lectures: List<String>,
     navigateUp: () -> Unit,
-    navigateToSchedule: (String) -> Unit,
+    navigateToSchedule: (Long) -> Unit,
     navigateToInfo: () -> Unit,
 ) {
     Column(
@@ -70,7 +67,7 @@ fun RegisterLoungeContent(
                 .fillMaxWidth()
                 .background(color = KnowllyTheme.colors.grayFF)
                 .weight(1f),
-            contentPadding = PaddingValues(24.dp)
+            contentPadding = PaddingValues(24.dp),
         ) {
             item { RegisterLoungeItemHeader() }
 

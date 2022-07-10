@@ -13,6 +13,7 @@ import kr.co.knowledgerally.remote.model.PlayerLectureResponseWrapper
 import kr.co.knowledgerally.remote.model.ProviderTokenRequest
 import kr.co.knowledgerally.remote.model.PushRequest
 import kr.co.knowledgerally.remote.model.RegistrationRequest
+import kr.co.knowledgerally.remote.model.SchedulesRequest
 import kr.co.knowledgerally.remote.model.SignInResponse
 import kr.co.knowledgerally.remote.model.SignUpResponse
 import kr.co.knowledgerally.remote.model.UserExistsResponse
@@ -25,6 +26,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface ApiService {
@@ -89,4 +91,10 @@ internal interface ApiService {
     suspend fun uploadLectureInfo(
         @Body registration: RegistrationRequest,
     ): LectureInfoResponseWrapper
+
+    @POST("lecture-schedule/lectureinfo/{lectureId}")
+    suspend fun uploadLectureSchedules(
+        @Path("lectureId") lectureId: Long,
+        @Body request: SchedulesRequest,
+    )
 }

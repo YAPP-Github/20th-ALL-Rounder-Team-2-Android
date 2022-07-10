@@ -22,4 +22,9 @@ data class ScheduleResult(
 
         fun from(intent: Intent?): ScheduleResult? = intent?.getParcelableExtra(KEY)
     }
+
+    fun toDomain() = Schedule(
+        startAt = startAt,
+        endAt = endAt
+    )
 }

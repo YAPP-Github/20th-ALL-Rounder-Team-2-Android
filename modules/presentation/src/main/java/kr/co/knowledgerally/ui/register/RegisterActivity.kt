@@ -17,16 +17,19 @@ class RegisterActivity : BaseActivity() {
         setContent {
             KnowllyTheme {
                 RegisterScreen(
-                    navigateUp = { finish() }
+                    navigateUp = ::finish,
+                    onResult = ::onLectureRegistered
                 )
             }
         }
     }
 
+    private fun onLectureRegistered() {
+        setResult(RESULT_OK)
+        finish()
+    }
+
     companion object {
-        fun startActivity(context: Context) {
-            val intent = Intent(context, RegisterActivity::class.java)
-            context.startActivity(intent)
-        }
+        fun getIntent(context: Context) = Intent(context, RegisterActivity::class.java)
     }
 }

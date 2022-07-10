@@ -10,11 +10,14 @@ import kr.co.knowledgerally.ui.register.lounge.registerLoungeGraph
 import kr.co.knowledgerally.ui.register.schedule.registerScheduleGraph
 
 @Composable
-fun RegisterScreen(navigateUp: () -> Unit) {
+fun RegisterScreen(
+    navigateUp: () -> Unit,
+    onResult: () -> Unit,
+) {
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
         navController = navController,
-        startDestination = RegisterDestination.Lounge.route,
+        startDestination = "register/lounge",
         enterTransition = { slideInHorizontally { it } },
         exitTransition = { slideOutHorizontally { -it } },
         popEnterTransition = { slideInHorizontally { -it } },
@@ -23,11 +26,10 @@ fun RegisterScreen(navigateUp: () -> Unit) {
         registerLoungeGraph(
             navigateUp = { navController.popBackStack() },
             navigateToInfo = {
-                val route = RegisterDestination.Info(it).buildRoute()
-                navController.navigate(route)
+                navController.navigate("register/info/$it")
             },
-            navigateToSchedule = {
-                navController.navigate(RegisterDestination.Schedule.route)
+            navigateToSchedule = { lectureId ->
+                navController.navigate("register/schedule/$lectureId")
             }
         )
         registerInfoGraph(
@@ -43,7 +45,8 @@ fun RegisterScreen(navigateUp: () -> Unit) {
             }
         )
         registerScheduleGraph(
-            navigateUp = { navController.popBackStack() }
+            navigateUp = { navController.popBackStack() },
+            onResult = onResult,
         )
     }
 }

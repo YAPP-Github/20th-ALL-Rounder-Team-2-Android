@@ -14,11 +14,14 @@ import kr.co.knowledgerally.remote.api.Authenticator
 import kr.co.knowledgerally.remote.api.BaseUrl
 import kr.co.knowledgerally.remote.api.EnumConverterFactory
 import kr.co.knowledgerally.remote.api.Interceptors
+import kr.co.knowledgerally.remote.api.LocalDateTimeDeserializer
+import kr.co.knowledgerally.remote.api.LocalDateTimeSerializer
 import kr.co.knowledgerally.remote.api.RefreshApiService
 import kr.co.knowledgerally.remote.api.baseUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDateTime
 import javax.inject.Singleton
 
 @Module
@@ -42,6 +45,8 @@ internal object RemoteModule {
         )
 
         val gson = GsonBuilder()
+            .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeSerializer)
+            .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeDeserializer)
             .setDateFormat("yyyy-MM-dd'T'HH:mm")
             .create()
 

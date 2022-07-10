@@ -6,14 +6,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.composable
-import kr.co.knowledgerally.ui.register.RegisterDestination
 
 fun NavGraphBuilder.registerInfoGraph(
     navigateUp: (Boolean) -> Unit,
     navigateToSchedule: (Long) -> Unit,
 ) {
     composable(
-        route = RegisterDestination.Info.Default.route,
+        route = "register/info/{isRoot}",
         arguments = listOf(navArgument("isRoot") { type = NavType.BoolType }),
     ) { navBackStackEntry ->
         val isRoot = navBackStackEntry.arguments
