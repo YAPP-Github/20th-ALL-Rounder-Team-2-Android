@@ -25,22 +25,22 @@ internal fun PlayerLectureResponse.toData(): LectureEntity =
         LectureResponse.State.Onboard -> {
             LectureEntity.Onboard(
                 lecture = toLectureInfoEntity(),
-                coach = lectureInfo.coach.user.toData(imageUrl = null),
+                coach = lectureInfo.coach.user.toData(),
                 applicants = emptyList()
             )
         }
         LectureResponse.State.Ongoing -> {
             LectureEntity.Ongoing(
                 lecture = toLectureInfoEntity(),
-                coach = lectureInfo.coach.user.toData(imageUrl = null),
-                player = form.user.toData(imageUrl = null)
+                coach = lectureInfo.coach.user.toData(),
+                player = form.user.toData()
             )
         }
         LectureResponse.State.Done -> {
             LectureEntity.Done(
                 lecture = toLectureInfoEntity(),
-                coach = lectureInfo.coach.user.toData(imageUrl = null),
-                player = form.user.toData(imageUrl = null),
+                coach = lectureInfo.coach.user.toData(),
+                player = form.user.toData(),
                 isReviewed = form.lecture.isReviewed
             )
         }

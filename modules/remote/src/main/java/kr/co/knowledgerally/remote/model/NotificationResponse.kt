@@ -36,8 +36,8 @@ internal fun NotificationResponse.toData() =
         lectureTitle = lectureTitle,
         date = date,
         type = type.toData(),
-        sender = sender.toData(imageUrl = null),
-        receiver = receiver.toData(imageUrl = null)
+        sender = sender.toData(),
+        receiver = receiver.toData()
     )
 
 internal fun NotificationResponse.Type.toData() =
