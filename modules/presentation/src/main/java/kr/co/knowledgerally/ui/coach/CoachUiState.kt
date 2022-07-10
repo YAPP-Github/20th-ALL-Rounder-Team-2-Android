@@ -1,16 +1,30 @@
 package kr.co.knowledgerally.ui.coach
 
-sealed interface CoachUiState {
+import kr.co.knowledgerally.domain.model.LectureBundle
 
-    object Failure : CoachUiState
+data class CoachUiState(
+    val isInit: Boolean = false,
+    val isLoading: Boolean = true,
+    val matchingLectures: List<CoachLectureUiState.Matching> = emptyList(),
+    val scheduledLectures: List<CoachLectureUiState.Scheduled> = emptyList(),
+    val completedLectures: List<CoachLectureUiState.Completed> = emptyList(),
+) {
+    val isEmpty: Boolean
+        get() = matchingLectures.isEmpty() && scheduledLectures.isEmpty() && completedLectures.isEmpty()
 
-    object Loading : CoachUiState
+    fun init() = copy(isInit = true, isLoading = false)
 
-    object Empty : CoachUiState
+    fun loading(isLoading: Boolean) = copy(isLoading = isLoading)
 
-    data class Success(
-        val matchingLectures: List<CoachLectureUiState.Matching>,
-        val scheduledLectures: List<CoachLectureUiState.Scheduled>,
-        val completedLectures: List<CoachLectureUiState.Completed>,
-    ) : CoachUiState
+    fun from(bundle: LectureBundle?): CoachUiState {
+        if (bundle == null) {
+            return copy(isLoading = false)
+        }
+        return copy(
+            isLoading = false,
+            matchingLectures = bundle.onboardingLectures.map { it.toCoachUiState() as CoachLectureUiState.Matching },
+            scheduledLectures = bundle.ongoingLectures.map { it.toCoachUiState() as CoachLectureUiState.Scheduled },
+            completedLectures = bundle.doneLectures.map { it.toCoachUiState() as CoachLectureUiState.Completed },
+        )
+    }
 }

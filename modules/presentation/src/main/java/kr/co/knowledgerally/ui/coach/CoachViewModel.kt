@@ -4,10 +4,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
+import kr.co.knowledgerally.bus.Event
+import kr.co.knowledgerally.bus.EventBus
 import kr.co.knowledgerally.domain.usecase.GetCoachLectureBundleUseCase
 import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
 import javax.inject.Inject
@@ -17,37 +19,33 @@ class CoachViewModel @Inject constructor(
     private val getUserStreamUseCase: GetUserStreamUseCase,
     private val getCoachLectureBundleUseCase: GetCoachLectureBundleUseCase
 ) : BaseViewModel() {
-
     private val _tabState = MutableStateFlow(CoachTabState.Default)
     val tabState = _tabState.asStateFlow()
 
-    private val _uiState = MutableStateFlow<CoachUiState>(CoachUiState.Loading)
+    private val _uiState = MutableStateFlow(CoachUiState())
     val uiState: StateFlow<CoachUiState> = _uiState.asStateFlow()
 
     init {
-        fetchCoachLectures()
+        launch {
+            val user = getUserStreamUseCase().first()
+            if (user.coach) {
+                fetch()
+            } else {
+                _uiState.update { it.init() }
+            }
+        }
+        launch {
+            EventBus.event
+                .filterIsInstance<Event.LectureRegistered>()
+                .collect { fetch() }
+        }
     }
 
-    private fun fetchCoachLectures() {
-        _uiState.value = CoachUiState.Loading
-        launch {
-            val isNotCoach = getUserStreamUseCase().map { it.coach.not() }.first()
-            if (isNotCoach) {
-                _uiState.value = CoachUiState.Empty
-                return@launch
-            }
-
-            val result = getCoachLectureBundleUseCase()
-            result
-                .onSuccess { lectures ->
-                    _uiState.value = CoachUiState.Success(
-                        matchingLectures = lectures.onboardingLectures.map { it.toCoachUiState() as CoachLectureUiState.Matching },
-                        scheduledLectures = lectures.ongoingLectures.map { it.toCoachUiState() as CoachLectureUiState.Scheduled },
-                        completedLectures = lectures.doneLectures.map { it.toCoachUiState() as CoachLectureUiState.Completed },
-                    )
-                }
-                .onFailure { _uiState.value = CoachUiState.Failure }
-        }
+    private fun fetch() = launch {
+        val bundle = getCoachLectureBundleUseCase()
+            .onFailure { handleException(it) }
+            .getOrNull()
+        _uiState.update { it.from(bundle) }
     }
 
     fun switchTab(newIndex: Int) {
@@ -59,6 +57,7 @@ class CoachViewModel @Inject constructor(
     }
 
     fun refresh() {
-        fetchCoachLectures()
+        _uiState.update { it.loading(true) }
+        fetch()
     }
 }
