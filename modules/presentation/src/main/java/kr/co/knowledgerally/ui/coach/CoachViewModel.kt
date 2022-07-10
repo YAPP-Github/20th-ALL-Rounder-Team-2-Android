@@ -10,14 +10,14 @@ import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.bus.Event
 import kr.co.knowledgerally.bus.EventBus
-import kr.co.knowledgerally.domain.usecase.GetCoachLectureBundleUseCase
+import kr.co.knowledgerally.domain.usecase.GetCoachLectureInfoListUseCase
 import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class CoachViewModel @Inject constructor(
     private val getUserStreamUseCase: GetUserStreamUseCase,
-    private val getCoachLectureBundleUseCase: GetCoachLectureBundleUseCase
+    private val getCoachLectureInfoListUseCase: GetCoachLectureInfoListUseCase,
 ) : BaseViewModel() {
     private val _tabState = MutableStateFlow(CoachTabState.Default)
     val tabState = _tabState.asStateFlow()
@@ -42,10 +42,9 @@ class CoachViewModel @Inject constructor(
     }
 
     private fun fetch() = launch {
-        val bundle = getCoachLectureBundleUseCase()
+        getCoachLectureInfoListUseCase()
+            .onSuccess { _uiState.update { uiState -> uiState.from(it) } }
             .onFailure { handleException(it) }
-            .getOrNull()
-        _uiState.update { it.from(bundle) }
     }
 
     fun switchTab(newIndex: Int) {

@@ -31,7 +31,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun CompletedTabContent(
-    completedList: List<CoachLectureUiState.Completed>,
+    items: List<LectureItemUiState.Completed>,
     scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
@@ -46,17 +46,17 @@ fun CompletedTabContent(
             modifier = Modifier.padding(top = 10.dp),
         )
 
-        if (completedList.isEmpty()) {
+        if (items.isEmpty()) {
             DashBanner(
                 text = stringResource(id = R.string.coach_completed_empty),
                 modifier = Modifier.padding(top = 24.dp)
             )
         } else {
-            completedList.forEachIndexed { index, completed ->
+            items.forEachIndexed { index, completed ->
                 if (index == 0) {
                     CoachDivider(modifier = Modifier.padding(top = 24.dp))
                 }
-                CompletedItem(completed = completed)
+                CompletedItem(item = completed)
                 CoachDivider()
             }
         }
@@ -65,7 +65,7 @@ fun CompletedTabContent(
 
 @Composable
 private fun CompletedItem(
-    completed: CoachLectureUiState.Completed,
+    item: LectureItemUiState.Completed,
 ) {
     Box(
         modifier = Modifier
@@ -93,14 +93,14 @@ private fun CompletedItem(
             },
         )
         Column(modifier = Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp)) {
-            Text(text = completed.lecture.title, style = KnowllyTheme.typography.subtitle2)
+            Text(text = item.title, style = KnowllyTheme.typography.subtitle2)
             Text(
-                text = completed.player.profile.username,
+                text = item.lecture.player.profile.username,
                 style = KnowllyTheme.typography.body1,
                 modifier = Modifier.padding(top = 2.dp)
             )
             Text(
-                text = completed.lecture.startAt.format(
+                text = item.lecture.schedule.startAt.format(
                     DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
                 ),
                 modifier = Modifier.padding(top = 6.dp),
@@ -109,7 +109,7 @@ private fun CompletedItem(
             )
             Text(
                 text = "${
-                    completed.lecture.startAt.format(
+                    item.lecture.schedule.startAt.format(
                         DateTimeFormatter.ofPattern(
                             stringResource(id = R.string.lecture_time_format)
                         )
@@ -117,7 +117,7 @@ private fun CompletedItem(
                 } ${
                     stringResource(
                         R.string.lecture_runningtime_format,
-                        completed.lecture.runningTime
+                        item.lecture.schedule.runningTime
                     )
                 }",
                 style = KnowllyTheme.typography.body2,

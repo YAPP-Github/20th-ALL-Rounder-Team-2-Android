@@ -6,12 +6,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
-import kr.co.knowledgerally.domain.usecase.GetPlayerLectureBundleUseCase
+import kr.co.knowledgerally.domain.usecase.GetPlayerLectureInfoListUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    private val getPlayerLectureBundleUseCase: GetPlayerLectureBundleUseCase
+    private val getPlayerLectureInfoListUseCase: GetPlayerLectureInfoListUseCase,
 ) : BaseViewModel() {
     private val _tabState = MutableStateFlow(PlayerTabState.DEFAULT)
     val tabState: StateFlow<PlayerTabState> = _tabState.asStateFlow()
@@ -21,10 +21,9 @@ class PlayerViewModel @Inject constructor(
 
     init {
         launch {
-            val bundle = getPlayerLectureBundleUseCase()
+            getPlayerLectureInfoListUseCase()
+                .onSuccess { _uiState.update { uiState -> uiState.from(it) } }
                 .onFailure { handleException(it) }
-                .getOrNull()
-            _uiState.update { it.from(bundle) }
         }
     }
 

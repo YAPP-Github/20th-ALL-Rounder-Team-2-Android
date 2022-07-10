@@ -1,14 +1,21 @@
 package kr.co.knowledgerally.ui.coach
 
-import kr.co.knowledgerally.domain.model.LectureBundle
+import kr.co.knowledgerally.domain.model.LectureInfo
 
 data class CoachUiState(
     val isInit: Boolean = false,
     val isLoading: Boolean = true,
-    val matchingLectures: List<CoachLectureUiState.Matching> = emptyList(),
-    val scheduledLectures: List<CoachLectureUiState.Scheduled> = emptyList(),
-    val completedLectures: List<CoachLectureUiState.Completed> = emptyList(),
+    val lectureItems: List<LectureItemUiState> = emptyList(),
 ) {
+    val matchingLectures: List<LectureItemUiState.Matching> =
+        lectureItems.filterIsInstance<LectureItemUiState.Matching>()
+
+    val scheduledLectures: List<LectureItemUiState.Scheduled> =
+        lectureItems.filterIsInstance<LectureItemUiState.Scheduled>()
+
+    val completedLectures: List<LectureItemUiState.Completed> =
+        lectureItems.filterIsInstance<LectureItemUiState.Completed>()
+
     val isEmpty: Boolean
         get() = matchingLectures.isEmpty() && scheduledLectures.isEmpty() && completedLectures.isEmpty()
 
@@ -16,15 +23,13 @@ data class CoachUiState(
 
     fun loading(isLoading: Boolean) = copy(isLoading = isLoading)
 
-    fun from(bundle: LectureBundle?): CoachUiState {
-        if (bundle == null) {
-            return copy(isLoading = false)
+    fun from(lectureInfoList: List<LectureInfo>): CoachUiState = copy(
+        isInit = true,
+        isLoading = false,
+        lectureItems = lectureInfoList.flatMap { lectureInfo ->
+            lectureInfo.lectures.map { lecture ->
+                lecture.toUiState(title = lectureInfo.topic, lectureInfoId = lectureInfo.id)
+            }
         }
-        return copy(
-            isLoading = false,
-            matchingLectures = bundle.onboardingLectures.map { it.toCoachUiState() as CoachLectureUiState.Matching },
-            scheduledLectures = bundle.ongoingLectures.map { it.toCoachUiState() as CoachLectureUiState.Scheduled },
-            completedLectures = bundle.doneLectures.map { it.toCoachUiState() as CoachLectureUiState.Completed },
-        )
-    }
+    )
 }
