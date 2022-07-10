@@ -9,7 +9,7 @@ enum class TimeRange(
         second = (1..12),
     ),
     Minutes(
-        first = (1..5),
+        first = (0..5),
         second = (0..59)
     );
 

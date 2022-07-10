@@ -46,7 +46,7 @@ fun RegisterLoungeItemHeader() {
 
 @Composable
 fun RegisterLoungeItem(
-    navigateToSchedule: (String) -> Unit,
+    navigateToSchedule: (Long) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row {
@@ -95,7 +95,7 @@ fun RegisterLoungeItem(
                 .height(40.dp),
             color = KnowllyTheme.colors.primaryLight,
             shape = RoundedCornerShape(18.dp),
-            onClick = { navigateToSchedule("") }
+            onClick = { navigateToSchedule(1) }
         ) {
             Row(
                 modifier = Modifier.fillMaxSize(),

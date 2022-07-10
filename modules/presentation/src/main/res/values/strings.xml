@@ -168,6 +168,8 @@
     <string name="register_schedule_title">클래스 일정 등록하기</string>
     <string name="register_schedule_description">편한 일정을 등록해주세요.7개까지 등록할 수 있어요. \n가능한 일정이 많을수록 매칭률이 올라가요!</string>
     <string name="register_schedule_add_schedule">일정 추가</string>
+    <string name="register_schedule_date_fmt">M월 d일 (E)</string>
+    <string name="register_schedule_time_fmt">a H:mm</string>
 
     <string name="schedule_title">클래스 일정 추가하기</string>
     <string name="schedule_select_date">날짜 선택</string>

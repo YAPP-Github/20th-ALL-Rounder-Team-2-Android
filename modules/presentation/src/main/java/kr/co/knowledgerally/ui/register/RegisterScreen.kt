@@ -14,7 +14,7 @@ fun RegisterScreen(navigateUp: () -> Unit) {
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
         navController = navController,
-        startDestination = RegisterDestination.Lounge.route,
+        startDestination = "register/lounge",
         enterTransition = { slideInHorizontally { it } },
         exitTransition = { slideOutHorizontally { -it } },
         popEnterTransition = { slideInHorizontally { -it } },
@@ -23,11 +23,10 @@ fun RegisterScreen(navigateUp: () -> Unit) {
         registerLoungeGraph(
             navigateUp = { navController.popBackStack() },
             navigateToInfo = {
-                val route = RegisterDestination.Info(it).buildRoute()
-                navController.navigate(route)
+                navController.navigate("register/info/$it")
             },
-            navigateToSchedule = {
-                navController.navigate(RegisterDestination.Schedule.route)
+            navigateToSchedule = { lectureId ->
+                navController.navigate("register/schedule/$lectureId")
             }
         )
         registerInfoGraph(
