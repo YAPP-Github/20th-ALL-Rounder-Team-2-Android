@@ -28,9 +28,3 @@ data class LectureResponseLegacy(
         Done
     }
 }
-
-internal fun LectureStateEntity.toRemote() = when (this) {
-    LectureStateEntity.Onboard -> LectureResponseLegacy.State.Onboard
-    LectureStateEntity.Ongoing -> LectureResponseLegacy.State.Ongoing
-    LectureStateEntity.Done -> LectureResponseLegacy.State.Done
-}
