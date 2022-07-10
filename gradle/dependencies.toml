@@ -2,7 +2,7 @@
 kotlin = "1.6.21"
 coroutines = "1.6.1"
 
-android-gradle = "7.1.2"
+android-gradle = "7.2.1"
 androidx-core = "1.7.0"
 androidx-lifecycle = "2.4.1"
 androidx-activity = "1.4.0"
