@@ -39,7 +39,7 @@ fun RegisterScreen(navigateUp: () -> Unit) {
                 }
             },
             navigateToSchedule = { lectureId ->
-                navController.navigate(RegisterDestination.Schedule.route)
+                navController.navigate("register/schedule/$lectureId")
             }
         )
         registerScheduleGraph(

@@ -10,7 +10,7 @@ import kr.co.knowledgerally.ui.register.RegisterDestination
 
 fun NavGraphBuilder.registerInfoGraph(
     navigateUp: (Boolean) -> Unit,
-    navigateToSchedule: (String) -> Unit,
+    navigateToSchedule: (Long) -> Unit,
 ) {
     composable(
         route = RegisterDestination.Info.Default.route,
@@ -34,11 +34,11 @@ fun NavGraphBuilder.registerInfoGraph(
 @Composable
 fun RegisterInfoRoute(
     navigateUp: () -> Unit,
-    navigateToSchedule: (String) -> Unit,
+    navigateToSchedule: (Long) -> Unit,
 ) {
     RegisterInfoScreen(
         navigateUp = navigateUp,
-        navigateToSchedule = { navigateToSchedule("") },
+        navigateToSchedule = navigateToSchedule,
     )
 }
 

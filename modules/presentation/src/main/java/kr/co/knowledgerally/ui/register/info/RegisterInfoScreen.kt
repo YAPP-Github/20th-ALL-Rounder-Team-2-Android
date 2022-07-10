@@ -24,12 +24,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Surface
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -45,7 +47,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
-import kr.co.knowledgerally.log.Logger
 import kr.co.knowledgerally.model.CategoryModel
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.AddPhotoIcon
@@ -64,23 +65,61 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 fun RegisterInfoScreen(
     viewModel: RegisterInfoViewModel = hiltViewModel(),
     navigateUp: () -> Unit,
-    navigateToSchedule: (RegisterInfoState) -> Unit,
+    navigateToSchedule: (Long) -> Unit
 ) {
     val state by rememberRegisterState()
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
+
     val categories by viewModel.categories.collectAsState()
+    val loading by viewModel.loading.collectAsState()
+    val result by viewModel.result.collectAsState()
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
         onResult = { uris -> state.updateImageUris(uris) }
     )
+
+    RegisterInfoScreen(
+        state = state,
+        categories = categories,
+        onCategoryClick = { coroutineScope.launch { sheetState.show() } },
+        onCategorySelect = { state.category = it },
+        sheetState = sheetState,
+        onCloseClick = navigateUp,
+        onImagePick = { launcher.launch("image/*") },
+        navigateToSchedule = { viewModel.register(state.toRegistration()) }
+    )
+
+    if (loading || categories.isEmpty()) {
+        Loading()
+    }
+
+    result?.let {
+        LaunchedEffect(it) {
+            navigateToSchedule(it.lectureId)
+            viewModel.resultConsumed()
+        }
+    }
+}
+
+@Composable
+private fun RegisterInfoScreen(
+    state: RegisterInfoState,
+    categories: List<CategoryModel>,
+    onCategoryClick: () -> Unit,
+    onCategorySelect: (CategoryModel) -> Unit,
+    sheetState: ModalBottomSheetState,
+    onCloseClick: () -> Unit,
+    onImagePick: () -> Unit,
+    navigateToSchedule: () -> Unit,
+) {
     ModalBottomSheetLayout(
         sheetContent = {
             CategoryPicker(
                 categories = categories,
                 sheetState = sheetState,
-                onSelect = { state.category = it },
+                onSelect = onCategorySelect,
             )
         },
         modifier = Modifier.fillMaxSize(),
@@ -89,18 +128,13 @@ fun RegisterInfoScreen(
         sheetBackgroundColor = KnowllyTheme.colors.grayFF,
         sheetShape = RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp)
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            RegisterContent(
-                state = state,
-                navigateUp = navigateUp,
-                onAskCategory = { coroutineScope.launch { sheetState.show() } },
-                onPickImage = { launcher.launch("image/*") },
-                navigateToSchedule = { navigateToSchedule(state) }
-            )
-            if (categories.isEmpty()) {
-                Loading()
-            }
-        }
+        RegisterContent(
+            state = state,
+            navigateUp = onCloseClick,
+            onAskCategory = onCategoryClick,
+            onPickImage = onImagePick,
+            navigateToSchedule = navigateToSchedule
+        )
     }
 }
 
