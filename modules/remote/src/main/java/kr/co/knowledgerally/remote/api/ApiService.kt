@@ -11,6 +11,7 @@ import kr.co.knowledgerally.remote.model.OnboardRequest
 import kr.co.knowledgerally.remote.model.OnboardedResponse
 import kr.co.knowledgerally.remote.model.PlayerLectureResponseWrapper
 import kr.co.knowledgerally.remote.model.ProviderTokenRequest
+import kr.co.knowledgerally.remote.model.PushRequest
 import kr.co.knowledgerally.remote.model.RegistrationRequest
 import kr.co.knowledgerally.remote.model.SignInResponse
 import kr.co.knowledgerally.remote.model.SignUpResponse
@@ -19,8 +20,6 @@ import kr.co.knowledgerally.remote.model.UserResponseWrapper
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
@@ -62,9 +61,8 @@ internal interface ApiService {
     @PATCH("user/onboard")
     suspend fun submitOnboard(@Body onboard: OnboardRequest)
 
-    @FormUrlEncoded
     @PATCH("user/setting/push")
-    suspend fun updatePushActive(@Field("pushActive") active: Boolean)
+    suspend fun updatePushActive(@Body request: PushRequest)
 
     @GET("ballhistory/me")
     suspend fun getBallHistories(): BallHistoryResponseWrapper
