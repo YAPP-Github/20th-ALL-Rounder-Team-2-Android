@@ -5,6 +5,7 @@ import kr.co.knowledgerally.data.model.toDomain
 import kr.co.knowledgerally.data.source.LectureRemoteDataSource
 import kr.co.knowledgerally.domain.model.Lecture
 import kr.co.knowledgerally.domain.model.Registration
+import kr.co.knowledgerally.domain.model.Schedule
 import kr.co.knowledgerally.domain.repo.LectureRepository
 import javax.inject.Inject
 
@@ -22,4 +23,7 @@ internal class LectureRepositoryImpl @Inject constructor(
 
     override suspend fun register(registration: Registration): Result<Long> =
         lectureRemoteDataSource.register(registration.toData())
+
+    override suspend fun register(lectureId: Long, schedules: List<Schedule>): Result<Unit> =
+        lectureRemoteDataSource.register(lectureId, schedules.map { it.toData() })
 }

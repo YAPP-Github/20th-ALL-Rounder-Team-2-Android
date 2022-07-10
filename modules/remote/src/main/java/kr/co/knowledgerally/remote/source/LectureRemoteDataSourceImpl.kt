@@ -4,9 +4,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kr.co.knowledgerally.data.model.LectureEntity
 import kr.co.knowledgerally.data.model.RegistrationEntity
+import kr.co.knowledgerally.data.model.ScheduleEntity
 import kr.co.knowledgerally.data.source.LectureRemoteDataSource
 import kr.co.knowledgerally.remote.api.ApiService
 import kr.co.knowledgerally.remote.image.ImageTranscoder
+import kr.co.knowledgerally.remote.model.SchedulesRequest
 import kr.co.knowledgerally.remote.model.toData
 import kr.co.knowledgerally.remote.model.toRemote
 import okhttp3.MultipartBody
@@ -47,4 +49,12 @@ internal class LectureRemoteDataSourceImpl @Inject constructor(
         val request = registration.toRemote(imageIds)
         apiService.uploadLectureInfo(request).data.id
     }
+
+    override suspend fun register(lectureId: Long, schedules: List<ScheduleEntity>): Result<Unit> =
+        runCatching {
+            apiService.uploadLectureSchedules(
+                lectureId = lectureId,
+                request = SchedulesRequest(schedules.map { it.toRemote() })
+            )
+        }
 }
