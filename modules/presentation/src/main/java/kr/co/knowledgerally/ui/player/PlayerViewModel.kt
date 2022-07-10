@@ -13,30 +13,18 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
     private val getPlayerLectureBundleUseCase: GetPlayerLectureBundleUseCase
 ) : BaseViewModel() {
-
     private val _tabState = MutableStateFlow(PlayerTabState.DEFAULT)
     val tabState: StateFlow<PlayerTabState> = _tabState.asStateFlow()
 
-    private val _uiState = MutableStateFlow<PlayerUiState>(PlayerUiState.Loading)
+    private val _uiState = MutableStateFlow(PlayerUiState())
     val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
 
     init {
-        fetchCoachLectures()
-    }
-
-    private fun fetchCoachLectures() {
-        _uiState.value = PlayerUiState.Loading
         launch {
-            val result = getPlayerLectureBundleUseCase()
-            result
-                .onSuccess { lectures ->
-                    _uiState.value = PlayerUiState.Success(
-                        matchingLectures = lectures.onboardingLectures.map { it.toPlayerUiState() as PlayerLectureUiState.Matching },
-                        scheduledLectures = lectures.ongoingLectures.map { it.toPlayerUiState() as PlayerLectureUiState.Scheduled },
-                        completedLectures = lectures.doneLectures.map { it.toPlayerUiState() as PlayerLectureUiState.Completed },
-                    )
-                }
-                .onFailure { _uiState.value = PlayerUiState.Failure }
+            val bundle = getPlayerLectureBundleUseCase()
+                .onFailure { handleException(it) }
+                .getOrNull()
+            _uiState.update { it.from(bundle) }
         }
     }
 
