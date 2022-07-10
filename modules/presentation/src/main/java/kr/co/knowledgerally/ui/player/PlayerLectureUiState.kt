@@ -1,42 +1,42 @@
 package kr.co.knowledgerally.ui.player
 
-import kr.co.knowledgerally.domain.model.Lecture
-import kr.co.knowledgerally.domain.model.LectureInfo
+import kr.co.knowledgerally.domain.model.LectureLegacy
+import kr.co.knowledgerally.domain.model.LectureInfoLegacy
 import kr.co.knowledgerally.domain.model.User
 
 sealed interface PlayerLectureUiState {
 
-    val lecture: LectureInfo
+    val lecture: LectureInfoLegacy
     val coach: User
 
     data class Matching(
-        override val lecture: LectureInfo,
+        override val lecture: LectureInfoLegacy,
         override val coach: User
     ) : PlayerLectureUiState
 
     data class Scheduled(
-        override val lecture: LectureInfo,
+        override val lecture: LectureInfoLegacy,
         override val coach: User
     ) : PlayerLectureUiState
 
     data class Completed(
-        override val lecture: LectureInfo,
+        override val lecture: LectureInfoLegacy,
         override val coach: User,
         val isReviewed: Boolean
     ) : PlayerLectureUiState
 }
 
-fun Lecture.toPlayerUiState(): PlayerLectureUiState =
+fun LectureLegacy.toPlayerUiState(): PlayerLectureUiState =
     when (this) {
-        is Lecture.Onboard -> PlayerLectureUiState.Matching(
+        is LectureLegacy.Onboard -> PlayerLectureUiState.Matching(
             lecture = lecture,
             coach = coach
         )
-        is Lecture.Ongoing -> PlayerLectureUiState.Scheduled(
+        is LectureLegacy.Ongoing -> PlayerLectureUiState.Scheduled(
             lecture = lecture,
             coach = coach
         )
-        is Lecture.Done -> PlayerLectureUiState.Completed(
+        is LectureLegacy.Done -> PlayerLectureUiState.Completed(
             lecture = lecture,
             coach = coach,
             isReviewed = isReviewed

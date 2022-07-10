@@ -1,7 +1,7 @@
 package kr.co.knowledgerally.domain.model
 
 data class LectureBundle(
-    val onboardingLectures: List<Lecture.Onboard>,
-    val ongoingLectures: List<Lecture.Ongoing>,
-    val doneLectures: List<Lecture.Done>
+    val onboardingLectures: List<LectureLegacy.Onboard>,
+    val ongoingLectures: List<LectureLegacy.Ongoing>,
+    val doneLectures: List<LectureLegacy.Done>
 )

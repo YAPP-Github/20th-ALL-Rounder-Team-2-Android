@@ -1,9 +1,9 @@
 package kr.co.knowledgerally.data.model
 
-import kr.co.knowledgerally.domain.model.LectureInfo
+import kr.co.knowledgerally.domain.model.LectureInfoLegacy
 import java.time.LocalDateTime
 
-data class LectureInfoEntity(
+data class LectureInfoEntityLegacy(
     val id: Long,
     val title: String,
     val imageUrls: List<String>,
@@ -11,7 +11,7 @@ data class LectureInfoEntity(
     val endAt: LocalDateTime
 )
 
-internal fun LectureInfoEntity.toDomain() = LectureInfo(
+internal fun LectureInfoEntityLegacy.toDomain() = LectureInfoLegacy(
     id = id,
     title = title,
     imageUrls = imageUrls,

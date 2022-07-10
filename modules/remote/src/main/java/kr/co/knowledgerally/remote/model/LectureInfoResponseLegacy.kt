@@ -2,7 +2,7 @@ package kr.co.knowledgerally.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class LectureInfoResponse(
+data class LectureInfoResponseLegacy(
     @SerializedName("id")
     val id: Long,
     @SerializedName("topic")

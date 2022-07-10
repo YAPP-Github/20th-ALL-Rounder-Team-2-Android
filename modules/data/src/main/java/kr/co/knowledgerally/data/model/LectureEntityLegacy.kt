@@ -1,47 +1,47 @@
 package kr.co.knowledgerally.data.model
 
-import kr.co.knowledgerally.domain.model.Lecture
+import kr.co.knowledgerally.domain.model.LectureLegacy
 
-sealed class LectureEntity {
+sealed class LectureEntityLegacy {
 
     data class Onboard(
-        val lecture: LectureInfoEntity,
+        val lecture: LectureInfoEntityLegacy,
         val coach: UserEntity,
         val applicants: List<ApplicantEntity>
-    ) : LectureEntity()
+    ) : LectureEntityLegacy()
 
     data class Ongoing(
-        val lecture: LectureInfoEntity,
+        val lecture: LectureInfoEntityLegacy,
         val coach: UserEntity,
         val player: UserEntity
-    ) : LectureEntity()
+    ) : LectureEntityLegacy()
 
     data class Done(
-        val lecture: LectureInfoEntity,
+        val lecture: LectureInfoEntityLegacy,
         val coach: UserEntity,
         val player: UserEntity,
         val isReviewed: Boolean
-    ) : LectureEntity()
+    ) : LectureEntityLegacy()
 }
 
-internal fun LectureEntity.toDomain(): Lecture =
+internal fun LectureEntityLegacy.toDomain(): LectureLegacy =
     when (this) {
-        is LectureEntity.Onboard -> {
-            Lecture.Onboard(
+        is LectureEntityLegacy.Onboard -> {
+            LectureLegacy.Onboard(
                 lecture = lecture.toDomain(),
                 coach = coach.toDomain(),
                 applicants = applicants.map { it.toDomain() }
             )
         }
-        is LectureEntity.Ongoing -> {
-            Lecture.Ongoing(
+        is LectureEntityLegacy.Ongoing -> {
+            LectureLegacy.Ongoing(
                 lecture = lecture.toDomain(),
                 coach = coach.toDomain(),
                 player = player.toDomain()
             )
         }
-        is LectureEntity.Done -> {
-            Lecture.Done(
+        is LectureEntityLegacy.Done -> {
+            LectureLegacy.Done(
                 lecture = lecture.toDomain(),
                 coach = coach.toDomain(),
                 player = player.toDomain(),

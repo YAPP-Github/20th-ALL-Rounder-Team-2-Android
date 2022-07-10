@@ -10,7 +10,7 @@ data class FormResponse(
     @SerializedName("content")
     val content: String,
     @SerializedName("lecture")
-    val lecture: LectureResponse,
+    val lecture: LectureResponseLegacy,
     @SerializedName("user")
     val user: UserResponse,
     @SerializedName("state")

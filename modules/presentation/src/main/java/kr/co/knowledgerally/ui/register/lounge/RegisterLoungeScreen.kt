@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kr.co.knowledgerally.domain.model.LectureLegacy
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
@@ -30,9 +31,8 @@ fun RegisterLoungeScreen(
 ) {
     when (uiState) {
         RegisterLoungeUiState.Loading -> Loading()
-        RegisterLoungeUiState.NoLecture -> Unit // no-op
         is RegisterLoungeUiState.Lectures -> RegisterLoungeContent(
-            lectures = List(3) { it.toString() },
+            lectures = uiState.lectures,
             navigateToSchedule = navigateToSchedule,
             navigateToInfo = { navigateToInfo(false) },
             navigateUp = navigateUp,
@@ -48,7 +48,7 @@ fun RegisterLoungeScreen(
 
 @Composable
 fun RegisterLoungeContent(
-    lectures: List<String>,
+    lectures: List<LectureLegacy.Onboard>,
     navigateUp: () -> Unit,
     navigateToSchedule: (Long) -> Unit,
     navigateToInfo: () -> Unit,
@@ -73,7 +73,7 @@ fun RegisterLoungeContent(
 
             items(
                 items = lectures,
-                key = { it }
+                key = { it.lectureId }
             ) {
                 RegisterLoungeItem(navigateToSchedule = navigateToSchedule)
                 RegisterLoungeItemDivider()

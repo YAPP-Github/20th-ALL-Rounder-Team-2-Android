@@ -1,23 +1,25 @@
 package kr.co.knowledgerally.domain.model
 
-sealed interface Lecture {
+sealed interface LectureLegacy {
 
     data class Onboard(
-        val lecture: LectureInfo,
+        val lecture: LectureInfoLegacy,
         val coach: User,
         val applicants: List<Applicant>
-    ) : Lecture
+    ) : LectureLegacy {
+        val lectureId = lecture.id
+    }
 
     data class Ongoing(
-        val lecture: LectureInfo,
+        val lecture: LectureInfoLegacy,
         val coach: User,
         val player: User
-    ) : Lecture
+    ) : LectureLegacy
 
     data class Done(
-        val lecture: LectureInfo,
+        val lecture: LectureInfoLegacy,
         val coach: User,
         val player: User,
         val isReviewed: Boolean
-    ) : Lecture
+    ) : LectureLegacy
 }

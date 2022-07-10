@@ -2,7 +2,7 @@ package kr.co.knowledgerally.remote.source
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kr.co.knowledgerally.data.model.LectureEntity
+import kr.co.knowledgerally.data.model.LectureEntityLegacy
 import kr.co.knowledgerally.data.model.LectureStateEntity
 import kr.co.knowledgerally.data.model.RegistrationEntity
 import kr.co.knowledgerally.data.model.ScheduleEntity
@@ -21,11 +21,11 @@ internal class LectureRemoteDataSourceImpl @Inject constructor(
     private val imageTranscoder: ImageTranscoder,
 ) : LectureRemoteDataSource {
 
-    override suspend fun getPlayerLectures(): Result<List<LectureEntity>> = runCatching {
+    override suspend fun getPlayerLectures(): Result<List<LectureEntityLegacy>> = runCatching {
         apiService.getPlayerLectures().lectures.map { it.toData() }
     }
 
-    override suspend fun getCoachLectures(state: LectureStateEntity?): Result<List<LectureEntity>> =
+    override suspend fun getCoachLectures(state: LectureStateEntity?): Result<List<LectureEntityLegacy>> =
         runCatching {
             val response = apiService.getCoachLectures(state?.toRemote())
             response.lectures.map { it.toData() }

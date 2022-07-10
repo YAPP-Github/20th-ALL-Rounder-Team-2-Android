@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import kr.co.knowledgerally.data.model.LectureStateEntity
 import java.time.LocalDateTime
 
-data class LectureResponse(
+data class LectureResponseLegacy(
     @SerializedName("id")
     val id: Long,
     @SerializedName("reviewWritten")
@@ -30,7 +30,7 @@ data class LectureResponse(
 }
 
 internal fun LectureStateEntity.toRemote() = when (this) {
-    LectureStateEntity.Onboard -> LectureResponse.State.Onboard
-    LectureStateEntity.Ongoing -> LectureResponse.State.Ongoing
-    LectureStateEntity.Done -> LectureResponse.State.Done
+    LectureStateEntity.Onboard -> LectureResponseLegacy.State.Onboard
+    LectureStateEntity.Ongoing -> LectureResponseLegacy.State.Ongoing
+    LectureStateEntity.Done -> LectureResponseLegacy.State.Done
 }
