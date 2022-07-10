@@ -103,7 +103,7 @@ fun CoachContent(
 
         when (tabState.currentIndex) {
             INDEX_MATCHING -> MatchingTabContent(
-                matchingList = uiState.matchingLectures,
+                items = uiState.matchingLectures,
                 navigateToApplicant = navigateToApplicant,
                 scrollState = matchingScrollState
             )
@@ -123,9 +123,7 @@ private fun CoachContentPreview() {
             uiState = CoachUiState(
                 isInit = false,
                 isLoading = false,
-                matchingLectures = emptyList(),
-                scheduledLectures = emptyList(),
-                completedLectures = emptyList()
+                lectureItems = emptyList()
             ),
             tabState = CoachTabState(
                 titles = listOf(
