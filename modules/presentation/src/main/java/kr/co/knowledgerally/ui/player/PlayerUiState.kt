@@ -1,26 +1,35 @@
 package kr.co.knowledgerally.ui.player
 
-import kr.co.knowledgerally.domain.model.LectureBundle
+import kr.co.knowledgerally.domain.model.LectureInfo
 
 data class PlayerUiState(
     val isInit: Boolean = false,
     val isLoading: Boolean = true,
-    val matchingLectures: List<PlayerLectureUiState.Matching> = emptyList(),
-    val scheduledLectures: List<PlayerLectureUiState.Scheduled> = emptyList(),
-    val completedLectures: List<PlayerLectureUiState.Completed> = emptyList(),
+    val lectureItems: List<LectureItemUiState> = emptyList(),
 ) {
+    val matchingLectures: List<LectureItemUiState.Matching> =
+        lectureItems.filterIsInstance<LectureItemUiState.Matching>()
+
+    val scheduledLectures: List<LectureItemUiState.Scheduled> =
+        lectureItems.filterIsInstance<LectureItemUiState.Scheduled>()
+
+    val completedLectures: List<LectureItemUiState.Completed> =
+        lectureItems.filterIsInstance<LectureItemUiState.Completed>()
+
     fun loading(isLoading: Boolean) = copy(isLoading = isLoading)
 
-    fun from(bundle: LectureBundle?): PlayerUiState {
-        if (bundle == null) {
-            return copy(isLoading = false)
+    fun from(lectureInfoList: List<LectureInfo>): PlayerUiState = copy(
+        isInit = true,
+        isLoading = false,
+        lectureItems = lectureInfoList.flatMap { lectureInfo ->
+            lectureInfo.lectures.map { lecture ->
+                lecture.toUiState(
+                    title = lectureInfo.topic,
+                    imageUrl = lectureInfo.thumbnailImageUrl,
+                    lectureInfoId = lectureInfo.id,
+                    coach = lectureInfo.coach,
+                )
+            }
         }
-        return copy(
-            isInit = true,
-            isLoading = false,
-            matchingLectures = bundle.onboardingLectures.map { it.toPlayerUiState() as PlayerLectureUiState.Matching },
-            scheduledLectures = bundle.ongoingLectures.map { it.toPlayerUiState() as PlayerLectureUiState.Scheduled },
-            completedLectures = bundle.doneLectures.map { it.toPlayerUiState() as PlayerLectureUiState.Completed },
-        )
-    }
+    )
 }
