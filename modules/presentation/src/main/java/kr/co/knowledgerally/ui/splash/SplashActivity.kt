@@ -33,7 +33,7 @@ class SplashActivity : BaseActivity() {
                     SplashUiState.Loading -> Unit // no-op
                     SplashUiState.Tutorial -> Unit // no-op
                 }
-                Splash(visible = uiState == SplashUiState.Loading)
+                Splash(visible = uiState != SplashUiState.Tutorial)
                 SplashPage(
                     visible = uiState == SplashUiState.Tutorial,
                     items = PageItems,

@@ -1,14 +1,17 @@
 package kr.co.knowledgerally.remote.api
 
 import kr.co.knowledgerally.remote.model.BallHistoryResponseWrapper
-import kr.co.knowledgerally.remote.model.NotificationResponseWrapper
-import kr.co.knowledgerally.remote.model.CoachLectureResponseWrapper
-import kr.co.knowledgerally.remote.model.LectureResponse
 import kr.co.knowledgerally.remote.model.CategoryResponseWrapper
+import kr.co.knowledgerally.remote.model.CoachLectureResponseWrapper
+import kr.co.knowledgerally.remote.model.ImagesResponseWrapper
+import kr.co.knowledgerally.remote.model.LectureInfoResponseWrapper
+import kr.co.knowledgerally.remote.model.LectureResponse
+import kr.co.knowledgerally.remote.model.NotificationResponseWrapper
 import kr.co.knowledgerally.remote.model.OnboardRequest
 import kr.co.knowledgerally.remote.model.OnboardedResponse
 import kr.co.knowledgerally.remote.model.PlayerLectureResponseWrapper
 import kr.co.knowledgerally.remote.model.ProviderTokenRequest
+import kr.co.knowledgerally.remote.model.RegistrationRequest
 import kr.co.knowledgerally.remote.model.SignInResponse
 import kr.co.knowledgerally.remote.model.SignUpResponse
 import kr.co.knowledgerally.remote.model.UserExistsResponse
@@ -77,4 +80,15 @@ internal interface ApiService {
 
     @GET("category")
     suspend fun getCategoryList(): CategoryResponseWrapper
+
+    @POST("lectureinfo/images")
+    @Multipart
+    suspend fun uploadLectureImages(
+        @Part parts: List<MultipartBody.Part>
+    ): ImagesResponseWrapper
+
+    @POST("lectureinfo")
+    suspend fun uploadLectureInfo(
+        @Body registration: RegistrationRequest,
+    ): LectureInfoResponseWrapper
 }

@@ -47,3 +47,12 @@ fun Category.toPresentation(): CategoryModel = when (this) {
     Category.Language -> CategoryModel.Language
     Category.Etc -> CategoryModel.Etc
 }
+
+fun CategoryModel.toDomain(): Category = when (this) {
+    CategoryModel.PM -> Category.PM
+    CategoryModel.Design -> Category.Design
+    CategoryModel.Develop -> Category.Develop
+    CategoryModel.Marketing -> Category.Marketing
+    CategoryModel.Language -> Category.Language
+    CategoryModel.Etc -> Category.Etc
+}

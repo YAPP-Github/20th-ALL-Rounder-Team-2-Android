@@ -2,7 +2,7 @@ package kr.co.knowledgerally.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class CategoryResponseWrapper(
+data class ImagesResponseWrapper(
     @SerializedName("data")
-    val data: List<CategoryResponse>,
+    val data: List<LectureImageResponse>
 )
