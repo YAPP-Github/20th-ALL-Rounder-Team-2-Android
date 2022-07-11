@@ -145,7 +145,7 @@ fun CoachContent(
 @Composable
 private fun CoachContentPreview() {
     val tempUser = User(
-        id = "0",
+        id = 0,
         profile = Profile(
             username = "윤여준",
             imageUrl = null,
