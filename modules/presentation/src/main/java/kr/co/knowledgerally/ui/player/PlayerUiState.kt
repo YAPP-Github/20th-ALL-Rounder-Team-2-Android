@@ -23,12 +23,7 @@ data class PlayerUiState(
         isLoading = false,
         lectureItems = lectureInfoList.flatMap { lectureInfo ->
             lectureInfo.lectures.map { lecture ->
-                lecture.toUiState(
-                    title = lectureInfo.topic,
-                    imageUrl = lectureInfo.thumbnailImageUrl,
-                    lectureInfoId = lectureInfo.id,
-                    coach = lectureInfo.coach,
-                )
+                lecture.toUiState(lectureInfo)
             }
         }
     )

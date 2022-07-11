@@ -46,8 +46,8 @@ fun MatchingTabContent(
         )
         CoachDivider(Modifier.padding(top = 24.dp))
 
-        items.forEach { matching ->
-            MatchingItem(item = matching, navigateToApplicant = navigateToApplicant)
+        items.forEach { item ->
+            MatchingItem(item = item, navigateToApplicant = navigateToApplicant)
         }
     }
 }
@@ -62,10 +62,10 @@ private fun MatchingItem(
             .fillMaxWidth()
     ) {
         VerticalSpacer(height = 16.dp)
-        MatchingItemHeader(text = item.title)
+        MatchingItemHeader(text = item.lectureInfo.topic)
         MatchingItemApplicant(
             applicants = item.lecture.applicants,
-            onClick = { navigateToApplicant(item.lecture.id.toString()) },
+            onClick = { navigateToApplicant(item.lectureInfo.id.toString()) },
             modifier = Modifier.padding(top = 8.dp)
         )
         VerticalSpacer(height = 16.dp)

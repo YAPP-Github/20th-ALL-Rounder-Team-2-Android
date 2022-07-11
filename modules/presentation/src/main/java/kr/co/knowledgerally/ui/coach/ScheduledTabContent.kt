@@ -79,7 +79,7 @@ private fun ScheduledItem(
         Box(modifier = Modifier.height(IntrinsicSize.Max)) {
             RoundRect(radius = 8.dp, width = 4.dp)
             Column(modifier = Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp)) {
-                Text(text = item.title, style = KnowllyTheme.typography.subtitle2)
+                Text(text = item.lectureInfo.topic, style = KnowllyTheme.typography.subtitle2)
                 Text(
                     text = item.lecture.player.profile.username,
                     style = KnowllyTheme.typography.body1,
