@@ -14,6 +14,8 @@ data class LectureInfoResponse(
     val coach: CoachResponse,
     @SerializedName("lectureImages")
     val images: List<LectureImageResponse>,
+    @SerializedName("category")
+    val category: CategoryResponse,
 )
 
 fun LectureInfoResponse.toData(): LectureInfoEntity = LectureInfoEntity(
@@ -22,4 +24,5 @@ fun LectureInfoResponse.toData(): LectureInfoEntity = LectureInfoEntity(
     topic = topic,
     coach = coach.user.toData(),
     imageUrls = images.map { it.imageUrl },
+    category = category.toData(),
 )
