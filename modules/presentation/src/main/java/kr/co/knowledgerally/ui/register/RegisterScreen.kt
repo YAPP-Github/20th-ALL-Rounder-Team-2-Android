@@ -24,7 +24,7 @@ fun RegisterScreen(
         popExitTransition = { slideOutHorizontally { it } }
     ) {
         registerLoungeGraph(
-            navigateUp = { navController.popBackStack() },
+            navigateUp = navigateUp,
             navigateToInfo = {
                 navController.navigate("register/info/$it")
             },
