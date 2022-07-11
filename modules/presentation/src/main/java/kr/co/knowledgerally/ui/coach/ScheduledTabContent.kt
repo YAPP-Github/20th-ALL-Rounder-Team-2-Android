@@ -1,6 +1,7 @@
 package kr.co.knowledgerally.ui.coach
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -29,6 +30,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ScheduledTabContent(
     items: List<LectureItemUiState.Scheduled>,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val clipboardManager = LocalClipboardManager.current
@@ -59,7 +61,11 @@ fun ScheduledTabContent(
                 if (index == 0) {
                     CoachDivider(modifier = Modifier.padding(top = 24.dp))
                 }
-                ScheduledItem(item = scheduled, copyToClipboard = copyTo::invoke)
+                ScheduledItem(
+                    item = scheduled,
+                    copyToClipboard = copyTo::invoke,
+                    navigateToLecture = navigateToLecture
+                )
                 CoachDivider()
             }
         }
@@ -70,9 +76,11 @@ fun ScheduledTabContent(
 private fun ScheduledItem(
     item: LectureItemUiState.Scheduled,
     copyToClipboard: (String) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit
 ) {
     Column(
         modifier = Modifier
+            .clickable { navigateToLecture(item.lectureInfo.id) }
             .fillMaxWidth()
             .padding(top = 12.dp, bottom = 20.dp)
     ) {
