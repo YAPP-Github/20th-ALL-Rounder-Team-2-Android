@@ -4,5 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 data class PlayerLectureResponseWrapper(
     @SerializedName("data")
-    val lectures: List<PlayerLectureResponse>
-)
+    val data: List<Data>
+) {
+
+    data class Data(
+        @SerializedName("lecture")
+        val lecture: LectureResponse,
+        @SerializedName("lectureInfo")
+        val lectureInfo: LectureInfoResponse,
+    )
+}

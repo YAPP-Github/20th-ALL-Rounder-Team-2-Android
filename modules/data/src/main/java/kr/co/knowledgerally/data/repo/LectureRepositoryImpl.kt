@@ -3,7 +3,8 @@ package kr.co.knowledgerally.data.repo
 import kr.co.knowledgerally.data.model.toData
 import kr.co.knowledgerally.data.model.toDomain
 import kr.co.knowledgerally.data.source.LectureRemoteDataSource
-import kr.co.knowledgerally.domain.model.LectureLegacy
+import kr.co.knowledgerally.domain.model.Lecture
+import kr.co.knowledgerally.domain.model.LectureInfo
 import kr.co.knowledgerally.domain.model.LectureState
 import kr.co.knowledgerally.domain.model.Registration
 import kr.co.knowledgerally.domain.model.Schedule
@@ -14,13 +15,13 @@ internal class LectureRepositoryImpl @Inject constructor(
     private val lectureRemoteDataSource: LectureRemoteDataSource
 ) : LectureRepository {
 
-    override suspend fun getCoachLectures(state: LectureState?): Result<List<LectureLegacy>> =
+    override suspend fun getCoachLectureInfoList(state: LectureState?): Result<List<LectureInfo>> =
         lectureRemoteDataSource
-            .getCoachLectures(state?.toData())
+            .getCoachLectureInfoList(state?.toData())
             .mapCatching { lectures -> lectures.map { it.toDomain() } }
 
-    override suspend fun getPlayerLectures(): Result<List<LectureLegacy>> =
-        lectureRemoteDataSource.getPlayerLectures()
+    override suspend fun getPlayerLectureInfoList(): Result<List<LectureInfo>> =
+        lectureRemoteDataSource.getPlayerLectureInfoList()
             .mapCatching { lectures -> lectures.map { it.toDomain() } }
 
     override suspend fun register(registration: Registration): Result<Long> =

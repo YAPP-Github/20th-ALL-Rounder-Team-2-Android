@@ -2,7 +2,7 @@ package kr.co.knowledgerally.remote.source
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kr.co.knowledgerally.data.model.LectureEntityLegacy
+import kr.co.knowledgerally.data.model.LectureInfoEntity
 import kr.co.knowledgerally.data.model.LectureStateEntity
 import kr.co.knowledgerally.data.model.RegistrationEntity
 import kr.co.knowledgerally.data.model.ScheduleEntity
@@ -21,14 +21,29 @@ internal class LectureRemoteDataSourceImpl @Inject constructor(
     private val imageTranscoder: ImageTranscoder,
 ) : LectureRemoteDataSource {
 
-    override suspend fun getPlayerLectures(): Result<List<LectureEntityLegacy>> = runCatching {
-        apiService.getPlayerLectures().lectures.map { it.toData() }
+    override suspend fun getPlayerLectureInfoList(): Result<List<LectureInfoEntity>> = runCatching {
+        apiService
+            .getPlayerLectureInfoList()
+            .data.map { response ->
+                val lectureInfo = response.lectureInfo
+                LectureInfoEntity(
+                    id = lectureInfo.id,
+                    /**
+                     * 수강 클래스는, 강의 단위로 클래스를 조회함
+                     */
+                    lectures = listOf(response.lecture.toData()),
+                    topic = lectureInfo.topic,
+                    imageUrls = lectureInfo.images.map { it.imageUrl },
+                    coach = lectureInfo.coach.user.toData(),
+                )
+            }
     }
 
-    override suspend fun getCoachLectures(state: LectureStateEntity?): Result<List<LectureEntityLegacy>> =
+    override suspend fun getCoachLectureInfoList(state: LectureStateEntity?): Result<List<LectureInfoEntity>> =
         runCatching {
-            val response = apiService.getCoachLectures(state?.toRemote())
-            response.lectures.map { it.toData() }
+            apiService.getCoachLectureInfoList(state?.toRemote())
+                .data
+                .map { it.lectureInfo.toData() }
         }
 
     override suspend fun register(registration: RegistrationEntity): Result<Long> = runCatching {

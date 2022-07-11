@@ -18,7 +18,7 @@ data class LectureResponse(
     val state: LectureStateResponse,
     @SerializedName("forms")
     val forms: List<FormResponse>,
-    @SerializedName("matechedUser")
+    @SerializedName("matchedUser")
     val matchedUser: UserResponse,
 )
 

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -17,6 +18,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kr.co.knowledgerally.domain.model.LectureInfo
+import kr.co.knowledgerally.domain.model.Schedule
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.DashBanner
@@ -32,36 +35,128 @@ fun PlayerContent(
     tab: PlayerTabState.Tab,
     uiState: PlayerUiState
 ) {
-    val lectures = when (tab) {
-        PlayerTabState.Tab.Matching -> uiState.matchingLectures
-        PlayerTabState.Tab.Scheduled -> uiState.scheduledLectures
-        PlayerTabState.Tab.Completed -> uiState.completedLectures
+    when (tab) {
+        PlayerTabState.Tab.Matching -> Matching(uiState.matchingLectures)
+        PlayerTabState.Tab.Scheduled -> Scheduled(uiState.scheduledLectures)
+        PlayerTabState.Tab.Completed -> Completed(uiState.completedLectures)
     }
+}
 
-    if (lectures.isNotEmpty()) {
-        Column {
-            PlayerContentList(items = lectures)
-            KnowllyDivider()
-        }
+@Composable
+private fun Matching(items: List<LectureItemUiState.Matching>) {
+    if (items.isEmpty()) {
+        PlayerContentEmpty(PlayerTabState.Tab.Matching)
     } else {
-        PlayerContentEmpty(tab = tab)
-    }
-}
+        LazyColumn {
+            itemsIndexed(
+                items = items,
+                key = { _, item -> item }
+            ) { index, item ->
+                MatchingItem(item = item)
 
-@Composable
-fun PlayerContentList(items: List<LectureItemUiState>) {
-    LazyColumn {
-        items(lectures) { lecture ->
-            PlayerContentListItem(item = lecture)
+                if (index == items.lastIndex) {
+                    KnowllyDivider()
+                }
+            }
         }
     }
 }
 
 @Composable
-fun PlayerContentListItem(item: LectureItemUiState) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
+private fun Scheduled(items: List<LectureItemUiState.Scheduled>) {
+    if (items.isEmpty()) {
+        PlayerContentEmpty(PlayerTabState.Tab.Scheduled)
+    } else {
+        LazyColumn {
+            itemsIndexed(
+                items = items,
+                key = { _, item -> item }
+            ) { index, item ->
+                ScheduleItem(item = item)
+
+                if (index == items.lastIndex) {
+                    KnowllyDivider()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun Completed(items: List<LectureItemUiState.Completed>) {
+    if (items.isEmpty()) {
+        PlayerContentEmpty(PlayerTabState.Tab.Completed)
+    } else {
+        LazyColumn {
+            itemsIndexed(
+                items = items,
+                key = { _, item -> item }
+            ) { index, item ->
+                CompletedItem(item = item)
+
+                if (index == items.lastIndex) {
+                    KnowllyDivider()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MatchingItem(item: LectureItemUiState.Matching) {
+    LectureItem(
+        lectureInfo = item.lectureInfo,
+        schedule = item.lecture.schedule,
+    )
+}
+
+@Composable
+private fun ScheduleItem(item: LectureItemUiState.Scheduled) {
+    LectureItem(
+        lectureInfo = item.lectureInfo,
+        schedule = item.lecture.schedule,
+        bottom = {
+            KakaoIdCopyButton(
+                kakaoId = item.lectureInfo.coach.profile.kakaoId,
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .fillMaxWidth()
+                    .height(40.dp)
+            )
+        }
+    )
+}
+
+@Composable
+private fun CompletedItem(item: LectureItemUiState.Completed) {
+    val isReviewed = item.lecture.isReviewed
+    LectureItem(
+        lectureInfo = item.lectureInfo,
+        schedule = item.lecture.schedule,
+        trailingTitle = { ReviewOutlinedBadge(isReviewed = isReviewed) },
+        bottom = {
+            if (!isReviewed) {
+                KnowllyContainedButton(
+                    text = stringResource(id = R.string.player_review_button),
+                    onClick = { /* TODO: 후기 페이지로 이동 */ },
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                        .fillMaxWidth()
+                        .height(40.dp)
+                )
+            }
+        }
+    )
+}
+
+@Composable
+private fun LectureItem(
+    lectureInfo: LectureInfo,
+    schedule: Schedule,
+    trailingTitle: @Composable () -> Unit = { },
+    bottom: @Composable () -> Unit = { },
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         KnowllyDivider()
         Row(
             modifier = Modifier
@@ -73,9 +168,10 @@ fun PlayerContentListItem(item: LectureItemUiState) {
                 color = KnowllyTheme.colors.grayEF,
                 modifier = Modifier.size(88.dp)
             ) {
-                if (item.lecture.imageUrls.isNotEmpty()) {
+                val imageUrl = lectureInfo.thumbnailImageUrl
+                if (imageUrl != null) {
                     AsyncImage(
-                        model = item.lecture.imageUrls[0],
+                        model = imageUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
@@ -89,22 +185,20 @@ fun PlayerContentListItem(item: LectureItemUiState) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = item.lecture.title,
+                        text = lectureInfo.topic,
                         style = KnowllyTheme.typography.subtitle2
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    if (item is PlayerLectureUiState.Completed) {
-                        ReviewOutlinedBadge(isReviewed = item.isReviewed)
-                    }
+                    trailingTitle()
                 }
                 VerticalSpacer(height = 2.dp)
                 Text(
-                    text = item.coach.profile.username,
+                    text = lectureInfo.coach.profile.username,
                     style = KnowllyTheme.typography.body1
                 )
                 VerticalSpacer(height = 6.dp)
                 Text(
-                    text = item.lecture.startAt.format(
+                    text = schedule.startAt.format(
                         DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
                     ),
                     style = KnowllyTheme.typography.body2,
@@ -112,7 +206,7 @@ fun PlayerContentListItem(item: LectureItemUiState) {
                 )
                 Text(
                     text = "${
-                        item.lecture.startAt.format(
+                        schedule.startAt.format(
                             DateTimeFormatter.ofPattern(
                                 stringResource(id = R.string.lecture_time_format)
                             )
@@ -120,7 +214,7 @@ fun PlayerContentListItem(item: LectureItemUiState) {
                     } ${
                         stringResource(
                             R.string.lecture_runningtime_format,
-                            item.lecture.runningTime
+                            schedule.runningTime
                         )
                     }",
                     style = KnowllyTheme.typography.body2,
@@ -128,30 +222,7 @@ fun PlayerContentListItem(item: LectureItemUiState) {
                 )
             }
         }
-        when (item) {
-            is PlayerLectureUiState.Matching -> {}
-            is PlayerLectureUiState.Scheduled -> {
-                KakaoIdCopyButton(
-                    kakaoId = item.coach.profile.kakaoId,
-                    modifier = Modifier
-                        .padding(bottom = 16.dp)
-                        .fillMaxWidth()
-                        .height(40.dp)
-                )
-            }
-            is PlayerLectureUiState.Completed -> {
-                if (!item.isReviewed) {
-                    KnowllyContainedButton(
-                        text = stringResource(id = R.string.player_review_button),
-                        onClick = { /* TODO: 후기 페이지로 이동 */ },
-                        modifier = Modifier
-                            .padding(bottom = 16.dp)
-                            .fillMaxWidth()
-                            .height(40.dp)
-                    )
-                }
-            }
-        }
+        bottom()
     }
 }
 
@@ -184,6 +255,5 @@ fun PlayerContentEmpty(tab: PlayerTabState.Tab) {
         PlayerTabState.Tab.Scheduled -> R.string.player_scheduled_empty
         PlayerTabState.Tab.Completed -> R.string.player_completed_empty
     }
-
     DashBanner(text = stringResource(id = bannerRes))
 }

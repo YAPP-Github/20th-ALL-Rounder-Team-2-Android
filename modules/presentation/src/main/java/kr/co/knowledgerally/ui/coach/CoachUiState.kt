@@ -28,7 +28,7 @@ data class CoachUiState(
         isLoading = false,
         lectureItems = lectureInfoList.flatMap { lectureInfo ->
             lectureInfo.lectures.map { lecture ->
-                lecture.toUiState(title = lectureInfo.topic, lectureInfoId = lectureInfo.id)
+                lecture.toUiState(lectureInfo)
             }
         }
     )
