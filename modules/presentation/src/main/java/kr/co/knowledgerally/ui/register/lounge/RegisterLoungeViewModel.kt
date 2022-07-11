@@ -19,7 +19,7 @@ class RegisterLoungeViewModel @Inject constructor(
     val uiState: StateFlow<RegisterLoungeUiState> = flow {
         getCoachLectureInfoListUseCase(LectureState.Onboard)
             .map { lectureInfoList ->
-                if (lectureInfoList.isEmpty()) {
+                if (lectureInfoList.isNotEmpty()) {
                     RegisterLoungeUiState.Lectures(lectureInfoList)
                 } else {
                     RegisterLoungeUiState.NoLecture
