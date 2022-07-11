@@ -14,7 +14,7 @@ class ApplicantActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val lectureId: Long = intent.getLongExtra(KEY_LECTURE_ID, -1)
+        val lectureInfoId: Long = intent.getLongExtra(KEY_LECTURE_INFO_ID, -1)
 
         setContent {
             KnowllyTheme {
@@ -29,10 +29,10 @@ class ApplicantActivity : BaseActivity() {
     private fun navigateUp() = finish()
 
     companion object {
-        fun getIntent(context: Context, lectureId: Long): Intent =
+        fun getIntent(context: Context, lectureInfoId: Long): Intent =
             Intent(context, ApplicantActivity::class.java)
-                .putExtra(KEY_LECTURE_ID, lectureId)
+                .putExtra(KEY_LECTURE_INFO_ID, lectureInfoId)
 
-        private const val KEY_LECTURE_ID = "KEY_LECTURE_ID"
+        private const val KEY_LECTURE_INFO_ID = "KEY_LECTURE_INFO_ID"
     }
 }
