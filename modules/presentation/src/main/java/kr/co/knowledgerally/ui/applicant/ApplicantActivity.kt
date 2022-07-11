@@ -16,7 +16,7 @@ class ApplicantActivity : BaseActivity() {
 
         val lectureInfoId: Long = intent.getLongExtra(KEY_LECTURE_INFO_ID, DEFAULT_LONG_EXTRA_VALUE)
         if (lectureInfoId == DEFAULT_LONG_EXTRA_VALUE) {
-            handleException(IllegalStateException())
+            handleException(IllegalStateException("${TAG}에서 lectureInfoId를 찾을 수 없습니다."))
             return
         }
 
