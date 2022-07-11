@@ -15,10 +15,10 @@ class UserActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         val userId: Long = intent.getLongExtra(
-            UserActivity.KEY_USER_ID,
-            UserActivity.DEFAULT_LONG_EXTRA_VALUE
+            KEY_USER_ID,
+            DEFAULT_LONG_EXTRA_VALUE
         )
-        if (userId == UserActivity.DEFAULT_LONG_EXTRA_VALUE) {
+        if (userId == DEFAULT_LONG_EXTRA_VALUE) {
             handleException(IllegalStateException("${TAG}에서 userId를 찾을 수 없습니다."))
             return
         }
