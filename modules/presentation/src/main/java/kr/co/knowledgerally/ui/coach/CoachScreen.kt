@@ -50,8 +50,8 @@ fun CoachScreen(
         tabState = tabState,
         navigateToRegister = navigateToRegister,
         switchTab = viewModel::switchTab,
-        navigateToApplicant = { lectureId ->
-            val intent = ApplicantActivity.getIntent(context, lectureId)
+        navigateToApplicant = { lectureInfoId: Long ->
+            val intent = ApplicantActivity.getIntent(context, lectureInfoId)
             applicantLauncher.launch(intent)
         }
     )
@@ -62,7 +62,7 @@ fun CoachScreen(
     uiState: CoachUiState,
     tabState: CoachTabState,
     navigateToRegister: () -> Unit,
-    navigateToApplicant: (lectureId: String) -> Unit,
+    navigateToApplicant: (lectureId: Long) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -86,7 +86,7 @@ fun CoachScreen(
 fun CoachContent(
     uiState: CoachUiState,
     tabState: CoachTabState,
-    navigateToApplicant: (lectureId: String) -> Unit,
+    navigateToApplicant: (lectureId: Long) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     val matchingScrollState = rememberScrollState()
