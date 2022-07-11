@@ -8,6 +8,7 @@ data class LectureInfoEntity(
     val topic: String,
     val imageUrls: List<String>,
     val coach: UserEntity,
+    val category: CategoryEntity,
 )
 
 internal fun LectureInfoEntity.toDomain() = LectureInfo(
@@ -16,4 +17,5 @@ internal fun LectureInfoEntity.toDomain() = LectureInfo(
     topic = topic,
     imageUrls = imageUrls,
     coach = coach.toDomain(),
+    category = category.toDomain(),
 )

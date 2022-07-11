@@ -21,6 +21,10 @@ data class LectureInfo(
      * 클래스 주최한 코치
      */
     val coach: User,
+    /**
+     * 클래스 카테고리
+     */
+    val category: Category,
 ) {
     /**
      * 클래스 목록으로 보여주는 썸네일 이미지

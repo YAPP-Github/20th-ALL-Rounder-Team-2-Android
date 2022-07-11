@@ -42,7 +42,7 @@ class CoachViewModel @Inject constructor(
     }
 
     private fun fetch() = launch {
-        getCoachLectureInfoListUseCase()
+        getCoachLectureInfoListUseCase(null)
             .onSuccess { _uiState.update { uiState -> uiState.from(it) } }
             .onFailure { handleException(it) }
     }

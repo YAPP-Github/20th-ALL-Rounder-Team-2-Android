@@ -20,6 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kr.co.knowledgerally.domain.model.LectureInfo
+import kr.co.knowledgerally.model.toPresentation
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.ContainedBadge
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
@@ -46,6 +48,7 @@ fun RegisterLoungeItemHeader() {
 
 @Composable
 fun RegisterLoungeItem(
+    lectureInfo: LectureInfo,
     navigateToSchedule: (Long) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -57,7 +60,7 @@ fun RegisterLoungeItem(
                 shape = RoundedCornerShape(8.dp)
             ) {
                 AsyncImage(
-                    model = null,
+                    model = lectureInfo.thumbnailImageUrl,
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                 )
@@ -69,21 +72,15 @@ fun RegisterLoungeItem(
                     .weight(1f)
             ) {
                 Text(
-                    text = "3D Maya 디자인 - 모델링 기초",
+                    text = lectureInfo.topic,
                     style = KnowllyTheme.typography.subtitle2,
-                )
-                Text(
-                    text = "오늘만님",
-                    modifier = Modifier.padding(top = 4.dp),
-                    style = KnowllyTheme.typography.body2,
-                    color = KnowllyTheme.colors.gray8F
                 )
 
                 ContainedBadge(
-                    text = "디자인",
+                    text = stringResource(lectureInfo.category.toPresentation().text),
                     contentColor = KnowllyTheme.colors.secondaryIndigo,
                     backgroundColor = KnowllyTheme.colors.secondaryIndigoLight,
-                    modifier = Modifier.padding(top = 20.dp),
+                    modifier = Modifier.padding(top = 42.dp),
                 )
             }
         }

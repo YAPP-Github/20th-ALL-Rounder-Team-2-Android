@@ -35,6 +35,7 @@ internal class LectureRemoteDataSourceImpl @Inject constructor(
                     topic = lectureInfo.topic,
                     imageUrls = lectureInfo.images.map { it.imageUrl },
                     coach = lectureInfo.coach.user.toData(),
+                    category = lectureInfo.category.toData(),
                 )
             }
     }
@@ -43,7 +44,7 @@ internal class LectureRemoteDataSourceImpl @Inject constructor(
         runCatching {
             apiService.getCoachLectureInfoList(state?.toRemote())
                 .data
-                .map { it.lectureInfo.toData() }
+                .map { it.toData() }
         }
 
     override suspend fun register(registration: RegistrationEntity): Result<Long> = runCatching {
