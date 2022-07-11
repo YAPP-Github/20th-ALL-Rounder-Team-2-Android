@@ -49,6 +49,7 @@ import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.mypage.dialog.LogoutDialog
 import kr.co.knowledgerally.ui.mypage.dialog.WithdrawalDialog
 import kr.co.knowledgerally.ui.splash.SplashActivity
+import kr.co.knowledgerally.ui.terms.TermsActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import kr.co.knowledgerally.ui.user.UserActivity
 
@@ -80,7 +81,9 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
             val intent = UserActivity.getIntent(context, userId)
             activityLauncher.launch(intent)
         },
-        navigateToTermsOfService = { },
+        navigateToTermsOfService = {
+            TermsActivity.startActivity(context)
+        },
         logout = { showLogoutDialog = true },
         withdrawal = { showWithdrawalDialog = true },
     )
