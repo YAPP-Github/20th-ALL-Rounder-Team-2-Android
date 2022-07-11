@@ -42,6 +42,12 @@ class MyPageViewModel @Inject constructor(
     fun updatePushActive(active: Boolean) {
         launch {
             updatePushActiveUseCase(active).getOrThrow()
+            refresh()
+        }
+    }
+
+    fun refresh() {
+        launch {
             refreshUserUseCase().getOrThrow()
         }
     }
