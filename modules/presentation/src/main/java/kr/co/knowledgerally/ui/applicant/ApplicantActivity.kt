@@ -14,20 +14,17 @@ class ApplicantActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val extraData = runCatching { intent.getStringExtra(KEY_LECTURE_INFO_ID)!! }
-        val exception = extraData.exceptionOrNull()
-        if (exception != null) {
-            handleException(exception)
+        val lectureInfoId: Long = intent.getLongExtra(KEY_LECTURE_INFO_ID, DEFAULT_LONG_EXTRA_VALUE)
+        if (lectureInfoId == DEFAULT_LONG_EXTRA_VALUE) {
+            handleException(Throwable(message = "${TAG}에서 lectureInfoId를 찾을 수 없습니다."))
             return@onCreate
         }
-
-        val lectureInfoId: String = extraData.getOrThrow()
 
         setContent {
             KnowllyTheme {
                 ApplicantScreen(
                     url = "",
-                    navigateUp = ::navigateUp,
+                    navigateUp = ::navigateUp
                 )
             }
         }
@@ -38,8 +35,9 @@ class ApplicantActivity : BaseActivity() {
     companion object {
         fun getIntent(context: Context, lectureInfoId: Long): Intent =
             Intent(context, ApplicantActivity::class.java)
-                .putExtra(KEY_LECTURE_INFO_ID, lectureInfoId.toString())
+                .putExtra(KEY_LECTURE_INFO_ID, lectureInfoId)
 
         private const val KEY_LECTURE_INFO_ID = "KEY_LECTURE_INFO_ID"
+        private const val DEFAULT_LONG_EXTRA_VALUE: Long = -1
     }
 }
