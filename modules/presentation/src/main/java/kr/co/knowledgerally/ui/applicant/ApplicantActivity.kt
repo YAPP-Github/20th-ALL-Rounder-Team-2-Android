@@ -15,7 +15,10 @@ class ApplicantActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         val lectureInfoId = runCatching { intent.getStringExtra(KEY_LECTURE_INFO_ID)!! }
-            .getOrElse { handleException(it) }
+            .getOrElse {
+                handleException(it)
+                return@onCreate
+            }
 
         setContent {
             KnowllyTheme {
