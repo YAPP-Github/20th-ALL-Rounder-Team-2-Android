@@ -14,11 +14,14 @@ class ApplicantActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val lectureInfoId = runCatching { intent.getStringExtra(KEY_LECTURE_INFO_ID)!! }
-            .getOrElse {
-                handleException(it)
-                return@onCreate
-            }
+        val extraData = runCatching { intent.getStringExtra(KEY_LECTURE_INFO_ID)!! }
+        val exception = extraData.exceptionOrNull()
+        if (exception != null) {
+            handleException(exception)
+            return@onCreate
+        }
+
+        val lectureInfoId: String = extraData.getOrThrow()
 
         setContent {
             KnowllyTheme {
