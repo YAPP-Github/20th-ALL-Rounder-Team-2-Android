@@ -1,11 +1,10 @@
-package kr.co.knowledgerally.ui.applicant
+package kr.co.knowledgerally.ui.lecture
 
 import androidx.compose.runtime.Composable
 
 @Composable
-fun ApplicantScreen(
+fun LectureScreen(
     url: String,
     navigateUp: () -> Unit
 ) {
-
 }
