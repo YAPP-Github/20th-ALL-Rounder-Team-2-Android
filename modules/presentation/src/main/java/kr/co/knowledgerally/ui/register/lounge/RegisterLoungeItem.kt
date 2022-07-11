@@ -80,7 +80,7 @@ fun RegisterLoungeItem(
                     text = stringResource(lectureInfo.category.toPresentation().text),
                     contentColor = KnowllyTheme.colors.secondaryIndigo,
                     backgroundColor = KnowllyTheme.colors.secondaryIndigoLight,
-                    modifier = Modifier.padding(top = 42.dp),
+                    modifier = Modifier.padding(top = 10.dp),
                 )
             }
         }
@@ -95,7 +95,9 @@ fun RegisterLoungeItem(
             onClick = { navigateToSchedule(1) }
         ) {
             Row(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .height(40.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
