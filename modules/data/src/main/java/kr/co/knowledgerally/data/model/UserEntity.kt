@@ -3,7 +3,7 @@ package kr.co.knowledgerally.data.model
 import kr.co.knowledgerally.domain.model.User
 
 data class UserEntity(
-    val id: String,
+    val id: Long,
     val profile: ProfileEntity,
     val ballCount: Int,
     val pushActive: Boolean,
