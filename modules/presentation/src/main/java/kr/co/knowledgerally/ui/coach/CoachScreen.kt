@@ -63,8 +63,9 @@ fun CoachScreen(
             val intent = ApplicantActivity.getIntent(context, lectureId)
             activityLauncher.launch(intent)
         },
-        navigateToLecture = { lectureInfoId: Long, type: LectureNavigationType ->
-            val intent = LectureActivity.getIntent(context, lectureInfoId, type)
+        navigateToLecture = { lectureInfoId: Long ->
+            val intent =
+                LectureActivity.getIntent(context, lectureInfoId, LectureNavigationType.Coach)
             activityLauncher.launch(intent)
         }
     )
@@ -76,7 +77,7 @@ fun CoachScreen(
     tabState: CoachTabState,
     navigateToRegister: () -> Unit,
     navigateToApplicant: (lectureId: Long) -> Unit,
-    navigateToLecture: (lectureInfoId: Long, type: LectureNavigationType) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -102,7 +103,7 @@ fun CoachContent(
     uiState: CoachUiState,
     tabState: CoachTabState,
     navigateToApplicant: (lectureId: Long) -> Unit,
-    navigateToLecture: (lectureInfoId: Long, type: LectureNavigationType) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     val matchingScrollState = rememberScrollState()
@@ -226,7 +227,7 @@ private fun CoachContentPreview() {
             ),
             switchTab = { },
             navigateToApplicant = { },
-            navigateToLecture = { _, _ -> }
+            navigateToLecture = { }
         )
     }
 }

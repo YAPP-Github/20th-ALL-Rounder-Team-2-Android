@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import kr.co.knowledgerally.model.LectureNavigationType
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.DashBanner
@@ -34,7 +33,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun CompletedTabContent(
     items: List<LectureItemUiState.Completed>,
-    navigateToLecture: (lectureInfoId: Long, type: LectureNavigationType) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
@@ -69,11 +68,11 @@ fun CompletedTabContent(
 @Composable
 private fun CompletedItem(
     item: LectureItemUiState.Completed,
-    navigateToLecture: (lectureInfoId: Long, type: LectureNavigationType) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
 ) {
     Box(
         modifier = Modifier
-            .clickable { navigateToLecture(item.lectureInfo.id, LectureNavigationType.Coach) }
+            .clickable { navigateToLecture(item.lectureInfo.id) }
             .padding(top = 12.dp, bottom = 20.dp)
             .fillMaxWidth()
             .height(IntrinsicSize.Max)

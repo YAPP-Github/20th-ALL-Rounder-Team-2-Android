@@ -21,7 +21,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.domain.model.Applicant
-import kr.co.knowledgerally.model.LectureNavigationType
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.RoundRect
@@ -32,7 +31,7 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 fun MatchingTabContent(
     items: List<LectureItemUiState.Matching>,
     navigateToApplicant: (lectureId: Long) -> Unit,
-    navigateToLecture: (lectureInfoId: Long, type: LectureNavigationType) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     Column(
@@ -62,11 +61,11 @@ fun MatchingTabContent(
 private fun MatchingItem(
     item: LectureItemUiState.Matching,
     navigateToApplicant: (lectureId: Long) -> Unit,
-    navigateToLecture: (lectureInfoId: Long, type: LectureNavigationType) -> Unit
+    navigateToLecture: (lectureInfoId: Long) -> Unit
 ) {
     Column(
         modifier = Modifier
-            .clickable { navigateToLecture(item.lectureInfo.id, LectureNavigationType.Coach) }
+            .clickable { navigateToLecture(item.lectureInfo.id) }
             .fillMaxWidth()
     ) {
         VerticalSpacer(height = 16.dp)

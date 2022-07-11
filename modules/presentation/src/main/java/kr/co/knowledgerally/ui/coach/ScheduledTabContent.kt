@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import kr.co.knowledgerally.model.LectureNavigationType
 import kr.co.knowledgerally.toast.Toaster
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.Banner
@@ -31,7 +30,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ScheduledTabContent(
     items: List<LectureItemUiState.Scheduled>,
-    navigateToLecture: (lectureInfoId: Long, type: LectureNavigationType) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val clipboardManager = LocalClipboardManager.current
@@ -77,11 +76,11 @@ fun ScheduledTabContent(
 private fun ScheduledItem(
     item: LectureItemUiState.Scheduled,
     copyToClipboard: (String) -> Unit,
-    navigateToLecture: (lectureInfoId: Long, type: LectureNavigationType) -> Unit
+    navigateToLecture: (lectureInfoId: Long) -> Unit
 ) {
     Column(
         modifier = Modifier
-            .clickable { navigateToLecture(item.lectureInfo.id, LectureNavigationType.Coach) }
+            .clickable { navigateToLecture(item.lectureInfo.id) }
             .fillMaxWidth()
             .padding(top = 12.dp, bottom = 20.dp)
     ) {
