@@ -20,16 +20,23 @@ class PlayerViewModel @Inject constructor(
     val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
 
     init {
-        launch {
-            getPlayerLectureInfoListUseCase()
-                .onSuccess { _uiState.update { uiState -> uiState.from(it) } }
-                .onFailure { handleException(it) }
-        }
+        fetch()
+    }
+
+    private fun fetch() = launch {
+        getPlayerLectureInfoListUseCase()
+            .onSuccess { _uiState.update { uiState -> uiState.from(it) } }
+            .onFailure { handleException(it) }
     }
 
     fun switchTab(newIndex: Int) {
         if (newIndex != tabState.value.selectedTab.ordinal) {
             _tabState.update { it.copy(selectedTab = PlayerTabState.Tab.values()[newIndex]) }
         }
+    }
+
+    fun refresh() {
+        _uiState.update { it.loading(true) }
+        fetch()
     }
 }
