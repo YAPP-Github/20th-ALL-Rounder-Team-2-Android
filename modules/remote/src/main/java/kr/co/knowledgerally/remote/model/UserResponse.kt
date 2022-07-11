@@ -6,7 +6,7 @@ import kr.co.knowledgerally.data.model.UserEntity
 
 data class UserResponse(
     @SerializedName("id")
-    val id: String,
+    val id: Long,
     @SerializedName("username")
     val username: String,
     @SerializedName("intro")
