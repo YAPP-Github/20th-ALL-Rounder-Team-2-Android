@@ -29,9 +29,9 @@ class ApplicantActivity : BaseActivity() {
     private fun navigateUp() = finish()
 
     companion object {
-        fun getIntent(context: Context, classId: Long): Intent =
+        fun getIntent(context: Context, lectureId: Long): Intent =
             Intent(context, ApplicantActivity::class.java)
-                .putExtra(KEY_LECTURE_ID, classId)
+                .putExtra(KEY_LECTURE_ID, lectureId)
 
         private const val KEY_LECTURE_ID = "KEY_LECTURE_ID"
     }
