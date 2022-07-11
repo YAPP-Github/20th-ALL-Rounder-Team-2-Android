@@ -14,7 +14,8 @@ class ApplicantActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val lectureInfoId: Long = intent.getLongExtra(KEY_LECTURE_INFO_ID, -1)
+        val lectureInfoId = runCatching { intent.getStringExtra(KEY_LECTURE_INFO_ID)!! }
+            .getOrElse { handleException(it) }
 
         setContent {
             KnowllyTheme {
@@ -31,7 +32,7 @@ class ApplicantActivity : BaseActivity() {
     companion object {
         fun getIntent(context: Context, lectureInfoId: Long): Intent =
             Intent(context, ApplicantActivity::class.java)
-                .putExtra(KEY_LECTURE_INFO_ID, lectureInfoId)
+                .putExtra(KEY_LECTURE_INFO_ID, lectureInfoId.toString())
 
         private const val KEY_LECTURE_INFO_ID = "KEY_LECTURE_INFO_ID"
     }
