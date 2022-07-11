@@ -1,6 +1,6 @@
 package kr.co.knowledgerally.ui.register.lounge
 
-import kr.co.knowledgerally.domain.model.Lecture
+import kr.co.knowledgerally.domain.model.LectureInfo
 
 sealed interface RegisterLoungeUiState {
 
@@ -9,6 +9,6 @@ sealed interface RegisterLoungeUiState {
     object NoLecture : RegisterLoungeUiState
 
     data class Lectures(
-        val lectures: List<Lecture.Onboard>
+        val lectureInfoList: List<LectureInfo>
     ) : RegisterLoungeUiState
 }
