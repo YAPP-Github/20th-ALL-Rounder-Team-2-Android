@@ -23,12 +23,13 @@ internal class Authenticator constructor(
             authenticationListener.onSessionExpired()
             return null
         }
-        Logger.d("Authenticator", "token expired : ${accessTokenProvider.value}")
+        Logger.w("Authenticator", "token expired : ${accessTokenProvider.value}")
         return refresh(refreshToken).fold(
             onSuccess = {
                 accessTokenProvider.value = it.data.accessToken
                 refreshTokenProvider.value = it.data.refreshToken
-                response.request
+
+                AccessTokenInterceptor.from(response.request, it.data.accessToken)
             },
             onFailure = {
                 authenticationListener.onSessionExpired()
