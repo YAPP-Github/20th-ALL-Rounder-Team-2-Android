@@ -1,5 +1,8 @@
 package kr.co.knowledgerally.ui.mypage
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,6 +50,7 @@ import kr.co.knowledgerally.ui.mypage.dialog.LogoutDialog
 import kr.co.knowledgerally.ui.mypage.dialog.WithdrawalDialog
 import kr.co.knowledgerally.ui.splash.SplashActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import kr.co.knowledgerally.ui.user.UserActivity
 
 @Composable
 fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
@@ -59,11 +63,23 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
     var showLogoutDialog by remember { mutableStateOf(false) }
     var showWithdrawalDialog by remember { mutableStateOf(false) }
 
+    val activityLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = {
+            if (it.resultCode == Activity.RESULT_OK) {
+                viewModel.refresh()
+            }
+        }
+    )
+
     MyPageScreen(
         state = state,
         loading = loading,
         onPushActiveChange = { viewModel.updatePushActive(it) },
-        navigateToProfile = { },
+        navigateToProfile = { userId: Long ->
+            val intent = UserActivity.getIntent(context, userId)
+            activityLauncher.launch(intent)
+        },
         navigateToTermsOfService = { },
         logout = { showLogoutDialog = true },
         withdrawal = { showWithdrawalDialog = true },
@@ -93,7 +109,7 @@ private fun MyPageScreen(
     state: MyPageUiState,
     loading: Boolean,
     onPushActiveChange: (Boolean) -> Unit,
-    navigateToProfile: () -> Unit,
+    navigateToProfile: (userId: Long) -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
     withdrawal: () -> Unit,
@@ -124,7 +140,7 @@ private fun MyPageScreen(
     onPushActiveChange: (Boolean) -> Unit,
     versionName: String,
     user: User,
-    navigateToProfile: () -> Unit,
+    navigateToProfile: (userId: Long) -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
     withdrawal: () -> Unit,
@@ -180,7 +196,7 @@ private fun MyPageScreen(
 @Composable
 private fun MyPageProfile(
     user: User,
-    navigateToProfile: () -> Unit,
+    navigateToProfile: (userId: Long) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -228,7 +244,7 @@ private fun MyPageProfile(
             }
             KnowllyContainedButton(
                 text = stringResource(id = R.string.mypage_show_more_profile),
-                onClick = navigateToProfile,
+                onClick = { navigateToProfile(user.id) },
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .height(40.dp)
