@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.domain.model.Applicant
+import kr.co.knowledgerally.model.LectureNavigationType
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.Banner
 import kr.co.knowledgerally.ui.component.RoundRect
@@ -30,7 +31,8 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun MatchingTabContent(
     items: List<LectureItemUiState.Matching>,
-    navigateToApplicant: (classId: String) -> Unit,
+    navigateToApplicant: (lectureId: Long) -> Unit,
+    navigateToLecture: (lectureInfoId: Long, type: LectureNavigationType) -> Unit,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     Column(
@@ -47,7 +49,11 @@ fun MatchingTabContent(
         CoachDivider(Modifier.padding(top = 24.dp))
 
         items.forEach { item ->
-            MatchingItem(item = item, navigateToApplicant = navigateToApplicant)
+            MatchingItem(
+                item = item,
+                navigateToApplicant = navigateToApplicant,
+                navigateToLecture = navigateToLecture
+            )
         }
     }
 }
@@ -55,17 +61,19 @@ fun MatchingTabContent(
 @Composable
 private fun MatchingItem(
     item: LectureItemUiState.Matching,
-    navigateToApplicant: (classId: String) -> Unit
+    navigateToApplicant: (lectureId: Long) -> Unit,
+    navigateToLecture: (lectureInfoId: Long, type: LectureNavigationType) -> Unit
 ) {
     Column(
         modifier = Modifier
+            .clickable { navigateToLecture(item.lectureInfo.id, LectureNavigationType.Coach) }
             .fillMaxWidth()
     ) {
         VerticalSpacer(height = 16.dp)
         MatchingItemHeader(text = item.lectureInfo.topic)
         MatchingItemApplicant(
             applicants = item.lecture.applicants,
-            onClick = { navigateToApplicant(item.lectureInfo.id.toString()) },
+            onClick = { navigateToApplicant(item.lectureInfo.id) },
             modifier = Modifier.padding(top = 8.dp)
         )
         VerticalSpacer(height = 16.dp)
