@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
@@ -12,17 +11,16 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @AndroidEntryPoint
 class ApplicantActivity : BaseActivity() {
 
-    private val viewModel: ApplicantViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val lectureId: Long = intent.getLongExtra(KEY_LECTURE_ID, -1)
 
         setContent {
             KnowllyTheme {
                 ApplicantScreen(
-                    viewModel = viewModel,
+                    url = "",
                     navigateUp = ::navigateUp,
-                    navigateToForm = { },
                 )
             }
         }
@@ -31,8 +29,10 @@ class ApplicantActivity : BaseActivity() {
     private fun navigateUp() = finish()
 
     companion object {
-        fun getIntent(context: Context, classId: String): Intent =
+        fun getIntent(context: Context, classId: Long): Intent =
             Intent(context, ApplicantActivity::class.java)
-                .putExtra(ApplicantViewModel.KEY_CLASS_ID, classId)
+                .putExtra(KEY_LECTURE_ID, classId)
+
+        private const val KEY_LECTURE_ID = "KEY_LECTURE_ID"
     }
 }
