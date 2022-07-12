@@ -75,7 +75,6 @@ private fun MatchingItem(
             onClick = { navigateToApplicant(item.lectureInfo.id) },
             modifier = Modifier.padding(top = 8.dp)
         )
-        VerticalSpacer(height = 16.dp)
         CoachDivider()
     }
 }
@@ -108,7 +107,7 @@ private fun MatchingItemApplicant(
     Row(
         modifier = modifier
             .clickable { onClick() }
-            .padding(start = 14.dp),
+            .padding(bottom = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -118,6 +117,7 @@ private fun MatchingItemApplicant(
             ),
             style = KnowllyTheme.typography.body2,
             color = KnowllyTheme.colors.primaryDark,
+            modifier = Modifier.padding(start = 14.dp)
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_chevron_right),
