@@ -66,7 +66,7 @@ private fun Matching(
         LazyColumn {
             itemsIndexed(
                 items = items,
-                key = { _, item -> item }
+                key = { _, item -> item.lecture.id }
             ) { index, item ->
                 MatchingItem(item = item, navigateToLecture = navigateToLecture)
 
@@ -89,7 +89,7 @@ private fun Scheduled(
         LazyColumn {
             itemsIndexed(
                 items = items,
-                key = { _, item -> item }
+                key = { _, item -> item.lecture.id }
             ) { index, item ->
                 ScheduleItem(item = item, navigateToLecture = navigateToLecture)
 
@@ -113,7 +113,7 @@ private fun Completed(
         LazyColumn {
             itemsIndexed(
                 items = items,
-                key = { _, item -> item }
+                key = { _, item -> item.lecture.id }
             ) { index, item ->
                 CompletedItem(
                     item = item,
