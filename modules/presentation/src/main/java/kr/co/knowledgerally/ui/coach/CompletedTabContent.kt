@@ -1,6 +1,7 @@
 package kr.co.knowledgerally.ui.coach
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -32,6 +33,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun CompletedTabContent(
     items: List<LectureItemUiState.Completed>,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
@@ -56,7 +58,10 @@ fun CompletedTabContent(
                 if (index == 0) {
                     CoachDivider(modifier = Modifier.padding(top = 24.dp))
                 }
-                CompletedItem(item = completed)
+                CompletedItem(
+                    item = completed,
+                    navigateToLecture = navigateToLecture
+                )
                 CoachDivider()
             }
         }
@@ -66,9 +71,11 @@ fun CompletedTabContent(
 @Composable
 private fun CompletedItem(
     item: LectureItemUiState.Completed,
+    navigateToLecture: (lectureInfoId: Long) -> Unit
 ) {
     Box(
         modifier = Modifier
+            .clickable { navigateToLecture(item.lectureInfo.id) }
             .padding(top = 12.dp, bottom = 20.dp)
             .fillMaxWidth()
             .height(IntrinsicSize.Max)

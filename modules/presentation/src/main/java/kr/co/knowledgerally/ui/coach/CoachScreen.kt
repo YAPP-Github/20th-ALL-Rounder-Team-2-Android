@@ -21,6 +21,8 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.applicant.ApplicantActivity
 import kr.co.knowledgerally.ui.component.KnowllyTabRow
 import kr.co.knowledgerally.ui.component.Loading
+import kr.co.knowledgerally.ui.lecture.LectureActivity
+import kr.co.knowledgerally.ui.lecture.LectureType
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 private const val INDEX_MATCHING = 0
@@ -36,7 +38,7 @@ fun CoachScreen(
     val tabState by viewModel.tabState.collectAsState()
     val context = LocalContext.current
 
-    val applicantLauncher = rememberLauncherForActivityResult(
+    val activityLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -50,9 +52,14 @@ fun CoachScreen(
         tabState = tabState,
         navigateToRegister = navigateToRegister,
         switchTab = viewModel::switchTab,
-        navigateToApplicant = { lectureInfoId: Long ->
+        navigateToApplicant = { lectureInfoId ->
             val intent = ApplicantActivity.getIntent(context, lectureInfoId)
-            applicantLauncher.launch(intent)
+            activityLauncher.launch(intent)
+        },
+        navigateToLecture = { lectureInfoId: Long ->
+            val intent =
+                LectureActivity.getIntent(context, lectureInfoId, LectureType.Coach)
+            activityLauncher.launch(intent)
         }
     )
 }
@@ -62,7 +69,8 @@ fun CoachScreen(
     uiState: CoachUiState,
     tabState: CoachTabState,
     navigateToRegister: () -> Unit,
-    navigateToApplicant: (lectureId: Long) -> Unit,
+    navigateToApplicant: (lectureInfoId: Long) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -73,7 +81,8 @@ fun CoachScreen(
                 uiState = uiState,
                 tabState = tabState,
                 switchTab = switchTab,
-                navigateToApplicant = navigateToApplicant
+                navigateToApplicant = navigateToApplicant,
+                navigateToLecture = navigateToLecture
             )
         }
         if (uiState.isLoading) {
@@ -86,7 +95,8 @@ fun CoachScreen(
 fun CoachContent(
     uiState: CoachUiState,
     tabState: CoachTabState,
-    navigateToApplicant: (lectureId: Long) -> Unit,
+    navigateToApplicant: (lectureInfoId: Long) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     val matchingScrollState = rememberScrollState()
@@ -105,12 +115,21 @@ fun CoachContent(
             INDEX_MATCHING -> MatchingTabContent(
                 items = uiState.matchingLectures,
                 navigateToApplicant = navigateToApplicant,
+                navigateToLecture = navigateToLecture,
                 scrollState = matchingScrollState
             )
             INDEX_SCHEDULED ->
-                ScheduledTabContent(uiState.scheduledLectures, scheduledScrollState)
+                ScheduledTabContent(
+                    items = uiState.scheduledLectures,
+                    navigateToLecture = navigateToLecture,
+                    scrollState = scheduledScrollState
+                )
             INDEX_COMPLETED ->
-                CompletedTabContent(uiState.completedLectures, completedScrollState)
+                CompletedTabContent(
+                    items = uiState.completedLectures,
+                    navigateToLecture = navigateToLecture,
+                    scrollState = completedScrollState
+                )
         }
     }
 }
@@ -135,6 +154,7 @@ private fun CoachContentPreview() {
             ),
             switchTab = { },
             navigateToApplicant = { },
+            navigateToLecture = { }
         )
     }
 }

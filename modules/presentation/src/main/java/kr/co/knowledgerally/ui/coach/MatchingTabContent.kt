@@ -30,7 +30,8 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun MatchingTabContent(
     items: List<LectureItemUiState.Matching>,
-    navigateToApplicant: (classId: Long) -> Unit,
+    navigateToApplicant: (lectureInfoId: Long) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     Column(
@@ -47,7 +48,11 @@ fun MatchingTabContent(
         CoachDivider(Modifier.padding(top = 24.dp))
 
         items.forEach { item ->
-            MatchingItem(item = item, navigateToApplicant = navigateToApplicant)
+            MatchingItem(
+                item = item,
+                navigateToApplicant = navigateToApplicant,
+                navigateToLecture = navigateToLecture
+            )
         }
     }
 }
@@ -55,10 +60,12 @@ fun MatchingTabContent(
 @Composable
 private fun MatchingItem(
     item: LectureItemUiState.Matching,
-    navigateToApplicant: (classId: Long) -> Unit
+    navigateToApplicant: (lectureInfoId: Long) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit
 ) {
     Column(
         modifier = Modifier
+            .clickable { navigateToLecture(item.lectureInfo.id) }
             .fillMaxWidth()
     ) {
         VerticalSpacer(height = 16.dp)
@@ -68,7 +75,6 @@ private fun MatchingItem(
             onClick = { navigateToApplicant(item.lectureInfo.id) },
             modifier = Modifier.padding(top = 8.dp)
         )
-        VerticalSpacer(height = 16.dp)
         CoachDivider()
     }
 }
@@ -101,7 +107,7 @@ private fun MatchingItemApplicant(
     Row(
         modifier = modifier
             .clickable { onClick() }
-            .padding(start = 14.dp),
+            .padding(bottom = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -111,6 +117,7 @@ private fun MatchingItemApplicant(
             ),
             style = KnowllyTheme.typography.body2,
             color = KnowllyTheme.colors.primaryDark,
+            modifier = Modifier.padding(start = 14.dp)
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_chevron_right),

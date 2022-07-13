@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.ui.player
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,26 +34,41 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun PlayerContent(
     tab: PlayerTabState.Tab,
-    uiState: PlayerUiState
+    uiState: PlayerUiState,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
+    navigateToReview: (lectureId: Long) -> Unit
 ) {
     when (tab) {
-        PlayerTabState.Tab.Matching -> Matching(uiState.matchingLectures)
-        PlayerTabState.Tab.Scheduled -> Scheduled(uiState.scheduledLectures)
-        PlayerTabState.Tab.Completed -> Completed(uiState.completedLectures)
+        PlayerTabState.Tab.Matching -> Matching(
+            uiState.matchingLectures,
+            navigateToLecture = navigateToLecture
+        )
+        PlayerTabState.Tab.Scheduled -> Scheduled(
+            uiState.scheduledLectures,
+            navigateToLecture = navigateToLecture
+        )
+        PlayerTabState.Tab.Completed -> Completed(
+            uiState.completedLectures,
+            navigateToLecture = navigateToLecture,
+            navigateToReview = navigateToReview
+        )
     }
 }
 
 @Composable
-private fun Matching(items: List<LectureItemUiState.Matching>) {
+private fun Matching(
+    items: List<LectureItemUiState.Matching>,
+    navigateToLecture: (lectureInfoId: Long) -> Unit
+) {
     if (items.isEmpty()) {
         PlayerContentEmpty(PlayerTabState.Tab.Matching)
     } else {
         LazyColumn {
             itemsIndexed(
                 items = items,
-                key = { _, item -> item }
+                key = { _, item -> item.lecture.id }
             ) { index, item ->
-                MatchingItem(item = item)
+                MatchingItem(item = item, navigateToLecture = navigateToLecture)
 
                 if (index == items.lastIndex) {
                     KnowllyDivider()
@@ -63,16 +79,19 @@ private fun Matching(items: List<LectureItemUiState.Matching>) {
 }
 
 @Composable
-private fun Scheduled(items: List<LectureItemUiState.Scheduled>) {
+private fun Scheduled(
+    items: List<LectureItemUiState.Scheduled>,
+    navigateToLecture: (lectureInfoId: Long) -> Unit
+) {
     if (items.isEmpty()) {
         PlayerContentEmpty(PlayerTabState.Tab.Scheduled)
     } else {
         LazyColumn {
             itemsIndexed(
                 items = items,
-                key = { _, item -> item }
+                key = { _, item -> item.lecture.id }
             ) { index, item ->
-                ScheduleItem(item = item)
+                ScheduleItem(item = item, navigateToLecture = navigateToLecture)
 
                 if (index == items.lastIndex) {
                     KnowllyDivider()
@@ -83,16 +102,24 @@ private fun Scheduled(items: List<LectureItemUiState.Scheduled>) {
 }
 
 @Composable
-private fun Completed(items: List<LectureItemUiState.Completed>) {
+private fun Completed(
+    items: List<LectureItemUiState.Completed>,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
+    navigateToReview: (lectureId: Long) -> Unit
+) {
     if (items.isEmpty()) {
         PlayerContentEmpty(PlayerTabState.Tab.Completed)
     } else {
         LazyColumn {
             itemsIndexed(
                 items = items,
-                key = { _, item -> item }
+                key = { _, item -> item.lecture.id }
             ) { index, item ->
-                CompletedItem(item = item)
+                CompletedItem(
+                    item = item,
+                    navigateToLecture = navigateToLecture,
+                    navigateToReview = navigateToReview
+                )
 
                 if (index == items.lastIndex) {
                     KnowllyDivider()
@@ -103,15 +130,22 @@ private fun Completed(items: List<LectureItemUiState.Completed>) {
 }
 
 @Composable
-private fun MatchingItem(item: LectureItemUiState.Matching) {
+private fun MatchingItem(
+    item: LectureItemUiState.Matching,
+    navigateToLecture: (lectureInfoId: Long) -> Unit
+) {
     LectureItem(
         lectureInfo = item.lectureInfo,
         schedule = item.lecture.schedule,
+        navigateToLecture = navigateToLecture
     )
 }
 
 @Composable
-private fun ScheduleItem(item: LectureItemUiState.Scheduled) {
+private fun ScheduleItem(
+    item: LectureItemUiState.Scheduled,
+    navigateToLecture: (lectureInfoId: Long) -> Unit
+) {
     LectureItem(
         lectureInfo = item.lectureInfo,
         schedule = item.lecture.schedule,
@@ -123,12 +157,17 @@ private fun ScheduleItem(item: LectureItemUiState.Scheduled) {
                     .fillMaxWidth()
                     .height(40.dp)
             )
-        }
+        },
+        navigateToLecture = navigateToLecture
     )
 }
 
 @Composable
-private fun CompletedItem(item: LectureItemUiState.Completed) {
+private fun CompletedItem(
+    item: LectureItemUiState.Completed,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
+    navigateToReview: (lectureId: Long) -> Unit
+) {
     val isReviewed = item.lecture.isReviewed
     LectureItem(
         lectureInfo = item.lectureInfo,
@@ -138,14 +177,15 @@ private fun CompletedItem(item: LectureItemUiState.Completed) {
             if (!isReviewed) {
                 KnowllyContainedButton(
                     text = stringResource(id = R.string.player_review_button),
-                    onClick = { /* TODO: 후기 페이지로 이동 */ },
+                    onClick = { navigateToReview(item.lecture.id) },
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .fillMaxWidth()
                         .height(40.dp)
                 )
             }
-        }
+        },
+        navigateToLecture = navigateToLecture
     )
 }
 
@@ -155,8 +195,12 @@ private fun LectureItem(
     schedule: Schedule,
     trailingTitle: @Composable () -> Unit = { },
     bottom: @Composable () -> Unit = { },
+    navigateToLecture: (lectureInfoId: Long) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier
+        .clickable { navigateToLecture(lectureInfo.id) }
+        .fillMaxWidth()
+    ) {
         KnowllyDivider()
         Row(
             modifier = Modifier
