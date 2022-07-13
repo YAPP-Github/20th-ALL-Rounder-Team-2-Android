@@ -11,7 +11,6 @@ import kr.co.knowledgerally.remote.model.OnboardRequest
 import kr.co.knowledgerally.remote.model.OnboardedResponse
 import kr.co.knowledgerally.remote.model.PlayerLectureResponseWrapper
 import kr.co.knowledgerally.remote.model.ProviderTokenRequest
-import kr.co.knowledgerally.remote.model.PushRequest
 import kr.co.knowledgerally.remote.model.RegistrationRequest
 import kr.co.knowledgerally.remote.model.SchedulesRequest
 import kr.co.knowledgerally.remote.model.SignInResponse
@@ -62,9 +61,6 @@ internal interface ApiService {
 
     @PATCH("user/onboard")
     suspend fun submitOnboard(@Body onboard: OnboardRequest)
-
-    @PATCH("user/setting/push")
-    suspend fun updatePushActive(@Body request: PushRequest)
 
     @GET("ballhistory/me")
     suspend fun getBallHistories(): BallHistoryResponseWrapper

@@ -17,8 +17,6 @@ data class UserResponse(
     val portfolio: String?,
     @SerializedName("ballCnt")
     val ballCount: Int,
-    @SerializedName("pushActive")
-    val pushActive: Boolean,
     @SerializedName("coach")
     val coach: Boolean,
     @SerializedName("userImgUrl")
@@ -35,6 +33,5 @@ fun UserResponse.toData() = UserEntity(
         imageUrl = imageUrl
     ),
     ballCount = ballCount,
-    pushActive = pushActive,
     coach = coach,
 )

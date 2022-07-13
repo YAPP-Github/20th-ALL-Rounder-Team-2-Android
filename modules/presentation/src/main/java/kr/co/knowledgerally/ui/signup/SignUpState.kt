@@ -10,10 +10,9 @@ import androidx.compose.runtime.remember
 class SignUpState(
     val termsState: CheckState,
     val policyState: CheckState,
-    val notificationState: CheckState
 ) {
     val isAllChecked: State<Boolean> = derivedStateOf {
-        termsState.isChecked && policyState.isChecked && notificationState.isChecked
+        termsState.isChecked && policyState.isChecked
     }
 
     val isRequired: Boolean
@@ -23,7 +22,6 @@ class SignUpState(
         val newChecked = isAllChecked.value.not()
         termsState.isChecked = newChecked
         policyState.isChecked = newChecked
-        notificationState.isChecked = newChecked
     }
 }
 
@@ -31,7 +29,6 @@ class SignUpState(
 fun rememberSignUpState(
     termsState: CheckState = rememberCheckState(),
     policyState: CheckState = rememberCheckState(),
-    notificationState: CheckState = rememberCheckState(),
 ) = remember {
-    SignUpState(termsState, policyState, notificationState)
+    SignUpState(termsState, policyState)
 }

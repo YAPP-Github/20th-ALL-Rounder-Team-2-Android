@@ -22,17 +22,12 @@ import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
-/**
- * TODO
- * 1. 뒤로가기 클릭 이벤트
- */
-
 @Composable
 fun SignUpScreen(
     navigateUp: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToPolicy: () -> Unit,
-    signUp: (Boolean) -> Unit
+    signUp: () -> Unit
 ) {
     val signUpState = rememberSignUpState()
     SignUpScreen(
@@ -40,7 +35,7 @@ fun SignUpScreen(
         navigateUp = navigateUp,
         navigateToTerms = navigateToTerms,
         navigateToPolicy = navigateToPolicy,
-        signUp = { signUp(signUpState.notificationState.isChecked) }
+        signUp = signUp
     )
 }
 
@@ -74,7 +69,6 @@ private fun SignUpContent(
 ) {
     val termsState = signUpState.termsState
     val policyState = signUpState.policyState
-    val notificationState = signUpState.notificationState
 
     Column(
         modifier = Modifier
@@ -100,16 +94,6 @@ private fun SignUpContent(
             text = stringResource(id = R.string.signup_accept_policy),
             checkState = policyState,
             onClick = navigateToPolicy
-        )
-        CheckItem(
-            text = stringResource(id = R.string.signup_accept_notice),
-            checkState = notificationState
-        )
-        Text(
-            text = stringResource(R.string.signup_help_notice),
-            style = KnowllyTheme.typography.caption,
-            color = KnowllyTheme.colors.gray6B,
-            modifier = Modifier.padding(start = 36.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
         SignUpButton(enabled = signUpState.isRequired, onClick = { signUp() })

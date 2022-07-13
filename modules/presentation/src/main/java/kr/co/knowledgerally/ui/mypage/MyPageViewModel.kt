@@ -13,7 +13,6 @@ import kr.co.knowledgerally.domain.model.VersionName
 import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
 import kr.co.knowledgerally.domain.usecase.LogoutUseCase
 import kr.co.knowledgerally.domain.usecase.RefreshUserUseCase
-import kr.co.knowledgerally.domain.usecase.UpdatePushActiveUseCase
 import kr.co.knowledgerally.domain.usecase.WithdrawalUseCase
 import javax.inject.Inject
 
@@ -22,7 +21,6 @@ class MyPageViewModel @Inject constructor(
     versionName: VersionName,
     getUserStreamUseCase: GetUserStreamUseCase,
     private val refreshUserUseCase: RefreshUserUseCase,
-    private val updatePushActiveUseCase: UpdatePushActiveUseCase,
     private val withdrawalUseCase: WithdrawalUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseViewModel() {
@@ -39,13 +37,6 @@ class MyPageViewModel @Inject constructor(
     private val _isLoggedOut = MutableStateFlow(false)
     val isLoggedOut = _isLoggedOut.asStateFlow()
 
-    fun updatePushActive(active: Boolean) {
-        launch {
-            updatePushActiveUseCase(active).getOrThrow()
-            refresh()
-        }
-    }
-    
     fun refresh() {
         launch {
             refreshUserUseCase().getOrThrow()

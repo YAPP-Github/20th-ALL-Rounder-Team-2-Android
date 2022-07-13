@@ -16,8 +16,6 @@ interface UserRepository {
 
     suspend fun refreshUser(): Result<User>
 
-    suspend fun updatePushActive(active: Boolean): Result<Unit>
-
     suspend fun getBallHistories(): Result<List<BallHistory>>
 
     suspend fun getNotifications(): Result<List<Notification>>

@@ -9,7 +9,6 @@ import kr.co.knowledgerally.data.model.UserEntity
 import kr.co.knowledgerally.data.source.UserRemoteDataSource
 import kr.co.knowledgerally.remote.api.ApiService
 import kr.co.knowledgerally.remote.image.ImageTranscoder
-import kr.co.knowledgerally.remote.model.PushRequest
 import kr.co.knowledgerally.remote.model.toData
 import kr.co.knowledgerally.remote.model.toRemote
 import okhttp3.MultipartBody
@@ -45,10 +44,6 @@ internal class UserRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getUser(): Result<UserEntity> = runCatching {
         apiService.getUser().data.user.toData()
-    }
-
-    override suspend fun updatePushActive(active: Boolean): Result<Unit> = runCatching {
-        apiService.updatePushActive(PushRequest(active))
     }
 
     override suspend fun getBallHistories(): Result<List<BallHistoryEntity>> = runCatching {
