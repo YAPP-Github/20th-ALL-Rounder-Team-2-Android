@@ -17,12 +17,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kr.co.knowledgerally.model.LectureNavigationType
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.applicant.ApplicantActivity
 import kr.co.knowledgerally.ui.component.KnowllyTabRow
 import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.lecture.LectureActivity
+import kr.co.knowledgerally.ui.lecture.LectureType
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 private const val INDEX_MATCHING = 0
@@ -58,7 +58,7 @@ fun CoachScreen(
         },
         navigateToLecture = { lectureInfoId: Long ->
             val intent =
-                LectureActivity.getIntent(context, lectureInfoId, LectureNavigationType.Coach)
+                LectureActivity.getIntent(context, lectureInfoId, LectureType.Coach)
             activityLauncher.launch(intent)
         }
     )

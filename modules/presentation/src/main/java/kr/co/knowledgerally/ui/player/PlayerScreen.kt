@@ -16,11 +16,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kr.co.knowledgerally.model.LectureNavigationType
 import kr.co.knowledgerally.ui.component.KnowllyTabRow
 import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.lecture.LectureActivity
+import kr.co.knowledgerally.ui.lecture.LectureType
 import kr.co.knowledgerally.ui.review.ReviewActivity
 
 @Composable
@@ -44,7 +44,7 @@ fun PlayerScreen(viewModel: PlayerViewModel = hiltViewModel()) {
         switchTab = viewModel::switchTab,
         navigateToLecture = { lectureInfoId: Long ->
             val intent =
-                LectureActivity.getIntent(context, lectureInfoId, LectureNavigationType.Player)
+                LectureActivity.getIntent(context, lectureInfoId, LectureType.Player)
             activityLauncher.launch(intent)
         },
         navigateToReview = { lectureId: Long ->

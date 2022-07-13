@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.knowledgerally.base.BaseActivity
-import kr.co.knowledgerally.model.LectureNavigationType
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
@@ -24,12 +23,12 @@ class LectureActivity : BaseActivity() {
             return
         }
 
-        if (intent.hasExtra(KEY_NAVIGATION_TYPE).not()) {
-            handleException(IllegalStateException("${TAG}에서 navigationType을 찾을 수 없습니다."))
+        if (intent.hasExtra(KEY_LECTURE_TYPE).not()) {
+            handleException(IllegalStateException("${TAG}에서 lectureType을 찾을 수 없습니다."))
             return
         }
-        val navigationType: LectureNavigationType =
-            intent.getSerializableExtra(KEY_NAVIGATION_TYPE) as LectureNavigationType
+        val lectureType: LectureType =
+            intent.getSerializableExtra(KEY_LECTURE_TYPE) as LectureType
 
 
         setContent {
@@ -48,14 +47,14 @@ class LectureActivity : BaseActivity() {
         fun getIntent(
             context: Context,
             lectureInfoId: Long,
-            navigationType: LectureNavigationType
+            lectureType: LectureType
         ): Intent =
             Intent(context, LectureActivity::class.java)
                 .putExtra(KEY_LECTURE_INFO_ID, lectureInfoId)
-                .putExtra(KEY_NAVIGATION_TYPE, navigationType)
+                .putExtra(KEY_LECTURE_TYPE, lectureType)
 
         private const val KEY_LECTURE_INFO_ID = "KEY_LECTURE_INFO_ID"
-        private const val KEY_NAVIGATION_TYPE = "KEY_NAVIGATION_TYPE"
+        private const val KEY_LECTURE_TYPE = "KEY_LECTURE_TYPE"
         private const val DEFAULT_LONG_EXTRA_VALUE: Long = -1
     }
 }
