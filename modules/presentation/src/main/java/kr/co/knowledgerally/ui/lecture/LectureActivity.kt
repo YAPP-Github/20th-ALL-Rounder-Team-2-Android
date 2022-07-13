@@ -5,11 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
-import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.base.BaseWebViewActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
-class LectureActivity : BaseActivity() {
+class LectureActivity : BaseWebViewActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +34,15 @@ class LectureActivity : BaseActivity() {
         setContent {
             KnowllyTheme {
                 LectureScreen(
-                    url = "",
+                    webAppInterface = webAppInterface,
+                    domain = DOMAIN,
+                    lectureInfoId = lectureInfoId,
+                    lectureType = lectureType,
                     navigateUp = ::navigateUp
                 )
             }
         }
     }
-
-    private fun navigateUp() = finish()
 
     companion object {
         fun getIntent(
