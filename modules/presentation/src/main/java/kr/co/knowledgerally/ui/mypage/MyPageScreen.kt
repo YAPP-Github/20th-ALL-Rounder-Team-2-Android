@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Surface
-import androidx.compose.material.Switch
-import androidx.compose.material.SwitchDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -76,7 +74,6 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
     MyPageScreen(
         state = state,
         loading = loading,
-        onPushActiveChange = { viewModel.updatePushActive(it) },
         navigateToProfile = { userId: Long ->
             val intent = UserActivity.getIntent(context, userId)
             activityLauncher.launch(intent)
@@ -111,7 +108,6 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
 private fun MyPageScreen(
     state: MyPageUiState,
     loading: Boolean,
-    onPushActiveChange: (Boolean) -> Unit,
     navigateToProfile: (userId: Long) -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
@@ -121,8 +117,6 @@ private fun MyPageScreen(
         when (state) {
             MyPageUiState.Loading -> Loading()
             is MyPageUiState.Success -> MyPageScreen(
-                notificationEnabled = state.user.pushActive,
-                onPushActiveChange = onPushActiveChange,
                 versionName = state.versionName,
                 user = state.user,
                 navigateToProfile = navigateToProfile,
@@ -139,8 +133,6 @@ private fun MyPageScreen(
 
 @Composable
 private fun MyPageScreen(
-    notificationEnabled: Boolean,
-    onPushActiveChange: (Boolean) -> Unit,
     versionName: String,
     user: User,
     navigateToProfile: (userId: Long) -> Unit,
@@ -158,16 +150,6 @@ private fun MyPageScreen(
             navigateToProfile = navigateToProfile,
         )
         MyPageDivider()
-        MyPageItem(
-            text = stringResource(id = R.string.mypage_allow_notification),
-            onClick = { navigateToTermsOfService() },
-            content = {
-                MyPageSwitch(
-                    checked = notificationEnabled,
-                    onCheckedChange = onPushActiveChange
-                )
-            }
-        )
         MyPageItem(
             text = stringResource(id = R.string.mypage_app_version_info),
             onClick = { navigateToTermsOfService() },
@@ -304,25 +286,6 @@ private fun MyPageDivider() {
     )
 }
 
-@Composable
-private fun MyPageSwitch(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-) {
-    Switch(
-        modifier = Modifier.size(34.dp, 20.dp),
-        checked = checked,
-        onCheckedChange = onCheckedChange,
-        colors = SwitchDefaults.colors(
-            checkedThumbColor = KnowllyTheme.colors.primaryDark,
-            checkedTrackAlpha = 0.38f,
-            uncheckedThumbColor = KnowllyTheme.colors.grayDD,
-            uncheckedTrackColor = KnowllyTheme.colors.gray8F,
-            uncheckedTrackAlpha = 0.38f
-        )
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun MyPageScreenPreview() {
@@ -330,7 +293,6 @@ private fun MyPageScreenPreview() {
         MyPageScreen(
             state = MyPageUiState.Loading,
             loading = false,
-            onPushActiveChange = { },
             navigateToProfile = { },
             navigateToTermsOfService = { },
             logout = { },

@@ -30,9 +30,6 @@ internal class UserRepositoryImpl @Inject constructor(
         .map { it.toDomain() }
         .onSuccess { user.value = it }
 
-    override suspend fun updatePushActive(active: Boolean): Result<Unit> =
-        userRemoteDataSource.updatePushActive(active)
-
     override suspend fun getBallHistories(): Result<List<BallHistory>> =
         userRemoteDataSource.getBallHistories()
             .mapCatching { histories -> histories.map { it.toDomain() } }

@@ -13,8 +13,6 @@ interface UserRemoteDataSource {
 
     suspend fun getUser(): Result<UserEntity>
 
-    suspend fun updatePushActive(active: Boolean): Result<Unit>
-
     suspend fun getBallHistories(): Result<List<BallHistoryEntity>>
 
     suspend fun getNotifications(): Result<List<NotificationEntity>>

@@ -83,8 +83,6 @@
     <string name="signup_accept_all">약관 전체 동의</string>
     <string name="signup_accept_terms">(필수) 서비스 약관 동의</string>
     <string name="signup_accept_policy">(필수) 개인 정보 처리 방침 동의</string>
-    <string name="signup_accept_notice">(선택) 서비스 알림 수신 동의</string>
-    <string name="signup_help_notice">*서비스 이용 관련 알림을 보내드립니다.</string>
     <string name="signup_signup">가입하기</string>
 
     <string name="terms_title">Knowlly 이용약관</string>
@@ -92,7 +90,6 @@
     <string name="policy_title">개인정보 처리 방침</string>
 
     <string name="mypage_show_more_profile">프로필 더 보기</string>
-    <string name="mypage_allow_notification">알림 허용</string>
     <string name="mypage_app_version_info">앱 버전 정보</string>
     <string name="mypage_terms_of_service_and_policy">서비스 이용약관 및 정책</string>
     <string name="mypage_logout">로그아웃</string>

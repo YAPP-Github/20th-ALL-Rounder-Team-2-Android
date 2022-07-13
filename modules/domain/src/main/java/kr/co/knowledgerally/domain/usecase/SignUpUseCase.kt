@@ -7,17 +7,9 @@ import javax.inject.Inject
 
 class SignUpUseCase @Inject constructor(
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository,
 ) {
 
-    suspend operator fun invoke(
-        providerToken: ProviderToken,
-        pushActive: Boolean
-    ): Result<Unit> = authRepository
+    suspend operator fun invoke(providerToken: ProviderToken): Result<Unit> = authRepository
         .signUp(providerToken)
-        .mapCatching {
-            if (pushActive) {
-                userRepository.updatePushActive(pushActive).getOrThrow()
-            }
-        }
+        .map { }
 }
