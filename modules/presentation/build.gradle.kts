@@ -19,7 +19,7 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-
+        
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -30,6 +30,7 @@ android {
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-opt-in=com.google.accompanist.pager.ExperimentalPagerApi",
         )
         jvmTarget = "1.8"
     }
@@ -51,7 +52,6 @@ android {
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
-    
     implementation(project(Modules.DOMAIN))
     implementation(project(Modules.LOG))
     implementation(project(Modules.CORE_EXCEPTION))
@@ -70,6 +70,8 @@ dependencies {
     implementation(libs.google.accompanist.systemuicontroller)
     implementation(libs.google.accompanist.navigation.animation)
     implementation(libs.google.accompanist.webview)
+    implementation(libs.google.accompanist.pager.core)
+    implementation(libs.google.accompanist.pager.indicators)
     implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.hilt.android)

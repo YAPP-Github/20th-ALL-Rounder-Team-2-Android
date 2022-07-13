@@ -12,7 +12,7 @@ internal class RefreshTokenProviderImpl @Inject constructor(
     override var value: String
         get() = sharedPreferences.getString(KEY_REFRESH_TOKEN, null) ?: ""
         set(value) {
-            sharedPreferences.edit {
+            sharedPreferences.edit(true) {
                 putString(KEY_REFRESH_TOKEN, value)
             }
         }

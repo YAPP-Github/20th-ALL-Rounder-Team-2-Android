@@ -1,6 +1,7 @@
 package kr.co.knowledgerally.ui.coach
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -24,10 +25,12 @@ import kr.co.knowledgerally.ui.component.DashBanner
 import kr.co.knowledgerally.ui.component.KnowllyOutlinedButton
 import kr.co.knowledgerally.ui.component.RoundRect
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ScheduledTabContent(
-    scheduledList: List<ClassUiState.Scheduled>,
+    items: List<LectureItemUiState.Scheduled>,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val clipboardManager = LocalClipboardManager.current
@@ -48,17 +51,21 @@ fun ScheduledTabContent(
             modifier = Modifier.padding(top = 10.dp),
         )
 
-        if (scheduledList.isEmpty()) {
+        if (items.isEmpty()) {
             DashBanner(
                 text = stringResource(id = R.string.coach_scheduled_empty),
                 modifier = Modifier.padding(top = 24.dp)
             )
         } else {
-            scheduledList.forEachIndexed { index, scheduled ->
+            items.forEachIndexed { index, scheduled ->
                 if (index == 0) {
                     CoachDivider(modifier = Modifier.padding(top = 24.dp))
                 }
-                ScheduledItem(scheduled = scheduled, copyToClipboard = copyTo::invoke)
+                ScheduledItem(
+                    item = scheduled,
+                    copyToClipboard = copyTo::invoke,
+                    navigateToLecture = navigateToLecture
+                )
                 CoachDivider()
             }
         }
@@ -67,31 +74,46 @@ fun ScheduledTabContent(
 
 @Composable
 private fun ScheduledItem(
-    scheduled: ClassUiState.Scheduled,
+    item: LectureItemUiState.Scheduled,
     copyToClipboard: (String) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit
 ) {
     Column(
         modifier = Modifier
+            .clickable { navigateToLecture(item.lectureInfo.id) }
             .fillMaxWidth()
             .padding(top = 12.dp, bottom = 20.dp)
     ) {
         Box(modifier = Modifier.height(IntrinsicSize.Max)) {
             RoundRect(radius = 8.dp, width = 4.dp)
             Column(modifier = Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp)) {
-                Text(text = "프랑스어", style = KnowllyTheme.typography.subtitle2)
+                Text(text = item.lectureInfo.topic, style = KnowllyTheme.typography.subtitle2)
                 Text(
-                    text = "유지민님",
+                    text = item.lecture.player.profile.username,
                     style = KnowllyTheme.typography.body1,
                     modifier = Modifier.padding(top = 2.dp)
                 )
                 Text(
-                    text = "2022년 5월 4일 (화)",
+                    text = item.lecture.schedule.startAt.format(
+                        DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
+                    ),
                     modifier = Modifier.padding(top = 6.dp),
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )
                 Text(
-                    text = "오후 6:00 (3시간 수업)",
+                    text = "${
+                        item.lecture.schedule.startAt.format(
+                            DateTimeFormatter.ofPattern(
+                                stringResource(id = R.string.lecture_time_format)
+                            )
+                        )
+                    } ${
+                        stringResource(
+                            R.string.lecture_runningtime_format,
+                            item.lecture.schedule.runningTime
+                        )
+                    }",
                     style = KnowllyTheme.typography.body2,
                     color = KnowllyTheme.colors.gray6B
                 )

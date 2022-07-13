@@ -25,13 +25,13 @@ class SignUpViewModel @Inject constructor(
 
     private var job: Job? = null
 
-    fun signUp(pushActive: Boolean) {
+    fun signUp() {
         if (job?.isActive == true) {
             return
         }
         job = launch {
             val providerToken = ProviderToken.kakao(providerAccessToken)
-            signUpUseCase(providerToken, pushActive)
+            signUpUseCase(providerToken)
                 .onSuccess { _result.value = SignUpResult.Success }
                 .onFailure { handleException(it) }
         }

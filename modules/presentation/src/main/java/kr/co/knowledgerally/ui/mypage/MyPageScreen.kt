@@ -1,5 +1,8 @@
 package kr.co.knowledgerally.ui.mypage
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,8 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Surface
-import androidx.compose.material.Switch
-import androidx.compose.material.SwitchDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -46,7 +47,9 @@ import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.mypage.dialog.LogoutDialog
 import kr.co.knowledgerally.ui.mypage.dialog.WithdrawalDialog
 import kr.co.knowledgerally.ui.splash.SplashActivity
+import kr.co.knowledgerally.ui.terms.TermsActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import kr.co.knowledgerally.ui.user.UserActivity
 
 @Composable
 fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
@@ -59,12 +62,25 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
     var showLogoutDialog by remember { mutableStateOf(false) }
     var showWithdrawalDialog by remember { mutableStateOf(false) }
 
+    val activityLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = {
+            if (it.resultCode == Activity.RESULT_OK) {
+                viewModel.refresh()
+            }
+        }
+    )
+
     MyPageScreen(
         state = state,
         loading = loading,
-        onPushActiveChange = { viewModel.updatePushActive(it) },
-        navigateToProfile = { },
-        navigateToTermsOfService = { },
+        navigateToProfile = { userId: Long ->
+            val intent = UserActivity.getIntent(context, userId)
+            activityLauncher.launch(intent)
+        },
+        navigateToTermsOfService = {
+            TermsActivity.startActivity(context)
+        },
         logout = { showLogoutDialog = true },
         withdrawal = { showWithdrawalDialog = true },
     )
@@ -92,8 +108,7 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
 private fun MyPageScreen(
     state: MyPageUiState,
     loading: Boolean,
-    onPushActiveChange: (Boolean) -> Unit,
-    navigateToProfile: () -> Unit,
+    navigateToProfile: (userId: Long) -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
     withdrawal: () -> Unit,
@@ -102,8 +117,6 @@ private fun MyPageScreen(
         when (state) {
             MyPageUiState.Loading -> Loading()
             is MyPageUiState.Success -> MyPageScreen(
-                notificationEnabled = state.user.pushActive,
-                onPushActiveChange = onPushActiveChange,
                 versionName = state.versionName,
                 user = state.user,
                 navigateToProfile = navigateToProfile,
@@ -120,11 +133,9 @@ private fun MyPageScreen(
 
 @Composable
 private fun MyPageScreen(
-    notificationEnabled: Boolean,
-    onPushActiveChange: (Boolean) -> Unit,
     versionName: String,
     user: User,
-    navigateToProfile: () -> Unit,
+    navigateToProfile: (userId: Long) -> Unit,
     navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
     withdrawal: () -> Unit,
@@ -139,16 +150,6 @@ private fun MyPageScreen(
             navigateToProfile = navigateToProfile,
         )
         MyPageDivider()
-        MyPageItem(
-            text = stringResource(id = R.string.mypage_allow_notification),
-            onClick = { navigateToTermsOfService() },
-            content = {
-                MyPageSwitch(
-                    checked = notificationEnabled,
-                    onCheckedChange = onPushActiveChange
-                )
-            }
-        )
         MyPageItem(
             text = stringResource(id = R.string.mypage_app_version_info),
             onClick = { navigateToTermsOfService() },
@@ -180,7 +181,7 @@ private fun MyPageScreen(
 @Composable
 private fun MyPageProfile(
     user: User,
-    navigateToProfile: () -> Unit,
+    navigateToProfile: (userId: Long) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -228,7 +229,7 @@ private fun MyPageProfile(
             }
             KnowllyContainedButton(
                 text = stringResource(id = R.string.mypage_show_more_profile),
-                onClick = navigateToProfile,
+                onClick = { navigateToProfile(user.id) },
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .height(40.dp)
@@ -285,25 +286,6 @@ private fun MyPageDivider() {
     )
 }
 
-@Composable
-private fun MyPageSwitch(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-) {
-    Switch(
-        modifier = Modifier.size(34.dp, 20.dp),
-        checked = checked,
-        onCheckedChange = onCheckedChange,
-        colors = SwitchDefaults.colors(
-            checkedThumbColor = KnowllyTheme.colors.primaryDark,
-            checkedTrackAlpha = 0.38f,
-            uncheckedThumbColor = KnowllyTheme.colors.grayDD,
-            uncheckedTrackColor = KnowllyTheme.colors.gray8F,
-            uncheckedTrackAlpha = 0.38f
-        )
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun MyPageScreenPreview() {
@@ -311,7 +293,6 @@ private fun MyPageScreenPreview() {
         MyPageScreen(
             state = MyPageUiState.Loading,
             loading = false,
-            onPushActiveChange = { },
             navigateToProfile = { },
             navigateToTermsOfService = { },
             logout = { },

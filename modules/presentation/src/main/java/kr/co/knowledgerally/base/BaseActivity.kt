@@ -2,7 +2,9 @@ package kr.co.knowledgerally.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
+import kr.co.knowledgerally.log.Logger
+import kr.co.knowledgerally.toast.Toaster
+import kr.co.knowledgerally.ui.R
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -13,6 +15,12 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         activityTransition.overridePendingTransition(this)
+    }
+
+    protected open fun handleException(throwable: Throwable) {
+        Toaster.show(R.string.exception_common)
+        Logger.e(TAG, throwable)
+        finish()
     }
 
     override fun finish() {

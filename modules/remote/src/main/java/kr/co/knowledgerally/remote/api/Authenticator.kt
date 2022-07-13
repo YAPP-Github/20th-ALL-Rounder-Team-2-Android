@@ -3,6 +3,7 @@ package kr.co.knowledgerally.remote.api
 import kotlinx.coroutines.runBlocking
 import kr.co.knowledgerally.data.provider.AccessTokenProvider
 import kr.co.knowledgerally.data.provider.RefreshTokenProvider
+import kr.co.knowledgerally.log.Logger
 import kr.co.knowledgerally.remote.model.RefreshResponse
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -22,12 +23,13 @@ internal class Authenticator constructor(
             authenticationListener.onSessionExpired()
             return null
         }
-
+        Logger.w("Authenticator", "token expired : ${accessTokenProvider.value}")
         return refresh(refreshToken).fold(
             onSuccess = {
                 accessTokenProvider.value = it.data.accessToken
                 refreshTokenProvider.value = it.data.refreshToken
-                response.request
+
+                AccessTokenInterceptor.from(response.request, it.data.accessToken)
             },
             onFailure = {
                 authenticationListener.onSessionExpired()

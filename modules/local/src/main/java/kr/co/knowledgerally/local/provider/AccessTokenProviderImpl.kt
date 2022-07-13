@@ -12,7 +12,7 @@ internal class AccessTokenProviderImpl @Inject constructor(
     override var value: String
         get() = sharedPreferences.getString(KEY_ACCESS_TOKEN, null) ?: ""
         set(value) {
-            sharedPreferences.edit {
+            sharedPreferences.edit(true) {
                 putString(KEY_ACCESS_TOKEN, value)
             }
         }

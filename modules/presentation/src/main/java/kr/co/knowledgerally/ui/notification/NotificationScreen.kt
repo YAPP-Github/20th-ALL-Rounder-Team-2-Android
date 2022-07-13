@@ -32,7 +32,7 @@ import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.model.NotificationModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -137,9 +137,9 @@ fun NotificationListItem(
                 NotificationTitle(notificationType = notification.type)
                 Text(text = dateText, style = KnowllyTheme.typography.body1)
             }
-            NotificationText(notification = notification)
+            NotificationContent(content = notification.content)
             Text(
-                text = "${notification.lessonTitle} | ${notification.opponentName}",
+                text = "${notification.lectureTitle} | ${notification.opponentName}",
                 style = KnowllyTheme.typography.button2,
                 color = KnowllyTheme.colors.gray8F
             )
@@ -190,11 +190,11 @@ fun NotificationTitle(
 }
 
 @Composable
-fun NotificationText(
-    notification: NotificationModel
+fun NotificationContent(
+    content: String
 ) {
     Text(
-        text = "임시 알림 내용입니다.", // TODO: 알림 유형 분류에 따른 텍스트 변경
+        text = content,
         style = KnowllyTheme.typography.body1,
         color = KnowllyTheme.colors.gray44
     )
@@ -202,7 +202,6 @@ fun NotificationText(
 
 @Composable
 fun LoadingNotification() {
-    // TODO
     CircularProgressIndicator()
 }
 
@@ -237,19 +236,17 @@ fun FailNotification() {
 private fun NotificationScreenPreview() {
     val tempNotificationList = listOf(
         NotificationModel(
-            id = 0,
-            text = "여준님이 매칭을 수락했습니다.",
-            lessonTitle = "윤영직의 안드로이드 교실",
+            content = "여준님이 매칭을 수락했습니다.",
+            lectureTitle = "윤영직의 안드로이드 교실",
             opponentName = "윤여준",
-            date = LocalDate.now(),
+            date = LocalDateTime.now(),
             type = NotificationModel.Type.Player
         ),
         NotificationModel(
-            id = 0,
-            text = "새로운 매칭 신청을 확인해주세요.",
-            lessonTitle = "클래스 제목",
+            content = "새로운 매칭 신청을 확인해주세요.",
+            lectureTitle = "클래스 제목",
             opponentName = "상대 유저 이름",
-            date = LocalDate.now(),
+            date = LocalDateTime.now(),
             type = NotificationModel.Type.Coach
         )
     )

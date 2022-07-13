@@ -1,6 +1,7 @@
 package kr.co.knowledgerally.ui.coach
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -27,10 +28,12 @@ import kr.co.knowledgerally.ui.component.DashBanner
 import kr.co.knowledgerally.ui.component.OutlinedBadge
 import kr.co.knowledgerally.ui.component.RoundRect
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun CompletedTabContent(
-    completedList: List<ClassUiState.Completed>,
+    items: List<LectureItemUiState.Completed>,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
@@ -45,17 +48,20 @@ fun CompletedTabContent(
             modifier = Modifier.padding(top = 10.dp),
         )
 
-        if (completedList.isEmpty()) {
+        if (items.isEmpty()) {
             DashBanner(
                 text = stringResource(id = R.string.coach_completed_empty),
                 modifier = Modifier.padding(top = 24.dp)
             )
         } else {
-            completedList.forEachIndexed { index, completed ->
+            items.forEachIndexed { index, completed ->
                 if (index == 0) {
                     CoachDivider(modifier = Modifier.padding(top = 24.dp))
                 }
-                CompletedItem(completed = completed)
+                CompletedItem(
+                    item = completed,
+                    navigateToLecture = navigateToLecture
+                )
                 CoachDivider()
             }
         }
@@ -64,10 +70,12 @@ fun CompletedTabContent(
 
 @Composable
 private fun CompletedItem(
-    completed: ClassUiState.Completed,
+    item: LectureItemUiState.Completed,
+    navigateToLecture: (lectureInfoId: Long) -> Unit
 ) {
     Box(
         modifier = Modifier
+            .clickable { navigateToLecture(item.lectureInfo.id) }
             .padding(top = 12.dp, bottom = 20.dp)
             .fillMaxWidth()
             .height(IntrinsicSize.Max)
@@ -92,24 +100,36 @@ private fun CompletedItem(
             },
         )
         Column(modifier = Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp)) {
-            Text(text = "프랑스어", style = KnowllyTheme.typography.subtitle2)
+            Text(text = item.lectureInfo.topic, style = KnowllyTheme.typography.subtitle2)
             Text(
-                text = "유지민님",
+                text = item.lecture.player.profile.username,
                 style = KnowllyTheme.typography.body1,
                 modifier = Modifier.padding(top = 2.dp)
             )
             Text(
-                text = "2022년 5월 4일 (화)",
+                text = item.lecture.schedule.startAt.format(
+                    DateTimeFormatter.ofPattern(stringResource(id = R.string.lecture_date_format))
+                ),
                 modifier = Modifier.padding(top = 6.dp),
                 style = KnowllyTheme.typography.body2,
                 color = KnowllyTheme.colors.gray6B
             )
             Text(
-                text = "오후 6:00 (3시간 수업)",
+                text = "${
+                    item.lecture.schedule.startAt.format(
+                        DateTimeFormatter.ofPattern(
+                            stringResource(id = R.string.lecture_time_format)
+                        )
+                    )
+                } ${
+                    stringResource(
+                        R.string.lecture_runningtime_format,
+                        item.lecture.schedule.runningTime
+                    )
+                }",
                 style = KnowllyTheme.typography.body2,
                 color = KnowllyTheme.colors.gray6B
             )
         }
     }
 }
-

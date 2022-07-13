@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,6 +20,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.applicant.ApplicantActivity
 import kr.co.knowledgerally.ui.component.KnowllyTabRow
+import kr.co.knowledgerally.ui.component.Loading
+import kr.co.knowledgerally.ui.lecture.LectureActivity
+import kr.co.knowledgerally.ui.lecture.LectureType
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 private const val INDEX_MATCHING = 0
@@ -34,7 +38,7 @@ fun CoachScreen(
     val tabState by viewModel.tabState.collectAsState()
     val context = LocalContext.current
 
-    val applicantLauncher = rememberLauncherForActivityResult(
+    val activityLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -48,9 +52,14 @@ fun CoachScreen(
         tabState = tabState,
         navigateToRegister = navigateToRegister,
         switchTab = viewModel::switchTab,
-        navigateToApplicant = { classId ->
-            val intent = ApplicantActivity.getIntent(context, classId)
-            applicantLauncher.launch(intent)
+        navigateToApplicant = { lectureInfoId ->
+            val intent = ApplicantActivity.getIntent(context, lectureInfoId)
+            activityLauncher.launch(intent)
+        },
+        navigateToLecture = { lectureInfoId: Long ->
+            val intent =
+                LectureActivity.getIntent(context, lectureInfoId, LectureType.Coach)
+            activityLauncher.launch(intent)
         }
     )
 }
@@ -60,26 +69,34 @@ fun CoachScreen(
     uiState: CoachUiState,
     tabState: CoachTabState,
     navigateToRegister: () -> Unit,
-    navigateToApplicant: (classId: String) -> Unit,
+    navigateToApplicant: (lectureInfoId: Long) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
-    when (uiState) {
-        CoachUiState.Loading -> Unit /* no-op */
-        CoachUiState.Empty -> EmptyItem(navigateToRegister = navigateToRegister)
-        is CoachUiState.Success -> CoachContent(
-            uiState = uiState,
-            tabState = tabState,
-            switchTab = switchTab,
-            navigateToApplicant = navigateToApplicant
-        )
+    Surface(modifier = Modifier.fillMaxSize()) {
+        when {
+            !uiState.isInit -> Unit
+            uiState.isEmpty -> EmptyItem(navigateToRegister = navigateToRegister)
+            else -> CoachContent(
+                uiState = uiState,
+                tabState = tabState,
+                switchTab = switchTab,
+                navigateToApplicant = navigateToApplicant,
+                navigateToLecture = navigateToLecture
+            )
+        }
+        if (uiState.isLoading) {
+            Loading()
+        }
     }
 }
 
 @Composable
 fun CoachContent(
-    uiState: CoachUiState.Success,
+    uiState: CoachUiState,
     tabState: CoachTabState,
-    navigateToApplicant: (classId: String) -> Unit,
+    navigateToApplicant: (lectureInfoId: Long) -> Unit,
+    navigateToLecture: (lectureInfoId: Long) -> Unit,
     switchTab: (Int) -> Unit,
 ) {
     val matchingScrollState = rememberScrollState()
@@ -96,14 +113,23 @@ fun CoachContent(
 
         when (tabState.currentIndex) {
             INDEX_MATCHING -> MatchingTabContent(
-                matchingList = uiState.matchingClasses,
+                items = uiState.matchingLectures,
                 navigateToApplicant = navigateToApplicant,
+                navigateToLecture = navigateToLecture,
                 scrollState = matchingScrollState
             )
             INDEX_SCHEDULED ->
-                ScheduledTabContent(uiState.scheduledClasses, scheduledScrollState)
+                ScheduledTabContent(
+                    items = uiState.scheduledLectures,
+                    navigateToLecture = navigateToLecture,
+                    scrollState = scheduledScrollState
+                )
             INDEX_COMPLETED ->
-                CompletedTabContent(uiState.completedClasses, completedScrollState)
+                CompletedTabContent(
+                    items = uiState.completedLectures,
+                    navigateToLecture = navigateToLecture,
+                    scrollState = completedScrollState
+                )
         }
     }
 }
@@ -113,7 +139,11 @@ fun CoachContent(
 private fun CoachContentPreview() {
     KnowllyTheme {
         CoachContent(
-            uiState = CoachUiState.Success(emptyList(), emptyList(), emptyList()),
+            uiState = CoachUiState(
+                isInit = false,
+                isLoading = false,
+                lectureItems = emptyList()
+            ),
             tabState = CoachTabState(
                 titles = listOf(
                     R.string.coach_matching,
@@ -124,6 +154,7 @@ private fun CoachContentPreview() {
             ),
             switchTab = { },
             navigateToApplicant = { },
+            navigateToLecture = { }
         )
     }
 }

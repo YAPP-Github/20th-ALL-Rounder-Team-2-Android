@@ -28,7 +28,7 @@ class SignUpActivity : BaseActivity() {
                     navigateUp = ::navigateUp,
                     navigateToTerms = ::startTermsActivity,
                     navigateToPolicy = ::startPolicyActivity,
-                    signUp = { pushActive -> viewModel.signUp(pushActive) }
+                    signUp = { viewModel.signUp() }
                 )
             }
         }

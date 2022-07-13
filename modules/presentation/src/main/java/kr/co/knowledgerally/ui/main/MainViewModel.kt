@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kr.co.knowledgerally.base.BaseViewModel
+import kr.co.knowledgerally.bus.Event
+import kr.co.knowledgerally.bus.EventBus
 import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
 import kr.co.knowledgerally.domain.usecase.IsWelcomeShownUseCase
 import kr.co.knowledgerally.domain.usecase.RefreshUserUseCase
@@ -45,6 +47,13 @@ class MainViewModel @Inject constructor(
         launch {
             shownWelcomeUseCase()
                 .onSuccess { _showWelcome.value = false }
+        }
+    }
+
+    fun onLectureRegistered() {
+        launch {
+            refreshUserUseCase().getOrThrow()
+            EventBus.emit(Event.LectureRegistered)
         }
     }
 }

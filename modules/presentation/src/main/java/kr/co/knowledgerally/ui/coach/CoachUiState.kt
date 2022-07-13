@@ -1,14 +1,35 @@
 package kr.co.knowledgerally.ui.coach
 
-sealed interface CoachUiState {
+import kr.co.knowledgerally.domain.model.LectureInfo
 
-    object Loading : CoachUiState
+data class CoachUiState(
+    val isInit: Boolean = false,
+    val isLoading: Boolean = true,
+    val lectureItems: List<LectureItemUiState> = emptyList(),
+) {
+    val matchingLectures: List<LectureItemUiState.Matching> =
+        lectureItems.filterIsInstance<LectureItemUiState.Matching>()
 
-    object Empty : CoachUiState
+    val scheduledLectures: List<LectureItemUiState.Scheduled> =
+        lectureItems.filterIsInstance<LectureItemUiState.Scheduled>()
 
-    data class Success(
-        val matchingClasses: List<ClassUiState.Matching>,
-        val scheduledClasses: List<ClassUiState.Scheduled>,
-        val completedClasses: List<ClassUiState.Completed>,
-    ) : CoachUiState
+    val completedLectures: List<LectureItemUiState.Completed> =
+        lectureItems.filterIsInstance<LectureItemUiState.Completed>()
+
+    val isEmpty: Boolean
+        get() = matchingLectures.isEmpty() && scheduledLectures.isEmpty() && completedLectures.isEmpty()
+
+    fun init() = copy(isInit = true, isLoading = false)
+
+    fun loading(isLoading: Boolean) = copy(isLoading = isLoading)
+
+    fun from(lectureInfoList: List<LectureInfo>): CoachUiState = copy(
+        isInit = true,
+        isLoading = false,
+        lectureItems = lectureInfoList.flatMap { lectureInfo ->
+            lectureInfo.lectures.map { lecture ->
+                lecture.toUiState(lectureInfo)
+            }
+        }
+    )
 }

@@ -6,30 +6,32 @@ import kr.co.knowledgerally.data.model.UserEntity
 
 data class UserResponse(
     @SerializedName("id")
-    val id: String,
+    val id: Long,
     @SerializedName("username")
     val username: String,
     @SerializedName("intro")
     val introduction: String,
+    @SerializedName("kakaoId")
+    val kakaoId: String,
     @SerializedName("portfolio")
     val portfolio: String?,
     @SerializedName("ballCnt")
     val ballCount: Int,
-    @SerializedName("pushActive")
-    val pushActive: Boolean,
     @SerializedName("coach")
     val coach: Boolean,
+    @SerializedName("userImgUrl")
+    val imageUrl: String?
 )
 
-fun UserResponse.toData(imageUrl: String?) = UserEntity(
+fun UserResponse.toData() = UserEntity(
     id = id,
     profile = ProfileEntity(
         username = username,
         introduction = introduction,
+        kakaoId = kakaoId,
         portfolio = portfolio ?: "",
         imageUrl = imageUrl
     ),
     ballCount = ballCount,
-    pushActive = pushActive,
     coach = coach,
 )

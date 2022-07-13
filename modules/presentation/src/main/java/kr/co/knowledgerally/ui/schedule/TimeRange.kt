@@ -5,11 +5,11 @@ enum class TimeRange(
     private val second: IntRange,
 ) {
     Hours(
-        first = (1..2),
+        first = (0..2),
         second = (1..12),
     ),
     Minutes(
-        first = (1..5),
+        first = (0..5),
         second = (0..59)
     );
 

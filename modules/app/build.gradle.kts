@@ -76,6 +76,9 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:30.2.0"))
 
+    implementation(libs.stetho.core)
+    implementation(libs.stetho.okhttp3)
+
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
 
