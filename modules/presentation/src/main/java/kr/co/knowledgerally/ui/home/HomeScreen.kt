@@ -15,7 +15,6 @@ import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewNavigator
 import com.google.accompanist.web.rememberWebViewState
 import kr.co.knowledgerally.bridge.WebAppInterface
-import kr.co.knowledgerally.ui.R
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
@@ -34,7 +33,7 @@ fun HomeScreen(webAppInterface: WebAppInterface) {
             it.settings.javaScriptEnabled = true
             it.addJavascriptInterface(
                 webAppInterface,
-                context.getString(R.string.javascript_interface_name)
+                "Android"
             )
         },
         client = AccompanistWebViewClient(),
