@@ -20,7 +20,6 @@ import kr.co.knowledgerally.ui.component.KnowllyTabRow
 import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.lecture.LectureActivity
-import kr.co.knowledgerally.ui.lecture.LectureType
 import kr.co.knowledgerally.ui.review.ReviewActivity
 
 @Composable
@@ -44,7 +43,7 @@ fun PlayerScreen(viewModel: PlayerViewModel = hiltViewModel()) {
         switchTab = viewModel::switchTab,
         navigateToLecture = { lectureInfoId: Long ->
             val intent =
-                LectureActivity.getIntent(context, lectureInfoId, LectureType.Player)
+                LectureActivity.getIntent(context, lectureInfoId)
             activityLauncher.launch(intent)
         },
         navigateToReview = { lectureId: Long ->

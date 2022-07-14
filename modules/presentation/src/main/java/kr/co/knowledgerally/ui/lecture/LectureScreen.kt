@@ -16,7 +16,6 @@ fun LectureScreen(
     webAppInterface: WebAppInterface,
     domain: String,
     lectureInfoId: Long,
-    lectureType: LectureType,
     navigateUp: () -> Unit
 ) {
     val initUrl = Uri.Builder()
@@ -24,7 +23,6 @@ fun LectureScreen(
         .authority(domain)
         .appendPath("lecture-detail")
         .appendPath(lectureInfoId.toString())
-        .appendQueryParameter("type", lectureType.queryString)
         .build().toString()
 
     Column(

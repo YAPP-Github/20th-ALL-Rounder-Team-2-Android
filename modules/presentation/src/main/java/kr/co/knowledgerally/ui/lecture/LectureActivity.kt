@@ -23,21 +23,12 @@ class LectureActivity : BaseWebViewActivity() {
             return
         }
 
-        if (intent.hasExtra(KEY_LECTURE_TYPE).not()) {
-            handleException(IllegalStateException("${TAG}에서 lectureType을 찾을 수 없습니다."))
-            return
-        }
-        val lectureType: LectureType =
-            intent.getSerializableExtra(KEY_LECTURE_TYPE) as LectureType
-
-
         setContent {
             KnowllyTheme {
                 LectureScreen(
                     webAppInterface = webAppInterface,
                     domain = DOMAIN,
                     lectureInfoId = lectureInfoId,
-                    lectureType = lectureType,
                     navigateUp = ::navigateUp
                 )
             }
@@ -47,15 +38,12 @@ class LectureActivity : BaseWebViewActivity() {
     companion object {
         fun getIntent(
             context: Context,
-            lectureInfoId: Long,
-            lectureType: LectureType
+            lectureInfoId: Long
         ): Intent =
             Intent(context, LectureActivity::class.java)
                 .putExtra(KEY_LECTURE_INFO_ID, lectureInfoId)
-                .putExtra(KEY_LECTURE_TYPE, lectureType)
 
         private const val KEY_LECTURE_INFO_ID = "KEY_LECTURE_INFO_ID"
-        private const val KEY_LECTURE_TYPE = "KEY_LECTURE_TYPE"
         private const val DEFAULT_LONG_EXTRA_VALUE: Long = -1
     }
 }

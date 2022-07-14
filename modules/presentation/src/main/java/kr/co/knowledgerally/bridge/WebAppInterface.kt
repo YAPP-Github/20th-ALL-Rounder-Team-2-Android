@@ -7,7 +7,6 @@ import kotlinx.coroutines.runBlocking
 import kr.co.knowledgerally.domain.usecase.GetJwtTokenUseCase
 import kr.co.knowledgerally.toast.Toaster
 import kr.co.knowledgerally.ui.lecture.LectureActivity
-import kr.co.knowledgerally.ui.lecture.LectureType
 import javax.inject.Inject
 
 class WebAppInterface @Inject constructor(
@@ -29,8 +28,7 @@ class WebAppInterface @Inject constructor(
     fun navigateToLecture(lectureInfoId: Long) {
         val intent = LectureActivity.getIntent(
             context = context,
-            lectureInfoId = lectureInfoId,
-            lectureType = LectureType.Player
+            lectureInfoId = lectureInfoId
         )
         context.startActivity(intent)
     }
