@@ -3,6 +3,7 @@ package kr.co.knowledgerally.ui.ball
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -158,7 +160,9 @@ fun BallHistoryContent(uiState: BallUiState) {
         is BallUiState.Success -> {
             BallHistoryList(histories = uiState.histories)
         }
-        BallUiState.Loading -> {}
+        BallUiState.Loading -> {
+            BallLoading()
+        }
         BallUiState.Failure -> {}
     }
 }
@@ -205,6 +209,13 @@ fun BallHistoryListItem(
     }
 }
 
+@Composable
+fun BallLoading() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun BallScreenPreview() {
@@ -231,7 +242,7 @@ private fun BallScreenPreview() {
 
     KnowllyTheme {
         BallScreen(
-            uiState = BallUiState.Success(10, tempBallHistoryList),
+            uiState = BallUiState.Loading,
             navigateUp = {},
             navigateToGuide = {}
         )
