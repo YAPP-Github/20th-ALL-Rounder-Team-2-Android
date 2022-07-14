@@ -8,7 +8,7 @@ abstract class BaseWebViewActivity : BaseActivity() {
     @Inject
     lateinit var webAppInterface: WebAppInterface
 
-    fun navigateUp() = finish()
+    protected fun navigateUp() = finish()
 
     companion object {
         const val DOMAIN = "knowllydev-web.hkpark.net"
