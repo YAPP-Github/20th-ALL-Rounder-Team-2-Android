@@ -8,13 +8,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.bridge.WebAppInterface
 import kr.co.knowledgerally.ui.ball.BallActivity
 import kr.co.knowledgerally.ui.notification.NotificationActivity
 import kr.co.knowledgerally.ui.register.RegisterActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
+
+    @Inject
+    lateinit var webAppInterface: WebAppInterface
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -35,7 +40,8 @@ class MainActivity : BaseActivity() {
                     viewModel = viewModel,
                     navigateToRegister = ::startRegisterActivity,
                     navigateToBall = ::startBallActivity,
-                    navigateToNotification = ::startNotificationActivity
+                    navigateToNotification = ::startNotificationActivity,
+                    webAppInterface = webAppInterface
                 )
             }
         }

@@ -38,6 +38,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import kr.co.knowledgerally.bridge.WebAppInterface
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.coach.CoachScreen
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
@@ -55,6 +56,7 @@ fun MainScreen(
     navigateToRegister: () -> Unit,
     navigateToBall: () -> Unit,
     navigateToNotification: () -> Unit,
+    webAppInterface: WebAppInterface
 ) {
     val navController = rememberAnimatedNavController()
     val navigation = rememberMainNavigation(navController, navigateToRegister)
@@ -90,7 +92,7 @@ fun MainScreen(
             modifier = Modifier.padding(padding)
         ) {
             composable(route = MainDestination.Home.route) {
-                HomeScreen()
+                HomeScreen(webAppInterface = webAppInterface)
             }
             composable(route = MainDestination.Player.route) {
                 PlayerScreen()
