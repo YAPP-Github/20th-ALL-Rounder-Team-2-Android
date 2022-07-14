@@ -11,6 +11,6 @@ abstract class BaseWebViewActivity : BaseActivity() {
     protected fun navigateUp() = finish()
 
     companion object {
-        const val DOMAIN = "knowllydev-web.hkpark.net"
+        const val BASE_URL = "http://knowllydev-web.hkpark.net"
     }
 }

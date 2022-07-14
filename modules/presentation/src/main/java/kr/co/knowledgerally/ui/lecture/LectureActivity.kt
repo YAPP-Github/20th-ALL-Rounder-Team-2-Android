@@ -23,12 +23,13 @@ class LectureActivity : BaseWebViewActivity() {
             return
         }
 
+        val initUrl = "$BASE_URL/lecture-detail/$lectureInfoId"
+        
         setContent {
             KnowllyTheme {
                 LectureScreen(
                     webAppInterface = webAppInterface,
-                    domain = DOMAIN,
-                    lectureInfoId = lectureInfoId,
+                    initUrl = initUrl,
                     navigateUp = ::navigateUp
                 )
             }

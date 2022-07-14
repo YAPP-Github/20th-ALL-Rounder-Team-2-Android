@@ -1,7 +1,6 @@
 package kr.co.knowledgerally.ui.lecture
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -14,23 +13,18 @@ import kr.co.knowledgerally.ui.component.KnowllyWebView
 @Composable
 fun LectureScreen(
     webAppInterface: WebAppInterface,
-    domain: String,
-    lectureInfoId: Long,
+    initUrl: String,
     navigateUp: () -> Unit
 ) {
-    val initUrl = Uri.Builder()
-        .scheme("http")
-        .authority(domain)
-        .appendPath("lecture-detail")
-        .appendPath(lectureInfoId.toString())
-        .build().toString()
-
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         KnowllyTopAppBar(
             onNavigationClick = navigateUp
         )
-        KnowllyWebView(webAppInterface = webAppInterface, initUrl = initUrl)
+        KnowllyWebView(
+            webAppInterface = webAppInterface,
+            initUrl = initUrl
+        )
     }
 }
