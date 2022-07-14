@@ -22,7 +22,6 @@ import kr.co.knowledgerally.ui.applicant.ApplicantActivity
 import kr.co.knowledgerally.ui.component.KnowllyTabRow
 import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.lecture.LectureActivity
-import kr.co.knowledgerally.ui.lecture.LectureType
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 private const val INDEX_MATCHING = 0
@@ -58,7 +57,7 @@ fun CoachScreen(
         },
         navigateToLecture = { lectureInfoId: Long ->
             val intent =
-                LectureActivity.getIntent(context, lectureInfoId, LectureType.Coach)
+                LectureActivity.getIntent(context, lectureInfoId)
             activityLauncher.launch(intent)
         }
     )
