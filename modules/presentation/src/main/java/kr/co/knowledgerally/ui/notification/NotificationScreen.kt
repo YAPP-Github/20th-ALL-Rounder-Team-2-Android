@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -30,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.model.NotificationModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
@@ -84,7 +83,7 @@ fun NotificationContent(
             onNotificationClick = onNotificationClick
         )
         NotificationUiState.Loading -> {
-            LoadingNotification()
+            Loading()
         }
         NotificationUiState.Empty -> {
             EmptyNotification(modifier = Modifier.fillMaxSize())
@@ -199,13 +198,6 @@ fun NotificationContent(
         style = KnowllyTheme.typography.body1,
         color = KnowllyTheme.colors.gray44
     )
-}
-
-@Composable
-fun LoadingNotification() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-    }
 }
 
 @Composable

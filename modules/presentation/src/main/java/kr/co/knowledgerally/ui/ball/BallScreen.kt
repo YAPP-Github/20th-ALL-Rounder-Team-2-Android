@@ -3,7 +3,6 @@ package kr.co.knowledgerally.ui.ball
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -36,6 +34,7 @@ import kr.co.knowledgerally.domain.model.BallHistory
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import java.time.LocalDate
@@ -161,7 +160,7 @@ fun BallHistoryContent(uiState: BallUiState) {
             BallHistoryList(histories = uiState.histories)
         }
         BallUiState.Loading -> {
-            BallLoading()
+            Loading()
         }
         BallUiState.Failure -> {}
     }
@@ -206,13 +205,6 @@ fun BallHistoryListItem(
             text = "$sign ${abs(history.count)}" + stringResource(id = R.string.ball_count),
             style = KnowllyTheme.typography.subtitle1
         )
-    }
-}
-
-@Composable
-fun BallLoading() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
     }
 }
 
