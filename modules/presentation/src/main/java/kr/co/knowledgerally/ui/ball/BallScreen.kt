@@ -34,6 +34,7 @@ import kr.co.knowledgerally.domain.model.BallHistory
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import java.time.LocalDate
@@ -158,7 +159,9 @@ fun BallHistoryContent(uiState: BallUiState) {
         is BallUiState.Success -> {
             BallHistoryList(histories = uiState.histories)
         }
-        BallUiState.Loading -> {}
+        BallUiState.Loading -> {
+            Loading()
+        }
         BallUiState.Failure -> {}
     }
 }
@@ -231,7 +234,7 @@ private fun BallScreenPreview() {
 
     KnowllyTheme {
         BallScreen(
-            uiState = BallUiState.Success(10, tempBallHistoryList),
+            uiState = BallUiState.Loading,
             navigateUp = {},
             navigateToGuide = {}
         )

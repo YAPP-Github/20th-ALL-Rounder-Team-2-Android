@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -29,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.model.NotificationModel
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
@@ -83,7 +83,7 @@ fun NotificationContent(
             onNotificationClick = onNotificationClick
         )
         NotificationUiState.Loading -> {
-            LoadingNotification()
+            Loading()
         }
         NotificationUiState.Empty -> {
             EmptyNotification(modifier = Modifier.fillMaxSize())
@@ -201,11 +201,6 @@ fun NotificationContent(
 }
 
 @Composable
-fun LoadingNotification() {
-    CircularProgressIndicator()
-}
-
-@Composable
 fun EmptyNotification(modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -266,6 +261,18 @@ private fun NotificationScreenPreviewEmpty() {
     KnowllyTheme {
         NotificationScreen(
             state = NotificationUiState.Empty,
+            navigateUp = {},
+            onNotificationClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun NotificationScreenPreviewLoading() {
+    KnowllyTheme {
+        NotificationScreen(
+            state = NotificationUiState.Loading,
             navigateUp = {},
             onNotificationClick = {}
         )
