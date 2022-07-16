@@ -45,8 +45,11 @@ class ReviewActivity : BaseWebViewActivity() {
         }
     }
 
-    override fun onBridgeResponse(response: BridgeResponse) {
-
+    override fun onBridgeResponse(response: BridgeResponse) = when (response) {
+        BridgeResponse.NavigateUp -> {
+            navigateUp()
+        }
+        else -> {}
     }
 
     companion object {
