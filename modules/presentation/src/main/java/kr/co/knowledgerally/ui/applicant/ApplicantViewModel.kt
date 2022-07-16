@@ -15,7 +15,7 @@ class ApplicantViewModel @Inject constructor(
     private val lectureInfoId: Long = savedStateHandle.get<Long>(KEY_LECTURE_INFO_ID)!!
 
     private val _url =
-        MutableStateFlow("${BASE_URL}/lecture-form/$lectureInfoId")
+        MutableStateFlow("${BASE_URL}/coach-lecture/on-board/$lectureInfoId")
     val url = _url.asStateFlow()
 
     private val _isRefresh = MutableStateFlow(false)
