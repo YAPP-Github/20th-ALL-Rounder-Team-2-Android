@@ -5,10 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.policy.PolicyActivity
 import kr.co.knowledgerally.ui.profile.ProfileActivity
 import kr.co.knowledgerally.ui.terms.TermsActivity
@@ -24,20 +29,27 @@ class SignUpActivity : BaseActivity() {
 
         setContent {
             KnowllyTheme {
-                SignUpScreen(
-                    navigateUp = ::navigateUp,
-                    navigateToTerms = ::startTermsActivity,
-                    navigateToPolicy = ::startPolicyActivity,
-                    signUp = { viewModel.signUp() }
-                )
-            }
-        }
+                val uiState by viewModel.uiState.collectAsState()
 
-        lifecycleScope.launch {
-            viewModel.result.collect { result ->
-                when (result) {
-                    SignUpResult.Ready -> Unit // no-op
-                    SignUpResult.Success -> startProfileActivity()
+                Box(modifier = Modifier.fillMaxSize()) {
+                    SignUpScreen(
+                        navigateUp = ::navigateUp,
+                        navigateToTerms = ::startTermsActivity,
+                        navigateToPolicy = ::startPolicyActivity,
+                        signUp = { viewModel.signUp() }
+                    )
+
+                    if (uiState.isLoading) {
+                        Loading()
+                    }
+                }
+
+                uiState.result?.let { result ->
+                    LaunchedEffect(result) {
+                        if (result.isSuccess) {
+                            startProfileActivity()
+                        }
+                    }
                 }
             }
         }

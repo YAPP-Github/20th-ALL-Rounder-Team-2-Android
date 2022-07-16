@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.model.ProviderToken
 import kr.co.knowledgerally.domain.usecase.SignUpUseCase
@@ -20,21 +21,30 @@ class SignUpViewModel @Inject constructor(
             "$KEY_PROVIDER_ACCESS_TOKEN 값이 없습니다"
         }
 
-    private val _result = MutableStateFlow<SignUpResult>(SignUpResult.Ready)
-    val result = _result.asStateFlow()
+    private val _uiState = MutableStateFlow(SignUpUiState())
+    val uiState = _uiState.asStateFlow()
 
     private var job: Job? = null
 
     fun signUp() {
-        if (job?.isActive == true) {
-            return
-        }
+        if (job != null) return
+
         job = launch {
+            _uiState.update { it.copy(isLoading = true) }
             val providerToken = ProviderToken.kakao(providerAccessToken)
-            signUpUseCase(providerToken)
-                .onSuccess { _result.value = SignUpResult.Success }
+            val isSuccess = signUpUseCase(providerToken)
+                .map { true }
                 .onFailure { handleException(it) }
+                .getOrDefault(false)
+
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    result = SignUpResult(isSuccess)
+                )
+            }
         }
+        job?.invokeOnCompletion { job = null }
     }
 
     companion object {
