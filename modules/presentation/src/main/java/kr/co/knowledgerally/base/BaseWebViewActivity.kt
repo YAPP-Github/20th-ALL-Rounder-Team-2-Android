@@ -1,12 +1,8 @@
 package kr.co.knowledgerally.base
 
-import kr.co.knowledgerally.bridge.WebAppInterface
-import javax.inject.Inject
+import kr.co.knowledgerally.bridge.BridgeDelegate
 
-abstract class BaseWebViewActivity : BaseActivity() {
-
-    @Inject
-    lateinit var webAppInterface: WebAppInterface
+abstract class BaseWebViewActivity : BaseActivity(), BridgeDelegate {
 
     protected fun navigateUp() = finish()
 
