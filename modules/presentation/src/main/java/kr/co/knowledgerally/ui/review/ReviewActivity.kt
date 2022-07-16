@@ -4,43 +4,59 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import dagger.hilt.android.AndroidEntryPoint
-import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.base.BaseWebViewActivity
+import kr.co.knowledgerally.bridge.BridgeRequest
+import kr.co.knowledgerally.bridge.BridgeResponse
+import kr.co.knowledgerally.bridge.rememberWebViewState
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
-class ReviewActivity : BaseActivity() {
+class ReviewActivity : BaseWebViewActivity() {
+
+    private val viewModel: ReviewViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val lectureId: Long = intent.getLongExtra(
-            KEY_LECTURE_ID,
-            DEFAULT_LONG_EXTRA_VALUE
-        )
-        if (lectureId == DEFAULT_LONG_EXTRA_VALUE) {
-            handleException(IllegalStateException("${TAG}에서 lectureId를 찾을 수 없습니다."))
-            return
-        }
-
         setContent {
             KnowllyTheme {
+                val url by viewModel.url.collectAsState()
+                val isRefresh by viewModel.isRefresh.collectAsState()
+                val webViewState = rememberWebViewState(url = url)
+
                 ReviewScreen(
-                    url = "",
+                    state = webViewState,
+                    delegate = this,
                     navigateUp = ::navigateUp
                 )
+
+                LaunchedEffect(isRefresh) {
+                    if (isRefresh) {
+                        webViewState.request(BridgeRequest.Refresh)
+                        viewModel.onRefresh()
+                    }
+                }
             }
         }
     }
 
-    private fun navigateUp() = finish()
+    override fun onBridgeResponse(response: BridgeResponse) {
+
+    }
 
     companion object {
-        fun getIntent(context: Context, lectureId: Long): Intent =
-            Intent(context, ReviewActivity::class.java)
-                .putExtra(KEY_LECTURE_ID, lectureId)
 
-        private const val KEY_LECTURE_ID = "KEY_LECTURE_ID"
-        private const val DEFAULT_LONG_EXTRA_VALUE: Long = -1
+        fun getIntent(
+            context: Context,
+            lectureId: Long,
+            coachId: Long
+        ): Intent = Intent(context, ReviewActivity::class.java)
+            .putExtra(ReviewViewModel.KEY_LECTURE_ID, lectureId)
+            .putExtra(ReviewViewModel.KEY_COACH_ID, coachId)
     }
 }
