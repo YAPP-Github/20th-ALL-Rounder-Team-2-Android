@@ -2,6 +2,7 @@ package kr.co.knowledgerally.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -29,6 +30,9 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     protected open fun handleException(throwable: Throwable) {
+        if (throwable is CancellationException) {
+            return
+        }
         Toaster.show(R.string.exception_common)
         Logger.e(TAG, throwable)
     }
