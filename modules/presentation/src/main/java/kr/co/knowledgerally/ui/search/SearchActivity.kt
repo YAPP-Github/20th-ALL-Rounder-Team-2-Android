@@ -32,8 +32,7 @@ class SearchActivity : BaseWebViewActivity() {
 
                 SearchScreen(
                     state = webViewState,
-                    delegate = this,
-                    navigateUp = ::navigateUp
+                    delegate = this
                 )
 
                 LaunchedEffect(isRefresh) {
