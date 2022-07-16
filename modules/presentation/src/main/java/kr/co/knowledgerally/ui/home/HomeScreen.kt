@@ -16,6 +16,7 @@ import kr.co.knowledgerally.bridge.BridgeResponse
 import kr.co.knowledgerally.bridge.rememberWebViewState
 import kr.co.knowledgerally.ui.component.KnowllyWebView
 import kr.co.knowledgerally.ui.lecture.LectureActivity
+import kr.co.knowledgerally.ui.search.SearchActivity
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
@@ -33,6 +34,9 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 is BridgeResponse.NavigateToLecture -> {
                     val intent = LectureActivity.getIntent(context, response.lectureInfoId)
                     launcher.launch(intent)
+                }
+                BridgeResponse.NavigateToSearch -> {
+                    SearchActivity.startActivity(context)
                 }
             }
         }
