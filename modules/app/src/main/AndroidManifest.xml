@@ -99,6 +99,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.user.UserActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.review.ReviewActivity"
             android:screenOrientation="portrait" />
 

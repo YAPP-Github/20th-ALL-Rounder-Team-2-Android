@@ -21,4 +21,9 @@ class BridgeInterface(
     fun navigateToSearch() {
         delegate.onBridgeResponse(BridgeResponse.NavigateToSearch)
     }
+
+    @JavascriptInterface
+    fun navigateUp() {
+        delegate.onBridgeResponse(BridgeResponse.NavigateUp)
+    }
 }

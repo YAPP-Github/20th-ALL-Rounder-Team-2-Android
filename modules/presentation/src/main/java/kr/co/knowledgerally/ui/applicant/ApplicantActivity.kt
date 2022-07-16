@@ -46,8 +46,11 @@ class ApplicantActivity : BaseWebViewActivity() {
         }
     }
 
-    override fun onBridgeResponse(response: BridgeResponse) {
-        // TODO: 액티비티 종료 브릿지 호출 시 navigateUp
+    override fun onBridgeResponse(response: BridgeResponse) = when (response) {
+        BridgeResponse.NavigateUp -> {
+            navigateUp()
+        }
+        else -> {}
     }
 
     companion object {
