@@ -25,9 +25,8 @@ class UserActivity : BaseWebViewActivity() {
 
         setContent {
             KnowllyTheme {
-                val url by viewModel.url.collectAsState()
                 val isRefresh by viewModel.isRefresh.collectAsState()
-                val webViewState = rememberWebViewState(url = url)
+                val webViewState = rememberWebViewState(url = viewModel.url)
 
                 UserScreen(
                     state = webViewState,

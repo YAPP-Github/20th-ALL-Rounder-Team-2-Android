@@ -14,9 +14,7 @@ class UserViewModel @Inject constructor(
 
     private val userId: Long = savedStateHandle.get<Long>(KEY_USER_ID)!!
 
-    private val _url =
-        MutableStateFlow("${BASE_URL}/profile/$userId")
-    val url = _url.asStateFlow()
+    val url: String = "${BASE_URL}/profile/$userId"
 
     private val _isRefresh = MutableStateFlow(false)
     val isRefresh = _isRefresh.asStateFlow()
