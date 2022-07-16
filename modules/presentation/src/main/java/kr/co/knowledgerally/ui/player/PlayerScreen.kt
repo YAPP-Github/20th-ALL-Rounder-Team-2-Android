@@ -46,8 +46,8 @@ fun PlayerScreen(viewModel: PlayerViewModel = hiltViewModel()) {
                 LectureActivity.getIntent(context, lectureInfoId)
             activityLauncher.launch(intent)
         },
-        navigateToReview = { lectureId: Long ->
-            val intent = ReviewActivity.getIntent(context, lectureId)
+        navigateToReview = { lectureId: Long, coachId: Long ->
+            val intent = ReviewActivity.getIntent(context, lectureId, coachId)
             activityLauncher.launch(intent)
         },
     )
@@ -59,7 +59,7 @@ fun PlayerScreen(
     uiState: PlayerUiState,
     switchTab: (Int) -> Unit,
     navigateToLecture: (lectureInfoId: Long) -> Unit,
-    navigateToReview: (lectureId: Long) -> Unit
+    navigateToReview: (lectureId: Long, coachId: Long) -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         if (uiState.isInit) {

@@ -36,7 +36,7 @@ fun PlayerContent(
     tab: PlayerTabState.Tab,
     uiState: PlayerUiState,
     navigateToLecture: (lectureInfoId: Long) -> Unit,
-    navigateToReview: (lectureId: Long) -> Unit
+    navigateToReview: (lectureId: Long, coachId: Long) -> Unit
 ) {
     when (tab) {
         PlayerTabState.Tab.Matching -> Matching(
@@ -105,7 +105,7 @@ private fun Scheduled(
 private fun Completed(
     items: List<LectureItemUiState.Completed>,
     navigateToLecture: (lectureInfoId: Long) -> Unit,
-    navigateToReview: (lectureId: Long) -> Unit
+    navigateToReview: (lectureId: Long, coachId: Long) -> Unit
 ) {
     if (items.isEmpty()) {
         PlayerContentEmpty(PlayerTabState.Tab.Completed)
@@ -166,7 +166,7 @@ private fun ScheduleItem(
 private fun CompletedItem(
     item: LectureItemUiState.Completed,
     navigateToLecture: (lectureInfoId: Long) -> Unit,
-    navigateToReview: (lectureId: Long) -> Unit
+    navigateToReview: (lectureId: Long, coachId: Long) -> Unit
 ) {
     val isReviewed = item.lecture.isReviewed
     LectureItem(
@@ -177,7 +177,7 @@ private fun CompletedItem(
             if (!isReviewed) {
                 KnowllyContainedButton(
                     text = stringResource(id = R.string.player_review_button),
-                    onClick = { navigateToReview(item.lecture.id) },
+                    onClick = { navigateToReview(item.lecture.id, item.lectureInfo.coach.id) },
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .fillMaxWidth()
