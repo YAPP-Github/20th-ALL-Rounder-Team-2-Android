@@ -16,4 +16,9 @@ class BridgeInterface(
     fun navigateToLecture(lectureInfoId: Long) {
         delegate.onBridgeResponse(BridgeResponse.NavigateToLecture(lectureInfoId))
     }
+
+    @JavascriptInterface
+    fun navigateUp() {
+        delegate.onBridgeResponse(BridgeResponse.NavigateUp)
+    }
 }
