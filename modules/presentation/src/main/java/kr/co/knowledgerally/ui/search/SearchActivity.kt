@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.lecture
+package kr.co.knowledgerally.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -13,12 +13,13 @@ import kr.co.knowledgerally.base.BaseWebViewActivity
 import kr.co.knowledgerally.bridge.BridgeRequest
 import kr.co.knowledgerally.bridge.BridgeResponse
 import kr.co.knowledgerally.bridge.rememberWebViewState
+import kr.co.knowledgerally.ui.lecture.LectureActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
-class LectureActivity : BaseWebViewActivity() {
+class SearchActivity : BaseWebViewActivity() {
 
-    private val viewModel: LectureViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +30,9 @@ class LectureActivity : BaseWebViewActivity() {
                 val isRefresh by viewModel.isRefresh.collectAsState()
                 val webViewState = rememberWebViewState(url = url)
 
-                LectureScreen(
+                SearchScreen(
                     state = webViewState,
-                    delegate = this,
-                    navigateUp = ::navigateUp
+                    delegate = this
                 )
 
                 LaunchedEffect(isRefresh) {
@@ -45,16 +45,18 @@ class LectureActivity : BaseWebViewActivity() {
         }
     }
 
-    override fun onBridgeResponse(response: BridgeResponse) {
-
+    override fun onBridgeResponse(response: BridgeResponse) = when (response) {
+        is BridgeResponse.NavigateToLecture -> {
+            val intent = LectureActivity.getIntent(this, response.lectureInfoId)
+            startActivity(intent)
+        }
+        else -> {}
     }
 
     companion object {
-
-        fun getIntent(
-            context: Context,
-            lectureInfoId: Long
-        ): Intent = Intent(context, LectureActivity::class.java)
-            .putExtra(LectureViewModel.KEY_LECTURE_INFO_ID, lectureInfoId)
+        fun startActivity(context: Context) {
+            val intent = Intent(context, SearchActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 }

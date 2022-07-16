@@ -6,6 +6,8 @@ import androidx.compose.runtime.Stable
 sealed interface BridgeResponse {
 
     data class NavigateToLecture(val lectureInfoId: Long) : BridgeResponse
+    
+    object NavigateToSearch : BridgeResponse
 
     object NavigateUp : BridgeResponse
 }

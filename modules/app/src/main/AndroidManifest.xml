@@ -95,6 +95,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.search.SearchActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.user.UserActivity"
             android:screenOrientation="portrait" />
 
