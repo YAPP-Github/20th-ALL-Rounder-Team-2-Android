@@ -1,13 +1,9 @@
 package kr.co.knowledgerally.ui.mypage
 
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.model.VersionName
 import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
@@ -24,18 +20,21 @@ class MyPageViewModel @Inject constructor(
     private val withdrawalUseCase: WithdrawalUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : BaseViewModel() {
-    val uiState: StateFlow<MyPageUiState> = getUserStreamUseCase().map { user ->
-        MyPageUiState.Success(
-            user = user,
-            versionName = versionName.toString()
-        )
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, MyPageUiState.Loading)
 
-    private val _loading = MutableStateFlow(false)
-    val loading = _loading.asStateFlow()
+    private val _uiState = MutableStateFlow(
+        MyPageUiState(versionName = versionName.toString())
+    )
+    val uiState = _uiState.asStateFlow()
 
-    private val _isLoggedOut = MutableStateFlow(false)
-    val isLoggedOut = _isLoggedOut.asStateFlow()
+    init {
+        launch {
+            getUserStreamUseCase().collect { user ->
+                _uiState.update {
+                    it.copy(user = user)
+                }
+            }
+        }
+    }
 
     fun refresh() {
         launch {
@@ -44,27 +43,37 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun logout() {
-        _loading.value = true
         launch {
-            logoutUseCase()
-                .onSuccess { _isLoggedOut.value = true }
-                .onFailure {
-                    _loading.value = false
-                    handleException(it)
-                }
+            _uiState.update { it.copy(isLoading = true) }
+            val isSuccess = logoutUseCase()
+                .map { true }
+                .onFailure { handleException(it) }
+                .getOrDefault(false)
+
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    isSignOut = isSuccess,
+                )
+            }
         }
     }
 
     // 회원 탈퇴
     fun withdrawal() {
-        _loading.value = true
         launch {
-            withdrawalUseCase()
-                .onSuccess { _isLoggedOut.value = true }
-                .onFailure {
-                    _loading.value = false
-                    handleException(it)
-                }
+            _uiState.update { it.copy(isLoading = true) }
+            val isSuccess = withdrawalUseCase()
+                .map { true }
+                .onFailure { handleException(it) }
+                .getOrDefault(false)
+
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    isSignOut = isSuccess,
+                )
+            }
         }
     }
 }

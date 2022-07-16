@@ -2,11 +2,9 @@ package kr.co.knowledgerally.ui.mypage
 
 import kr.co.knowledgerally.domain.model.User
 
-sealed interface MyPageUiState {
-    object Loading : MyPageUiState
-
-    data class Success(
-        val user: User,
-        val versionName: String,
-    ) : MyPageUiState
-}
+data class MyPageUiState(
+    val isLoading: Boolean = false,
+    val user: User? = null,
+    val versionName: String = "",
+    val isSignOut: Boolean = false,
+)
