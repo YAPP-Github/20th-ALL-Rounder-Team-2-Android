@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import kr.co.knowledgerally.domain.model.Profile
 import kr.co.knowledgerally.domain.model.User
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.ContainedBadge
@@ -54,13 +55,11 @@ import kr.co.knowledgerally.ui.user.UserActivity
 @Composable
 fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
     val context = LocalContext.current
-
-    val state by viewModel.uiState.collectAsState()
-    val loading by viewModel.loading.collectAsState()
-    val isExpired by viewModel.isLoggedOut.collectAsState()
-
     var showLogoutDialog by remember { mutableStateOf(false) }
     var showWithdrawalDialog by remember { mutableStateOf(false) }
+
+    val uiState by viewModel.uiState.collectAsState()
+    val isSignOut = uiState.isSignOut
 
     val activityLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -71,19 +70,26 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
         }
     )
 
-    MyPageScreen(
-        state = state,
-        loading = loading,
-        navigateToProfile = { userId: Long ->
-            val intent = UserActivity.getIntent(context, userId)
-            activityLauncher.launch(intent)
-        },
-        navigateToTermsOfService = {
-            TermsActivity.startActivity(context)
-        },
-        logout = { showLogoutDialog = true },
-        withdrawal = { showWithdrawalDialog = true },
-    )
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (uiState.user != null) {
+            MyPageScreen(
+                versionName = uiState.versionName,
+                user = uiState.user!!,
+                navigateToProfile = { userId: Long ->
+                    val intent = UserActivity.getIntent(context, userId)
+                    activityLauncher.launch(intent)
+                },
+                navigateToTermsOfService = {
+                    TermsActivity.startActivity(context)
+                },
+                logout = { showLogoutDialog = true },
+                withdrawal = { showWithdrawalDialog = true },
+            )
+        }
+        if (uiState.user == null || uiState.isLoading) {
+            Loading()
+        }
+    }
 
     // Dialog
     when {
@@ -97,36 +103,9 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
         )
     }
 
-    LaunchedEffect(isExpired) {
-        if (isExpired) {
+    LaunchedEffect(isSignOut) {
+        if (isSignOut) {
             SplashActivity.startActivity(context)
-        }
-    }
-}
-
-@Composable
-private fun MyPageScreen(
-    state: MyPageUiState,
-    loading: Boolean,
-    navigateToProfile: (userId: Long) -> Unit,
-    navigateToTermsOfService: () -> Unit,
-    logout: () -> Unit,
-    withdrawal: () -> Unit,
-) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        when (state) {
-            MyPageUiState.Loading -> Loading()
-            is MyPageUiState.Success -> MyPageScreen(
-                versionName = state.versionName,
-                user = state.user,
-                navigateToProfile = navigateToProfile,
-                navigateToTermsOfService = navigateToTermsOfService,
-                logout = logout,
-                withdrawal = withdrawal,
-            )
-        }
-        if (loading) {
-            Loading()
         }
     }
 }
@@ -291,8 +270,19 @@ private fun MyPageDivider() {
 private fun MyPageScreenPreview() {
     KnowllyTheme {
         MyPageScreen(
-            state = MyPageUiState.Loading,
-            loading = false,
+            versionName = "1.2.3",
+            user = User(
+                id = 0L,
+                profile = Profile(
+                    username = "유지민",
+                    imageUrl = null,
+                    introduction = "",
+                    kakaoId = "",
+                    portfolio = ""
+                ),
+                ballCount = 12,
+                coach = true,
+            ),
             navigateToProfile = { },
             navigateToTermsOfService = { },
             logout = { },
