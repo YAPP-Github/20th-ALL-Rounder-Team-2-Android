@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,6 +19,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseActivity
+import kr.co.knowledgerally.domain.model.LoginResult
+import kr.co.knowledgerally.domain.model.ProviderToken
 import kr.co.knowledgerally.feature.kakao.KakaoLogin
 import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.main.MainActivity
@@ -40,7 +43,6 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContent()
-        observeViewModel()
 
         lifecycleScope.launch {
             // 화면에 진입할 때 마다 로그아웃 처리
@@ -54,7 +56,7 @@ class LoginActivity : BaseActivity() {
         val systemUiController: SystemUiController = rememberSystemUiController()
         systemUiController.setStatusBarColor(KnowllyTheme.colors.primaryLight)
 
-        val loading by viewModel.loading.collectAsState()
+        val uiState by viewModel.uiState.collectAsState()
 
         KnowllyTheme {
             Box(modifier = Modifier.fillMaxSize()) {
@@ -63,8 +65,18 @@ class LoginActivity : BaseActivity() {
                     navigateToTerms = { startTermsActivity() },
                     navigateToPolicy = { startPolicyActivity() }
                 )
-                if (loading) {
+                if (uiState.isLoading) {
                     Loading()
+                }
+            }
+
+            uiState.result?.let { result ->
+                LaunchedEffect(result) {
+                    when (result) {
+                        LoginResult.Signed -> startMainActivity()
+                        LoginResult.Onboard -> startProfileActivity()
+                        is LoginResult.NotSigned -> startSignUpActivity(result.providerToken)
+                    }
                 }
             }
         }
@@ -74,17 +86,6 @@ class LoginActivity : BaseActivity() {
         kakaoLogin.login(this@LoginActivity)
             .onSuccess { viewModel.login(it.value) }
             .onFailure { /* no-op */ }
-    }
-
-    private fun observeViewModel() = lifecycleScope.launch {
-        viewModel.state.collect { state ->
-            when (state) {
-                is LoginState.NeedToSignUp -> startSignUpActivity(state.providerAccessToken)
-                LoginState.NeedToOnboard -> startProfileActivity()
-                LoginState.Success -> startMainActivity()
-                LoginState.NotLoggedIn -> Unit
-            }
-        }
     }
 
     private fun startMainActivity() {
@@ -97,8 +98,8 @@ class LoginActivity : BaseActivity() {
         finish()
     }
 
-    private fun startSignUpActivity(providerAccessToken: String) {
-        SignUpActivity.startActivity(this, providerAccessToken)
+    private fun startSignUpActivity(providerToken: ProviderToken) {
+        SignUpActivity.startActivity(this, providerToken.accessToken)
         finish()
     }
 

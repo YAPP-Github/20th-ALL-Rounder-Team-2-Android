@@ -1,52 +1,40 @@
 package kr.co.knowledgerally.ui.login
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.model.ProviderToken
-import kr.co.knowledgerally.domain.usecase.IsOnboardedUseCase
-import kr.co.knowledgerally.domain.usecase.IsSignedUpUseCase
-import kr.co.knowledgerally.domain.usecase.SignInUseCase
+import kr.co.knowledgerally.domain.usecase.LoginUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val isSignedUpUseCase: IsSignedUpUseCase,
-    private val signInUseCase: SignInUseCase,
-    private val isOnboardedUseCase: IsOnboardedUseCase
+    private val loginUseCase: LoginUseCase,
 ) : BaseViewModel() {
 
-    private val _state = MutableStateFlow<LoginState>(LoginState.NotLoggedIn)
-    val state: StateFlow<LoginState> = _state.asStateFlow()
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState = _uiState.asStateFlow()
 
-    private val _loading = MutableStateFlow(false)
-    val loading = _loading.asStateFlow()
+    private var job: Job? = null
 
-    fun login(accessToken: String) = launch {
-        _loading.value = true
-        val providerToken = ProviderToken.kakao(accessToken)
-        val isSignedUp = isSignedUpUseCase(providerToken).getOrThrow()
-
-        if (!isSignedUp) {
-            _state.value = LoginState.NeedToSignUp(accessToken)
-            return@launch
+    fun login(accessToken: String) {
+        if (job != null) {
+            return
         }
+        job = launch {
+            _uiState.update { it.copy(isLoading = true) }
+            val providerToken = ProviderToken.kakao(accessToken)
+            val result = loginUseCase(providerToken)
+                .onFailure { handleException(it) }
+                .getOrNull()
 
-        signInUseCase(providerToken)
-            .onSuccess {
-                val isOnboarded = isOnboardedUseCase().getOrThrow()
-                _state.value =
-                    if (isOnboarded) LoginState.Success else LoginState.NeedToOnboard
+            _uiState.update {
+                it.copy(isLoading = false, result = result)
             }
-            .onFailure {
-                handleException(it)
-            }
-    }
-
-    override fun handleException(throwable: Throwable) {
-        _loading.value = false
-        super.handleException(throwable)
+        }
+        job?.invokeOnCompletion { job = null }
     }
 }
