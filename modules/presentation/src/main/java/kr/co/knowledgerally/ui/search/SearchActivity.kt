@@ -50,6 +50,9 @@ class SearchActivity : BaseWebViewActivity() {
             val intent = LectureActivity.getIntent(this, response.lectureInfoId)
             startActivity(intent)
         }
+        BridgeResponse.NavigateUp -> {
+            navigateUp()
+        }
         else -> {}
     }
 
