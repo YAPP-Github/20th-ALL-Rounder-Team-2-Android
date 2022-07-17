@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.ui.profile
 
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -21,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -39,6 +41,7 @@ import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.profile.state.ImageState
 import kr.co.knowledgerally.ui.profile.state.IntroductionState
 import kr.co.knowledgerally.ui.profile.state.KakaoIdState
+import kr.co.knowledgerally.ui.profile.state.Mode
 import kr.co.knowledgerally.ui.profile.state.NameState
 import kr.co.knowledgerally.ui.profile.state.PortfolioState
 import kr.co.knowledgerally.ui.profile.state.ProfileState
@@ -47,7 +50,19 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel) {
-    val profileState = rememberProfileState()
+    val user = viewModel.user?.collectAsState()
+    val profileState = if (user?.value != null) {
+        rememberProfileState(
+            nameState = NameState(user.value!!.profile.username),
+            introductionState = IntroductionState(user.value!!.profile.introduction),
+            kakaoIdState = KakaoIdState(user.value!!.profile.kakaoId),
+            portfolioState = PortfolioState(user.value!!.profile.portfolio),
+            imageState = remember { ImageState(Uri.parse(user.value!!.profile.imageUrl ?: "")) }
+        )
+    } else {
+        rememberProfileState()
+    }
+
     val loading by viewModel.loading.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -61,7 +76,8 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
                     portfolio = profileState.portfolioState.text,
                     imageUri = profileState.imageState.uriString,
                 )
-            }
+            },
+            mode = viewModel.mode
         )
 
         if (loading) {
@@ -75,7 +91,13 @@ private fun ProfileContent(
     modifier: Modifier = Modifier,
     profileState: ProfileState,
     onSubmit: () -> Unit,
+    mode: Mode
 ) {
+    val titleResId = when (mode) {
+        Mode.New -> R.string.profile_title
+        Mode.Edit -> R.string.profile_title_edit
+    }
+
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -83,7 +105,7 @@ private fun ProfileContent(
                 .verticalScroll(rememberScrollState())
                 .padding(start = 24.dp, top = 68.dp, end = 24.dp, bottom = 120.dp)
         ) {
-            ProfileTitle(text = stringResource(id = R.string.profile_title))
+            ProfileTitle(text = stringResource(id = titleResId))
 
             // 프로필 사진
             ProfileImage(
@@ -327,6 +349,7 @@ private fun ProfileScreenPreview() {
         ProfileContent(
             profileState = rememberProfileState(),
             onSubmit = { },
+            mode = Mode.New
         )
     }
 }
