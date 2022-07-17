@@ -9,7 +9,7 @@ interface UserRemoteDataSource {
 
     suspend fun isOnboarded(): Result<Boolean>
 
-    suspend fun submitOnboard(request: OnboardEntity): Result<Unit>
+    suspend fun submitOnboard(request: OnboardEntity, isModified: Boolean): Result<Unit>
 
     suspend fun getUser(): Result<UserEntity>
 

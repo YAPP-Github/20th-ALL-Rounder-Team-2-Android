@@ -49,6 +49,9 @@ internal interface ApiService {
     @DELETE("user/me")
     suspend fun withdrawal()
 
+    @PATCH("user/me")
+    suspend fun patchUser(@Body onboard: OnboardRequest): UserResponseWrapper
+
     @GET("user/me")
     suspend fun getUser(): UserResponseWrapper
 

@@ -31,7 +31,8 @@ class UserActivity : BaseWebViewActivity() {
                 UserScreen(
                     state = webViewState,
                     delegate = this,
-                    navigateUp = ::navigateUp
+                    navigateUp = ::navigateUp,
+                    refresh = viewModel::refresh
                 )
 
                 LaunchedEffect(isRefresh) {

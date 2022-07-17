@@ -25,22 +25,27 @@ internal class UserRemoteDataSourceImpl @Inject constructor(
         response.data.isOnboarded
     }
 
-    override suspend fun submitOnboard(onboard: OnboardEntity): Result<Unit> = runCatching {
-        val imageUri = onboard.imageUri
-        if (imageUri != null) {
-            val image = withContext(Dispatchers.IO) { imageTranscoder.from(imageUri) }
-                .map { image ->
-                    MultipartBody.Part.createFormData(
-                        "image",
-                        image.filename,
-                        image.data.toRequestBody(MultipartBody.FORM)
-                    )
-                }
-                .getOrThrow()
-            apiService.uploadUserImage(image)
+    override suspend fun submitOnboard(onboard: OnboardEntity, isModified: Boolean): Result<Unit> =
+        runCatching {
+            val imageUri = onboard.imageUri
+            if (imageUri != null) {
+                val image = withContext(Dispatchers.IO) { imageTranscoder.from(imageUri) }
+                    .map { image ->
+                        MultipartBody.Part.createFormData(
+                            "image",
+                            image.filename,
+                            image.data.toRequestBody(MultipartBody.FORM)
+                        )
+                    }
+                    .getOrThrow()
+                apiService.uploadUserImage(image)
+            }
+            if (isModified) {
+                apiService.patchUser(onboard.toRemote())
+            } else {
+                apiService.submitOnboard(onboard.toRemote())
+            }
         }
-        apiService.submitOnboard(onboard.toRemote())
-    }
 
     override suspend fun getUser(): Result<UserEntity> = runCatching {
         apiService.getUser().data.user.toData()

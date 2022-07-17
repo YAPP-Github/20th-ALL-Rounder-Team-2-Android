@@ -13,6 +13,7 @@ import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.login.LoginActivity
 import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.ui.profile.ProfileActivity
+import kr.co.knowledgerally.ui.profile.state.Mode
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
@@ -54,7 +55,8 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun startProfileActivity() {
-        ProfileActivity.startActivity(this)
+        val intent = ProfileActivity.getIntent(this, Mode.New)
+        startActivity(intent)
         finish()
     }
 

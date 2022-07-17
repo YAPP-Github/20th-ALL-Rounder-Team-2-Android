@@ -10,6 +10,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kr.co.knowledgerally.base.BaseActivity
 import kr.co.knowledgerally.ui.main.MainActivity
+import kr.co.knowledgerally.ui.profile.state.CompleteState
+import kr.co.knowledgerally.ui.profile.state.Mode
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
@@ -28,8 +30,13 @@ class ProfileActivity : BaseActivity() {
 
         lifecycleScope.launch {
             viewModel.completed.collect { complete ->
-                if (complete) {
-                    startMainActivity()
+                when (complete) {
+                    CompleteState.Created -> startMainActivity()
+                    CompleteState.Modified -> {
+                        viewModel.refreshUser()
+                        finish()
+                    }
+                    CompleteState.Waiting -> {}
                 }
             }
         }
@@ -41,9 +48,8 @@ class ProfileActivity : BaseActivity() {
     }
 
     companion object {
-        fun startActivity(context: Context) {
-            val intent = Intent(context, ProfileActivity::class.java)
-            context.startActivity(intent)
-        }
+        fun getIntent(context: Context, mode: Mode) =
+            Intent(context, ProfileActivity::class.java)
+                .putExtra(ProfileViewModel.KEY_MODE, mode)
     }
 }
