@@ -1,5 +1,6 @@
 package kr.co.knowledgerally.ui.user
 
+import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -25,13 +26,16 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 fun UserScreen(
     state: WebViewState,
     delegate: BridgeDelegate,
+    refresh: () -> Unit,
     navigateUp: () -> Unit
 ) {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {
-
+            if (it.resultCode == Activity.RESULT_OK) {
+                refresh()
+            }
         }
     )
 

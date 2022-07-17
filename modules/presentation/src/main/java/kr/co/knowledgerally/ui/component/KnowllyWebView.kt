@@ -19,6 +19,7 @@ import com.google.accompanist.web.rememberWebViewNavigator
 import com.google.accompanist.web.rememberWebViewState
 import kr.co.knowledgerally.bridge.BridgeDelegate
 import kr.co.knowledgerally.bridge.BridgeInterface
+import kr.co.knowledgerally.bridge.BridgeRequest
 import kr.co.knowledgerally.bridge.WebViewState
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -76,7 +77,11 @@ fun KnowllyWebView(
 
     LaunchedEffect(Unit) {
         state.requestFlow.collect {
-            // TODO: webView?.post(...)
+            when (it) {
+                BridgeRequest.Refresh -> {
+                    webView?.reload()
+                }
+            }
         }
     }
 
