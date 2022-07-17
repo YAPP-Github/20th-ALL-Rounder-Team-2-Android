@@ -13,6 +13,7 @@ import kr.co.knowledgerally.core.exception.ImageTranscodeException
 import kr.co.knowledgerally.domain.model.Onboard
 import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
 import kr.co.knowledgerally.domain.usecase.ModifyOnboardUseCase
+import kr.co.knowledgerally.domain.usecase.RefreshUserUseCase
 import kr.co.knowledgerally.domain.usecase.SubmitOnboardUseCase
 import kr.co.knowledgerally.toast.Toaster
 import kr.co.knowledgerally.ui.R
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getUserStreamUseCase: GetUserStreamUseCase,
+    private val refreshUserUseCase: RefreshUserUseCase,
     private val submitOnboardUseCase: SubmitOnboardUseCase,
     private val modifyOnboardUseCase: ModifyOnboardUseCase,
 ) : BaseViewModel() {
@@ -75,6 +77,12 @@ class ProfileViewModel @Inject constructor(
                         .onFailure { handleException(it) }
                 }
             }
+        }
+    }
+
+    fun refreshUser() {
+        launch {
+            refreshUserUseCase().getOrThrow()
         }
     }
 

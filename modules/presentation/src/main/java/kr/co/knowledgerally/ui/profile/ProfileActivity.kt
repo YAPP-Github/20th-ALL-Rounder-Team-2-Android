@@ -32,7 +32,10 @@ class ProfileActivity : BaseActivity() {
             viewModel.completed.collect { complete ->
                 when (complete) {
                     CompleteState.Created -> startMainActivity()
-                    CompleteState.Modified -> finish()
+                    CompleteState.Modified -> {
+                        viewModel.refreshUser()
+                        finish()
+                    }
                     CompleteState.Waiting -> {}
                 }
             }
