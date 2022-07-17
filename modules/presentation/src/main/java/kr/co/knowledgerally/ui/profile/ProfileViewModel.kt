@@ -62,7 +62,11 @@ class ProfileViewModel @Inject constructor(
                 intro = introduction,
                 kakaoId = kakaoId,
                 portfolio = portfolio.takeUnless { it.isNullOrBlank() },
-                imageUri = imageUri,
+                imageUri = if (imageUri != null && imageUri.startsWith("https")) {
+                    null
+                } else {
+                    imageUri
+                },
             )
 
             when (mode) {
