@@ -45,11 +45,8 @@ class LectureActivity : BaseWebViewActivity() {
         }
     }
 
-    override fun onBridgeResponse(response: BridgeResponse) = when (response) {
-        is BridgeResponse.NavigateToLecture -> {
-            // TODO: URL 변경된 거로, 새로 불러오기
-            viewModel.refresh()
-        }
+    override fun onBridgeResponse(response: BridgeResponse) {
+
     }
 
     companion object {

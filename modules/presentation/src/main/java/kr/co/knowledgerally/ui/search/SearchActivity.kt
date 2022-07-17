@@ -1,4 +1,4 @@
-package kr.co.knowledgerally.ui.review
+package kr.co.knowledgerally.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -13,12 +13,13 @@ import kr.co.knowledgerally.base.BaseWebViewActivity
 import kr.co.knowledgerally.bridge.BridgeRequest
 import kr.co.knowledgerally.bridge.BridgeResponse
 import kr.co.knowledgerally.bridge.rememberWebViewState
+import kr.co.knowledgerally.ui.lecture.LectureActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @AndroidEntryPoint
-class ReviewActivity : BaseWebViewActivity() {
+class SearchActivity : BaseWebViewActivity() {
 
-    private val viewModel: ReviewViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +30,9 @@ class ReviewActivity : BaseWebViewActivity() {
                 val isRefresh by viewModel.isRefresh.collectAsState()
                 val webViewState = rememberWebViewState(url = url)
 
-                ReviewScreen(
+                SearchScreen(
                     state = webViewState,
-                    delegate = this,
-                    navigateUp = ::navigateUp
+                    delegate = this
                 )
 
                 LaunchedEffect(isRefresh) {
@@ -46,20 +46,17 @@ class ReviewActivity : BaseWebViewActivity() {
     }
 
     override fun onBridgeResponse(response: BridgeResponse) = when (response) {
-        BridgeResponse.NavigateUp -> {
-            navigateUp()
+        is BridgeResponse.NavigateToLecture -> {
+            val intent = LectureActivity.getIntent(this, response.lectureInfoId)
+            startActivity(intent)
         }
         else -> {}
     }
 
     companion object {
-
-        fun getIntent(
-            context: Context,
-            lectureId: Long,
-            coachId: Long
-        ): Intent = Intent(context, ReviewActivity::class.java)
-            .putExtra(ReviewViewModel.KEY_LECTURE_ID, lectureId)
-            .putExtra(ReviewViewModel.KEY_COACH_ID, coachId)
+        fun startActivity(context: Context) {
+            val intent = Intent(context, SearchActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 }
