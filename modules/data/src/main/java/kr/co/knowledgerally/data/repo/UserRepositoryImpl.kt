@@ -20,8 +20,8 @@ internal class UserRepositoryImpl @Inject constructor(
 
     override suspend fun isOnboarded(): Result<Boolean> = userRemoteDataSource.isOnboarded()
 
-    override suspend fun submitOnboard(onboard: Onboard): Result<Unit> =
-        userRemoteDataSource.submitOnboard(onboard.toData())
+    override suspend fun submitOnboard(onboard: Onboard, isModified: Boolean): Result<Unit> =
+        userRemoteDataSource.submitOnboard(request = onboard.toData(), isModified = isModified)
 
     override fun getUserStream(): Flow<User> = user.filterNotNull()
 
