@@ -7,8 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 @Stable
-class ImageState {
-    var uri by mutableStateOf<Uri>(Uri.EMPTY)
+class ImageState(initialImage: Uri = Uri.EMPTY) {
+    var uri by mutableStateOf<Uri>(initialImage)
     val isEmpty: Boolean
         get() = uri == Uri.EMPTY
 
