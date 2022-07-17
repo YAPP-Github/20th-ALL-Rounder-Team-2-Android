@@ -26,6 +26,7 @@ import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.main.MainActivity
 import kr.co.knowledgerally.ui.policy.PolicyActivity
 import kr.co.knowledgerally.ui.profile.ProfileActivity
+import kr.co.knowledgerally.ui.profile.state.Mode
 import kr.co.knowledgerally.ui.signup.SignUpActivity
 import kr.co.knowledgerally.ui.terms.TermsActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
@@ -94,7 +95,8 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun startProfileActivity() {
-        ProfileActivity.startActivity(this)
+        val intent = ProfileActivity.getIntent(this, mode = Mode.New)
+        startActivity(intent)
         finish()
     }
 
