@@ -18,15 +18,8 @@ class RegisterLoungeViewModel @Inject constructor(
 
     val uiState: StateFlow<RegisterLoungeUiState> = flow {
         getCoachLectureInfoListUseCase(LectureState.Onboard)
-            .map { lectureInfoList ->
-                if (lectureInfoList.isNotEmpty()) {
-                    RegisterLoungeUiState.Lectures(lectureInfoList)
-                } else {
-                    RegisterLoungeUiState.NoLecture
-                }
-            }
-            .onSuccess { emit(it) }
-            .onFailure { handleException(it) }
+            .onSuccess { emit(RegisterLoungeUiState.Lectures(it)) }
+            .onFailure { emit(RegisterLoungeUiState.NoLecture) }
     }
         .stateIn(viewModelScope, SharingStarted.Eagerly, RegisterLoungeUiState.Loading)
 }
