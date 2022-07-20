@@ -184,6 +184,7 @@ private fun ProfileImage(
             }
         },
     )
+    val openGallery: () -> Unit = { launcher.launch("image/*") }
     Box(
         modifier = modifier.size(108.dp),
         contentAlignment = Alignment.Center,
@@ -196,7 +197,7 @@ private fun ProfileImage(
             Box(
                 modifier = Modifier
                     .size(108.dp)
-                    .clickable { launcher.launch("image/*") })
+                    .clickable { openGallery() })
             {
                 Image(
                     painter = painterResource(id = R.drawable.img_profile_placeholder),
@@ -220,7 +221,10 @@ private fun ProfileImage(
                 .size(36.dp)
                 .align(Alignment.BottomEnd)
         ) {
-            Box(contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.clickable { openGallery() },
+                contentAlignment = Alignment.Center,
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add_a_photo),
                     contentDescription = null,
