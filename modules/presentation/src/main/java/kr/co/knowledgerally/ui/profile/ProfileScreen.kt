@@ -251,8 +251,6 @@ private fun ProfileName(
                 .onFocusChanged { state.onFocusChange(it.isFocused) },
             placeholder = stringResource(id = R.string.profile_name_hint),
             isError = state.isError,
-            helperText = stringResource(id = R.string.profile_name_helper_text),
-            helperTextEnabled = state.isError,
             counterMaxLength = NameState.MAX_LENGTH,
             counterEnabled = true,
         )
@@ -274,8 +272,6 @@ private fun ProfileIntroduction(
                 .onFocusChanged { state.onFocusChange(it.isFocused) },
             placeholder = stringResource(id = R.string.profile_introduction_hint),
             isError = state.isError,
-            helperText = stringResource(id = R.string.profile_introduction_hint),
-            helperTextEnabled = state.isError,
             counterMaxLength = IntroductionState.MAX_LENGTH,
             counterEnabled = true,
             minHeight = 180.dp,
