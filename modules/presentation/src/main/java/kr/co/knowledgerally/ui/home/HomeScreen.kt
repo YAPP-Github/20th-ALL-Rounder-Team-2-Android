@@ -14,6 +14,7 @@ import kr.co.knowledgerally.bridge.BridgeDelegate
 import kr.co.knowledgerally.bridge.BridgeRequest
 import kr.co.knowledgerally.bridge.BridgeResponse
 import kr.co.knowledgerally.bridge.rememberWebViewState
+import kr.co.knowledgerally.ui.category.CategoryActivity
 import kr.co.knowledgerally.ui.component.KnowllyWebView
 import kr.co.knowledgerally.ui.lecture.LectureActivity
 import kr.co.knowledgerally.ui.search.SearchActivity
@@ -33,6 +34,10 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             when (response) {
                 is BridgeResponse.NavigateToLecture -> {
                     val intent = LectureActivity.getIntent(context, response.lectureInfoId)
+                    launcher.launch(intent)
+                }
+                is BridgeResponse.NavigateToCategory -> {
+                    val intent = CategoryActivity.getIntent(context, response.category)
                     launcher.launch(intent)
                 }
                 BridgeResponse.NavigateToSearch -> {
