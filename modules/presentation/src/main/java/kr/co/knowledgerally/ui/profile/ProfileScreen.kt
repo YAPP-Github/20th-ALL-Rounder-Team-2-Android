@@ -22,9 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -177,8 +175,6 @@ private fun ProfileImage(
     state: ImageState,
     modifier: Modifier = Modifier,
 ) {
-    var showDialog by remember { mutableStateOf(false) }
-
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
@@ -201,7 +197,7 @@ private fun ProfileImage(
             Box(
                 modifier = Modifier
                     .size(108.dp)
-                    .clickable { showDialog = true })
+                    .clickable { openGallery() })
             {
                 Image(
                     painter = painterResource(id = R.drawable.img_profile_placeholder),
@@ -226,7 +222,7 @@ private fun ProfileImage(
                 .align(Alignment.BottomEnd)
         ) {
             Box(
-                modifier = Modifier.clickable { showDialog = true },
+                modifier = Modifier.clickable { openGallery() },
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -238,19 +234,6 @@ private fun ProfileImage(
             }
         }
     }
-
-    ImagePickerDialog(
-        isVisible = showDialog,
-        showGallery = {
-            openGallery()
-            showDialog = false
-        },
-        removeImage = {
-            state.uri = Uri.EMPTY
-            showDialog = false
-        },
-        onDismiss = { showDialog = false }
-    )
 }
 
 @Composable
