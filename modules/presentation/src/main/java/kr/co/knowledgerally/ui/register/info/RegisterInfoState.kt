@@ -44,7 +44,9 @@ class RegisterInfoState(
     }
 
     fun updateImageUris(uris: List<Uri>) {
-        imageUris = uris.take(MAX_IMAGE_LENGTH)
+        if (uris.isNotEmpty()) {
+            imageUris = uris.take(MAX_IMAGE_LENGTH)
+        }
     }
 
     fun removeImageUri(uri: Uri) {
