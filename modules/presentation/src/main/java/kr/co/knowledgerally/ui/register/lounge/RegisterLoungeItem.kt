@@ -92,7 +92,7 @@ fun RegisterLoungeItem(
                 .height(40.dp),
             color = KnowllyTheme.colors.primaryLight,
             shape = RoundedCornerShape(18.dp),
-            onClick = { navigateToSchedule(1) }
+            onClick = { navigateToSchedule(lectureInfo.id) }
         ) {
             Row(
                 modifier = Modifier
