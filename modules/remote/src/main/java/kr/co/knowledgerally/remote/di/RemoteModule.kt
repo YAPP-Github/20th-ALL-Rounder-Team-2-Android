@@ -47,7 +47,6 @@ internal object RemoteModule {
         val gson = GsonBuilder()
             .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeSerializer)
             .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeDeserializer)
-            .setDateFormat("yyyy-MM-dd'T'HH:mm")
             .create()
 
         return Retrofit.Builder()

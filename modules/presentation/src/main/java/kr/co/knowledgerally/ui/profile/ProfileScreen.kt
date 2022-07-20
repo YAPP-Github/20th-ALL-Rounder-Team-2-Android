@@ -184,6 +184,7 @@ private fun ProfileImage(
             }
         },
     )
+    val openGallery: () -> Unit = { launcher.launch("image/*") }
     Box(
         modifier = modifier.size(108.dp),
         contentAlignment = Alignment.Center,
@@ -196,7 +197,7 @@ private fun ProfileImage(
             Box(
                 modifier = Modifier
                     .size(108.dp)
-                    .clickable { launcher.launch("image/*") })
+                    .clickable { openGallery() })
             {
                 Image(
                     painter = painterResource(id = R.drawable.img_profile_placeholder),
@@ -220,7 +221,10 @@ private fun ProfileImage(
                 .size(36.dp)
                 .align(Alignment.BottomEnd)
         ) {
-            Box(contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.clickable { openGallery() },
+                contentAlignment = Alignment.Center,
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add_a_photo),
                     contentDescription = null,
@@ -247,8 +251,6 @@ private fun ProfileName(
                 .onFocusChanged { state.onFocusChange(it.isFocused) },
             placeholder = stringResource(id = R.string.profile_name_hint),
             isError = state.isError,
-            helperText = stringResource(id = R.string.profile_name_helper_text),
-            helperTextEnabled = state.isError,
             counterMaxLength = NameState.MAX_LENGTH,
             counterEnabled = true,
         )
@@ -270,8 +272,6 @@ private fun ProfileIntroduction(
                 .onFocusChanged { state.onFocusChange(it.isFocused) },
             placeholder = stringResource(id = R.string.profile_introduction_hint),
             isError = state.isError,
-            helperText = stringResource(id = R.string.profile_introduction_hint),
-            helperTextEnabled = state.isError,
             counterMaxLength = IntroductionState.MAX_LENGTH,
             counterEnabled = true,
             minHeight = 180.dp,

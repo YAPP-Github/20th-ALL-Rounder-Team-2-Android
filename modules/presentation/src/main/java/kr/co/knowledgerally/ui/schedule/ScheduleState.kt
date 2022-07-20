@@ -31,7 +31,12 @@ class ScheduleState(
         if (date == null || runningTime == null) {
             return null
         }
-        val startAt = date.atTime(LocalTime.of(hour.toInt(), minute.toInt()))
+        val hours = if (timePeriod == TimePeriod.PM && hour.toInt() < 12) {
+            hour.toInt() + 12
+        } else {
+            hour.toInt()
+        }
+        val startAt = date.atTime(LocalTime.of(hours, minute.toInt()))
         val endAt = startAt.plusHours(runningTime!!.toLong())
         return Schedule(startAt, endAt)
     }

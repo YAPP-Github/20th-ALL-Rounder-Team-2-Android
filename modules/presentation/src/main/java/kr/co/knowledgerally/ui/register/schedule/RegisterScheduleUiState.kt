@@ -17,5 +17,7 @@ data class RegisterScheduleUiState(
 
     fun loading(isLoading: Boolean) = copy(isLoading = isLoading)
 
-    operator fun contains(schedule: Schedule): Boolean = schedule in schedules
+    operator fun contains(schedule: Schedule): Boolean = schedules.any {
+        schedule.endAt.isAfter(it.startAt) && schedule.endAt.isBefore(it.endAt)
+    }
 }
