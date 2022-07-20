@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.domain.model.Schedule
+import kr.co.knowledgerally.domain.usecase.GetLectureScheduleListUseCase
 import kr.co.knowledgerally.domain.usecase.RegisterLectureScheduleUseCase
 import kr.co.knowledgerally.toast.Toaster
 import kr.co.knowledgerally.ui.R
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterScheduleViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val getLectureScheduleListUseCase: GetLectureScheduleListUseCase,
     private val registerLectureScheduleUseCase: RegisterLectureScheduleUseCase,
 ) : BaseViewModel() {
     private val lectureId: Long = savedStateHandle.get<Long>(KEY_LECTURE_ID)!!
@@ -25,6 +27,19 @@ class RegisterScheduleViewModel @Inject constructor(
     val uiState: StateFlow<RegisterScheduleUiState> = _uiState.asStateFlow()
 
     private var job: Job? = null
+
+    init {
+        launch {
+            _uiState.update { it.loading(true) }
+            val schedules = getLectureScheduleListUseCase(lectureId).getOrDefault(emptyList())
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    schedules = schedules
+                )
+            }
+        }
+    }
 
     fun addSchedule(schedule: Schedule) {
         if (schedule in uiState.value) {

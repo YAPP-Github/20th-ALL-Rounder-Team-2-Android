@@ -397,7 +397,6 @@ private fun LazyListScope.addImage(
                     size = 16.dp,
                     modifier = Modifier
                         .size(28.dp)
-                        .clickable { onClick() }
                         .align(Alignment.BottomEnd)
                 )
             },
