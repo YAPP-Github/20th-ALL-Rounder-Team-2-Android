@@ -19,6 +19,7 @@ import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.KnowllyCheckBoxText
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyTopAppBar
+import kr.co.knowledgerally.ui.component.NavigationType
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
@@ -50,7 +51,7 @@ private fun SignUpScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        KnowllyTopAppBar(onNavigationClick = navigateUp)
+        KnowllyTopAppBar(navigationType = NavigationType.None)
         SignUpContent(
             signUpState = signUpState,
             navigateToTerms = navigateToTerms,
