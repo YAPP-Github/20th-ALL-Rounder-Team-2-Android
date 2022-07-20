@@ -26,4 +26,9 @@ class BridgeInterface(
     fun navigateUp() {
         delegate.onBridgeResponse(BridgeResponse.NavigateUp)
     }
+
+    @JavascriptInterface
+    fun navigateToCategory(category: String) {
+        delegate.onBridgeResponse(BridgeResponse.NavigateToCategory(category))
+    }
 }
