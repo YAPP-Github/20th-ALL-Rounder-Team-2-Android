@@ -33,7 +33,7 @@
     <string name="nav_mypage">마이 페이지</string>
 
     <string name="category_select">카테고리 선택</string>
-    <string name="category_service_planning">서비스 기획</string>
+    <string name="category_service_planning">기획 / PM</string>
     <string name="category_design">디자인</string>
     <string name="category_develop">개발</string>
     <string name="category_marketing">마케팅</string>
