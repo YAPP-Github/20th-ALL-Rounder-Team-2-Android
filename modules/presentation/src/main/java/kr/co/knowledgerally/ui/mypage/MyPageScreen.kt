@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,7 +49,6 @@ import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.mypage.dialog.LogoutDialog
 import kr.co.knowledgerally.ui.mypage.dialog.WithdrawalDialog
 import kr.co.knowledgerally.ui.splash.SplashActivity
-import kr.co.knowledgerally.ui.terms.TermsActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import kr.co.knowledgerally.ui.user.UserActivity
 
@@ -78,9 +78,6 @@ fun MyPageScreen(viewModel: MyPageViewModel = hiltViewModel()) {
                 navigateToProfile = { userId: Long ->
                     val intent = UserActivity.getIntent(context, userId)
                     activityLauncher.launch(intent)
-                },
-                navigateToTermsOfService = {
-                    TermsActivity.startActivity(context)
                 },
                 logout = { showLogoutDialog = true },
                 withdrawal = { showWithdrawalDialog = true },
@@ -115,10 +112,11 @@ private fun MyPageScreen(
     versionName: String,
     user: User,
     navigateToProfile: (userId: Long) -> Unit,
-    navigateToTermsOfService: () -> Unit,
     logout: () -> Unit,
     withdrawal: () -> Unit,
 ) {
+    val uriHandler = LocalUriHandler.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -131,7 +129,7 @@ private fun MyPageScreen(
         MyPageDivider()
         MyPageItem(
             text = stringResource(id = R.string.mypage_app_version_info),
-            onClick = { navigateToTermsOfService() },
+            onClick = { },
             content = {
                 Text(
                     text = versionName,
@@ -140,8 +138,13 @@ private fun MyPageScreen(
             }
         )
         MyPageItem(
-            text = stringResource(id = R.string.mypage_terms_of_service_and_policy),
-            onClick = { navigateToTermsOfService() },
+            text = stringResource(id = R.string.mypage_terms_of_service),
+            onClick = { uriHandler.openUri(MyPageViewModel.TERMS_OF_SERVICE_URL) },
+            content = { MyPageIcon() }
+        )
+        MyPageItem(
+            text = stringResource(id = R.string.mypage_privacy_policy),
+            onClick = { uriHandler.openUri(MyPageViewModel.PRIVACY_POLICY_URL) },
             content = { MyPageIcon() }
         )
         MyPageItem(
@@ -284,7 +287,6 @@ private fun MyPageScreenPreview() {
                 coach = true,
             ),
             navigateToProfile = { },
-            navigateToTermsOfService = { },
             logout = { },
             withdrawal = { },
         )

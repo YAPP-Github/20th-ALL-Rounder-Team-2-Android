@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -35,7 +36,7 @@ import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun LoginScreen(onLogin: () -> Unit, navigateToTerms: () -> Unit, navigateToPolicy: () -> Unit) {
+fun LoginScreen(onLogin: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -55,7 +56,7 @@ fun LoginScreen(onLogin: () -> Unit, navigateToTerms: () -> Unit, navigateToPoli
         ) {
             KakaoLoginButton(onClick = onLogin)
             VerticalSpacer(height = 24.dp)
-            LoginAcceptation(navigateToTerms = navigateToTerms, navigateToPolicy = navigateToPolicy)
+            LoginAcceptation()
         }
     }
 }
@@ -114,7 +115,9 @@ fun KakaoLoginButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun LoginAcceptation(navigateToTerms: () -> Unit, navigateToPolicy: () -> Unit) {
+fun LoginAcceptation() {
+    val uriHandler = LocalUriHandler.current
+
     val policyString = stringResource(id = R.string.login_policy)
     val termsString = stringResource(id = R.string.login_terms)
     val acceptationString = stringResource(id = R.string.login_acceptation)
@@ -140,10 +143,10 @@ fun LoginAcceptation(navigateToTerms: () -> Unit, navigateToPolicy: () -> Unit) 
     ) { position ->
         when (position) {
             in policyStringRange -> {
-                navigateToPolicy()
+                uriHandler.openUri(LoginViewModel.PRIVACY_POLICY_URL)
             }
             in termsStringRange -> {
-                navigateToTerms()
+                uriHandler.openUri(LoginViewModel.TERMS_OF_SERVICE_URL)
             }
             else -> {}
         }
@@ -154,6 +157,6 @@ fun LoginAcceptation(navigateToTerms: () -> Unit, navigateToPolicy: () -> Unit) 
 @Composable
 private fun LoginScreenPreview() {
     KnowllyTheme {
-        LoginScreen(onLogin = {}, navigateToTerms = {}, navigateToPolicy = {})
+        LoginScreen(onLogin = {})
     }
 }
