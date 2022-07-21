@@ -92,7 +92,8 @@
 
     <string name="mypage_show_more_profile">프로필 더 보기</string>
     <string name="mypage_app_version_info">앱 버전 정보</string>
-    <string name="mypage_terms_of_service_and_policy">서비스 이용약관 및 정책</string>
+    <string name="mypage_terms_of_service">서비스 이용약관</string>
+    <string name="mypage_privacy_policy">개인정보 처리 방침</string>
     <string name="mypage_logout">로그아웃</string>
     <string name="mypage_withdrawal">회원탈퇴</string>
 
