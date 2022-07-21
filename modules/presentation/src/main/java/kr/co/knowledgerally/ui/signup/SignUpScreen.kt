@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,16 +27,12 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun SignUpScreen(
     navigateUp: () -> Unit,
-    navigateToTerms: () -> Unit,
-    navigateToPolicy: () -> Unit,
     signUp: () -> Unit
 ) {
     val signUpState = rememberSignUpState()
     SignUpScreen(
         signUpState = signUpState,
         navigateUp = navigateUp,
-        navigateToTerms = navigateToTerms,
-        navigateToPolicy = navigateToPolicy,
         signUp = signUp
     )
 }
@@ -44,8 +41,6 @@ fun SignUpScreen(
 private fun SignUpScreen(
     signUpState: SignUpState,
     navigateUp: () -> Unit,
-    navigateToTerms: () -> Unit,
-    navigateToPolicy: () -> Unit,
     signUp: () -> Unit
 ) {
     Column(
@@ -54,8 +49,6 @@ private fun SignUpScreen(
         KnowllyTopAppBar(navigationType = NavigationType.None)
         SignUpContent(
             signUpState = signUpState,
-            navigateToTerms = navigateToTerms,
-            navigateToPolicy = navigateToPolicy,
             signUp = signUp
         )
     }
@@ -64,10 +57,10 @@ private fun SignUpScreen(
 @Composable
 private fun SignUpContent(
     signUpState: SignUpState,
-    navigateToTerms: () -> Unit,
-    navigateToPolicy: () -> Unit,
     signUp: () -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
+
     val termsState = signUpState.termsState
     val policyState = signUpState.policyState
 
@@ -89,12 +82,12 @@ private fun SignUpContent(
         CheckItem(
             text = stringResource(id = R.string.signup_accept_terms),
             checkState = termsState,
-            onClick = navigateToTerms
+            onClick = { uriHandler.openUri(SignUpViewModel.TERMS_OF_SERVICE_URL) }
         )
         CheckItem(
             text = stringResource(id = R.string.signup_accept_policy),
             checkState = policyState,
-            onClick = navigateToPolicy
+            onClick = { uriHandler.openUri(SignUpViewModel.PRIVACY_POLICY_URL) }
         )
         Spacer(modifier = Modifier.weight(1f))
         SignUpButton(enabled = signUpState.isRequired, onClick = { signUp() })
@@ -170,8 +163,6 @@ private fun SignUpScreenPreview() {
         SignUpScreen(
             signUpState = rememberSignUpState(),
             navigateUp = { },
-            navigateToTerms = { },
-            navigateToPolicy = { },
             signUp = { }
         )
     }

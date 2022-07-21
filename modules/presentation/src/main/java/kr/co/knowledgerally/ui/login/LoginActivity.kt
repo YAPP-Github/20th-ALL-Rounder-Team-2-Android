@@ -24,11 +24,9 @@ import kr.co.knowledgerally.domain.model.ProviderToken
 import kr.co.knowledgerally.feature.kakao.KakaoLogin
 import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.main.MainActivity
-import kr.co.knowledgerally.ui.policy.PolicyActivity
 import kr.co.knowledgerally.ui.profile.ProfileActivity
 import kr.co.knowledgerally.ui.profile.state.Mode
 import kr.co.knowledgerally.ui.signup.SignUpActivity
-import kr.co.knowledgerally.ui.terms.TermsActivity
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import javax.inject.Inject
 
@@ -62,9 +60,7 @@ class LoginActivity : BaseActivity() {
         KnowllyTheme {
             Box(modifier = Modifier.fillMaxSize()) {
                 LoginScreen(
-                    onLogin = { requestKakaoLogin() },
-                    navigateToTerms = { startTermsActivity() },
-                    navigateToPolicy = { startPolicyActivity() }
+                    onLogin = { requestKakaoLogin() }
                 )
                 if (uiState.isLoading) {
                     Loading()
@@ -104,9 +100,6 @@ class LoginActivity : BaseActivity() {
         SignUpActivity.startActivity(this, providerToken.accessToken)
         finish()
     }
-
-    private fun startTermsActivity() = TermsActivity.startActivity(this)
-    private fun startPolicyActivity() = PolicyActivity.startActivity(this)
 
     companion object {
 

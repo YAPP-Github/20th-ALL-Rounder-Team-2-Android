@@ -50,14 +50,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.terms.TermsActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".ui.policy.PolicyActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name=".ui.profile.ProfileActivity"
             android:screenOrientation="portrait" />
 
