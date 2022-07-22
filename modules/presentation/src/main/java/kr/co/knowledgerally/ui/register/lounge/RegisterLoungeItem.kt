@@ -19,11 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import kr.co.knowledgerally.domain.model.LectureInfo
 import kr.co.knowledgerally.model.toPresentation
 import kr.co.knowledgerally.ui.R
 import kr.co.knowledgerally.ui.component.ContainedBadge
+import kr.co.knowledgerally.ui.component.LectureImage
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
@@ -53,19 +53,10 @@ fun RegisterLoungeItem(
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row {
-
-            Surface(
+            LectureImage(
+                imageUrl = lectureInfo.thumbnailImageUrl,
                 modifier = Modifier.size(88.dp),
-                color = KnowllyTheme.colors.grayEF,
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                AsyncImage(
-                    model = lectureInfo.thumbnailImageUrl,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
-
+            )
             Column(
                 modifier = Modifier
                     .padding(start = 18.dp)
