@@ -10,15 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import kr.co.knowledgerally.domain.model.LectureInfo
 import kr.co.knowledgerally.domain.model.Schedule
 import kr.co.knowledgerally.ui.R
@@ -27,6 +23,7 @@ import kr.co.knowledgerally.ui.component.DashBanner
 import kr.co.knowledgerally.ui.component.HorizontalSpacer
 import kr.co.knowledgerally.ui.component.KnowllyContainedButton
 import kr.co.knowledgerally.ui.component.KnowllyDivider
+import kr.co.knowledgerally.ui.component.LectureImage
 import kr.co.knowledgerally.ui.component.VerticalSpacer
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 import java.time.format.DateTimeFormatter
@@ -207,20 +204,10 @@ private fun LectureItem(
                 .fillMaxWidth()
                 .padding(vertical = 12.dp)
         ) {
-            Surface(
-                shape = RoundedCornerShape(8.dp),
-                color = KnowllyTheme.colors.grayEF,
-                modifier = Modifier.size(88.dp)
-            ) {
-                val imageUrl = lectureInfo.thumbnailImageUrl
-                if (imageUrl != null) {
-                    AsyncImage(
-                        model = imageUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
+            LectureImage(
+                imageUrl = lectureInfo.thumbnailImageUrl,
+                modifier = Modifier.size(88.dp),
+            )
             HorizontalSpacer(width = 12.dp)
             Column(
                 modifier = Modifier.fillMaxWidth()
