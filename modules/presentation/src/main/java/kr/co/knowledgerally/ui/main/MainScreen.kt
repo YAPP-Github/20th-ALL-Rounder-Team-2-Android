@@ -127,7 +127,7 @@ private fun BallIcon(
         Row(
             horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_ball),
