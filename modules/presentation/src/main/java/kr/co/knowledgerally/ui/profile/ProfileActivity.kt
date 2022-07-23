@@ -34,6 +34,7 @@ class ProfileActivity : BaseActivity() {
                     CompleteState.Created -> startMainActivity()
                     CompleteState.Modified -> {
                         viewModel.refreshUser()
+                        setResult(RESULT_OK)
                         finish()
                     }
                     CompleteState.Waiting -> {}
