@@ -20,12 +20,10 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 @Composable
 fun ImagePickerDialog(
     isVisible: Boolean,
-    showGallery: () -> Unit,
-    removeImage: () -> Unit,
-    onDismiss: () -> Unit,
+    actions: ImageActions = ImageActions.Default,
 ) {
     if (isVisible) {
-        Dialog(onDismissRequest = onDismiss) {
+        Dialog(onDismissRequest = actions.onDismiss) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp)
@@ -50,7 +48,7 @@ fun ImagePickerDialog(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { showGallery() }
+                            .clickable { actions.onPick() }
                             .padding(vertical = 18.dp),
                         contentAlignment = Alignment.Center,
                     ) {
@@ -67,7 +65,7 @@ fun ImagePickerDialog(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { removeImage() }
+                            .clickable { actions.onDefault }
                             .padding(vertical = 18.dp),
                         contentAlignment = Alignment.Center,
                     ) {

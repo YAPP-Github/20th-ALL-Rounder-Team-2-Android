@@ -239,17 +239,20 @@ private fun ProfileImage(
         }
     }
 
+    val dismiss = { showDialog = false }
     ImagePickerDialog(
         isVisible = showDialog,
-        showGallery = {
-            openGallery()
-            showDialog = false
-        },
-        removeImage = {
-            state.uri = Uri.EMPTY
-            showDialog = false
-        },
-        onDismiss = { showDialog = false }
+        actions = ImageActions(
+            onDismiss = dismiss,
+            onDefault = {
+                state.uri = Uri.EMPTY
+                dismiss()
+            },
+            onPick = {
+                openGallery()
+                dismiss()
+            }
+        ),
     )
 }
 
