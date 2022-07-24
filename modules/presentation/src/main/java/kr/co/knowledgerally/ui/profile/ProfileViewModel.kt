@@ -7,13 +7,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.core.exception.ImageTranscodeException
 import kr.co.knowledgerally.domain.model.Onboard
 import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
 import kr.co.knowledgerally.domain.usecase.ModifyOnboardUseCase
-import kr.co.knowledgerally.domain.usecase.RefreshUserUseCase
 import kr.co.knowledgerally.domain.usecase.SubmitOnboardUseCase
 import kr.co.knowledgerally.toast.Toaster
 import kr.co.knowledgerally.ui.R
@@ -25,7 +25,6 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getUserStreamUseCase: GetUserStreamUseCase,
-    private val refreshUserUseCase: RefreshUserUseCase,
     private val submitOnboardUseCase: SubmitOnboardUseCase,
     private val modifyOnboardUseCase: ModifyOnboardUseCase,
 ) : BaseViewModel() {
@@ -41,9 +40,9 @@ class ProfileViewModel @Inject constructor(
     private var job: Job? = null
 
     val user = when (mode) {
-        Mode.New -> null
-        Mode.Edit -> getUserStreamUseCase().stateIn(viewModelScope, SharingStarted.Eagerly, null)
-    }
+        Mode.New -> emptyFlow()
+        Mode.Edit -> getUserStreamUseCase()
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     fun submit(
         name: String,
@@ -52,46 +51,37 @@ class ProfileViewModel @Inject constructor(
         portfolio: String?,
         imageUri: String?
     ) {
-        if (job?.isActive == true) {
-            return
-        }
+        if (job != null) return
         _loading.value = true
-        launch {
+
+        job = launch {
             val onboard = Onboard(
                 username = name,
                 intro = introduction,
                 kakaoId = kakaoId,
-                portfolio = portfolio.takeUnless { it.isNullOrBlank() },
-                imageUri = if (imageUri != null && imageUri.startsWith("https")) {
-                    null
-                } else {
-                    imageUri
-                },
+                portfolio = portfolio,
+                imageUri = imageUri.takeIf { it != user.value?.profile?.imageUrl }
             )
 
-            when (mode) {
-                Mode.New -> {
-                    submitOnboardUseCase(onboard)
-                        .onSuccess { _completed.value = CompleteState.Created }
-                        .onFailure { handleException(it) }
-                }
-                Mode.Edit -> {
-                    modifyOnboardUseCase(onboard)
-                        .onSuccess { _completed.value = CompleteState.Modified }
-                        .onFailure { handleException(it) }
-                }
+            val result = when (mode) {
+                Mode.New -> submitOnboard(onboard)
+                Mode.Edit -> modifyOnboard(onboard)
             }
+            _loading.value = false
+            _completed.value = result.getOrNull() ?: CompleteState.Waiting
         }
+        job?.invokeOnCompletion { job = null }
     }
 
-    fun refreshUser() {
-        launch {
-            refreshUserUseCase().getOrThrow()
-        }
-    }
+    private suspend fun submitOnboard(onboard: Onboard): Result<CompleteState> =
+        submitOnboardUseCase(onboard)
+            .map { CompleteState.Created }
+
+    private suspend fun modifyOnboard(onboard: Onboard): Result<CompleteState> =
+        modifyOnboardUseCase(onboard)
+            .map { CompleteState.Modified }
 
     override fun handleException(throwable: Throwable) {
-        _loading.value = false
         when (throwable) {
             is ImageTranscodeException -> Toaster.show(R.string.exception_image)
             else -> super.handleException(throwable)

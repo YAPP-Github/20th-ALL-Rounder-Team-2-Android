@@ -62,6 +62,9 @@ internal interface ApiService {
     @Multipart
     suspend fun uploadUserImage(@Part part: MultipartBody.Part)
 
+    @DELETE
+    suspend fun clearUserImage()
+
     @PATCH("user/onboard")
     suspend fun submitOnboard(@Body onboard: OnboardRequest)
 

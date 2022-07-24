@@ -9,5 +9,5 @@ class SubmitOnboardUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(request: Onboard): Result<Unit> =
-        userRepository.submitOnboard(request = request, isModified = false)
+        userRepository.submitOnboard(onboard = request)
 }

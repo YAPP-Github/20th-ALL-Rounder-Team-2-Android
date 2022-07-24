@@ -52,18 +52,17 @@ import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel) {
-    val user = viewModel.user?.collectAsState()
-    val profileState = if (user?.value != null) {
+    val user by viewModel.user.collectAsState()
+    val profileState = user?.let {
         rememberProfileState(
-            nameState = NameState(user.value!!.profile.username),
-            introductionState = IntroductionState(user.value!!.profile.introduction),
-            kakaoIdState = KakaoIdState(user.value!!.profile.kakaoId),
-            portfolioState = PortfolioState(user.value!!.profile.portfolio),
-            imageState = remember { ImageState(Uri.parse(user.value!!.profile.imageUrl ?: "")) }
+            nameState = NameState(user!!.profile.username),
+            introductionState = IntroductionState(user!!.profile.introduction),
+            kakaoIdState = KakaoIdState(user!!.profile.kakaoId),
+            portfolioState = PortfolioState(user!!.profile.portfolio),
+            imageState = remember { ImageState(Uri.parse(user!!.profile.imageUrl ?: "")) }
         )
-    } else {
-        rememberProfileState()
     }
+        ?: rememberProfileState()
 
     val loading by viewModel.loading.collectAsState()
 
