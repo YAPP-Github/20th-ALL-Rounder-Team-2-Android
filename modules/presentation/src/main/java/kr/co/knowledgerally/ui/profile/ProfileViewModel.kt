@@ -6,9 +6,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.core.exception.ImageTranscodeException
 import kr.co.knowledgerally.domain.model.Onboard
@@ -17,8 +19,8 @@ import kr.co.knowledgerally.domain.usecase.ModifyOnboardUseCase
 import kr.co.knowledgerally.domain.usecase.SubmitOnboardUseCase
 import kr.co.knowledgerally.toast.Toaster
 import kr.co.knowledgerally.ui.R
-import kr.co.knowledgerally.ui.profile.state.CompleteState
 import kr.co.knowledgerally.ui.profile.state.Mode
+import kr.co.knowledgerally.ui.profile.state.OnboardResult
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,11 +33,12 @@ class ProfileViewModel @Inject constructor(
 
     val mode: Mode = savedStateHandle.get<Mode>(KEY_MODE)!!
 
-    private val _completed = MutableStateFlow<CompleteState>(CompleteState.Waiting)
-    val completed = _completed.asStateFlow()
-
-    private val _loading = MutableStateFlow(false)
-    val loading = _loading.asStateFlow()
+    private val _uiState: MutableStateFlow<ProfileUiState> = MutableStateFlow(
+        ProfileUiState(
+            isLoading = mode == Mode.Edit,
+        )
+    )
+    val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
     private var job: Job? = null
 
@@ -52,7 +55,7 @@ class ProfileViewModel @Inject constructor(
         imageUri: String?
     ) {
         if (job != null) return
-        _loading.value = true
+        _uiState.update { it.copy(isLoading = true) }
 
         job = launch {
             val onboard = Onboard(
@@ -67,19 +70,23 @@ class ProfileViewModel @Inject constructor(
                 Mode.New -> submitOnboard(onboard)
                 Mode.Edit -> modifyOnboard(onboard)
             }
-            _loading.value = false
-            _completed.value = result.getOrNull() ?: CompleteState.Waiting
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    result = result.getOrNull()
+                )
+            }
         }
         job?.invokeOnCompletion { job = null }
     }
 
-    private suspend fun submitOnboard(onboard: Onboard): Result<CompleteState> =
+    private suspend fun submitOnboard(onboard: Onboard): Result<OnboardResult> =
         submitOnboardUseCase(onboard)
-            .map { CompleteState.Created }
+            .map { OnboardResult.Created }
 
-    private suspend fun modifyOnboard(onboard: Onboard): Result<CompleteState> =
+    private suspend fun modifyOnboard(onboard: Onboard): Result<OnboardResult> =
         modifyOnboardUseCase(onboard)
-            .map { CompleteState.Modified }
+            .map { OnboardResult.Modified }
 
     override fun handleException(throwable: Throwable) {
         when (throwable) {

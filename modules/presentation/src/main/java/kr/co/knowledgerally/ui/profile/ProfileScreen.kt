@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,13 +46,18 @@ import kr.co.knowledgerally.ui.profile.state.IntroductionState
 import kr.co.knowledgerally.ui.profile.state.KakaoIdState
 import kr.co.knowledgerally.ui.profile.state.Mode
 import kr.co.knowledgerally.ui.profile.state.NameState
+import kr.co.knowledgerally.ui.profile.state.OnboardResult
 import kr.co.knowledgerally.ui.profile.state.PortfolioState
 import kr.co.knowledgerally.ui.profile.state.ProfileState
 import kr.co.knowledgerally.ui.profile.state.rememberProfileState
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel) {
+fun ProfileScreen(
+    viewModel: ProfileViewModel,
+    onResult: (OnboardResult) -> Unit,
+) {
+    val uiState by viewModel.uiState.collectAsState()
     val user by viewModel.user.collectAsState()
     val profileState = user?.let {
         rememberProfileState(
@@ -63,8 +69,6 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
         )
     }
         ?: rememberProfileState()
-
-    val loading by viewModel.loading.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         ProfileContent(
@@ -81,9 +85,13 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
             mode = viewModel.mode
         )
 
-        if (loading) {
+        if (uiState.isLoading) {
             Loading()
         }
+    }
+
+    uiState.result?.let { result ->
+        LaunchedEffect(result) { onResult(result) }
     }
 }
 
