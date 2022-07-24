@@ -1,48 +1,55 @@
 package kr.co.knowledgerally.ui.profile
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.core.exception.ImageTranscodeException
 import kr.co.knowledgerally.domain.model.Onboard
 import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
 import kr.co.knowledgerally.domain.usecase.ModifyOnboardUseCase
-import kr.co.knowledgerally.domain.usecase.RefreshUserUseCase
 import kr.co.knowledgerally.domain.usecase.SubmitOnboardUseCase
 import kr.co.knowledgerally.toast.Toaster
 import kr.co.knowledgerally.ui.R
-import kr.co.knowledgerally.ui.profile.state.CompleteState
 import kr.co.knowledgerally.ui.profile.state.Mode
+import kr.co.knowledgerally.ui.profile.state.OnboardResult
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getUserStreamUseCase: GetUserStreamUseCase,
-    private val refreshUserUseCase: RefreshUserUseCase,
     private val submitOnboardUseCase: SubmitOnboardUseCase,
     private val modifyOnboardUseCase: ModifyOnboardUseCase,
 ) : BaseViewModel() {
 
-    val mode: Mode = savedStateHandle.get<Mode>(KEY_MODE)!!
+    private val mode: Mode = savedStateHandle.get<Mode>(KEY_MODE)!!
 
-    private val _completed = MutableStateFlow<CompleteState>(CompleteState.Waiting)
-    val completed = _completed.asStateFlow()
-
-    private val _loading = MutableStateFlow(false)
-    val loading = _loading.asStateFlow()
+    private val _uiState: MutableStateFlow<ProfileUiState> = MutableStateFlow(
+        ProfileUiState(
+            isLoading = mode == Mode.Edit,
+            isModifying = mode == Mode.Edit
+        )
+    )
+    val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
     private var job: Job? = null
 
-    val user = when (mode) {
-        Mode.New -> null
-        Mode.Edit -> getUserStreamUseCase().stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    init {
+        launch {
+            val user = getUserStreamUseCase().firstOrNull()
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    user = user
+                )
+            }
+        }
     }
 
     fun submit(
@@ -52,46 +59,41 @@ class ProfileViewModel @Inject constructor(
         portfolio: String?,
         imageUri: String?
     ) {
-        if (job?.isActive == true) {
-            return
-        }
-        _loading.value = true
-        launch {
+        if (job != null) return
+
+        job = launch {
+            _uiState.update { it.copy(isLoading = true) }
             val onboard = Onboard(
                 username = name,
                 intro = introduction,
                 kakaoId = kakaoId,
-                portfolio = portfolio.takeUnless { it.isNullOrBlank() },
-                imageUri = if (imageUri != null && imageUri.startsWith("https")) {
-                    null
-                } else {
-                    imageUri
-                },
+                portfolio = portfolio,
+                imageUri = imageUri
             )
+            val result = when (mode) {
+                Mode.New -> submitOnboard(onboard)
+                Mode.Edit -> modifyOnboard(onboard)
+            }.onFailure { handleException(it) }
 
-            when (mode) {
-                Mode.New -> {
-                    submitOnboardUseCase(onboard)
-                        .onSuccess { _completed.value = CompleteState.Created }
-                        .onFailure { handleException(it) }
-                }
-                Mode.Edit -> {
-                    modifyOnboardUseCase(onboard)
-                        .onSuccess { _completed.value = CompleteState.Modified }
-                        .onFailure { handleException(it) }
-                }
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    result = result.getOrNull()
+                )
             }
         }
+        job?.invokeOnCompletion { job = null }
     }
 
-    fun refreshUser() {
-        launch {
-            refreshUserUseCase().getOrThrow()
-        }
-    }
+    private suspend fun submitOnboard(onboard: Onboard): Result<OnboardResult> =
+        submitOnboardUseCase(onboard)
+            .map { OnboardResult.Created }
+
+    private suspend fun modifyOnboard(onboard: Onboard): Result<OnboardResult> =
+        modifyOnboardUseCase(onboard)
+            .map { OnboardResult.Modified }
 
     override fun handleException(throwable: Throwable) {
-        _loading.value = false
         when (throwable) {
             is ImageTranscodeException -> Toaster.show(R.string.exception_image)
             else -> super.handleException(throwable)

@@ -14,7 +14,7 @@ data class OnboardRequest(
     val portfolio: String?,
 )
 
-fun OnboardEntity.toRemote() = OnboardRequest(
+internal fun OnboardEntity.toRemote() = OnboardRequest(
     username = username,
     intro = intro,
     kakaoId = kakaoId,

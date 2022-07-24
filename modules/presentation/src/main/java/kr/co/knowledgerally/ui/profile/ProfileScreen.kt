@@ -20,9 +20,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -41,30 +44,20 @@ import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.profile.state.ImageState
 import kr.co.knowledgerally.ui.profile.state.IntroductionState
 import kr.co.knowledgerally.ui.profile.state.KakaoIdState
-import kr.co.knowledgerally.ui.profile.state.Mode
 import kr.co.knowledgerally.ui.profile.state.NameState
+import kr.co.knowledgerally.ui.profile.state.OnboardResult
 import kr.co.knowledgerally.ui.profile.state.PortfolioState
 import kr.co.knowledgerally.ui.profile.state.ProfileState
 import kr.co.knowledgerally.ui.profile.state.rememberProfileState
 import kr.co.knowledgerally.ui.theme.KnowllyTheme
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel) {
-    val user = viewModel.user?.collectAsState()
-    val profileState = if (user?.value != null) {
-        rememberProfileState(
-            nameState = NameState(user.value!!.profile.username),
-            introductionState = IntroductionState(user.value!!.profile.introduction),
-            kakaoIdState = KakaoIdState(user.value!!.profile.kakaoId),
-            portfolioState = PortfolioState(user.value!!.profile.portfolio),
-            imageState = remember { ImageState(Uri.parse(user.value!!.profile.imageUrl ?: "")) }
-        )
-    } else {
-        rememberProfileState()
-    }
-
-    val loading by viewModel.loading.collectAsState()
-
+fun ProfileScreen(
+    viewModel: ProfileViewModel,
+    onResult: (OnboardResult) -> Unit,
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    val profileState = rememberProfileState(user = uiState.user)
     Box(modifier = Modifier.fillMaxSize()) {
         ProfileContent(
             profileState = profileState,
@@ -77,27 +70,26 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
                     imageUri = profileState.imageState.uriString,
                 )
             },
-            mode = viewModel.mode
+            isModifying = uiState.isModifying,
         )
 
-        if (loading) {
+        if (uiState.isLoading) {
             Loading()
         }
+    }
+
+    uiState.result?.let { result ->
+        LaunchedEffect(result) { onResult(result) }
     }
 }
 
 @Composable
 private fun ProfileContent(
+    isModifying: Boolean,
     modifier: Modifier = Modifier,
     profileState: ProfileState,
     onSubmit: () -> Unit,
-    mode: Mode
 ) {
-    val titleResId = when (mode) {
-        Mode.New -> R.string.profile_title
-        Mode.Edit -> R.string.profile_title_edit
-    }
-
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -105,7 +97,15 @@ private fun ProfileContent(
                 .verticalScroll(rememberScrollState())
                 .padding(start = 24.dp, top = 68.dp, end = 24.dp, bottom = 120.dp)
         ) {
-            ProfileTitle(text = stringResource(id = titleResId))
+            ProfileTitle(
+                text = stringResource(
+                    id = if (isModifying) {
+                        R.string.profile_title_edit
+                    } else {
+                        R.string.profile_title
+                    }
+                )
+            )
 
             // 프로필 사진
             ProfileImage(
@@ -175,6 +175,8 @@ private fun ProfileImage(
     state: ImageState,
     modifier: Modifier = Modifier,
 ) {
+    var showDialog by remember { mutableStateOf(false) }
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
@@ -197,7 +199,7 @@ private fun ProfileImage(
             Box(
                 modifier = Modifier
                     .size(108.dp)
-                    .clickable { openGallery() })
+                    .clickable { showDialog = true })
             {
                 Image(
                     painter = painterResource(id = R.drawable.img_profile_placeholder),
@@ -222,7 +224,7 @@ private fun ProfileImage(
                 .align(Alignment.BottomEnd)
         ) {
             Box(
-                modifier = Modifier.clickable { openGallery() },
+                modifier = Modifier.clickable { showDialog = true },
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -234,6 +236,22 @@ private fun ProfileImage(
             }
         }
     }
+
+    val dismiss = { showDialog = false }
+    ImagePickerDialog(
+        isVisible = showDialog,
+        actions = ImageActions(
+            onDismiss = dismiss,
+            onDefault = {
+                state.uri = Uri.EMPTY
+                dismiss()
+            },
+            onPick = {
+                openGallery()
+                dismiss()
+            }
+        ),
+    )
 }
 
 @Composable
@@ -347,9 +365,9 @@ private fun ProfileButton(
 private fun ProfileScreenPreview() {
     KnowllyTheme {
         ProfileContent(
-            profileState = rememberProfileState(),
+            profileState = rememberProfileState(null),
             onSubmit = { },
-            mode = Mode.New
+            isModifying = false,
         )
     }
 }

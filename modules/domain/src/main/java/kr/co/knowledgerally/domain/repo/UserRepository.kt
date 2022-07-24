@@ -10,7 +10,9 @@ interface UserRepository {
 
     suspend fun isOnboarded(): Result<Boolean>
 
-    suspend fun submitOnboard(request: Onboard, isModified: Boolean): Result<Unit>
+    suspend fun submitOnboard(onboard: Onboard): Result<Unit>
+
+    suspend fun modifyOnboard(onboard: Onboard): Result<Unit>
 
     fun getUserStream(): Flow<User>
 

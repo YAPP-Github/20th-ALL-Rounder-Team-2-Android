@@ -8,6 +8,8 @@ class ModifyOnboardUseCase @Inject constructor(
     private val userRepository: UserRepository,
 ) {
 
-    suspend operator fun invoke(request: Onboard): Result<Unit> =
-        userRepository.submitOnboard(request = request, isModified = true)
+    suspend operator fun invoke(onboard: Onboard): Result<Unit> =
+        userRepository
+            .modifyOnboard(onboard)
+            .mapCatching { userRepository.refreshUser().getOrThrow() }
 }
