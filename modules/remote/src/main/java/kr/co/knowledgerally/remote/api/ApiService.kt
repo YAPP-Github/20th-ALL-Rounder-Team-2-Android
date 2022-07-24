@@ -62,7 +62,7 @@ internal interface ApiService {
     @Multipart
     suspend fun uploadUserImage(@Part part: MultipartBody.Part)
 
-    @DELETE
+    @DELETE("user/image")
     suspend fun clearUserImage()
 
     @PATCH("user/onboard")

@@ -44,7 +44,6 @@ import kr.co.knowledgerally.ui.component.Loading
 import kr.co.knowledgerally.ui.profile.state.ImageState
 import kr.co.knowledgerally.ui.profile.state.IntroductionState
 import kr.co.knowledgerally.ui.profile.state.KakaoIdState
-import kr.co.knowledgerally.ui.profile.state.Mode
 import kr.co.knowledgerally.ui.profile.state.NameState
 import kr.co.knowledgerally.ui.profile.state.OnboardResult
 import kr.co.knowledgerally.ui.profile.state.PortfolioState
@@ -58,18 +57,7 @@ fun ProfileScreen(
     onResult: (OnboardResult) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val user by viewModel.user.collectAsState()
-    val profileState = user?.let {
-        rememberProfileState(
-            nameState = NameState(user!!.profile.username),
-            introductionState = IntroductionState(user!!.profile.introduction),
-            kakaoIdState = KakaoIdState(user!!.profile.kakaoId),
-            portfolioState = PortfolioState(user!!.profile.portfolio),
-            imageState = remember { ImageState(Uri.parse(user!!.profile.imageUrl ?: "")) }
-        )
-    }
-        ?: rememberProfileState()
-
+    val profileState = rememberProfileState(user = uiState.user)
     Box(modifier = Modifier.fillMaxSize()) {
         ProfileContent(
             profileState = profileState,
@@ -82,7 +70,7 @@ fun ProfileScreen(
                     imageUri = profileState.imageState.uriString,
                 )
             },
-            mode = viewModel.mode
+            isModifying = uiState.isModifying,
         )
 
         if (uiState.isLoading) {
@@ -97,16 +85,11 @@ fun ProfileScreen(
 
 @Composable
 private fun ProfileContent(
+    isModifying: Boolean,
     modifier: Modifier = Modifier,
     profileState: ProfileState,
     onSubmit: () -> Unit,
-    mode: Mode
 ) {
-    val titleResId = when (mode) {
-        Mode.New -> R.string.profile_title
-        Mode.Edit -> R.string.profile_title_edit
-    }
-
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -114,7 +97,15 @@ private fun ProfileContent(
                 .verticalScroll(rememberScrollState())
                 .padding(start = 24.dp, top = 68.dp, end = 24.dp, bottom = 120.dp)
         ) {
-            ProfileTitle(text = stringResource(id = titleResId))
+            ProfileTitle(
+                text = stringResource(
+                    id = if (isModifying) {
+                        R.string.profile_title_edit
+                    } else {
+                        R.string.profile_title
+                    }
+                )
+            )
 
             // 프로필 사진
             ProfileImage(
@@ -374,9 +365,9 @@ private fun ProfileButton(
 private fun ProfileScreenPreview() {
     KnowllyTheme {
         ProfileContent(
-            profileState = rememberProfileState(),
+            profileState = rememberProfileState(null),
             onSubmit = { },
-            mode = Mode.New
+            isModifying = false,
         )
     }
 }

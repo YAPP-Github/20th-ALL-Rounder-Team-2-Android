@@ -1,15 +1,12 @@
 package kr.co.knowledgerally.ui.profile
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.core.exception.ImageTranscodeException
@@ -31,21 +28,29 @@ class ProfileViewModel @Inject constructor(
     private val modifyOnboardUseCase: ModifyOnboardUseCase,
 ) : BaseViewModel() {
 
-    val mode: Mode = savedStateHandle.get<Mode>(KEY_MODE)!!
+    private val mode: Mode = savedStateHandle.get<Mode>(KEY_MODE)!!
 
     private val _uiState: MutableStateFlow<ProfileUiState> = MutableStateFlow(
         ProfileUiState(
             isLoading = mode == Mode.Edit,
+            isModifying = mode == Mode.Edit
         )
     )
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
     private var job: Job? = null
 
-    val user = when (mode) {
-        Mode.New -> emptyFlow()
-        Mode.Edit -> getUserStreamUseCase()
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    init {
+        launch {
+            val user = getUserStreamUseCase().firstOrNull()
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    user = user
+                )
+            }
+        }
+    }
 
     fun submit(
         name: String,
@@ -55,21 +60,21 @@ class ProfileViewModel @Inject constructor(
         imageUri: String?
     ) {
         if (job != null) return
-        _uiState.update { it.copy(isLoading = true) }
 
         job = launch {
+            _uiState.update { it.copy(isLoading = true) }
             val onboard = Onboard(
                 username = name,
                 intro = introduction,
                 kakaoId = kakaoId,
                 portfolio = portfolio,
-                imageUri = imageUri.takeIf { it != user.value?.profile?.imageUrl }
+                imageUri = imageUri
             )
-
             val result = when (mode) {
                 Mode.New -> submitOnboard(onboard)
                 Mode.Edit -> modifyOnboard(onboard)
-            }
+            }.onFailure { handleException(it) }
+
             _uiState.update {
                 it.copy(
                     isLoading = false,

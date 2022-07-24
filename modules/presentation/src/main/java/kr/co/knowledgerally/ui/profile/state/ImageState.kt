@@ -8,10 +8,12 @@ import androidx.compose.runtime.setValue
 
 @Stable
 class ImageState(initialImage: Uri = Uri.EMPTY) {
+    constructor(uriString: String?) : this(uriString?.let(Uri::parse) ?: Uri.EMPTY)
+
     var uri by mutableStateOf<Uri>(initialImage)
     val isEmpty: Boolean
         get() = uri == Uri.EMPTY
 
-    val uriString: String
-        get() = if (isEmpty) "" else uri.toString()
+    val uriString: String?
+        get() = if (isEmpty) null else uri.toString()
 }

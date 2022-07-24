@@ -65,7 +65,7 @@ fun ImagePickerDialog(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { actions.onDefault }
+                            .clickable { actions.onDefault() }
                             .padding(vertical = 18.dp),
                         contentAlignment = Alignment.Center,
                     ) {
