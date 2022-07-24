@@ -36,7 +36,7 @@ internal class UserRemoteDataSourceImpl @Inject constructor(
     override suspend fun modifyOnboard(onboard: OnboardEntity): Result<Unit> = runCatching {
         when (val imageUri = onboard.imageUri) {
             null -> clearProfileImage()
-            !in "http" -> Unit // Ignore upload that contains https protocol
+            in "http" -> Unit // Ignore upload that contains https protocol
             else -> uploadProfileImage(imageUri)
         }
         apiService.patchUser(onboard.toRemote())
