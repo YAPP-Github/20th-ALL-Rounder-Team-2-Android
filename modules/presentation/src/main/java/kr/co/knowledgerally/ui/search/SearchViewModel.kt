@@ -1,16 +1,14 @@
 package kr.co.knowledgerally.ui.search
 
-import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.co.knowledgerally.base.BaseViewModel
+import kr.co.knowledgerally.constant.BASE_URL
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-) : BaseViewModel() {
+class SearchViewModel @Inject constructor() : BaseViewModel() {
 
     private val _url =
         MutableStateFlow("${BASE_URL}/lecture-search")
@@ -25,9 +23,5 @@ class SearchViewModel @Inject constructor(
 
     fun onRefresh() {
         _isRefresh.value = false
-    }
-
-    companion object {
-        private const val BASE_URL = "http://knowllydev-web.hkpark.net"
     }
 }

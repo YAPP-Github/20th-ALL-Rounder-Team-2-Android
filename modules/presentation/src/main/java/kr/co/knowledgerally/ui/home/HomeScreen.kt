@@ -14,6 +14,7 @@ import kr.co.knowledgerally.bridge.BridgeDelegate
 import kr.co.knowledgerally.bridge.BridgeRequest
 import kr.co.knowledgerally.bridge.BridgeResponse
 import kr.co.knowledgerally.bridge.rememberWebViewState
+import kr.co.knowledgerally.constant.BASE_URL
 import kr.co.knowledgerally.ui.category.CategoryActivity
 import kr.co.knowledgerally.ui.component.KnowllyWebView
 import kr.co.knowledgerally.ui.lecture.LectureActivity
@@ -28,7 +29,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             viewModel.refresh()
         }
     }
-    val webViewState = rememberWebViewState(url = "http://knowllydev-web.hkpark.net")
+    val webViewState = rememberWebViewState(url = BASE_URL)
     val delegate = remember {
         BridgeDelegate { response ->
             when (response) {

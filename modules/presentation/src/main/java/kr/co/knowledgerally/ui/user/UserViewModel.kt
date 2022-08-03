@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kr.co.knowledgerally.base.BaseViewModel
+import kr.co.knowledgerally.constant.BASE_URL
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +29,6 @@ class UserViewModel @Inject constructor(
     }
 
     companion object {
-        private const val BASE_URL = "http://knowllydev-web.hkpark.net"
         const val KEY_USER_ID = "KEY_USER_ID"
     }
 }

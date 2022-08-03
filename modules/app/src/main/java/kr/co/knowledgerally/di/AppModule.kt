@@ -23,7 +23,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 internal object AppModule {
 
     @Provides
-    fun provideBaseUrl(): BaseUrl = BaseUrl("http://knowllydev.hkpark.net/api/")
+    fun provideBaseUrl(): BaseUrl = if (BuildConfig.DEBUG) {
+        BaseUrl("http://knowllydev.hkpark.net/api/")
+    } else {
+        BaseUrl("https://knowlly.hkpark.net/")
+    }
 
     @Provides
     fun provideInterceptors(): Interceptors {

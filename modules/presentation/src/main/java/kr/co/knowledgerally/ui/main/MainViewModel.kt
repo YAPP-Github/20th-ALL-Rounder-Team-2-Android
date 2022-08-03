@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.stateIn
 import kr.co.knowledgerally.base.BaseViewModel
 import kr.co.knowledgerally.bus.Event
 import kr.co.knowledgerally.bus.EventBus
+import kr.co.knowledgerally.constant.BASE_URL
 import kr.co.knowledgerally.domain.usecase.GetJwtTokenUseCase
 import kr.co.knowledgerally.domain.usecase.GetUserStreamUseCase
 import kr.co.knowledgerally.domain.usecase.IsWelcomeShownUseCase
@@ -70,7 +71,7 @@ class MainViewModel @Inject constructor(
             cookieManager.removeAllCookies {}
             cookieManager.setAcceptCookie(true)
 
-            cookieManager.setCookie("http://knowllydev-web.hkpark.net/", "X-AUTH-TOKEN=$token;")
+            cookieManager.setCookie(BASE_URL, "X-AUTH-TOKEN=$token;")
             cookieManager.flush()
         }
     }
